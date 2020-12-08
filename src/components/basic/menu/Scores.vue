@@ -7,11 +7,11 @@
       <v-list-item-title class="text-uppercase">Học sinh</v-list-item-title>
     </template>
     <v-list class="left-amber-border py-0">
-      <v-list-item link to="/">
+      <v-list-item link to="/marks">
         <v-list-item-action></v-list-item-action>
         <v-list-item-title class="ml-3">Số điểm</v-list-item-title>
       </v-list-item>
-      <v-list-item link to="/">
+      <v-list-item link to="/marks-input">
         <v-list-item-action></v-list-item-action>
         <v-list-item-title class="ml-3">Nhập điểm</v-list-item-title>
       </v-list-item>

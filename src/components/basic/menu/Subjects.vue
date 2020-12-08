@@ -1,5 +1,5 @@
 <template>
-  <v-list-item link to="/subject" active-class="left-amber-border">
+  <v-list-item link to="/subjects" active-class="left-amber-border">
     <v-list-item-icon class="pl-2">
       <v-icon>mdi-book-open</v-icon>
     </v-list-item-icon>

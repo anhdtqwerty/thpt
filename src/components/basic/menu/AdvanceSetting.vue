@@ -9,19 +9,19 @@
       >
     </template>
     <v-list class="left-amber-border py-0">
-      <v-list-item link to="/">
+      <v-list-item link to="/divisions">
         <v-list-item-action></v-list-item-action>
         <v-list-item-title class="ml-3">Quản lý phân ban</v-list-item-title>
       </v-list-item>
-      <v-list-item link to="/">
+      <v-list-item link to="/grades">
         <v-list-item-action></v-list-item-action>
         <v-list-item-title class="ml-3">Quản lý khối</v-list-item-title>
       </v-list-item>
-      <v-list-item link to="/">
+      <v-list-item link to="/semester">
         <v-list-item-action></v-list-item-action>
         <v-list-item-title class="ml-3">Quản lý học kỳ</v-list-item-title>
       </v-list-item>
-      <v-list-item link to="/">
+      <v-list-item link to="/generation">
         <v-list-item-action></v-list-item-action>
         <v-list-item-title class="ml-3">Quản lý khóa</v-list-item-title>
       </v-list-item>
