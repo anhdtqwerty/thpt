@@ -1,5 +1,5 @@
 <template>
-  <v-list-item link to="/classes" active-class="left-amber-border">
+  <v-list-item link to="/teacher" active-class="left-amber-border">
     <v-list-item-icon class="pl-2">
       <v-icon>mdi-account-multiple-outline</v-icon>
     </v-list-item-icon>
