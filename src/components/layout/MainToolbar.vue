@@ -7,6 +7,7 @@
     :class="{ blue: isXsScreen, 'darken-4': isXsScreen }"
   > 
     <v-app-bar-nav-icon
+      dark
       class="d-flex d-sm-none"
       @click.stop="toggleDrawer"
     ></v-app-bar-nav-icon>
