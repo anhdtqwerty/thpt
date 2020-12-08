@@ -8,11 +8,11 @@
   >
     <template v-slot:activator="{ on }">
       <v-text-field
-        v-model="data"
         filled
         hide-details
         :value="display"
         placeholder="Chọn Ngày"
+        @click:clear="updated('')"
         readonly
         clearable
         flat
@@ -37,16 +37,21 @@ export default {
   },
   data: () => ({
     data: new Date().toISOString().substr(0, 10),
-
     menu: false
   }),
   methods: {
     updated(value) {
-      this.$emit('update:date', moment(this.data).toISOString())
+      if (value) {
+        this.$emit('update:date', moment(this.data).toISOString())
+      } else {
+        this.$emit('update:date', '')
+      }
       this.menu = false
     },
     reset() {
-      this.data = moment(this.date).format('YYYY-MM-DD')
+      if (this.date) {
+        this.data = moment(this.date).format('YYYY-MM-DD')
+      }
     }
   },
   computed: {

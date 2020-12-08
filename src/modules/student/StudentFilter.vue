@@ -27,7 +27,7 @@
         />
       </v-col>
       <v-col cols="12" md="3">
-        <date-picker @update:date="getDate"></date-picker>
+        <date-picker :date.sync="dob" ></date-picker>
       </v-col>
     </v-row>
     <v-row no-gutters>
@@ -100,44 +100,40 @@ export default {
     show: false,
     query: '',
     major: {},
-    status: 'running',
+    status: 'active',
     generation: '',
     code: '',
     dob: '',
     tags: '',
+    name: '',
+    classes: [],
+    gender: '',
     selectedCourse: [],
     genders: [
       { title: 'Nam', value: 'male' },
       { title: 'Nữ', value: 'female' },
       { title: 'Khác', value: 'other' },
     ],
-    start: moment().startOf('week').toISOString(),
-    end: moment().endOf('week').toISOString()
+    start: moment().startOf('day').toISOString(),
+    end: moment().endOf('day').toISOString()
   }),
   computed: {
     ...mapState('constant', ['studentStatus']),
   },
   methods: {
     onFilterChanged() {
-      console.log(this.start)
-      console.log(this.end)
       console.log(this.dob)
       this.$emit('onFilterChanged', {
         name_contains: this.name,
         classes: this.classes,
-        dob_gt: this.start,
-        dob_lt: this.end,
+        dob_gt: moment(this.dob).startOf('month').toISOString(),
+        dob_lt: moment(this.dob).endOf('month').toISOString(),
         code_contains: this.code,
         status: this.status,
         gender: this.gender,
         _sort: 'createdAt:desc',
       })
     },
-    getDate(data) {
-      this.dob = data
-      this.start = this.start.startOf('day').toISOString()
-      this.end = this.end.endOf('day').toISOString()
-    }
   },
 }
 </script>

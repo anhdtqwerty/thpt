@@ -1,12 +1,6 @@
 <template>
   <div>
     <div class="pa-2 d-flex justify-space-between align-center">
-      <Breadcrumbs
-        data="classData.title"
-        headline="Học viên"
-        :link="[{ text: 'Danh sách lớp', href: '../classes' }]"
-      />
-
       <div class="flex-center">
         <v-btn dark color="#0D47A1" @click.stop="createState = !createState">
           <v-icon left>add</v-icon>{{ btnTitle }}
@@ -86,7 +80,6 @@ import { mapActions, mapState } from 'vuex'
 import CardStudentName from '@/components/basic/card/CardStudentName.vue'
 import StudentFilter from '@/modules/student/StudentFilter'
 import DropMenu from '@/modules/student/menu/Menu.vue'
-import Breadcrumbs from '@/components/layout/Breadcrumbs.vue'
 import SettingTableHeader from '@/components/basic/table/SettingHeaders'
 import StudentNewDialog from '@/modules/student/StudentNewDialog'
 import StudentFilterDialog from '@/modules/student/StudentFilterDialog'
@@ -142,7 +135,6 @@ export default {
     DropMenu,
     StudentNewDialog,
     StudentFilter,
-    Breadcrumbs,
     SettingTableHeader,
     StudentFilterDialog,
   },
