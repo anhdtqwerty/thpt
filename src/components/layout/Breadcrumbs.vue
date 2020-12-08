@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="font-weight-bold mb-1">{{ headline }}</h1>
+    <h1 class="font-weight-bold">{{ headline }}</h1>
     <v-breadcrumbs :items="links" style="pa-0 ma-0"></v-breadcrumbs>
     <h1 class="text-subtitle-1">{{ caption }}</h1>
   </div>
@@ -41,6 +41,5 @@ export default {
 .v-breadcrumbs {
   padding: 0;
   margin: 0;
-  margin-bottom: 16px;
 }
 </style>

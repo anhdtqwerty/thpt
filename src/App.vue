@@ -90,4 +90,7 @@ input {
   width: 100%;
   padding: 8px !important;
 }
+thead.v-data-table-header-mobile{
+  display: none;
+}
 </style>

@@ -1,7 +1,7 @@
 <template>
-  <v-dialog v-model="dialog" width="420">
+  <v-dialog :fullscreen="$vuetify.breakpoint.mobile" v-model="dialog" width="420">
     <v-card>
-      <v-toolbar dense class="elevation-0" color="primary" dark>
+      <v-toolbar dense class="elevation-0" color="#0D47A1" dark>
         <v-toolbar-title>Tạo Mới Học Sinh</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-btn icon>
@@ -9,7 +9,7 @@
         </v-btn>
       </v-toolbar>
       <v-divider />
-      <v-form ref="form" class="pa-3">
+      <v-form ref="form" class="pa-4">
         <p class="caption">Thông tin & Đăng nhập</p>
         <v-text-field
           :rules="[rules.required]"
@@ -102,9 +102,9 @@
           dense
         />
       </v-form>
-      <v-card-actions>
+      <v-card-actions class="px-4">
         <v-spacer></v-spacer>
-        <v-btn small color="primary" @click="save" :disabled="isLoading" dense>Lưu</v-btn>
+        <v-btn dark color="#0D47A1" @click="save" :disabled="isLoading" dense>Lưu</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

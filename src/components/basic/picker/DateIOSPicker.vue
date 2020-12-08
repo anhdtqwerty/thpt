@@ -5,15 +5,17 @@
     :nudge-right="40"
     transition="scale-transition"
     offset-y
-    min-width="290px"
-    style="width:100%"
   >
     <template v-slot:activator="{ on }">
       <v-text-field
-        outlined
+        v-model="data"
+        filled
+        hide-details
         :value="display"
-        label="Chọn Ngày"
+        placeholder="Chọn Ngày"
         readonly
+        clearable
+        flat
         dense
         v-on="on"
       ></v-text-field>

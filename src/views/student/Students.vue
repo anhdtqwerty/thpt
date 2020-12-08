@@ -1,160 +1,150 @@
 <template>
   <div>
-    <div class="d-flex justify-space-between align-center ">
+    <div class="pa-2 d-flex justify-space-between align-center">
       <Breadcrumbs
         data="classData.title"
         headline="Học viên"
         :link="[{ text: 'Danh sách lớp', href: '../classes' }]"
       />
 
-      <student-list-actions
-        :selected="selected"
-        @removed="selected = []"
-        :filter="draw"
-        @filter="draw = !draw"
-      />
+      <div class="flex-center">
+        <v-btn dark color="#0D47A1" @click.stop="createState = !createState">
+          <v-icon left>add</v-icon>{{ btnTitle }}
+        </v-btn>
+      </div>
     </div>
 
-    <v-data-table
-      flat
-      item-key="id"
-      show-select
-      v-model="selected"
-      class="elevation-1"
-      :options.sync="studentTableOptions"
-      :server-items-length="totalItems"
-      :headers="headers"
-      :items="students"
-      :loading="loading"
-      :items-per-page="5"
-      :footer-props="{
-        itemsPerPageOptions: [5, 10, 15, 20, 30],
-      }"
-      dense
-    >
-      <div slot="top" class="px-2">
-        <v-col col="12" class="d-flex flex-row-reverse pt-2">
-          <drop-menu></drop-menu>
-          <setting-table-header
-            :default-headers="originHeaders"
-            @change="headers = $event"
-          />
-        </v-col>
-        <student-filter @onFilterChanged="refresh"></student-filter>
-      </div>
-      <template v-slot:item.status="{ item }">
-        <v-chip v-if="item.status" small dark :color="getColor(item.status)">{{
-          item.status | getStatus
-        }}</v-chip>
-      </template>
-      <template v-slot:item.name="{ item }">
-        <card-student-name :student="item" link />
-      </template>
-      <template v-slot:item.generation="{ item }">
-        <span style="white-space: nowrap">{{
-          item.generation ? item.generation.code : ''
-        }}</span>
-      </template>
-      <template v-slot:item.tags="{ item }">
-        <span style="white-space: nowrap">{{ item.tags }}</span>
-      </template>
-      <template v-slot:item.classes="{ item }">
-        <span>{{ item.classes | getClassCount }}</span>
-      </template>
-      <template v-slot:item.majors="{ item }">
-        <span
-          style="white-space: nowrap"
-          v-for="(major, index) in item.majors"
-          :key="major.id"
-        >
-          <router-link :to="'/major/' + major.id">
-            <v-tooltip bottom>
-              <template v-slot:activator="{ on }">
-                <span v-on="on">{{ major.code }}</span>
-              </template>
-              <span>{{ major.title }}</span>
-            </v-tooltip>
-          </router-link>
-          <span v-if="index < item.majors.length - 1">{{ ', ' }}</span>
-        </span>
-      </template>
-      <template v-slot:item.gender="{ item }">{{
-        item.gender === 'male'
-          ? 'Nam'
-          : item.gender === 'female'
-          ? 'Nữ'
-          : 'Khác'
-      }}</template>
-      <template v-slot:item.rootMajor="{ item }">{{
-       getType(item.rootMajor)
-      }}</template>
-      <template v-slot:item.action="{ item }">
-        <v-btn text icon @click="onStudentSelected(item)">
-          <v-icon dense>mdi-pencil</v-icon>
-        </v-btn>
-      </template>
-      <template v-slot:item.tuition="{ item }">
-        <span style="white-space: nowrap">{{
-          getTuitionStatus(item.leads)
-        }}</span>
-      </template>
-    </v-data-table>
+    <v-card class="pa-2 ma-md-2 elevation-1">
+      <v-data-table
+        item-key="id"
+        v-model="selected"
+        :options.sync="studentTableOptions"
+        :server-items-length="totalItems"
+        :headers="headers"
+        :items="students"
+        :loading="loading"
+        :items-per-page="10"
+        :footer-props="{
+          itemsPerPageOptions: [5, 10, 15, 20, 30],
+        }"
+        dense
+      >
+        <div slot="top" class="d-flex mb-4">
+          <div v-if="!$vuetify.breakpoint.mobile">
+            <student-filter
+              @onFilterChanged="refresh"
+            ></student-filter>
+          </div>
+          <v-spacer></v-spacer>
+          <div>
+            <v-btn
+              v-if="$vuetify.breakpoint.mobile"
+              icon
+              @click.stop="filterState = !filterState"
+            >
+              <v-icon right>mdi-filter-outline</v-icon>
+            </v-btn>
+            <setting-table-header
+              :default-headers="originHeaders"
+              @change="headers = $event"
+            />
+            <drop-menu v-if="!$vuetify.breakpoint.mobile"></drop-menu>
+          </div>
+        </div>
+        <template v-slot:[`item.name`]="{ item }">
+          <card-student-name :student="item" link />
+        </template>
+        <template v-slot:[`item.status`]="{ item }">
+          <span v-if="item.status" :class="getColor(item.status)"
+            >{{ item.status | getStatus }}
+          </span>
+        </template>
+        <template v-slot:[`item.classes`]="{ item }">
+          <span>{{ item.classes | getClassCount }}</span>
+        </template>
+        <template v-slot:[`item.gender`]="{ item }">{{
+          item.gender === 'male'
+            ? 'Nam'
+            : item.gender === 'female'
+            ? 'Nữ'
+            : 'Khác'
+        }}</template>
+        <template v-slot:[`item.action`]="{ item }">
+          <v-btn text icon @click="onStudentSelected(item)">
+            <v-icon dense>mdi-dots-vertical</v-icon>
+          </v-btn>
+        </template>
+      </v-data-table>
+    </v-card>
+
+    <student-new-dialog :state="createState" @done="requestPageSettings({})" />
+    <student-filter-dialog :state="filterState" />
   </div>
 </template>
 <script>
 import { mapActions, mapState } from 'vuex'
-import StudentListActions from '@/modules/student/StudentListActions'
 import CardStudentName from '@/components/basic/card/CardStudentName.vue'
 import StudentFilter from '@/modules/student/StudentFilter'
 import DropMenu from '@/modules/student/menu/Menu.vue'
 import Breadcrumbs from '@/components/layout/Breadcrumbs.vue'
 import SettingTableHeader from '@/components/basic/table/SettingHeaders'
+import StudentNewDialog from '@/modules/student/StudentNewDialog'
+import StudentFilterDialog from '@/modules/student/StudentFilterDialog'
+
 const originHeaders = [
-  { text: 'Tên', value: 'name', align: 'left', sortable: false, show: true },
-  { text: 'Mã', value: 'code', align: 'left', sortable: false },
   {
-    text: 'Khóa',
-    value: 'generation',
+    text: 'Tên học sinh',
+    value: 'name',
     align: 'left',
     sortable: false,
     show: true,
   },
-  { text: 'Nhóm', value: 'tags', align: 'left', sortable: false },
-  { text: 'Số Lớp', value: 'classes', align: 'left', sortable: false },
+  { text: 'Lớp', value: 'classes', align: 'left', sortable: false, show: true },
   {
-    text: 'Chuyên ngành',
-    value: 'majors',
-    align: 'left',
-    sortable: false,
-  },
-  {
-    text: 'Loại',
-    value: 'rootMajor',
-    align: 'left',
-    sortable: false,
-    show: true
-  },
-  { text: 'Giới tính', value: 'gender', align: 'left', sortable: false },
-  { text: 'Ngày sinh', value: 'dob', align: 'left', sortable: false },
-  { text: 'Học Phí', value: 'tuition', align: 'left', sortable: false },
-  {
-    text: 'Số Điện Thoại',
-    value: 'phone',
+    text: 'Ngày sinh',
+    value: 'dob',
     align: 'left',
     sortable: false,
     show: true,
   },
-  { text: 'Trạng Thái', value: 'status', align: 'left', sortable: false },
-  { text: 'Email', value: 'email', align: 'left', sortable: false },
+  {
+    text: 'Giới tính',
+    value: 'gender',
+    align: 'left',
+    sortable: false,
+    show: true,
+  },
+  {
+    text: 'Trạng thái',
+    value: 'status',
+    align: 'left',
+    sortable: false,
+    show: true,
+  },
+  {
+    text: 'Ghi chú',
+    value: 'notes',
+    align: 'left',
+    sortable: false,
+    show: true,
+  },
+  {
+    text: 'Hành động',
+    value: 'action',
+    align: 'left',
+    sortable: false,
+    show: true,
+  },
 ]
 export default {
   components: {
     CardStudentName,
     DropMenu,
-    StudentListActions,
+    StudentNewDialog,
     StudentFilter,
     Breadcrumbs,
     SettingTableHeader,
+    StudentFilterDialog,
   },
   props: {
     role: String,
@@ -176,6 +166,8 @@ export default {
       previewUserId: null,
       ready: false,
       studentTableOptions: {},
+      createState: false,
+      filterState: false,
     }
   },
   async created() {
@@ -184,16 +176,27 @@ export default {
   computed: {
     ...mapState('app', ['department']),
     ...mapState('students', ['totalItems', 'students']),
+    btnTitle() {
+      if (this.$vuetify.breakpoint.mobile) {
+        return 'Thêm'
+      } else {
+        return 'Thêm học sinh'
+      }
+    },
   },
   methods: {
-    ...mapActions('students', ['requestPageSettings', 'searchStudents']),
+    ...mapActions('students', [
+      'requestPageSettings',
+      'searchStudents',
+      'updateStudent',
+    ]),
     updateDraw(draw) {
       this.draw = draw
     },
     getColor(status) {
-      if (status === 'active') return 'green'
-      if (status === 'reserved') return 'orange'
-      else return 'gray'
+      if (status === 'active') return 'green--text'
+      if (status === 'reserved') return 'orange--text'
+      else return 'gray--text'
     },
     getType(type) {
       return type ? type.title : ''

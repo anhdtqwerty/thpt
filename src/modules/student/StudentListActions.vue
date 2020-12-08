@@ -1,8 +1,5 @@
 <template>
   <div class="flex-center">
-    <v-btn color="primary" class="mr-2" depressed @click.stop="createState=!createState">
-      <v-icon left>add</v-icon>Thêm Học Sinh
-    </v-btn>
     <v-btn v-if="multipleAction" color="error" class="mr-2" depressed @click.stop="onRemove" >
       <v-icon left>delete</v-icon>Xóa
     </v-btn>
@@ -17,20 +14,16 @@
     <v-btn v-if="multipleAction" class="mr-2" depressed @click.stop="onActivate" outlined>
       <v-icon left>check</v-icon>Kích Hoạt
     </v-btn>
-
-    <student-new-dialog :state="createState" @done="requestPageSettings({})" />
   </div>
 </template>
 
 <script>
 import { mapActions, mapState } from 'vuex'
-import StudentNewDialog from '@/modules/student/StudentNewDialog'
 import StudentEditTags from '@/modules/student/StudentEditTags.vue'
 import _ from 'lodash'
 export default {
   components: {
     StudentEditTags,
-    StudentNewDialog
   },
   props: {
     disabled: Boolean,
@@ -42,7 +35,6 @@ export default {
       mailDialogState: false,
       smsDialogState: false,
       smsEditingState: false,
-      createState: false,
       sending: null
     }
   },
@@ -59,7 +51,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('students', ['removeStudents', 'updateStudents', 'requestPageSettings']),
+    ...mapActions('students', ['removeStudents', 'updateStudents']),
     ...mapActions('noti', ['sendEmails', 'sendSMS']),
     ...mapActions('sale', ['setStudents']),
     disableStudent () {
