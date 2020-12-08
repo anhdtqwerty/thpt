@@ -4,15 +4,15 @@
     dense
     height="64px"
     class="elevation-2 white"
-    :class="{ amber: isXsScreen, 'darken-1': isXsScreen }"
-  >
+    :class="{ blue: isXsScreen, 'darken-4': isXsScreen }"
+  > 
     <v-app-bar-nav-icon
       class="d-flex d-sm-none"
       @click.stop="toggleDrawer"
     ></v-app-bar-nav-icon>
-    <v-toolbar-title>
+    <v-toolbar-title class="pl-0">
       <v-img
-        class="d-flex d-sm-none"
+        class="d-flex d-sm-none "
         src="../../assets/logo.svg"
         height="32px"
         width="132px"
