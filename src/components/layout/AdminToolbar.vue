@@ -10,10 +10,7 @@
     <v-divider inset />
     <Scores />
     <v-divider inset />
-    <Subjects />
-    <v-divider inset />
     <AdvanceSetting />
-    <v-divider inset />
   </v-list>
 </template>
 <script>
@@ -21,7 +18,6 @@ import Department from '@/components/basic/menu/Department'
 import Classes from '@/components/basic/menu/Classes'
 import Students from '@/components/basic/menu/Students.vue'
 import Teachers from '@/components/basic/menu/Teachers.vue'
-import Subjects from '@/components/basic/menu/Subjects.vue'
 import Dashboard from '@/components/basic/menu/Dashboard'
 import Scores from '@/components/basic/menu/Scores.vue'
 import AdvanceSetting from '@/components/basic/menu/AdvanceSetting.vue'
@@ -31,7 +27,6 @@ export default {
     Dashboard,
     Classes,
     Students,
-    Subjects,
     Teachers,
     Scores,
     AdvanceSetting

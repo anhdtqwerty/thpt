@@ -4,9 +4,7 @@
       <v-list-item-icon class="pl-2">
         <v-icon>mdi-layers</v-icon>
       </v-list-item-icon>
-      <v-list-item-title class="text-uppercase"
-        >Quản lý nâng cao</v-list-item-title
-      >
+      <v-list-item-title>Quản lý nâng cao</v-list-item-title>
     </template>
     <v-list class="left-amber-border py-0">
       <v-list-item link to="/divisions">
@@ -21,9 +19,14 @@
         <v-list-item-action></v-list-item-action>
         <v-list-item-title class="ml-3">Quản lý học kỳ</v-list-item-title>
       </v-list-item>
-      <v-list-item link to="/generation">
+      <v-list-item link to="/generations">
         <v-list-item-action></v-list-item-action>
         <v-list-item-title class="ml-3">Quản lý khóa</v-list-item-title>
+      </v-list-item>
+      <v-list-item link to="/subjects" active-class="left-amber-border">
+        <v-list-item-action></v-list-item-action>
+        <v-list-item-title class="ml-3"
+          >Môn học</v-list-item-title >
       </v-list-item>
     </v-list>
   </v-list-group>

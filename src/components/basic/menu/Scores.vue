@@ -4,7 +4,7 @@
       <v-list-item-icon class="pl-2">
         <v-icon>mdi-spellcheck</v-icon>
       </v-list-item-icon>
-      <v-list-item-title class="text-uppercase">Học sinh</v-list-item-title>
+      <v-list-item-title >Điểm số</v-list-item-title>
     </template>
     <v-list class="left-amber-border py-0">
       <v-list-item link to="/marks">
