@@ -11,7 +11,7 @@
         <v-list-item-action></v-list-item-action>
         <v-list-item-title class="ml-3">Danh sách</v-list-item-title>
       </v-list-item>
-      <v-list-item link to="/attendances" >
+      <v-list-item link to="/attendanced" >
         <v-list-item-action></v-list-item-action>
         <v-list-item-title class="ml-3">Điểm danh</v-list-item-title>
       </v-list-item>
@@ -19,7 +19,6 @@
         <v-list-item-action></v-list-item-action>
         <v-list-item-title class="ml-3">Khen thưởng kỷ luật</v-list-item-title>
       </v-list-item>
-      
     </v-list>
   </v-list-group>
 </template>
