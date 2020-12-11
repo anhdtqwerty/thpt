@@ -24,7 +24,7 @@ export default {
     },
     async createDivision({ commit }, data) {
       try {
-        commit('setDivision', await Division.create(data))
+        commit('createDivision', await Division.create(data))
       } catch (e) {
         alert.error(e)
       }
@@ -39,6 +39,8 @@ export default {
     },
     removeDivision(state,id){
       state.divisions = state.divisions.filter(division => division.id != id)
+    },
+    createDivision(state){
     }
   }
 }

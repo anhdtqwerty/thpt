@@ -34,7 +34,7 @@ import { mapActions, mapState } from 'vuex'
 
 export default {
   components: {
-    DivisionInfoForm,
+    DivisionInfoForm
   },
   props: {
     state: Boolean
