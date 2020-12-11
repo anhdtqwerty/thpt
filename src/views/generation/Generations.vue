@@ -14,8 +14,8 @@
     >
       <v-col>
         <Breadcrumbs
-          headline="Danh sách niên khóa"
-          :link="[{ text: 'Danh sách niên khóa', href: '../Generations' }]"
+          headline="Quản lý khóa"
+          :link="[{ text: 'Quản lý khóa', href: '../generations' }]"
         />
       </v-col>
       <v-col class="d-flex justify-end pt-4">
