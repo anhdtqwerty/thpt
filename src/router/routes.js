@@ -37,6 +37,8 @@ import HighSchoolClass from '@/views/highSchool/HighSchoolClass'
 import GuestLayout from '../components/layout/GuestLayout'
 import MainLayout from '../components/layout/MainLayout'
 import Page404 from '@/views/Page404'
+//-----------------------Afdvanced Setting---------------------------------
+import Divisions from '@/views/division/Divisions.vue'
 const routes = [
   {
     path: '/',
@@ -120,6 +122,15 @@ const routes = [
         name: 'Generations',
         meta: {
           title: 'Niên khóa',
+          auth: true
+        }
+      },
+      {
+        path: 'divisions',
+        component: Divisions,
+        name: 'Division',
+        meta: {
+          title: 'Quản lý phân ban',
           auth: true
         }
       },
