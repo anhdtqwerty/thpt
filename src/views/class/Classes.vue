@@ -14,14 +14,20 @@
         />
       </v-col>
       <v-col class="d-flex justify-end pt-4">
-        <v-btn color="success" @click="dialog = !dialog"
+        <v-btn color="primary" @click="dialog = !dialog"
           ><v-icon left>add</v-icon>{{ addButtonText }}</v-btn
         >
       </v-col>
     </v-row>
     <v-card class="px-4">
       <v-row>
-        <v-col class="text-right">
+        <v-col cols="12" md="11">
+          <class-filter
+            v-if="$vuetify.breakpoint.mdAndUp"
+            @onFilterChanged="refresh"
+          />
+        </v-col>
+        <v-col cols="12" md="1">
           <span v-if="$vuetify.breakpoint.smAndDown">
             <class-filter-dialog @onFilterChanged="refresh" />
           </span>
@@ -40,10 +46,7 @@
           </span>
         </v-col>
       </v-row>
-      <class-filter
-        v-if="$vuetify.breakpoint.mdAndUp"
-        @onFilterChanged="refresh"
-      />
+
       <v-row :class="{ 'mt-n5': $vuetify.breakpoint.smAndDown }">
         <v-col>
           <v-data-table
@@ -54,30 +57,9 @@
             :disable-sort="$vuetify.breakpoint.smAndDown"
           >
             <template v-slot:item.status="{ item }">
-              <v-chip
-                class="chip-width"
-                :color="getColor(item.status)"
-                small
-                dark
-                label
-                >{{ item.status | classStatus }}</v-chip
-              >
+              {{ item.status | classStatus }}
             </template>
-            <template v-slot:item.code="{ item }">
-              <v-tooltip top>
-                <template v-slot:activator="{ on }">
-                  <div v-on="on">
-                    <router-link
-                      style="text-decoration: none; white-space: nowrap"
-                      :to="'/class/' + item.id"
-                      >{{ item.code }}</router-link
-                    >
-                  </div>
-                </template>
-                <span>Xem lớp</span>
-              </v-tooltip>
-            </template>
-            <template v-slot:item.course="{ item }">
+            <template v-slot:item.title="{ item }">
               <v-tooltip top>
                 <template v-slot:activator="{ on }">
                   <div
@@ -88,33 +70,12 @@
                       v-on="on"
                       style="text-decoration: none; white-space: nowrap"
                       :to="'/class/' + item.id"
-                      >{{ getCourse(item.course).title }}</router-link
+                      >{{ item.title }}</router-link
                     >
                   </div>
                 </template>
                 <span>Xem lớp</span>
               </v-tooltip>
-            </template>
-            <template v-slot:item.major="{ item }">
-              <v-tooltip top>
-                <template v-slot:activator="{ on }">
-                  <div v-on="on">
-                    <router-link
-                      v-if="item.major"
-                      style="text-decoration: none; white-space: nowrap"
-                      :to="getMajor(item.major).id"
-                      >{{ getMajor(item.major).code }}</router-link
-                    >
-                  </div>
-                </template>
-                <span>{{ getMajor(item.major).title }}</span>
-              </v-tooltip>
-            </template>
-            <template v-slot:item.students="{ item }">
-              <p style="margin: 0">{{ item.students | studentCounter }}</p>
-            </template>
-            <template v-slot:item.startTime="{ item }">
-              <p style="margin: 0">{{ item.startTime | displayDate }}</p>
             </template>
             <template v-slot:item.generation="{ item }">
               <p style="margin: 0; white-space: nowrap">
@@ -123,11 +84,6 @@
             </template>
             <template v-slot:item.tags="{ item }">
               <p style="margin: 0; white-space: nowrap">{{ item.tags }}</p>
-            </template>
-            <template v-slot:item.room="{ item }">
-              <p style="margin: 0; white-space: nowrap">
-                {{ item.room | getRoom }}
-              </p>
             </template>
             <template v-slot:item.teachers="{ item }">
               <p style="margin: 0; white-space: nowrap">
@@ -160,71 +116,35 @@ import moment from 'moment'
 import _ from 'lodash'
 
 const originHeaders = [
-  { text: 'Mã Lớp', value: 'code', align: 'left', sortable: false, show: true },
   {
-    text: 'Môn Học',
-    value: 'course',
+    text: 'Tên lớp',
+    value: 'title',
     align: 'left',
     sortable: false,
     show: true
   },
   {
-    text: 'Chuyên Ngành',
-    value: 'major',
+    text: 'Phân ban',
+    value: 'division',
     align: 'left',
     sortable: false,
-    show: false
-  },
-  { text: 'Nhóm', value: 'tags', align: 'left', sortable: true, show: true },
-  {
-    text: 'Phòng Học',
-    value: 'room',
-    align: 'left',
-    sortable: true,
-    show: false
+    show: true
   },
   {
-    text: 'Giáo Viên',
+    text: 'Giáo viên chủ nhiệm',
     value: 'teachers',
     align: 'left',
-    sortable: true,
-    show: false
-  },
-  {
-    text: 'Khóa',
-    value: 'generation',
-    align: 'left',
-    sortable: true,
+    sortable: false,
     show: true
   },
   {
-    text: 'Sĩ Số',
-    value: 'students',
-    align: 'left',
-    sortable: true,
-    show: true
-  },
-  {
-    text: 'Khai Giảng',
-    value: 'startTime',
-    align: 'left',
-    sortable: true,
-    show: false
-  },
-  {
-    text: 'Trạng Thái',
+    text: 'Trạng thái',
     value: 'status',
     align: 'left',
     sortable: false,
     show: true
   },
-  {
-    text: 'Hành Động',
-    value: 'actions',
-    align: 'left',
-    sortable: false,
-    show: true
-  }
+  { text: 'Ghi chú', value: 'note', align: 'left', sortable: false, show: true }
 ]
 export default {
   components: {
@@ -259,16 +179,16 @@ export default {
     }
   },
   async created() {
-    await this.countClasses()
-    await this.fetchClasses({
+    console.log(this.currentGeneration.id)
+    await this.refresh({
       department: this.department.id,
-      status: 'running',
+      generation: this.currentGeneration.id,
       _sort: 'createdAt:desc'
     })
   },
   computed: {
-    ...mapState('class', ['count', 'classData']),
-    ...mapState('app', ['department']),
+    ...mapState('class', ['classData']),
+    ...mapState('app', ['department', 'currentGeneration']),
     ...mapGetters('class', ['classes']),
     addButtonText() {
       switch (this.$vuetify.breakpoint.name) {
@@ -281,12 +201,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('class', [
-      'fetchClasses',
-      'countClasses',
-      'setClass',
-      'setClasses'
-    ]),
+    ...mapActions('class', ['fetchClasses', 'setClass', 'setClasses']),
     getColor(status) {
       if (status === 'opened') return 'primary'
       if (status === 'running') return 'green'
@@ -294,15 +209,16 @@ export default {
       else if (status === 'done') return 'gray'
       else return 'red'
     },
-    getMajor: major => {
-      return major || {}
-    },
     getCourse: course => {
       return course || {}
     },
     refresh(query) {
       this.setClasses([])
-      this.fetchClasses({ department: this.department.id, ...query })
+      this.fetchClasses({
+        department: this.department.id,
+        generation: this.currentGeneration.id,
+        ...query
+      })
     }
   },
   filters: {
@@ -314,7 +230,7 @@ export default {
     },
     classStatus: status => {
       if (status === 'opened') return 'Đang chờ'
-      else if (status === 'running') return 'Đang Chạy'
+      else if (status === 'running') return 'Đang Học'
       else if (status === 'done') return 'Kết Thúc'
       else return ''
     },

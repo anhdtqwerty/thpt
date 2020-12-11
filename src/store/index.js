@@ -57,7 +57,13 @@ export default createStore(Vuex.Store, {
   plugins: [
     createPersistedState({
       key: 'lms',
-      paths: ['auth.user', 'auth.isAuthenticated', 'auth.jwt']
+      paths: [
+        'auth.user',
+        'auth.isAuthenticated',
+        'auth.jwt',
+        'app.currentGeneration',
+        'app.currentSemester'
+      ]
     }),
     axiosPlugin
   ],

@@ -32,7 +32,7 @@ import DashBoard from '@/views/dashboard/Dashboard.vue'
 // ---------------- LEARNING -----------------------------
 import Schedule from '@/views/schedule/Schedule.vue'
 // -----------------HIGH SCHOOL---------------------------
-import HighSchoolClass from '@/views/highSchool/HighSchoolClass'
+import Classes from '@/views/class/Classes.vue'
 // ---------------- LAYOUT -------------------------------
 import GuestLayout from '../components/layout/GuestLayout'
 import MainLayout from '../components/layout/MainLayout'
@@ -305,7 +305,7 @@ const routes = [
       {
         path: 'classes',
         name: 'Danh sách lớp',
-        component: HighSchoolClass,
+        component: Classes,
         meta: {
           title: 'Lớp học',
           auth: true

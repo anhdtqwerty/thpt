@@ -1,6 +1,9 @@
 <template>
-  <v-app >
-    <navigation-drawer class="d-print-none" :drawer="drawer"></navigation-drawer>
+  <v-app>
+    <navigation-drawer
+      class="d-print-none"
+      :drawer="drawer"
+    ></navigation-drawer>
     <plugin-confirm-dialog class="d-print-none" />
     <main-toolbar
       class="d-print-none"
@@ -43,7 +46,7 @@ export default {
     Confirm,
     NavigationDrawer
   },
-  data () {
+  data() {
     return {
       drawer: true
     }
@@ -51,18 +54,17 @@ export default {
   computed: {
     ...mapGetters('auth', ['user', 'profile', 'isAuthenticated']),
     ...mapGetters('app', ['users', 'department', 'roles']),
-    simpleLayout () {
+    simpleLayout() {
       const { meta = {}, matched = [] } = this.$route
       return (
-        meta.auth === false ||
-        matched.some((route) => route.meta.auth === false)
+        meta.auth === false || matched.some(route => route.meta.auth === false)
       )
     },
-    isDesktop () {
+    isDesktop() {
       return true
     }
   },
-  async created () {
+  async created() {
     if (this.isAuthenticated) {
       this.fetchRoles()
       this.setDepartment(this.user.department)
@@ -94,7 +96,7 @@ export default {
       'fetchStudent',
       'setRole'
     ]),
-    toggleDrawer: function (updatedDrawer) {
+    toggleDrawer: function(updatedDrawer) {
       this.drawer = updatedDrawer
     }
   }
