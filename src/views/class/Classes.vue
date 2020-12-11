@@ -179,16 +179,16 @@ export default {
     }
   },
   async created() {
-    await this.countClasses()
-    await this.fetchClasses({
+    console.log(this.currentGeneration.id)
+    await this.refresh({
       department: this.department.id,
-      status: 'running',
+      generation: this.currentGeneration.id,
       _sort: 'createdAt:desc'
     })
   },
   computed: {
-    ...mapState('class', ['count', 'classData']),
-    ...mapState('app', ['department']),
+    ...mapState('class', ['classData']),
+    ...mapState('app', ['department', 'currentGeneration']),
     ...mapGetters('class', ['classes']),
     addButtonText() {
       switch (this.$vuetify.breakpoint.name) {
@@ -201,12 +201,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('class', [
-      'fetchClasses',
-      'countClasses',
-      'setClass',
-      'setClasses'
-    ]),
+    ...mapActions('class', ['fetchClasses', 'setClass', 'setClasses']),
     getColor(status) {
       if (status === 'opened') return 'primary'
       if (status === 'running') return 'green'
@@ -219,7 +214,11 @@ export default {
     },
     refresh(query) {
       this.setClasses([])
-      this.fetchClasses({ department: this.department.id, ...query })
+      this.fetchClasses({
+        department: this.department.id,
+        generation: this.currentGeneration.id,
+        ...query
+      })
     }
   },
   filters: {

@@ -126,8 +126,12 @@ export default {
     },
     setDepartment(state, department) {
       state.department = department
-      state.currentGeneration = department.currentGeneration
-      state.currentSemester = department.currentSemester
+      if (department.currentGeneration.id) {
+        state.currentGeneration = department.currentGeneration
+      }
+      if (department.currentGeneration.currentSemester) {
+        state.currentSemester = department.currentSemester
+      }
     },
     receiveStaff(state, staff) {
       const i = state.staffs.findIndex(d => d.id === staff.id)
