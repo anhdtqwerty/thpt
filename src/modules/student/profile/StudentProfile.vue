@@ -1,52 +1,68 @@
 <template>
-  <v-row no-gutters v-if="student">
+  <v-row class="px-md-3" v-if="student">
     <div v-if="$vuetify.breakpoint.smAndDown">
-      <v-btn depressed color="primary" @click="save()">Lưu</v-btn>
+      <v-btn class="ma-2" depressed color="primary" @click="save()">Lưu</v-btn>
     </div>
-    <v-col
-      class="text-center"
-      cols="12"
-      md="4"
-    >
-      <user-avatar-picker :student="student" type="student" />
-      <h2>{{ student.name }}</h2>
-      <table class="info-student-general mx-6">
-        <tr>
-          <td>Mã số</td>
-          <td>{{ student.code }}</td>
-        </tr>
-        <tr>
-          <td>Lớp</td>
-          <td>10A</td>
-        </tr>
-        <tr>
-          <td>Trạng thái</td>
-          <td>{{ student.status }}</td>
-        </tr>
-      </table>
+    <v-col class="text-center" cols="12" md="4">
+      <v-card class="pa-6" :flat="$vuetify.breakpoint.smAndDown">
+        <user-avatar-picker :student="student" type="student" />
+        <h2>{{ student.name }}</h2>
+        <table class="info-student-general mx-6">
+          <tr>
+            <td>Mã số</td>
+            <td>{{ student.code }}</td>
+          </tr>
+          <tr>
+            <td>Lớp</td>
+            <td>10A</td>
+          </tr>
+          <tr>
+            <td>Trạng thái</td>
+            <td>{{ student.status }}</td>
+          </tr>
+        </table>
+      </v-card>
     </v-col>
-
-    <v-col cols="12" md="8">
-      <h3>1. Thông tin cơ bản</h3>
-      <student-general-form
-        ref="studentGeneralForm"
-        :student="student"
-      ></student-general-form>
-      <h3>2. Thông tin liên lạc</h3>
-      <student-contact-form
-        :student="student"
-        ref="studentContactForm"
-      ></student-contact-form>
-      <h3>3. Ghi chú về học sinh</h3>
-      <student-note-form
-        :student="student"
-        ref="studentNoteForm"
-      ></student-note-form>
-      <h3>4. Thông tin gia đình</h3>
-      <student-family-form
-        :student="student"
-        ref="studentFamilyForm"
-      ></student-family-form>
+    <v-col class="" cols="12" md="8">
+      <v-card :flat="$vuetify.breakpoint.smAndDown" class="pa-md-4">
+        <v-row no-gutters>
+          <v-col class="pa-4" md="9">
+            <h3>1. Thông tin cơ bản</h3>
+            <student-general-form
+              ref="studentGeneralForm"
+              :student="student"
+            ></student-general-form>
+          </v-col>
+          <v-col
+            class="text-right"
+            v-if="!$vuetify.breakpoint.smAndDown"
+            md="3"
+          >
+            <v-btn depressed color="primary">Lưu</v-btn>
+          </v-col>
+          <v-col class="pa-4" md="9">
+            <h3>2. Thông tin liên lạc</h3>
+            <student-contact-form
+              :student="student"
+              ref="studentContactForm"
+            ></student-contact-form>
+          </v-col>
+          <v-col class="pa-4" md="9">
+            <h3>3. Ghi chú về học sinh</h3>
+            <student-note-form
+              :student="student"
+              ref="studentNoteForm"
+            ></student-note-form>
+          </v-col>
+          <v-col class="pa-4" md="12">
+            <h3>4. Thông tin gia đình</h3>
+            <student-family-form
+              :student="student"
+              ref="studentFamilyForm"
+            ></student-family-form>
+          </v-col>
+        </v-row>
+      </v-card>
     </v-col>
   </v-row>
 </template>

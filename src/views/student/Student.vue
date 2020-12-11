@@ -5,9 +5,7 @@
       <breadcrumbs />
     </div>
 
-    <v-card class="pa-2 mx-md-2">
-      <student-profile :student="studentInfo" />
-    </v-card>
+    <student-profile :student="studentInfo" />
   </div>
 </template>
 
