@@ -49,12 +49,12 @@ export default {
     ...mapState('auth', ['user'])
   },
   methods: {
-    ...mapActions('division', ['createGeneration']),
+    ...mapActions('division', ['createDivision']),
     async save() {
       this.loading = true
       const data = this.$refs.form.getData()
-      await this.createGeneration({ ...data })
-      this.$alert.success('Tạo niên khóa mới thành công')
+      await this.createDivision({ ...data })
+      this.$alert.success('Tạo phân ban mới thành công')
       this.$refs.form.resetDefault()
       this.loading = false
       this.dialog = false

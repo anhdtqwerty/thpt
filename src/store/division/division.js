@@ -29,8 +29,8 @@ export default {
         alert.error(e)
       }
     },
-    setDivision({ commit, state }, generation) {
-      commit('setGeneration', generation)
+    setDivision({ commit, state }, Division) {
+      commit('setDivision', Division)
     },
   },
   mutations: {

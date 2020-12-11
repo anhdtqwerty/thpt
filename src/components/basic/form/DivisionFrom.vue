@@ -9,7 +9,7 @@
       required
     ></v-text-field>
     <v-autocomplete
-      v-model="values"
+      v-model="grade"
       :items="items_grades"
       outlined
       dense
@@ -17,7 +17,7 @@
     >
     </v-autocomplete>
     <v-autocomplete
-      v-model="values"
+      v-model="subjects"
       :items="items"
       outlined
       dense
@@ -42,24 +42,51 @@ export default {
   },
   data: () => ({
     valid: true,
-    code: '',
+    subjects: '',
     description: '',
     name: '',
+    grade:'',
   }),
   computed: {
     ...mapGetters('app', ['department']),
   },
-  props: {},
+  props: {
+    division: { type: Object, default: () => {} },
+    editCode: { type: Boolean, default: false }
+  },
   methods: {
     reset() {
       this.$refs.form.reset()
     },
+    resetValidation() {
+      this.$refs.form.resetValidation()
+    },
+    getData() {
+      if (this.$refs.form.validate()) {
+        return {
+          name: this.name,
+          description: this.description,
+          grade: this.grade,
+          subjects: this.subjects.id,
+        }
+      }
+    },
+    resetDefault() {
+      if (this.generation) {
+        this.grade = this.division.code
+        this.description = this.division.description
+        this.name = this.division.name
+        this.subjects = this.division.subject
+      } else {
+        this.name = ''
+        this.description = ''
+        this.grade = ''
+        this.subjects = ''
+      }
+    }
   },
   created() {
     this.resetDefault()
-  },
-  watch: {},
+  }
 }
 </script>
-
-<style scoped></style>
