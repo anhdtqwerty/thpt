@@ -93,7 +93,6 @@ import DatePicker from '@/components/basic/picker/DateIOSPicker.vue'
 import AutocompleteTeacher from '@/components/basic/input/AutocompleteTeacher'
 import AutocompleteMajor from '@/components/basic/input/AutocompleteMajor'
 import AutocompleteRoom from '@/components/basic/input/AutocompleteRoom'
-import { mapGetters } from 'vuex'
 export default {
   components: {
     DatePicker,
@@ -126,22 +125,22 @@ export default {
     room: ''
   }),
   computed: {
-    getCourseItems () {
+    getCourseItems() {
       return this.major ? this.major.courses : []
     }
   },
 
   methods: {
-    getCourseFilter () {
+    getCourseFilter() {
       return { major: get(this.major, 'id', null) }
     },
-    reset () {
+    reset() {
       this.$refs.form.reset()
     },
-    resetValidation () {
+    resetValidation() {
       this.$refs.form.resetValidation()
     },
-    getData () {
+    getData() {
       if (this.$refs.form.validate()) {
         return {
           teachers: this.teachers,
@@ -163,11 +162,11 @@ export default {
         }
       }
     },
-    cancel () {
+    cancel() {
       this.resetDefault()
       this.$emit('cancel')
     },
-    resetDefault () {
+    resetDefault() {
       if (this.classData) {
         this.teachers = this.classData.teachers
         this.mentors = this.classData.mentors
@@ -195,16 +194,15 @@ export default {
       }
     }
   },
-  created () {
+  created() {
     this.resetDefault()
   },
   watch: {
-    classData () {
+    classData() {
       this.resetDefault()
     }
   }
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

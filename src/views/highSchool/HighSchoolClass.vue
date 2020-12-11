@@ -1,51 +1,54 @@
 <template>
-    <page-layout page-title="Khối 10" class="high-school-class">
-        <template v-slot:action>
-          <add-class-dialog>
-            <template v-slot:activator="{on}">
-              <v-btn color="primary" v-on="on">
-                <v-icon>mdi-plus</v-icon>
-                <span>Thêm lớp học</span>
-              </v-btn>
-            </template>
-          </add-class-dialog>
+  <page-layout page-title="Khối 10" class="high-school-class">
+    <template v-slot:action>
+      <add-class-dialog>
+        <template v-slot:activator="{ on }">
+          <v-btn color="primary" v-on="on">
+            <v-icon>mdi-plus</v-icon>
+            <span>Thêm lớp học</span>
+          </v-btn>
         </template>
-        <v-card>
-             <v-card-text class="px-5">
-               <div class="text-right">
-                 <setting-table-header
-                  :default-headers="originHeaders"
-                  @change="headers = $event"
-                />
-                <KebapMenu v-if="!$vuetify.breakpoint.xs">
-                  <v-list>
-                    <v-list-item >
-                      <export-excel :custom-header="headers" api="/classes/" />
-                    </v-list-item>
-                  </v-list>
-                </KebapMenu>
-               </div>
-                 <v-row>
-                    <v-col cols="12" md="10">
-                        <grid-filter ref="filter" class="group-input" :meta="filterData" col-number="3" hide-action hide-details></grid-filter>
-                    </v-col>
-                        <v-col class="align-center d-flex justify-end" cols="12" md="2">
-                        <v-btn color="primary" @click="onClickFilterButton">
-                            <v-icon small>mdi-filter</v-icon>
-                            <span>Lọc</span>
-                        </v-btn>
-                    </v-col>
-                </v-row>
+      </add-class-dialog>
+    </template>
+    <v-card>
+      <v-card-text class="px-5">
+        <div class="text-right">
+          <setting-table-header
+            :default-headers="originHeaders"
+            @change="headers = $event"
+          />
+          <KebapMenu v-if="!$vuetify.breakpoint.xs">
+            <v-list>
+              <v-list-item>
+                <export-excel :custom-header="headers" api="/classes/" />
+              </v-list-item>
+            </v-list>
+          </KebapMenu>
+        </div>
+        <v-row>
+          <v-col cols="12" md="10">
+            <grid-filter
+              ref="filter"
+              class="group-input"
+              :meta="filterData"
+              col-number="3"
+              hide-action
+              hide-details
+            ></grid-filter>
+          </v-col>
+          <v-col class="align-center d-flex justify-end" cols="12" md="2">
+            <v-btn color="primary" @click="onClickFilterButton">
+              <v-icon small>mdi-filter</v-icon>
+              <span>Lọc</span>
+            </v-btn>
+          </v-col>
+        </v-row>
 
-                <v-data-table
-                  :headers="headers"
-                  :items="items"
-                  :loading="loading"
-                >
-                </v-data-table>
-            </v-card-text>
-        </v-card>
-    </page-layout>
+        <v-data-table :headers="headers" :items="items" :loading="loading">
+        </v-data-table>
+      </v-card-text>
+    </v-card>
+  </page-layout>
 </template>
 
 <script>
@@ -65,14 +68,44 @@ export default {
     ExportExcel,
     AddClassDialog
   },
-  data () {
+  data() {
     return {
       originHeaders: [
-        { text: 'Tên lớp', value: 'className', align: 'left', sortable: false, show: true },
-        { text: 'Phân ban', value: 'division', align: 'left', sortable: false, show: true },
-        { text: 'Giáo viên chủ nhiệm', value: 'teacher', align: 'left', sortable: false, show: true },
-        { text: 'Trạng thái', value: 'status', align: 'left', sortable: false, show: true },
-        { text: 'Ghi chú', value: 'note', align: 'left', sortable: false, show: true }
+        {
+          text: 'Tên lớp',
+          value: 'className',
+          align: 'left',
+          sortable: false,
+          show: true
+        },
+        {
+          text: 'Phân ban',
+          value: 'division',
+          align: 'left',
+          sortable: false,
+          show: true
+        },
+        {
+          text: 'Giáo viên chủ nhiệm',
+          value: 'teacher',
+          align: 'left',
+          sortable: false,
+          show: true
+        },
+        {
+          text: 'Trạng thái',
+          value: 'status',
+          align: 'left',
+          sortable: false,
+          show: true
+        },
+        {
+          text: 'Ghi chú',
+          value: 'note',
+          align: 'left',
+          sortable: false,
+          show: true
+        }
       ],
       headers: [],
       totalClass: 0,
@@ -86,7 +119,7 @@ export default {
     ...mapState('grade', ['grades']),
     ...mapGetters('teacher', ['teachers']),
     ...mapGetters('class', ['classes']),
-    items () {
+    items() {
       const classData = this.classes.map(item => ({
         className: item.title,
         division: item.major.title,
@@ -96,7 +129,7 @@ export default {
       }))
       return classData
     },
-    filterData () {
+    filterData() {
       return {
         inputs: [
           {
@@ -134,12 +167,24 @@ export default {
               rules: [],
               items: this.teachers
             }
+          },
+          {
+            type: 'dropdown',
+            config: {
+              key: 'teacher',
+              label: 'Giáo viên',
+              defaultValue: '',
+              itemText: 'name',
+              itemValue: '_id',
+              rules: [],
+              items: this.teachers
+            }
           }
         ]
       }
     }
   },
-  mounted () {
+  mounted() {
     this.loading = true
     Promise.all([
       this.fetchDivision(),
@@ -155,7 +200,7 @@ export default {
     ...mapActions('grade', ['fetchGrades']),
     ...mapActions('teacher', ['fetchTeachers']),
     ...mapActions('class', ['fetchClasses']),
-    onClickFilterButton () {
+    onClickFilterButton() {
       const filterData = this.$refs['filter'].getFormData()
       console.log(filterData)
     }
@@ -163,5 +208,4 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>
