@@ -3,9 +3,14 @@
     <v-subheader>Bài Kiểm Tra</v-subheader>
     <v-list-item three-line>
       <v-list-item-content>
-        <v-checkbox v-model="checkbox1" label="Progress Test 1(5%)"></v-checkbox>
-        <v-checkbox v-model="checkbox2" label="Progress Test 2 (5%)"></v-checkbox>
-
+        <v-checkbox
+          v-model="checkbox1"
+          label="Progress Test 1(5%)"
+        ></v-checkbox>
+        <v-checkbox
+          v-model="checkbox2"
+          label="Progress Test 2 (5%)"
+        ></v-checkbox>
         <v-checkbox v-model="finalTest" label="Thi Cuối Kỳ(40%)"></v-checkbox>
       </v-list-item-content>
     </v-list-item>
@@ -44,7 +49,7 @@ export default {
   }),
   computed: {},
   methods: {
-    onFilterChanged () {}
+    onFilterChanged() {}
   }
 }
 </script>
