@@ -9,12 +9,14 @@ export default new Vuetify({
     icons: 'md'
   },
   theme: {
-    dark: false,
-    light: {
-      primary: '#0D47A1',
-      secondary: '#b0bec5',
-      accent: '#f5f5f5',
-      error: '#b71c1c'
+    themes: {
+      dark: false,
+      light: {
+        primary: '#0D47A1',
+        secondary: '#b0bec5',
+        accent: '#f5f5f5',
+        error: '#b71c1c'
+      }
     }
   }
 })
