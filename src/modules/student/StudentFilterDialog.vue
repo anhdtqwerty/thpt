@@ -9,68 +9,78 @@
         </v-btn>
       </v-toolbar>
       <v-divider />
-      <v-form class="pa-4">
-        <v-autocomplete
-          v-model="selectedCourse"
-          item-text="tags"
-          item-value="id"
-          clear-icon="mdi-close"
-          placeholder="Nhập tên nhóm"
-          deletable-chips
-          clearable
-          multiple
-          flat
-          filled
-          dense
-          return-object
-        />
-        <autocomplete-generation
-          v-model="generation"
-          item-text="name"
-          item-value="id"
-          placeholder="Chọn khóa"
-          return-object
-          deletable-chips
-          clearable
-          multiple
-          flat
-          filled
-          dense
-        ></autocomplete-generation>
-        <v-text-field
-          v-model="code"
-          :items="classStatus"
-          clear-icon="mdi-close"
-          placeholder="Mã học viên"
-          flat
-          filled
-          dense
-          clearable
-        />
-        <v-autocomplete
-          v-model="status"
-          :items="classStatus"
-          clear-icon="mdi-close"
-          item-text="title"
-          item-value="status"
-          placeholder="Chọn trạng thái"
-          flat
-          filled
-          dense
-          clearable
-          deletable-chips
-        ></v-autocomplete>
-        <autocomplete-root-major
-          v-model="major"
-          item-text="title"
-          item-value="id"
-          placeholder="Chọn chuyên ngành"
-          flat
-          filled
-          auto-select-first
-          dense
-          clearable
-        />
+      <v-form class="pa-2">
+        <v-row no-gutters>
+          <v-col class="mt-4" cols="12">
+            <v-text-field
+              v-model="name"
+              placeholder="Tên học sinh"
+              return-object
+              clearable
+              flat
+              filled
+              dense
+              hide-details
+            />
+          </v-col>
+          <v-col class="mt-4" cols="12">
+            <v-text-field
+              v-model="classes"
+              clear-icon="mdi-close"
+              placeholder="Lớp"
+              clearable
+              flat
+              filled
+              dense
+              return-object
+              hide-details
+            />
+          </v-col>
+          <v-col class="mt-4" cols="12">
+            <date-iso-picker :date.sync="dob" ></date-iso-picker>
+          </v-col>
+          <v-col class="mt-4" cols="12">
+            <v-text-field
+              v-model="code"
+              clear-icon="mdi-close"
+              placeholder="Mã học viên"
+              flat
+              filled
+              dense
+              clearable
+              hide-details
+            />
+          </v-col>
+          <v-col class="mt-4" cols="12">
+            <v-autocomplete
+              v-model="status"
+              :items="studentStatus"
+              clear-icon="mdi-close"
+              item-text="title"
+              item-value="status"
+              placeholder="Chọn trạng thái"
+              flat
+              filled
+              dense
+              clearable
+              hide-details
+            ></v-autocomplete>
+          </v-col>
+          <v-col class="mt-4" cols="12">
+            <v-autocomplete
+              :items="genders"
+              item-text="title"
+              item-value="value"
+              v-model="gender"
+              placeholder="Giới tính"
+              flat
+              filled
+              dense
+              clearable
+              hide-details
+            />
+          </v-col>
+        </v-row>
       </v-form>
       <v-card-actions class="pa-4">
         <v-spacer></v-spacer>
@@ -89,47 +99,48 @@
 
 <script>
 import { mapState } from 'vuex'
-import AutocompleteRootMajor from '@/components/basic/input/AutocompleteRootMajor'
-import AutocompleteGeneration from '@/components/basic/input/AutocompleteGeneration'
+import DateIsoPicker from '@/components/basic/picker/DateIOSPicker'
+import moment from 'moment'
 
 export default {
   components: {
-    AutocompleteRootMajor,
-    AutocompleteGeneration,
+    DateIsoPicker
   },
   props: {
     state: Boolean,
   },
   data: () => ({
-    show: false,
-    query: '',
-    major: {},
-    status: 'running',
-    generation: '',
-    code: '',
-    tags: '',
-    selectedCourse: [],
     dialog: false,
+    show: false,
+    status: 'active',
+    code: '',
+    dob: '',
+    name: '',
+    classes: [],
+    gender: '',
+    selectedCourse: [],
+    genders: [
+      { title: 'Nam', value: 'male' },
+      { title: 'Nữ', value: 'female' },
+      { title: 'Khác', value: 'other' },
+    ]
   }),
   computed: {
-    ...mapState('constant', ['classStatus']),
+    ...mapState('constant', ['studentStatus']),
   },
   methods: {
     onFilterChanged() {
-      console.log({
-        generation: this.generation,
-        tags_contains: this.tags,
-        rootMajor: this.major,
+      this.$emit('onFilterDialogChanged', {
+        name_contains: this.name,
+        classes: this.classes,
+        dob_gt: moment(this.dob).startOf('month').toISOString(),
+        dob_lt: moment(this.dob).endOf('month').toISOString(),
         code_contains: this.code,
+        status: this.status,
+        gender: this.gender,
         _sort: 'createdAt:desc',
       })
-      this.$emit('onFilterChanged', {
-        generation: this.generation,
-        tags_contains: this.tags,
-        rootMajor: this.major,
-        code_contains: this.code,
-        _sort: 'createdAt:desc',
-      })
+      this.cancel()
     },
     cancel() {
       this.dialog = false

@@ -1,5 +1,6 @@
 <template>
   <v-menu
+    v-bind="$attrs"
     v-model="menu"
     :close-on-content-click="false"
     :nudge-right="40"
@@ -8,10 +9,8 @@
   >
     <template v-slot:activator="{ on }">
       <v-text-field
-        filled
-        hide-details
+        v-bind="$attrs"
         :value="display"
-        placeholder="Chọn Ngày"
         @click:clear="updated('')"
         readonly
         clearable
@@ -33,11 +32,11 @@
 import moment from 'moment'
 export default {
   props: {
-    date: String
+    date: String,
   },
   data: () => ({
     data: new Date().toISOString().substr(0, 10),
-    menu: false
+    menu: false,
   }),
   methods: {
     updated(value) {
@@ -52,7 +51,7 @@ export default {
       if (this.date) {
         this.data = moment(this.date).format('YYYY-MM-DD')
       }
-    }
+    },
   },
   computed: {
     display() {
@@ -60,7 +59,7 @@ export default {
         return moment(this.date).format('DD/MM/YYYY')
       }
       return ''
-    }
+    },
   },
   created() {
     this.reset()
@@ -68,7 +67,7 @@ export default {
   watch: {
     date() {
       this.reset()
-    }
-  }
+    },
+  },
 }
 </script>

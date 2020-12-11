@@ -2,26 +2,34 @@
   <v-list class="py-0" v-if="role.name === 'Manager'">
     <Dashboard />
     <v-divider inset />
+    <Students />
+    <v-divider inset />
+    <Teachers />
+    <v-divider inset />
     <Classes />
     <v-divider inset />
-    <Department />
+    <Scores />
     <v-divider inset />
-    <Settings />
+    <AdvanceSetting />
   </v-list>
 </template>
 <script>
 import Department from '@/components/basic/menu/Department'
 import Classes from '@/components/basic/menu/Classes'
-import Settings from '@/components/basic/menu/Settings'
+import Students from '@/components/basic/menu/Students.vue'
+import Teachers from '@/components/basic/menu/Teachers.vue'
 import Dashboard from '@/components/basic/menu/Dashboard'
-
+import Scores from '@/components/basic/menu/Scores.vue'
+import AdvanceSetting from '@/components/basic/menu/AdvanceSetting.vue'
 import { mapState } from 'vuex'
 export default {
   components: {
-    Department,
-    Settings,
     Dashboard,
-    Classes
+    Classes,
+    Students,
+    Teachers,
+    Scores,
+    AdvanceSetting
   },
   computed: {
     ...mapState('auth', ['profile', 'role'])

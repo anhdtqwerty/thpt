@@ -1,6 +1,15 @@
 <template>
   <div>
     <div class="pa-2 d-flex justify-space-between align-center">
+      <div>
+        <Breadcrumbs
+          headline="Danh sách"
+          :link="[
+            { text: 'Học sinh', href: '../students' },
+            { text: 'Danh sách'}
+          ]"
+        />
+      </div>
       <div class="flex-center">
         <v-btn dark color="#0D47A1" @click.stop="createState = !createState">
           <v-icon left>add</v-icon>{{ btnTitle }}
@@ -72,7 +81,7 @@
     </v-card>
 
     <student-new-dialog :state="createState" @done="requestPageSettings({})" />
-    <student-filter-dialog :state="filterState" />
+    <student-filter-dialog @onFilterDialogChanged="refresh" :state="filterState" />
   </div>
 </template>
 <script>
@@ -83,6 +92,7 @@ import DropMenu from '@/modules/student/menu/Menu.vue'
 import SettingTableHeader from '@/components/basic/table/SettingHeaders'
 import StudentNewDialog from '@/modules/student/StudentNewDialog'
 import StudentFilterDialog from '@/modules/student/StudentFilterDialog'
+import Breadcrumbs from '@/components/layout/Breadcrumbs'
 
 const originHeaders = [
   {
@@ -137,6 +147,7 @@ export default {
     StudentFilter,
     SettingTableHeader,
     StudentFilterDialog,
+    Breadcrumbs
   },
   props: {
     role: String,

@@ -13,7 +13,7 @@
           hide-details
         />
       </v-col>
-      <v-col cols="12" md="3">
+      <v-col md="3">
         <v-text-field
           v-model="classes"
           clear-icon="mdi-close"
@@ -26,12 +26,12 @@
           hide-details
         />
       </v-col>
-      <v-col cols="12" md="3">
+      <v-col md="3">
         <date-picker :date.sync="dob" ></date-picker>
       </v-col>
     </v-row>
     <v-row no-gutters>
-      <v-col cols="12" md="3">
+      <v-col md="3">
         <v-text-field
           v-model="code"
           clear-icon="mdi-close"
@@ -43,7 +43,7 @@
           hide-details
         />
       </v-col>
-      <v-col cols="12" md="3">
+      <v-col md="3">
         <v-autocomplete
           v-model="status"
           :items="studentStatus"
@@ -58,7 +58,7 @@
           hide-details
         ></v-autocomplete>
       </v-col>
-      <v-col cols="12" md="3">
+      <v-col md="3">
         <v-autocomplete
           :items="genders"
           item-text="title"
@@ -72,7 +72,7 @@
           hide-details
         />
       </v-col>
-      <v-col cols="12" md="3">
+      <v-col md="3">
         <v-btn
           class="py-5"
           depressed
@@ -98,13 +98,9 @@ export default {
   },
   data: () => ({
     show: false,
-    query: '',
-    major: {},
     status: 'active',
-    generation: '',
     code: '',
     dob: '',
-    tags: '',
     name: '',
     classes: [],
     gender: '',
@@ -113,16 +109,13 @@ export default {
       { title: 'Nam', value: 'male' },
       { title: 'Nữ', value: 'female' },
       { title: 'Khác', value: 'other' },
-    ],
-    start: moment().startOf('day').toISOString(),
-    end: moment().endOf('day').toISOString()
+    ]
   }),
   computed: {
     ...mapState('constant', ['studentStatus']),
   },
   methods: {
     onFilterChanged() {
-      console.log(this.dob)
       this.$emit('onFilterChanged', {
         name_contains: this.name,
         classes: this.classes,

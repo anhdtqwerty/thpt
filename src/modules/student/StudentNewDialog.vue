@@ -2,7 +2,7 @@
   <v-dialog :fullscreen="$vuetify.breakpoint.mobile" v-model="dialog" width="420">
     <v-card>
       <v-toolbar dense class="elevation-0" color="#0D47A1" dark>
-        <v-toolbar-title>Tạo Mới Học Sinh</v-toolbar-title>
+        <v-toolbar-title>Thêm Mới Học Sinh</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-btn icon>
           <v-icon @click="cancel">close</v-icon>
@@ -10,11 +10,11 @@
       </v-toolbar>
       <v-divider />
       <v-form ref="form" class="pa-4">
-        <p class="caption">Thông tin & Đăng nhập</p>
+        <h3>1. Thông tin cơ bản</h3>
         <v-text-field
           :rules="[rules.required]"
           v-model="name"
-          label="Họ và Tên"
+          label="Họ và Tên đệm"
           @blur="nameLostFocus()"
           outlined
           dense
@@ -27,13 +27,8 @@
           outlined
           dense
         ></v-text-field>
-        <v-text-field
-          :rules="[rules.required]"
-          v-model="phone"
-          label="Số điện thoại"
-          outlined
-          dense
-        ></v-text-field>
+        <date-picker></date-picker>
+        <h3>2. Thông tin liên lạc</h3>
         <v-text-field
           v-model="email"
           label="Email"
@@ -43,64 +38,14 @@
           outlined
           dense
         ></v-text-field>
+        <h3>3. Thông tin gia đình</h3>
         <v-text-field
-          v-model="password"
-          label="Mật Khẩu"
-          :append-icon="show ? 'visibility' : 'visibility_off'"
-          :rules="[rules.required, rules.min]"
-          :type="show ? 'text' : 'password'"
-          @click:append="show = !show"
-          hint="At least 6 characters"
+          :rules="[rules.required]"
+          v-model="phone"
+          label="Số điện thoại"
           outlined
           dense
         ></v-text-field>
-        <v-divider />
-        <p class="caption mt-4">Trung Tâm</p>
-        <autocomplete-generation
-          v-if="!hideAdvanceOption"
-          v-model="generation"
-          item-text="name"
-          return-object
-          item-value="id"
-          label="Khóa"
-          required
-          outlined
-          dense
-        ></autocomplete-generation>
-        <autocomplete-major
-          v-if="!hideAdvanceOption"
-          v-model="rootMajor"
-          item-text="title"
-          return-object
-          item-value="id"
-          label="Chuyên Ngành"
-          required
-          outlined
-          dense
-        ></autocomplete-major>
-        <v-select
-          v-if="!hideAdvanceOption"
-          v-model="major"
-          :items="majors"
-          item-text="title"
-          return-object
-          item-value="id"
-          label="Chuyên Ngành Hẹp"
-          required
-          outlined
-          dense
-        ></v-select>
-        <autocomplete-class
-          v-model="classes"
-          item-text="title"
-          return-object
-          item-value="id"
-          label="Xếp Lớp"
-          required
-          outlined
-          multiple
-          dense
-        />
       </v-form>
       <v-card-actions class="px-4">
         <v-spacer></v-spacer>
@@ -112,15 +57,12 @@
 
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex'
-import AutocompleteMajor from '@/components/basic/input/AutocompleteRootMajor.vue'
-import AutocompleteGeneration from '@/components/basic/input/AutocompleteGeneration'
-import AutocompleteClass from '@/components/basic/input/AutocompleteClass.vue'
+import DatePicker from '@/components/basic/picker/DateIOSPicker'
+
 import { get } from 'lodash'
 export default {
   components: {
-    AutocompleteMajor,
-    AutocompleteGeneration,
-    AutocompleteClass
+    DatePicker
   },
   data () {
     return {

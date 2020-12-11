@@ -14,12 +14,15 @@
         'px-7': $vuetify.breakpoint.xs
       }"
     >
-      <v-img
-        :height="imageHeight"
+    <div class="d-flex justify-center px-6">
+        <v-img 
+        height="64px"
         src="../../assets/logo.svg"
         contain
-        position="left"
+        position="center"
       ></v-img>
+    </div>
+      
     </div>
     <StudentToolbar></StudentToolbar>
     <TeacherToolbar></TeacherToolbar>
