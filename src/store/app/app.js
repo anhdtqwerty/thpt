@@ -11,25 +11,27 @@ export default {
     staff: {},
     count: 0,
     department: {},
+    currentGeneration: {},
+    currentSemester: {},
     roles: [],
     role: {},
     policies: {}
   },
   actions: {
-    setDepartment ({ state, commit, dispatch }, department) {
+    setDepartment({ state, commit, dispatch }, department) {
       if (!department) {
         console.log('Department id undefined found')
       } else {
         commit('setDepartment', department)
       }
     },
-    fetchDepartment ({ commit }, id) {
+    fetchDepartment({ commit }, id) {
       return axios
         .get(DEPARTMENT_API + id)
         .then(department => commit('setDepartment', department))
         .catch(e => alert.error(e))
     },
-    fetchRoles ({ state, commit }) {
+    fetchRoles({ state, commit }) {
       if (!state.roles.length) {
         return axios
           .get(ROLE_API)
@@ -37,7 +39,7 @@ export default {
           .catch(e => alert.error(e))
       }
     },
-    fetchStaffsCount ({ commit }, filters = []) {
+    fetchStaffsCount({ commit }, filters = []) {
       const params = { _limit: 9999 }
       filters.forEach(f => {
         if (f.value === 0 || f.value) {
@@ -51,20 +53,20 @@ export default {
         })
         .catch(e => alert.error(e))
     },
-    fetchStaffs ({ commit }, options) {
+    fetchStaffs({ commit }, options) {
       return axios
         .get(STAFF_API, { ...options })
         .then(staffs => commit('setStaffs', staffs))
         .catch(e => alert.error(e))
     },
-    fetchStaff ({ commit }, staffId) {
+    fetchStaff({ commit }, staffId) {
       commit('setStaff', null)
       return axios
         .get(STAFF_API + staffId)
         .then(staff => commit('setStaff', staff))
         .catch(e => alert.error(e))
     },
-    createStaff ({ commit }, staff) {
+    createStaff({ commit }, staff) {
       return axios
         .post(STAFF_API, staff)
         .then(staff => {
@@ -74,7 +76,7 @@ export default {
         })
         .catch(e => alert.error(e))
     },
-    updateStaff ({ commit, state }, { id, ...staff }) {
+    updateStaff({ commit, state }, { id, ...staff }) {
       return axios
         .put(STAFF_API + id, staff)
         .then(staff => {
@@ -83,7 +85,7 @@ export default {
         })
         .catch(e => alert.error(e))
     },
-    removeStaff ({ commit }, staffId) {
+    removeStaff({ commit }, staffId) {
       return axios
         .delete(STAFF_API + staffId)
         .then(staff => {
@@ -91,41 +93,43 @@ export default {
         })
         .catch(e => alert.error(e))
     },
-    async removeStaffs ({ dispatch }, items) {
+    async removeStaffs({ dispatch }, items) {
       for (let item of items) {
         await dispatch('removeStaff', item.id)
       }
     },
-    setStaff ({ commit }, staff) {
+    setStaff({ commit }, staff) {
       commit('setStaff', staff)
     },
-    setRole ({ commit }, role) {
+    setRole({ commit }, role) {
       commit('setRole', role)
     },
-    setPolicies ({ commit }, policies) {
+    setPolicies({ commit }, policies) {
       commit('setPolicies', policies)
     }
   },
   mutations: {
-    setStaffs (state, staffs) {
+    setStaffs(state, staffs) {
       state.staffs = staffs
     },
-    setRole (state, role) {
+    setRole(state, role) {
       state.role = role
     },
-    setPolicies (state, policies) {
+    setPolicies(state, policies) {
       state.policies = policies
     },
-    setCount (state, count) {
+    setCount(state, count) {
       state.count = count
     },
-    setStaff (state, staff) {
+    setStaff(state, staff) {
       state.staff = staff
     },
-    setDepartment (state, department) {
+    setDepartment(state, department) {
       state.department = department
+      state.currentGeneration = department.currentGeneration
+      state.currentSemester = department.currentSemester
     },
-    receiveStaff (state, staff) {
+    receiveStaff(state, staff) {
       const i = state.staffs.findIndex(d => d.id === staff.id)
       if (i > -1) {
         state.staffs.splice(i, 1, staff)
@@ -133,16 +137,16 @@ export default {
         state.staffs.unshift(staff)
       }
     },
-    removeStaff (state, staffId) {
+    removeStaff(state, staffId) {
       const i = state.staffs.findIndex(({ id }) => id === staffId)
       if (i > -1) {
         state.staffs.splice(i, 1)
       }
     },
-    setRoles (state, roles) {
+    setRoles(state, roles) {
       state.roles = roles
     },
-    fetchRoles ({ state, commit }) {
+    fetchRoles({ state, commit }) {
       if (!state.roles.length) {
         return axios
           .get(ROLE_API)
@@ -164,8 +168,14 @@ export default {
     staff: state => {
       return state.staff
     },
-    department (state) {
+    department(state) {
       return !state.department ? {} : state.department
+    },
+    currentSemester(state) {
+      return !state.currentSemester ? {} : state.currentSemester
+    },
+    currentGeneration(state) {
+      return !state.currentGeneration ? {} : state.currentGeneration
     },
     roles: state =>
       state.roles.filter(item => {

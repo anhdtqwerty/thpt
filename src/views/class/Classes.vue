@@ -14,7 +14,7 @@
         />
       </v-col>
       <v-col class="d-flex justify-end pt-4">
-        <v-btn color="success" @click="dialog = !dialog"
+        <v-btn color="primary" @click="dialog = !dialog"
           ><v-icon left>add</v-icon>{{ addButtonText }}</v-btn
         >
       </v-col>

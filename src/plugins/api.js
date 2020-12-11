@@ -26,8 +26,9 @@ const LIBRARY_API = '/facilities/'
 const ROOM_API = '/rooms/'
 const SHOWCASE_API = '/showcases/'
 const DIVISION_API = '/divisions/'
+const SEMESTER_API = '/semesters/'
 const GRADE_API = '/grades/'
-const APIHelper = (api) => ({
+const APIHelper = api => ({
   search: (params, option) =>
     axios.get(api, { params: utils.filterObject(params) }, option),
   count: (params, option) =>
@@ -44,7 +45,7 @@ const APIHelper = (api) => ({
 export const APIRespository = APIHelper
 export const Auth = {
   ...APIHelper(AUTH_API),
-  forgotPassword: (email) => axios.post('/auth/forgot-password', { email }),
+  forgotPassword: email => axios.post('/auth/forgot-password', { email }),
   resetPassword: (code, password, passwordConfirmation) =>
     axios.post('/auth/reset-password', {
       code,
@@ -77,14 +78,15 @@ export const Room = APIHelper(ROOM_API)
 export const Showcase = APIHelper(SHOWCASE_API)
 export const Division = APIHelper(DIVISION_API)
 export const Grade = APIHelper(GRADE_API)
+export const Semester = APIHelper(SEMESTER_API)
 export const Upload = {
-  upload: (formData) =>
+  upload: formData =>
     axios.post(UPLOAD_API, formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
     }),
-  destroy: (id) => axios.delete(DESTROY_API + id)
+  destroy: id => axios.delete(DESTROY_API + id)
 }
 
 export default {
@@ -105,6 +107,7 @@ export default {
   Room,
   Book,
   Showcase,
+  Semester,
   Division,
   Grade
 }
