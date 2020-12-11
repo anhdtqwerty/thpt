@@ -20,6 +20,7 @@
           depressed
           color="#0D47A1"
           :loading="loading"
+          @click="save"
           ><v-icon left>add</v-icon>Thêm</v-btn
         >
       </v-row>

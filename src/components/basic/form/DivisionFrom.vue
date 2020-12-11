@@ -8,22 +8,19 @@
       outlined
       required
     ></v-text-field>
-    <v-autocomplete
-      v-model="grade"
-      :items="items_grades"
-      outlined
-      dense
-      label="Chọn khối"
-    >
-    </v-autocomplete>
-    <v-autocomplete
-      v-model="subjects"
-      :items="items"
-      outlined
-      dense
-      label="Môn học"
-    >
-    </v-autocomplete>
+    <autocomplete-grade
+              v-model="grade"
+              item-text="name"
+              item-value="id"
+              clear-icon="mdi-close"
+              clearable
+              label="Khối"
+              outlined
+              dense
+              deletable-chips
+              :hide-details="$vuetify.breakpoint.smAndDown"
+              :class="{ 'mb-4': $vuetify.breakpoint.smAndDown }"
+            />
     <v-textarea
       ref="description"
       v-model="description"
@@ -35,14 +32,16 @@
 </template>
 <script>
 import TextFieldCode from '@/components/basic/input/TextFieldCode'
+import AutocompleteGrade from '@/components/basic/input/AutocompleteGrade'
 import { mapGetters } from 'vuex'
 export default {
   components: {
     TextFieldCode,
+    AutocompleteGrade,
   },
   data: () => ({
     valid: true,
-    subjects: '',
+    // subjects: '',
     description: '',
     name: '',
     grade:'',
@@ -67,7 +66,7 @@ export default {
           name: this.name,
           description: this.description,
           grade: this.grade,
-          subjects: this.subjects.id,
+          // subjects: this.subjects.id,
         }
       }
     },
@@ -76,12 +75,12 @@ export default {
         this.grade = this.division.code
         this.description = this.division.description
         this.name = this.division.name
-        this.subjects = this.division.subject
+        // this.subjects = this.division.subject
       } else {
         this.name = ''
         this.description = ''
         this.grade = ''
-        this.subjects = ''
+        // this.subjects = ''
       }
     }
   },
