@@ -14,7 +14,6 @@
   </v-list>
 </template>
 <script>
-import Department from '@/components/basic/menu/Department'
 import Classes from '@/components/basic/menu/Classes'
 import Students from '@/components/basic/menu/Students.vue'
 import Teachers from '@/components/basic/menu/Teachers.vue'
