@@ -128,18 +128,14 @@ export default {
   },
   watch: {
     filterInputs: {
-      handler: _.debounce(this.excuefilter, 500),
+      handler (data) {
+        this.excutefilter(data)
+      },
       deep: true
     }
   },
-  created () {
-    this.refresh({
-      department: this.department.id,
-      generation: this.currentGeneration.id,
-      _sort: 'createdAt:desc'
-    })
-  },
   methods: {
+    debounce: _.debounce,
     onChangeFilterMode () {
       if (this.filterMode === 'normal') {
         this.filterMode = 'advanced'
@@ -151,12 +147,12 @@ export default {
       const filterData = this.$refs['filter'].getFormData()
       console.log(filterData)
     },
-    excuefilter (data) {
+    excutefilter: _.debounce((data) => {
       const className = _.get(data, 'className.value')
       const subject = _.get(data, 'subject.value')
-      const factor = _get(data, 'factor.value')
-      console.log(className)
-    }
+      const factor = _.get(data, 'factor.value')
+      console.log(className, subject, factor)
+    }, 1000)
   }
 }
 </script>
