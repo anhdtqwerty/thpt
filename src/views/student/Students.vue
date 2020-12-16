@@ -20,7 +20,6 @@
     <v-card class="pa-2 ma-md-2 elevation-1">
       <v-data-table
         item-key="id"
-        v-model="selected"
         :options.sync="studentTableOptions"
         :server-items-length="totalItems"
         :headers="headers"
@@ -156,7 +155,6 @@ export default {
     return {
       headers: [],
       originHeaders: originHeaders,
-      selected: [],
       draw: false,
       search: '',
       status: null,

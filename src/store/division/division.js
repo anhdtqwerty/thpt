@@ -37,10 +37,10 @@ export default {
     setDivision (state, payload) {
       state.divisions = payload
     },
-    removeDivision(state,id){
+    removeDivision(state, id) {
       state.divisions = state.divisions.filter(division => division.id != id)
     },
-    createDivision(state){
+    createDivision(state) {
     }
   }
 }
