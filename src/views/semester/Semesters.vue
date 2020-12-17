@@ -42,6 +42,15 @@
             <drop-menu v-if="!$vuetify.breakpoint.mobile"></drop-menu>
           </div>
         </div>
+
+        <template v-slot:[`item.status`]="{ item }">
+          <span v-if="item.status" :class="getColor(item.status)"
+            >{{ item.status | getStatus }}
+          </span>
+        </template>
+        <template v-slot:[`item.action`]="{ item }">
+          <semester-list-action :item="item"></semester-list-action>
+        </template>
       </v-data-table>
     </v-card>
 
@@ -58,6 +67,7 @@ import SettingTableHeader from '@/components/basic/table/SettingHeaders'
 import SemesterFilter from '@/modules/semester/SemesterFilter'
 import SemesterNewDialog from '@/modules/semester/SemesterNewDialog'
 import SemesterFilterDialog from '@/modules/semester/SemesterFilterDialog'
+import SemesterListAction from '@/modules/semester/SemesterListAction'
 
 const originHeaders = [
   {
@@ -89,6 +99,13 @@ const originHeaders = [
     show: true,
   },
   {
+    text: 'Trạng thái',
+    value: 'status',
+    align: 'left',
+    sortable: false,
+    show: true,
+  },
+  {
     text: 'Ghi chú',
     value: 'config.notes',
     align: 'left',
@@ -112,6 +129,7 @@ export default {
     SemesterFilter,
     SemesterNewDialog,
     SemesterFilterDialog,
+    SemesterListAction
   },
   data() {
     return {
@@ -142,6 +160,11 @@ export default {
       }).then(() => {
         this.loading = false
       })
+    },
+    getColor(status) {
+      if (status === 'open') return 'green--text'
+      if (status === 'block') return 'orange--text'
+      else return 'gray--text'
     },
   },
 }
