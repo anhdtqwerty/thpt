@@ -5,7 +5,7 @@
     :key="student.id"
     @click="$emit('change', student)"
   >
-    <div class="image-wrapper mr-5">
+    <div v-if="!$vuetify.breakpoint.mobile" class="image-wrapper mr-5">
       <img :src="avatar" alt="" />
     </div>
     <div>
@@ -14,7 +14,7 @@
           {{ student.name }}
         </div>
       </router-link>
-      
+
       <div style="white-space: nowrap" v-else>{{ student.name }}</div>
       <div style="white-space: nowrap">{{ student.code }}</div>
     </div>

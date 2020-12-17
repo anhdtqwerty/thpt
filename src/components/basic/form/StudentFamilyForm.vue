@@ -1,24 +1,20 @@
 <template>
   <v-form v-model="valid" ref="form">
-    <v-row>
-      <v-col cols="12" md="6">
-        <h4 class="my-4">Bố</h4>
+    <v-row no-gutters>
+      <v-col class="pl-0" cols="12" md="6">
+        <h4>Bố</h4>
         <v-text-field
           ref="dadName"
           v-model="dadName"
           label="Họ Và Tên Bố"
           placeholder="Nhập họ và tên bố"
-          outlined
           dense
-          required
         ></v-text-field>
         <v-text-field
           ref="dadPhone"
           v-model="dadPhone"
           label="Số điện thoại bố"
           placeholder="Nhập số điện thoại bố"
-          required
-          outlined
           dense
         ></v-text-field>
         <v-text-field
@@ -26,20 +22,16 @@
           v-model="dadEmail"
           label="Email Bố"
           placeholder="Nhập email bố"
-          outlined
           dense
         ></v-text-field>
       </v-col>
-    
-      <v-col cols="12" md="6">
-        <h4 class="my-4">Mẹ</h4>
+      <v-col class="pl-2" cols="12" md="6">
+        <h4>Mẹ</h4>
         <v-text-field
           ref="momName"
           v-model="momName"
           label="Họ Và Tên Mẹ"
           placeholder="Nhập họ và tên mẹ"
-          required
-          outlined
           dense
         ></v-text-field>
         <v-text-field
@@ -47,16 +39,13 @@
           v-model="momPhone"
           label="Số Điện Thoại Mẹ"
           placeholder="Nhập số điện thoại mẹ"
-          required
           dense
-          outlined
         ></v-text-field>
         <v-text-field
           ref="momEmail"
           v-model="momEmail"
           label="Email Mẹ"
           placeholder="Nhập email mẹ"
-          outlined
           dense
         ></v-text-field>
       </v-col>
@@ -70,8 +59,8 @@ export default {
     student: {
       type: [Object],
       required: true,
-      default: () => {}
-    }
+      default: () => {},
+    },
   },
   data: () => ({
     valid: true,
@@ -80,16 +69,26 @@ export default {
     dadPhone: '',
     momName: '',
     momEmail: '',
-    momPhone: ''
+    momPhone: '',
   }),
-  created () {
+  created() {
     this.reset()
   },
   methods: {
-    validate () {
+    validate() {
       this.$refs.form.validate()
     },
-    reset () {
+    getData() {
+      return {
+        dadName: this.dadName,
+        dadEmail: this.dadEmail,
+        dadPhone: this.dadPhone,
+        momPhone: this.momPhone,
+        momName: this.momName,
+        momEmail: this.momEmail,
+      }
+    },
+    reset() {
       this.dadName = this.student.data.dadName
       this.dadEmail = this.student.data.dadEmail
       this.dadPhone = this.student.data.dadPhone
@@ -97,27 +96,20 @@ export default {
       this.momEmail = this.student.data.momEmail
       this.momPhone = this.student.data.momPhone
     },
-    resetValidation () {
+    resetValidation() {
       this.$refs.form.resetValidation()
     },
-    getData () {
-      return {
-        dadName: this.dadName,
-        dadEmail: this.dadEmail,
-        dadPhone: this.dadPhone,
-        momName: this.momName,
-        momEmail: this.momEmail,
-        momPhone: this.momPhone
-      }
-    }
   },
   watch: {
-    student (student) {
+    student(student) {
       this.reset()
-    }
-  }
+    },
+  },
 }
 </script>
 
 <style scoped>
+h4 {
+  margin-bottom: 10px;
+}
 </style>

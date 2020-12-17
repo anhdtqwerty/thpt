@@ -1,5 +1,7 @@
 <template>
   <v-autocomplete
+    item-text="name"
+    item-value="id"
     v-bind="this.$attrs"
     :items="Generations"
     @change="onChange"
