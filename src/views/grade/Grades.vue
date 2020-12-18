@@ -90,9 +90,9 @@ export default {
     refresh() {
       this.fetchGrades()
     },
-    // onDivisionSelected(division) {
-    //   this.setDivision(division)
-    // },
+    onGradeSelected(grade) {
+      this.setGrade(grade)
+    },
   },
   filters: {},
 }

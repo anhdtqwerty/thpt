@@ -2,14 +2,14 @@
   <v-form ref="form" flat class="pa-6">
     <v-text-field
       label="Tên khối mới"
-      v-model="title"
+      v-model="grade.title"
       dense
       outlined
       required
     ></v-text-field>
     <v-textarea
       ref="description"
-      v-model="description"
+      v-model="grade.description"
       label="Ghi chú"
       outlined
       dense
@@ -35,6 +35,9 @@ export default {
   props: {
     grade: { type: Object, default: () => {} },
     editCode: { type: Boolean, default: false },
+  },
+    created(){
+    console.log(this.grade)
   },
   methods: {
     reset() {

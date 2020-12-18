@@ -1,6 +1,6 @@
 <template>
   <div>
-    <grade-update-dialog v-bind:grade=selected :state="EditGrade"/>
+    <grade-update-dialog v-bind:grade="selected" :state="EditGrade"/>
     <v-btn class="elevation-0" icon  @click="EditGrade=!EditGrade">
       <v-icon >mdi-pencil</v-icon>
     </v-btn>
@@ -43,7 +43,6 @@ export default {
       })
     },
     onEdit() {
-      console.log(12)
       this.$emit('onEdit', this.selected)
     }
   }

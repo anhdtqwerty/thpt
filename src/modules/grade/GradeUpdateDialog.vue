@@ -11,7 +11,7 @@
         <v-icon color="white" @click="cancel">close</v-icon>
       </v-card-title>
       <v-divider></v-divider>
-      <grade-info-form v-bind:grade=grade ref="form" />
+      <grade-info-form v-bind:grade="grade" ref="form" />
       <v-row class="pr-6 pb-6 mt-n7" no-gutters>
         <v-spacer></v-spacer>
         <v-btn
@@ -57,12 +57,14 @@ export default {
     ...mapState('app', ['roles', 'department']),
     ...mapState('auth', ['user']),
   },
+
   methods: {
-    ...mapActions('grade', ['updateGrade']),
+    ...mapActions('grade', ['updateGrade','fetchGrades']),
     async save() {
       this.loading = true
       const data = this.$refs.form.getData()
-      await this.updateGrade({id:this.grade.id, ...data })
+      await this.updateGrade({id: this.grade.id, ...data })
+      await this.fetchGrades()
       this.$alert.success('Cập nhật thành công')
       this.$refs.form.resetDefault()
       this.loading = false
