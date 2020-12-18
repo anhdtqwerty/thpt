@@ -42,11 +42,26 @@
             <drop-menu v-if="!$vuetify.breakpoint.mobile"></drop-menu>
           </div>
         </div>
+
+        <template v-slot:[`item.status`]="{ item }">
+          <span v-if="item.status" :class="getColor(item.status)"
+            >{{ item.status | getStatus }}
+          </span>
+        </template>
+        <template v-slot:[`item.action`]="{ item }">
+          <semester-list-action :item="item"></semester-list-action>
+        </template>
+        <template v-slot:[`item.config.startDate`]="{ item }">
+          {{ formatStartDate(item) }}
+        </template>
+        <template v-slot:[`item.config.endDate`]="{ item }">
+          {{ formatEndDate(item) }}
+        </template>
       </v-data-table>
     </v-card>
 
     <semester-new-dialog :state="createState"></semester-new-dialog>
-    <semester-filter-dialog :state="filterState"></semester-filter-dialog>
+    <semester-filter-dialog @onFilterChanged="refresh" :state="filterState"></semester-filter-dialog>
   </div>
 </template>
 
@@ -58,6 +73,9 @@ import SettingTableHeader from '@/components/basic/table/SettingHeaders'
 import SemesterFilter from '@/modules/semester/SemesterFilter'
 import SemesterNewDialog from '@/modules/semester/SemesterNewDialog'
 import SemesterFilterDialog from '@/modules/semester/SemesterFilterDialog'
+import SemesterListAction from '@/modules/semester/SemesterListAction'
+import moment from 'moment'
+import { get } from 'lodash'
 
 const originHeaders = [
   {
@@ -89,6 +107,13 @@ const originHeaders = [
     show: true,
   },
   {
+    text: 'Trạng thái',
+    value: 'status',
+    align: 'left',
+    sortable: false,
+    show: true,
+  },
+  {
     text: 'Ghi chú',
     value: 'config.notes',
     align: 'left',
@@ -112,6 +137,7 @@ export default {
     SemesterFilter,
     SemesterNewDialog,
     SemesterFilterDialog,
+    SemesterListAction
   },
   data() {
     return {
@@ -123,12 +149,11 @@ export default {
     }
   },
   computed: {
-    ...mapState('app', ['currentGeneration']),
     ...mapGetters('semester', ['semesters']),
   },
   created() {
     this.loading = true
-    this.fetchSemesters({ generation: this.currentGeneration }).then(() => {
+    this.fetchSemesters({}).then(() => {
       this.loading = false
     })
   },
@@ -136,12 +161,26 @@ export default {
     ...mapActions('semester', ['fetchSemesters', 'searchSemesters']),
     refresh(query) {
       this.loading = true
-      this.searchSemesters({
+      this.fetchSemesters({
         ...query,
-        generation: this.currentGeneration,
       }).then(() => {
         this.loading = false
       })
+    },
+    getColor(status) {
+      if (status === 'open') return 'green--text'
+      if (status === 'block') return 'orange--text'
+      else return 'gray--text'
+    },
+    formatStartDate(item) {
+      return get(item, 'config.startDate', '')
+        ? moment(item.config.startDate).format('D/MM/YYYY')
+        : ''
+    },
+    formatEndDate(item) {
+      return get(item, 'config.endDate', '')
+        ? moment(item.config.endDate).format('D/MM/YYYY')
+        : ''
     },
   },
 }
