@@ -15,9 +15,9 @@
         />
       </v-col>
       <v-col class="d-flex justify-end pt-4">
-        <v-btn color="primary" @click="createDivision = !createDivision"
-          ><v-icon left>add</v-icon>{{ addButtonText }}</v-btn
-        >
+        <v-btn color="primary" @click="createDivision = !createDivision">
+          <v-icon left>add</v-icon>{{ addButtonText }}
+        </v-btn>
       </v-col>
     </v-row>
     <v-card class="pa-6">
@@ -49,7 +49,7 @@ export default {
   components: {
     NewDivisionDialog,
     Breadcrumbs,
-    DivisionActions
+    DivisionActions,
   },
   props: {
     role: String,
@@ -81,7 +81,7 @@ export default {
         case 'sm':
           return 'Thêm'
         default:
-          return 'Thêm phân ban'
+          return 'Thêm ban'
       }
     },
   },
@@ -102,7 +102,7 @@ export default {
   },
   filters:{
     getSubject(division) {
-      return division.subjects.map((value) =>{return value.title}).join(', ')
+      return division.subjects.map((value) =>{return value.title}).join(' - ')
     }
   }
 }
