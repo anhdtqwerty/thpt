@@ -1,32 +1,33 @@
 <template>
   <v-dialog
     v-model="dialog"
-    width="600px"
+    width="661px"
     :fullscreen="$vuetify.breakpoint.smAndDown"
   >
     <v-card>
-      <v-card-title color="#0D47A1" class="white--text"
-        >{{ generation.name }}
-        <v-spacer />
-        <v-icon color="white" @click="cancel">close</v-icon>
-      </v-card-title>
+      <v-toolbar dense class="elevation-0" color="#0D47A1" dark>
+        <v-toolbar-title>SỬA KHÓA</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-btn icon>
+          <v-icon @click="cancel">close</v-icon>
+        </v-btn>
+      </v-toolbar>
       <v-divider></v-divider>
       <generation-info-form
         v-if="generation.id"
         :generation="generation"
         ref="form"
       />
-      <v-row class="pr-6 pb-6 mt-n7" no-gutters>
+      <div class="d-flex pa-6">
         <v-spacer></v-spacer>
         <v-btn
-          class="px-6"
           depressed
           color="primary"
           :loading="loading"
           @click="save"
           >Lưu</v-btn
         >
-      </v-row>
+      </div>
     </v-card>
   </v-dialog>
 </template>
@@ -65,7 +66,6 @@ export default {
     },
     cancel() {
       this.dialog = false
-      this.$refs.form.resetDefault()
     }
   },
   watch: {
