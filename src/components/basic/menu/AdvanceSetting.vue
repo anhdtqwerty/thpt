@@ -15,7 +15,7 @@
         <v-list-item-action></v-list-item-action>
         <v-list-item-title class="ml-3">Quản lý khối</v-list-item-title>
       </v-list-item>
-      <v-list-item link to="/semester">
+      <v-list-item link to="/semesters">
         <v-list-item-action></v-list-item-action>
         <v-list-item-title class="ml-3">Quản lý học kỳ</v-list-item-title>
       </v-list-item>

@@ -5,7 +5,7 @@
         <h2>Giáo viên</h2>
         <breadcrumbs />
       </v-col>
-      
+
       <v-col cols="4" class="text-right md-6 px-0 py-2">
         <v-btn medium class="teacher-btn" color="success" @click="createState=!createState">
           <v-icon left>add</v-icon>
@@ -50,7 +50,7 @@
 
         <template v-slot:[`item.actions`]="{ item }">
           <teacher-list-actions :item="item"></teacher-list-actions>
-        </template>        
+        </template>
       </v-data-table>
     </v-card>
     <new-teacher-dialog :state="createState" />
@@ -75,7 +75,7 @@ const originHeaders = [
     align: 'left',
     sortable: false,
     class: 'font-weight-black',
-    show: true 
+    show: true
   },
   {
     text: 'Số Điện Thoại',
@@ -83,7 +83,7 @@ const originHeaders = [
     align: 'left',
     sortable: false,
     class: 'font-weight-black',
-    show: true 
+    show: true
   },
   {
     text: 'Email',
@@ -91,7 +91,7 @@ const originHeaders = [
     align: 'left',
     sortable: false,
     class: 'font-weight-black',
-    show: true 
+    show: true
   },
   { text: 'Hành động', value: 'actions', show: true }
 ]
@@ -133,7 +133,7 @@ export default {
         case 'sm': return 'Thêm'
         default: return 'Thêm Giáo viên'
       }
-    }    
+    }
   },
   methods: {
     ...mapActions('teacher', [
@@ -149,4 +149,3 @@ export default {
   },
 }
 </script>
-

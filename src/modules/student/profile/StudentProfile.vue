@@ -1,94 +1,98 @@
 <template>
-  <v-row v-if="student">
-    <v-col cols="12" class="text-right">
-      <v-btn depressed medium color="primary" class="mr-2" @click="save"
-        >Lưu</v-btn
-      >
-      <v-btn :to="'/students'" depressed medium @click="cancel">Hủy</v-btn>
+  <v-row class="px-md-3" v-if="student">
+    <div v-if="$vuetify.breakpoint.smAndDown">
+      <v-btn class="ma-2" depressed color="primary" @click="save()">Lưu</v-btn>
+    </div>
+    <v-col class="text-center" cols="12" md="4">
+      <v-card class="pa-6" :flat="$vuetify.breakpoint.smAndDown">
+        <user-avatar-picker :student="student" type="student" />
+        <h2>{{ student.name }}</h2>
+        <table class="info-student-general mx-6">
+          <tr>
+            <td>Mã số</td>
+            <td>{{ student.code }}</td>
+          </tr>
+          <tr>
+            <td>Lớp</td>
+            <td>10A</td>
+          </tr>
+          <tr>
+            <td>Trạng thái</td>
+            <td>{{ student.status }}</td>
+          </tr>
+        </table>
+      </v-card>
     </v-col>
-
-    <v-col cols="12" md="4" class="text-center">
-      <h3>{{ student.name }}</h3>
-      <user-avatar-picker :student="student" type="student" />
-    </v-col>
-
-    <v-col cols="12" md="8">
-      <v-col cols="12">
-        <h3 class="mb-4">Thông tin cá nhân</h3>
-        <h4 class="my-4">Thông tin liên lạc</h4>
-        <student-info-form ref="studentInfoForm" :student="student" />
-        <h4 class="my-4">Địa chỉ</h4>
-        <user-address-form ref="studentAddressForm" :address="student.data" />
-      </v-col>
-
-      <v-col cols="12">
-        <h3 class="mb-4">Trung tâm</h3>
-        <h4 class="my-4">Khóa học</h4>
-        <student-department-form
-          ref="studentDepartmentForm"
-          :student="student"
-        />
-        <h4 class="my-4">Lớp học</h4>
-        <student-class-form ref="studentClassForm" :student="student" />
-      </v-col>
-
-      <v-col cols="12">
-        <h3 class="mb-4">Học tập & làm việc</h3>
-        <h4 class="my-4">Trường cấp 3</h4>
-        <student-high-school-form
-          ref="studentHighSchoolForm"
-          :student="student"
-        />
-        <h4 class="my-4">Trường Đại học</h4>
-        <student-university-form
-          ref="studentUniversityForm"
-          :data="student.data"
-        />
-        <h4 class="my-4">Công ty</h4>
-        <student-company-form ref="studentCompanyForm" :work="student.data" />
-      </v-col>
-
-      <v-col cols="12">
-        <h3 class="mb-4">Thông tin gia đình</h3>
-        <student-family-form ref="studentFamilyForm" :student="student" />
-      </v-col>
+    <v-col class="" cols="12" md="8">
+      <v-card :flat="$vuetify.breakpoint.smAndDown" class="pa-md-4">
+        <v-row no-gutters>
+          <v-col class="pa-4" md="9">
+            <h3>1. Thông tin cơ bản</h3>
+            <student-general-form
+              ref="studentGeneralForm"
+              :student="student"
+            ></student-general-form>
+          </v-col>
+          <v-col
+            class="text-right"
+            v-if="!$vuetify.breakpoint.smAndDown"
+            md="3"
+          >
+            <v-btn depressed color="primary">Lưu</v-btn>
+          </v-col>
+          <v-col class="pa-4" md="9">
+            <h3>2. Thông tin liên lạc</h3>
+            <student-contact-form
+              :student="student"
+              ref="studentContactForm"
+            ></student-contact-form>
+          </v-col>
+          <v-col class="pa-4" md="9">
+            <h3>3. Ghi chú về học sinh</h3>
+            <student-note-form
+              :student="student"
+              ref="studentNoteForm"
+            ></student-note-form>
+          </v-col>
+          <v-col class="pa-4" md="12">
+            <h3>4. Thông tin gia đình</h3>
+            <student-family-form
+              :student="student"
+              ref="studentFamilyForm"
+            ></student-family-form>
+          </v-col>
+        </v-row>
+      </v-card>
     </v-col>
   </v-row>
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import StudentInfoForm from '@/components/basic/form/StudentInfoForm'
+import StudentGeneralForm from '@/components/basic/form/StudentGeneralForm.vue'
+import StudentContactForm from '@/components/basic/form/StudentContactForm.vue'
+import StudentNoteForm from '@/components/basic/form/StudentNoteForm.vue'
 import UserAvatarPicker from '@/components/basic/picker/UserAvatarPicker'
-import StudentHighSchoolForm from '@/components/basic/form/UserHighSchoolForm'
-import StudentUniversityForm from '@/components/basic/form/UserUniversityForm'
-import StudentCompanyForm from '@/components/basic/form/UserCompanyForm'
-import UserAddressForm from '@/components/basic/form/UserAddressForm'
 import StudentFamilyForm from '@/components/basic/form/StudentFamilyForm.vue'
-import StudentDepartmentForm from '@/components/basic/form/StudentDepartmentForm.vue'
-import StudentClassForm from '@/components/basic/form/StudentClassForm.vue'
 
 export default {
   components: {
-    StudentInfoForm,
-    UserAddressForm,
+    StudentGeneralForm,
     UserAvatarPicker,
-    StudentCompanyForm,
-    StudentHighSchoolForm,
-    StudentUniversityForm,
-    StudentClassForm,
-    StudentDepartmentForm,
-    StudentFamilyForm
+    StudentContactForm,
+    StudentNoteForm,
+    StudentFamilyForm,
   },
   props: {
-    student: Object
+    student: Object,
   },
   data() {
     return {
-      tab: null
+      tab: null,
+      dialog: true,
     }
   },
   computed: {
-    ...mapGetters('student', ['logs'])
+    ...mapGetters('student', ['logs']),
   },
   created() {},
   methods: {
@@ -100,36 +104,33 @@ export default {
       this.$refs.form.resetValidation()
     },
     save() {
-      const studentInfo = this.$refs.studentInfoForm.getData()
-      const studentDepartment = this.$refs.studentDepartmentForm.getData()
-      const studentClass = this.$refs.studentClassForm.getData()
-      const studentAddress = this.$refs.studentAddressForm.getData()
-      const studentHighSchool = this.$refs.studentHighSchoolForm.getData()
-      const studentUniversity = this.$refs.studentUniversityForm.getData()
-      const studentCompany = this.$refs.studentCompanyForm.getData()
-      const studentFamily = this.$refs.studentFamilyForm.getData()
+      const studentGeneralForm = this.$refs.studentGeneralForm.getData()
+      const studentContactForm = this.$refs.studentContactForm.getData()
+      const studentNoteForm = this.$refs.studentNoteForm.getData()
+      const studentFamilyForm = this.$refs.studentFamilyForm.getData()
 
       this.updateStudent({
         id: this.student.id,
-        ...studentInfo,
-        address: studentAddress.frequentlyAddress,
-        ...studentDepartment,
-        ...studentClass,
+        name: studentGeneralForm.name,
+        phone: studentContactForm.phone,
+        address: studentContactForm.currentLive,
+        notes: studentNoteForm.notes,
+        email: studentContactForm.email,
+        gender: studentGeneralForm.gender,
+        dob: studentGeneralForm.dob,
         data: {
           ...this.student.data,
-          facebook: studentInfo.facebook,
-          ...studentAddress,
-          ...studentHighSchool,
-          ...studentUniversity,
-          ...studentCompany,
-          ...studentFamily
-        }
+          ...studentGeneralForm,
+          ...studentContactForm,
+          ...studentFamilyForm,
+          ...studentNoteForm,
+        },
       })
     },
     cancel() {
       this.state = false
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -137,5 +138,18 @@ export default {
 .border {
   border: solod 1px lightgray;
   border-radius: 4px;
+}
+.info-student-general {
+  width: 100%;
+  text-align: left;
+}
+.info-student-general td:nth-child(1) {
+  width: 70%;
+}
+.info-student-general td:nth-child(2) {
+  font-weight: bold;
+}
+h3 {
+  margin-bottom: 10px;
 }
 </style>

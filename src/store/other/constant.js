@@ -229,6 +229,13 @@ export default {
       'title': 'Kết Thúc',
       'status': 'done'
     }],
+    studentStatus: [{
+      'title': 'Hoạt động',
+      'status': 'active'
+    }, {
+      'title': 'Bảo lưu',
+      'status': 'reserved'
+    }],
     billTypes: [{
       'title': 'Học Phí',
       'status': 'tuition'
