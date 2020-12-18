@@ -1,45 +1,55 @@
 <template>
-  <div :class="{ 'px-3': $vuetify.breakpoint.mdAndUp }">
-    <new-generation-dialog :state="createGeneration" />
-    <generation-update-dialog
-      :state="editGeneration"
-      :generation="selected"
-    />
-    <v-row
-      :class="{
-        'px-2 mt-2': $vuetify.breakpoint.smAndDown,
-        'mx-n2': $vuetify.breakpoint.mdAndUp
-      }"
-      no-gutters
-    >
-      <v-col>
+  <div>
+    <div class="pa-2 d-flex justify-space-between align-center">
+      <div>
         <Breadcrumbs
           headline="Quản lý khóa"
-          :link="[{ text: 'Quản lý khóa', href: '../generations' }]"
+          :link="[{ text: 'Quản lý nâng cao' }, { text: 'Quản lý khóa' }]"
         />
-      </v-col>
-      <v-col class="d-flex justify-end pt-4">
-        <v-btn color="success" @click="createGeneration = !createGeneration"
-          ><v-icon left>add</v-icon>{{ addButtonText }}</v-btn
+      </div>
+      <div class="flex-center">
+        <v-btn
+          @click="createGeneration = !createGeneration"
+          dark
+          color="#0D47A1"
         >
-      </v-col>
-    </v-row>
-    <v-card>
-      <v-data-table
-        item-key="id"
-        :headers="headers"
-        :items="generations"
-        sort-by="createdAt"
-        :sort-desc="true"
-      >
-        <template v-slot:item.actions="{ item }">
+          <v-icon left>add</v-icon>Thêm khóa
+        </v-btn>
+      </div>
+    </div>
+    <v-card class="pa-4 ma-md-2 elevation-1">
+      <v-data-table item-key="id" :headers="headers" :items="generations">
+        <div slot="top" class="d-flex mb-4">
+          <h3><span class="primary--text">DANH SÁCH CÁC KHÓA</span></h3>
+          <v-spacer></v-spacer>
+          <div>
+            <setting-table-header
+              :default-headers="originHeaders"
+              @change="headers = $event"
+            />
+            <drop-menu v-if="!$vuetify.breakpoint.mobile"></drop-menu>
+          </div>
+        </div>
+        <template v-slot:[`item.actions`]="{ item }">
           <generation-list-actions
             :selected="item"
             @onEdit="onEditGeneration"
           />
         </template>
+        <template v-slot:[`item.data.startDate`]="{ item }">
+          {{ formatStartDate(item) }}
+        </template>
+        <template v-slot:[`item.data.endDate`]="{ item }">
+          {{ formatEndDate(item) }}
+        </template>
       </v-data-table>
     </v-card>
+
+    <new-generation-dialog :state="createGeneration"></new-generation-dialog>
+    <generation-update-dialog
+      :state="editGeneration"
+      :generation="selected"
+    ></generation-update-dialog>
   </div>
 </template>
 <script>
@@ -48,38 +58,70 @@ import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import GenerationListActions from '@/modules/generation/GenerationListActions'
 import NewGenerationDialog from '@/modules/generation/NewGenerationDialog'
 import GenerationUpdateDialog from '@/modules/generation/GenerationUpdateDialog'
+import DropMenu from '@/modules/student/menu/Menu.vue'
+import SettingTableHeader from '@/components/basic/table/SettingHeaders'
+import moment from 'moment'
+import { get } from 'lodash'
+
+const originHeaders = [
+  { text: 'Tên', value: 'name', align: 'left', sortable: false, show: true },
+  {
+    text: 'Mã Khóa',
+    value: 'code',
+    align: 'left',
+    sortable: false,
+    show: true,
+  },
+  {
+    text: 'Ngày khai giảng',
+    value: 'data.startDate',
+    align: 'left',
+    sortable: false,
+    show: true,
+  },
+  {
+    text: 'Ngày kết thúc',
+    value: 'data.endDate',
+    align: 'left',
+    sortable: false,
+    show: true,
+  },
+  {
+    text: 'Ghi chú',
+    value: 'data.notes',
+    align: 'left',
+    sortable: false,
+    show: true,
+  },
+  {
+    text: 'Hành động',
+    value: 'actions',
+    align: 'left',
+    sortable: false,
+    show: true,
+  },
+]
+
 export default {
   components: {
     GenerationListActions,
     NewGenerationDialog,
     GenerationUpdateDialog,
-    Breadcrumbs
+    Breadcrumbs,
+    DropMenu,
+    SettingTableHeader,
   },
   props: {
-    role: String
+    role: String,
   },
   data() {
     return {
-      headers: [
-        { text: 'Tên', value: 'name', align: 'left', sortable: false },
-        { text: 'Mã Khóa', value: 'code', align: 'left', sortable: false },
-        { text: 'Mô Tả', value: 'description', align: 'left', sortable: false },
-        { text: 'Hành động', value: 'actions', align: 'left', sortable: false }
-      ],
+      headers: [],
+      originHeaders: originHeaders,
       selected: {},
       draw: false,
-      search: '',
-      status: null,
-      statuses: [
-        { text: 'Active', value: 'false' },
-        { text: 'Blocked', value: 'true' }
-      ],
-      range: { from: null, to: null },
-      previewUserId: null,
-      ready: false,
-      generationTableOptions: {},
       editGeneration: false,
-      createGeneration: false
+      createGeneration: false,
     }
   },
   async created() {
@@ -96,21 +138,25 @@ export default {
         default:
           return 'Thêm niên khóa'
       }
-    }
+    },
   },
   methods: {
     ...mapActions('generation', ['fetchGenerations']),
-    updateDraw(draw) {
-      this.draw = draw
-    },
-    onGenerationSelected(generation) {
-      this.setGeneration(generation)
-      this.draw = true
-    },
     onEditGeneration(selected) {
       this.selected = selected
+      console.log(selected)
       this.editGeneration = !this.editGeneration
-    }
-  }
+    },
+    formatStartDate(item) {
+      return get(item, 'data.startDate', '')
+        ? moment(item.data.startDate).format('D/MM/YYYY')
+        : ''
+    },
+    formatEndDate(item) {
+      return get(item, 'data.endDate', '')
+        ? moment(item.data.endDate).format('D/MM/YYYY')
+        : ''
+    },
+  },
 }
 </script>
