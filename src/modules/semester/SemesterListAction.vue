@@ -17,17 +17,30 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   components: {},
   props: {
-    disabled: Boolean,
-    teacher: Object,
     item: Object,
   },
   data() {
     return {}
   },
   computed: {},
-  methods: {},
+  methods: {
+    ...mapActions('semester', ['removeSemester']),
+    remove() {
+      this.$dialog.confirm({
+        title: 'Xóa Học kỳ',
+        text: 'Bạn có chắc muốn xóa học kỳ này?',
+        okText: 'Có',
+        cancelText: 'Không',
+        done: async () => {
+          await this.removeSemester(this.item.id)
+        },
+      })
+    },
+  },
 }
 </script>

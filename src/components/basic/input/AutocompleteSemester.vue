@@ -10,7 +10,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import { Semester } from '@/plugins/api'
 
 export default {
@@ -22,9 +21,6 @@ export default {
     defaultSemesters: Array,
     options: Object,
   },
-  computed: {
-    ...mapGetters('app', ['currentGeneration']),
-  },
   created() {
     if (this.defaultSemesters) {
       this.semesters = this.defaultSemesters
@@ -33,9 +29,7 @@ export default {
   },
   methods: {
     async fetchAllSemesters() {
-      this.semesters = await Semester.fetch({
-        generation: this.currentGeneration,
-      })
+      this.semesters = await Semester.fetch({})
     },
     onChange(data) {
       this.$emit('change', data)
