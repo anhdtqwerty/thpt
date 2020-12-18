@@ -1,6 +1,7 @@
 <template>
   <div>
-    <v-btn class="elevation-0" icon @click="onEdit()">
+    <division-update-dialog v-bind:division=selected :state="EditDivision"/>
+    <v-btn class="elevation-0" icon  @click="EditDivision=!EditDivision">
       <v-icon >mdi-pencil</v-icon>
     </v-btn>
     <v-btn class="elevation-0" icon @click="onRemove()">
@@ -10,22 +11,26 @@
 </template>
 <script>
 import { mapActions, mapState } from 'vuex'
+import DivisionUpdateDialog from '@/modules/division/DivisionUpdateDialog.vue'
+
 export default {
-  components: {},
+  components: {
+    DivisionUpdateDialog,
+  },
   props: {
     selected: { type: Object, default: () => [] }
   },
   data() {
     return {
-      createState: false,
-      sending: null
+      sending: null,
+      EditDivision: false
     }
   },
   computed: {
     ...mapState('division', ['divisions'])
   },
   methods: {
-    ...mapActions('division', ['removeDivision', 'updateDivisions']),
+    ...mapActions('division', ['removeDivision', 'updateDivision']),
     onRemove() {
       this.$dialog.confirm({
         title: 'Xóa phân ban',
@@ -38,6 +43,7 @@ export default {
       })
     },
     onEdit() {
+      console.log(12)
       this.$emit('onEdit', this.selected)
     }
   }

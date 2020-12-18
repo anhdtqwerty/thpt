@@ -9,31 +9,32 @@
       required
     ></v-text-field>
     <autocomplete-grade
-              v-model="grade"
-              item-text="title"
-              item-value="id"
-              clear-icon="mdi-close"
-              clearable
-              label="Khối"
-              outlined
-              dense
-              deletable-chips
-              :hide-details="$vuetify.breakpoint.smAndDown"
-              :class="{ 'mb-4': $vuetify.breakpoint.smAndDown }"
-            />
+      v-model="grade"
+      item-text="title"
+      item-value="id"
+      clear-icon="mdi-close"
+      clearable
+      label="Khối"
+      outlined
+      dense
+      deletable-chips
+      :hide-details="$vuetify.breakpoint.smAndDown"
+      :class="{ 'mb-4': $vuetify.breakpoint.smAndDown }"
+    />
     <autocomplete-subject
-    v-model="subjects"
-    outlined
-    item-value="id"
-              clear-icon="mdi-close"
-              clearable
-              label="Môn học"
-              multiple
-              outlined
-              dense
-              small-chips
-              :hide-details="$vuetify.breakpoint.smAndDown"
-              :class="{ 'mb-4': $vuetify.breakpoint.smAndDown }"/>
+      v-model="subjects"
+      outlined
+      item-value="id"
+      clear-icon="mdi-close"
+      clearable
+      label="Môn học"
+      multiple
+      outlined
+      dense
+      small-chips
+      :hide-details="$vuetify.breakpoint.smAndDown"
+      :class="{ 'mb-4': $vuetify.breakpoint.smAndDown }"
+    />
     <v-textarea
       ref="description"
       v-model="description"
@@ -52,21 +53,21 @@ export default {
   components: {
     TextFieldCode,
     AutocompleteGrade,
-    AutocompleteSubject
+    AutocompleteSubject,
   },
   data: () => ({
     valid: true,
     subjects: '',
     description: '',
     title: '',
-    grade:'',
+    grade: '',
   }),
   computed: {
     ...mapGetters('app', ['department']),
   },
   props: {
     division: { type: Object, default: () => {} },
-    editCode: { type: Boolean, default: false }
+    editCode: { type: Boolean, default: false },
   },
   methods: {
     reset() {
@@ -97,10 +98,10 @@ export default {
         this.grade = ''
         this.subjects = ''
       }
-    }
+    },
   },
   created() {
     this.resetDefault()
-  }
+  },
 }
 </script>

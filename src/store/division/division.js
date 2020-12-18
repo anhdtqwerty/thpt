@@ -6,11 +6,20 @@ export default {
     divisions: []
   },
   actions: {
-    async fetchDivision ({ commit }, options) {
+    async fetchDivision({ commit }, options) {
       try {
         commit('setDivision', await Division.fetch(options))
       } catch (error) {
         alert.error(error)
+      }
+    },
+    async updateDivision({ commit }, { id, ...division }) {
+      try {
+        await Division.update(id, division)
+        commit('updateDivision', id, division)
+        alert.success('Cập nhật thành công!')
+      } catch (e) {
+        alert.error(e)
       }
     },
     async removeDivision({ commit }, id) {
@@ -29,18 +38,19 @@ export default {
         alert.error(e)
       }
     },
-    setDivision({ commit, state }, Division) {
-      commit('setDivision', Division)
-    },
   },
   mutations: {
-    setDivision (state, payload) {
+    setDivision(state, payload) {
       state.divisions = payload
     },
-    removeDivision(state,id){
+    removeDivision(state, id) {
       state.divisions = state.divisions.filter(division => division.id != id)
     },
-    createDivision(state){
+    createDivision(state, division) {
+      state.divisions = [division, ...state.divisions]
+    },
+    updateDivision(state, id, division) {
+      state.divisions = state.divisions.map(cur => cur.id = cur)
     }
   }
 }
