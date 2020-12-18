@@ -8,7 +8,7 @@
         />
       </div>
       <div class="flex-center">
-        <v-btn dark color="#0D47A1">
+        <v-btn @click="createState = !createState" dark color="#0D47A1">
           <v-icon left>add</v-icon>Thêm học kỳ
         </v-btn>
       </div>
@@ -44,6 +44,9 @@
         </div>
       </v-data-table>
     </v-card>
+
+    <semester-new-dialog :state="createState"></semester-new-dialog>
+    <semester-filter-dialog :state="filterState"></semester-filter-dialog>
   </div>
 </template>
 
@@ -53,6 +56,8 @@ import { mapActions, mapState, mapGetters } from 'vuex'
 import DropMenu from '@/modules/student/menu/Menu.vue'
 import SettingTableHeader from '@/components/basic/table/SettingHeaders'
 import SemesterFilter from '@/modules/semester/SemesterFilter'
+import SemesterNewDialog from '@/modules/semester/SemesterNewDialog'
+import SemesterFilterDialog from '@/modules/semester/SemesterFilterDialog'
 
 const originHeaders = [
   {
@@ -105,12 +110,16 @@ export default {
     DropMenu,
     SettingTableHeader,
     SemesterFilter,
+    SemesterNewDialog,
+    SemesterFilterDialog,
   },
   data() {
     return {
       loading: false,
       headers: [],
       originHeaders: originHeaders,
+      createState: false,
+      filterState: false,
     }
   },
   computed: {
@@ -137,6 +146,3 @@ export default {
   },
 }
 </script>
-
-<style>
-</style>
