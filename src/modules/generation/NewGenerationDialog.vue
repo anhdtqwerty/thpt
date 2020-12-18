@@ -1,28 +1,25 @@
 <template>
   <v-dialog
     v-model="dialog"
-    width="600px"
+    width="661px"
     :fullscreen="$vuetify.breakpoint.smAndDown"
   >
     <v-card>
-      <v-card-title color="#0D47A1" class="white--text"
-        >Thêm niên khóa mới
-        <v-spacer />
-        <v-icon color="white" @click="cancel">close</v-icon>
-      </v-card-title>
+      <v-toolbar dense class="elevation-0" color="#0D47A1" dark>
+        <v-toolbar-title>THÊM KHÓA MỚI</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-btn icon>
+          <v-icon @click="cancel">close</v-icon>
+        </v-btn>
+      </v-toolbar>
       <v-divider></v-divider>
       <generation-info-form ref="form" :editCode="true" />
-      <v-row class="pr-6 pb-6 mt-n7" no-gutters>
+      <div class="d-flex pa-6">
         <v-spacer></v-spacer>
-        <v-btn
-          class="px-6"
-          depressed
-          color="primary"
-          :loading="loading"
-          @click="save"
+        <v-btn depressed color="primary" :loading="loading" @click="save"
           >Lưu</v-btn
         >
-      </v-row>
+      </div>
     </v-card>
   </v-dialog>
 </template>
@@ -33,20 +30,20 @@ import { mapActions, mapState } from 'vuex'
 
 export default {
   components: {
-    GenerationInfoForm
+    GenerationInfoForm,
   },
   props: {
-    state: Boolean
+    state: Boolean,
   },
   data() {
     return {
       dialog: false,
-      loading: false
+      loading: false,
     }
   },
   computed: {
     ...mapState('app', ['roles', 'department']),
-    ...mapState('auth', ['user'])
+    ...mapState('auth', ['user']),
   },
   methods: {
     ...mapActions('generation', ['createGeneration']),
@@ -62,12 +59,12 @@ export default {
     cancel() {
       this.dialog = false
       this.$refs.form.resetDefault()
-    }
+    },
   },
   watch: {
     state(state) {
       this.dialog = true
-    }
-  }
+    },
+  },
 }
 </script>
