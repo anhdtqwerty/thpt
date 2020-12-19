@@ -62,7 +62,7 @@
           </span>
         </template>
         <template v-slot:[`item.classes`]="{ item }">
-          <span>{{ item.classes | getClassCount }}</span>
+          <span>{{ item.classes[item.classes.length-1].title }}</span>
         </template>
         <template v-slot:[`item.gender`]="{ item }">{{
           item.gender === 'male'
