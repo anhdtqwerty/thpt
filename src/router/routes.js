@@ -37,6 +37,10 @@ import Schedule from '@/views/schedule/Schedule.vue'
 import GuestLayout from '../components/layout/GuestLayout'
 import MainLayout from '../components/layout/MainLayout'
 import Page404 from '@/views/Page404'
+// -----------------------Advanced Setting---------------------------------
+import Divisions from '@/views/division/Divisions.vue'
+import Semesters from '@/views/semester/Semesters.vue'
+import Grades from '@/views/grade/Grades.vue'
 const routes = [
   {
     path: '/',
@@ -120,6 +124,33 @@ const routes = [
         name: 'Generations',
         meta: {
           title: 'Niên khóa',
+          auth: true
+        }
+      },
+      {
+        path: 'divisions',
+        component: Divisions,
+        name: 'Division',
+        meta: {
+          title: 'Quản lý phân ban',
+          auth: true
+        }
+      },
+      {
+        path: 'Grades',
+        component: Grades,
+        name: 'Grade',
+        meta: {
+          title: 'Quản lý khối',
+          auth: true
+        }
+      },
+      {
+        path: 'semesters',
+        component: Semesters,
+        name: 'Semesters',
+        meta: {
+          title: 'Quản lý học kỳ',
           auth: true
         }
       },

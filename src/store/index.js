@@ -12,6 +12,7 @@ import email from './notify/email'
  * CLASS
  */
 import generation from './course/generation'
+import semester from './course/semester'
 import slot from './learning/slot'
 
 import log from './other/log'
@@ -79,6 +80,7 @@ export default createStore(Vuex.Store, {
     teacher,
     class: classModule,
     generation,
+    semester,
     category,
     email,
     constant,

@@ -10,6 +10,7 @@ export default {
   namespaced: true,
   state: {
     student: {},
+    students: {},
     majors: [],
     tuitions: [],
     logs: [],
@@ -59,6 +60,24 @@ export default {
       commit('setStudent', null)
       const student = await Student.fetchOne(studentId)
       commit('setStudent', student)
+    },
+    async fetchStudents({ commit }, options) {
+      commit('setStudents', await Student.fetch(options))
+    },
+    async createStudent({ commit }, { data }) {
+      try {
+        const student = await Student.create({ ...data })
+        if (student) {
+          data.student = student.id
+          data.code = student.username
+          commit('setStudent', await Student.create({ ...data }))
+          alert.success('Tạo Học sinh Thành Công!')
+        } else {
+          alert.error('Tạo Thất Bại!')
+        }
+      } catch (error) {
+        console.error(error)
+      }
     },
     async fetchMarks ({ commit }, studentId) {
       commit('setMarks', await Mark.fetch({ student: studentId }))
@@ -125,6 +144,15 @@ export default {
     },
     setCount (state, count) {
       state.count = count
+    },
+    setStudents(state, students) {
+      state.students = students.reduce(
+        (accumulator, currentValue) => ({
+          ...accumulator,
+          [currentValue.id]: currentValue
+        }),
+        {}
+      )
     },
     setStudent (state, student) {
       state.student = student

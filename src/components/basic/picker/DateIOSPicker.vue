@@ -1,19 +1,20 @@
 <template>
   <v-menu
+    v-bind="$attrs"
     v-model="menu"
     :close-on-content-click="false"
     :nudge-right="40"
     transition="scale-transition"
     offset-y
-    min-width="290px"
-    style="width:100%"
   >
     <template v-slot:activator="{ on }">
       <v-text-field
-        outlined
+        v-bind="$attrs"
         :value="display"
-        label="Chọn Ngày"
+        @click:clear="updated('')"
         readonly
+        clearable
+        flat
         dense
         v-on="on"
       ></v-text-field>
@@ -31,21 +32,26 @@
 import moment from 'moment'
 export default {
   props: {
-    date: String
+    date: String,
   },
   data: () => ({
     data: new Date().toISOString().substr(0, 10),
-
-    menu: false
+    menu: false,
   }),
   methods: {
     updated(value) {
-      this.$emit('update:date', moment(this.data).toISOString())
+      if (value) {
+        this.$emit('update:date', moment(this.data).toISOString())
+      } else {
+        this.$emit('update:date', '')
+      }
       this.menu = false
     },
     reset() {
-      this.data = moment(this.date).format('YYYY-MM-DD')
-    }
+      if (this.date) {
+        this.data = moment(this.date).format('YYYY-MM-DD')
+      }
+    },
   },
   computed: {
     display() {
@@ -53,7 +59,7 @@ export default {
         return moment(this.date).format('DD/MM/YYYY')
       }
       return ''
-    }
+    },
   },
   created() {
     this.reset()
@@ -61,7 +67,7 @@ export default {
   watch: {
     date() {
       this.reset()
-    }
-  }
+    },
+  },
 }
 </script>

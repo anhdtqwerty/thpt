@@ -1,55 +1,57 @@
 <template>
   <v-form>
-    <v-row v-show="show" class="mt-n6 mb-2 kid">
-      <v-col cols="12" md="3">
+    <v-row no-gutters>
+      <v-col md="3">
         <v-text-field
-          v-model="selectedCourse"
-          item-text="tags"
-          item-value="id"
-          clear-icon="mdi-close"
-          placeholder="Nhập tên nhóm"
-          deletable-chips
+          v-model="name"
+          placeholder="Tên học sinh"
+          return-object
           clearable
-          multiple
           flat
           filled
           dense
-          return-object
+          hide-details
         />
       </v-col>
-      <v-col cols="12" md="3">
-        <autocomplete-generation
-          v-model="generation"
-          item-text="name"
-          item-value="id"
-          placeholder="Chọn khóa"
-          return-object
-          deletable-chips
+      <v-col md="3">
+        <v-text-field
+          v-model="classes"
+          clear-icon="mdi-close"
+          placeholder="Lớp"
           clearable
-          multiple
           flat
           filled
           dense
-        ></autocomplete-generation>
+          return-object
+          hide-details
+        />
+      </v-col>
+      <v-col md="3">
+        <date-picker
+          placeholder="Ngày sinh"
+          filled
+          outline
+          :date.sync="dob"
+        ></date-picker>
       </v-col>
     </v-row>
-    <v-row>
-      <v-col cols="12" md="3">
+    <v-row no-gutters>
+      <v-col md="3">
         <v-text-field
           v-model="code"
-          :items="classStatus"
           clear-icon="mdi-close"
           placeholder="Mã học viên"
           flat
           filled
           dense
           clearable
+          hide-details
         />
       </v-col>
-      <v-col cols="12" md="3">
+      <v-col md="3">
         <v-autocomplete
           v-model="status"
-          :items="classStatus"
+          :items="studentStatus"
           clear-icon="mdi-close"
           item-text="title"
           item-value="status"
@@ -58,44 +60,30 @@
           filled
           dense
           clearable
-          deletable-chips
+          hide-details
         ></v-autocomplete>
       </v-col>
-      <v-col cols="12" md="3">
-        <autocomplete-root-major
-          v-model="major"
+      <v-col md="3">
+        <v-autocomplete
+          :items="genders"
           item-text="title"
-          item-value="id"
-          placeholder="Chọn chuyên ngành"
+          item-value="value"
+          v-model="gender"
+          placeholder="Giới tính"
           flat
           filled
-          auto-select-first
           dense
-          required
           clearable
+          hide-details
         />
       </v-col>
-      <v-col cols="12" md="3" class="d-flex justify-end">
+      <v-col md="3">
         <v-btn
+          class="py-5"
           depressed
-          width="120px"
-          height="38px"
-          color="white"
-          @click="show = !show"
-          class="grey--text darken-1--text"
-        >
-          <v-icon left dark>{{
-            show ? 'mdi-chevron-up' : 'mdi-chevron-down'
-          }}</v-icon
-          >Nâng cao
-        </v-btn>
-        <v-btn
-          depressed
-          width="80px"
-          height="38px"
           color="#0D47A1"
           @click="onFilterChanged"
-          class="white--text ml-4"
+          dark
         >
           <v-icon left dark>mdi-filter-outline</v-icon>Lọc
         </v-btn>
@@ -105,45 +93,45 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapState } from 'vuex'
-import AutocompleteRootMajor from '@/components/basic/input/AutocompleteRootMajor'
-import AutocompleteGeneration from '@/components/basic/input/AutocompleteGeneration'
+import { mapState } from 'vuex'
+import DatePicker from '@/components/basic/picker/DateIOSPicker'
+import moment from 'moment'
 
 export default {
   components: {
-    AutocompleteRootMajor,
-    AutocompleteGeneration
+    DatePicker,
   },
   data: () => ({
     show: false,
-    query: '',
-    major: {},
-    status: 'running',
-    generation: '',
+    status: 'active',
     code: '',
-    tags: '',
-    selectedCourse: []
+    dob: '',
+    name: '',
+    classes: [],
+    gender: '',
+    selectedCourse: [],
+    genders: [
+      { title: 'Nam', value: 'male' },
+      { title: 'Nữ', value: 'female' },
+      { title: 'Khác', value: 'other' },
+    ],
   }),
   computed: {
-    ...mapState('constant', ['classStatus'])
+    ...mapState('constant', ['studentStatus']),
   },
   methods: {
     onFilterChanged() {
-      console.log({
-        generation: this.generation,
-        tags_contains: this.tags,
-        rootMajor: this.major,
-        code_contains: this.code,
-        _sort: 'createdAt:desc'
-      })
       this.$emit('onFilterChanged', {
-        generation: this.generation,
-        tags_contains: this.tags,
-        rootMajor: this.major,
+        name_contains: this.name,
+        classes: this.classes,
+        dob_gt: moment(this.dob).startOf('month').toISOString(),
+        dob_lt: moment(this.dob).endOf('month').toISOString(),
         code_contains: this.code,
-        _sort: 'createdAt:desc'
+        status: this.status,
+        gender: this.gender,
+        _sort: 'createdAt:desc',
       })
-    }
-  }
+    },
+  },
 }
 </script>

@@ -1,53 +1,39 @@
 <template>
   <v-autocomplete
-    v-bind="this.$attrs"
     item-text="title"
-    :items="semesterList"
     item-value="id"
+    v-bind="this.$attrs"
+    :items="semesters"
     @change="onChange"
-    clearable
-    return-object
-    :rules="[v => !!v || 'Item is required']"
     v-on:input="$emit('input', $event)"
   ></v-autocomplete>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import { Semester } from '@/plugins/api'
 
 export default {
   data: () => ({
-    semesters: []
+    semesters: [],
   }),
   props: {
-    filter: Object,
-    defaultSemesters: Array
+    filters: Object,
+    defaultSemesters: Array,
+    options: Object,
   },
-  computed: {
-    ...mapGetters('app', ['department', 'roles', 'roleIdByName']),
-    semesterList () {
-      return this.semesters.map(c => ({ ...c, title: `${c.title}` }))
+  created() {
+    if (this.defaultSemesters) {
+      this.semesters = this.defaultSemesters
     }
-  },
-  created () {
-    this.semesters = this.defaultSemesters || []
-    this.fetchSemester()
+    this.fetchAllSemesters()
   },
   methods: {
-    async fetchSemester() {
-      this.semesters = await Semester.fetch({
-        ...this.filter
-      })
+    async fetchAllSemesters() {
+      this.semesters = await Semester.fetch({})
     },
-    onChange (data) {
+    onChange(data) {
       this.$emit('change', data)
-    }
+    },
   },
-  watch: {
-    filters (filters) {
-      this.fetchSemester()
-    }
-  }
 }
 </script>

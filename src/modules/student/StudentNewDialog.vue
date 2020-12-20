@@ -1,110 +1,33 @@
 <template>
-  <v-dialog v-model="dialog" width="420">
+  <v-dialog
+    :fullscreen="$vuetify.breakpoint.mobile"
+    v-model="dialog"
+    width="661"
+  >
     <v-card>
-      <v-toolbar dense class="elevation-0" color="primary" dark>
-        <v-toolbar-title>Tạo Mới Học Sinh</v-toolbar-title>
+      <v-toolbar dense class="elevation-0" color="#0D47A1" dark>
+        <v-toolbar-title>Thêm Mới Học Sinh</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-btn icon>
           <v-icon @click="cancel">close</v-icon>
         </v-btn>
       </v-toolbar>
       <v-divider />
-      <v-form ref="form" class="pa-3">
-        <p class="caption">Thông tin & Đăng nhập</p>
-        <v-text-field
-          :rules="[rules.required]"
-          v-model="name"
-          label="Họ và Tên"
-          @blur="nameLostFocus()"
-          outlined
-          dense
-        ></v-text-field>
-        <v-text-field
-          :rules="[rules.required]"
-          v-model="username"
-          disabled
-          label="Mã Học Sinh"
-          outlined
-          dense
-        ></v-text-field>
-        <v-text-field
-          :rules="[rules.required]"
-          v-model="phone"
-          label="Số điện thoại"
-          outlined
-          dense
-        ></v-text-field>
-        <v-text-field
-          v-model="email"
-          label="Email"
-          :error-messages="emailError"
-          validate-on-blur
-          @blur="emailLostFocus()"
-          outlined
-          dense
-        ></v-text-field>
-        <v-text-field
-          v-model="password"
-          label="Mật Khẩu"
-          :append-icon="show ? 'visibility' : 'visibility_off'"
-          :rules="[rules.required, rules.min]"
-          :type="show ? 'text' : 'password'"
-          @click:append="show = !show"
-          hint="At least 6 characters"
-          outlined
-          dense
-        ></v-text-field>
-        <v-divider />
-        <p class="caption mt-4">Trung Tâm</p>
-        <autocomplete-generation
-          v-if="!hideAdvanceOption"
-          v-model="generation"
-          item-text="name"
-          return-object
-          item-value="id"
-          label="Khóa"
-          required
-          outlined
-          dense
-        ></autocomplete-generation>
-        <autocomplete-major
-          v-if="!hideAdvanceOption"
-          v-model="rootMajor"
-          item-text="title"
-          return-object
-          item-value="id"
-          label="Chuyên Ngành"
-          required
-          outlined
-          dense
-        ></autocomplete-major>
-        <v-select
-          v-if="!hideAdvanceOption"
-          v-model="major"
-          :items="majors"
-          item-text="title"
-          return-object
-          item-value="id"
-          label="Chuyên Ngành Hẹp"
-          required
-          outlined
-          dense
-        ></v-select>
-        <autocomplete-class
-          v-model="classes"
-          item-text="title"
-          return-object
-          item-value="id"
-          label="Xếp Lớp"
-          required
-          outlined
-          multiple
-          dense
-        />
+      <v-form ref="form" class="pa-6">
+        <h3>1. Thông tin cơ bản</h3>
+        <student-general-form ref="studentGeneralForm"></student-general-form>
+        <h3>2. Thông tin liên lạc</h3>
+        <student-contact-form ref="studentContactForm"></student-contact-form>
+        <h3>3. Ghi chú về học sinh</h3>
+        <student-note-form ref="studentNoteForm"></student-note-form>
+        <h3>4. Thông tin gia đình</h3>
+        <student-family-form ref="studentFamilyForm"></student-family-form>
       </v-form>
-      <v-card-actions>
+      <v-card-actions class="px-4">
         <v-spacer></v-spacer>
-        <v-btn small color="primary" @click="save" :disabled="isLoading" dense>Lưu</v-btn>
+        <v-btn dark color="#0D47A1" @click="save" :disabled="isLoading" dense
+          >Lưu</v-btn
+        >
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -112,17 +35,21 @@
 
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex'
-import AutocompleteMajor from '@/components/basic/input/AutocompleteRootMajor.vue'
-import AutocompleteGeneration from '@/components/basic/input/AutocompleteGeneration'
-import AutocompleteClass from '@/components/basic/input/AutocompleteClass.vue'
+
 import { get } from 'lodash'
+import StudentGeneralForm from '@/components/basic/form/StudentGeneralForm.vue'
+import StudentContactForm from '@/components/basic/form/StudentContactForm.vue'
+import StudentNoteForm from '@/components/basic/form/StudentNoteForm.vue'
+import StudentFamilyForm from '@/components/basic/form/StudentFamilyForm.vue'
+
 export default {
   components: {
-    AutocompleteMajor,
-    AutocompleteGeneration,
-    AutocompleteClass
+    StudentGeneralForm,
+    StudentContactForm,
+    StudentNoteForm,
+    StudentFamilyForm,
   },
-  data () {
+  data() {
     return {
       dialog: false,
       loading: 0,
@@ -144,8 +71,8 @@ export default {
       rules: {
         required: (value) => !!value || 'Required.',
         min: (v) => v.length >= 6 || 'Min 8 characters',
-        email: (v) => /.+@.+/.test(v) || 'E-mail must be valid'
-      }
+        email: (v) => /.+@.+/.test(v) || 'E-mail must be valid',
+      },
     }
   },
   props: {
@@ -153,44 +80,48 @@ export default {
     hideAdvanceOption: Boolean,
     defaultPhone: String,
     defaultEmail: String,
-    defaultName: String
+    defaultName: String,
   },
   computed: {
     ...mapState('app', ['roles', 'department']),
     ...mapGetters('app', ['roleIdByName', 'roles']),
-    isLoading () {
+    isLoading() {
       return this.loading > 0
     },
-    majors () {
+    majors() {
       return this.rootMajor.majors || []
-    }
+    },
   },
   methods: {
     ...mapActions('user', ['generateUserName', 'validateEmail']),
-    ...mapActions('students', ['createStudent']),
-    async save () {
+    ...mapActions('student', ['createStudent']),
+    async save() {
       if (!this.$refs.form.validate()) return
-      const student = await this.createStudent({
-        name: this.name,
-        phone: this.phone + '',
-        majors: [this.major.id].filter((m) => !!m),
-        classes: this.classes.map(c => c.id),
-        rootMajor: get(this.rootMajor, 'id'),
-        generation: get(this.generation, 'id'),
-        username: this.username,
-        username_indexing: this.username_indexing,
-        username_no: this.username_no,
-        status: 'active',
-        role: this.roleIdByName('Student'),
-        department: this.department.id,
-        email: this.email,
-        password: this.password
+      const studentGeneralForm = this.$refs.studentGeneralForm.getData()
+      const studentContactForm = this.$refs.studentContactForm.getData()
+      const studentNoteForm = this.$refs.studentNoteForm.getData()
+      const studentFamilyForm = this.$refs.studentFamilyForm.getData()
+      this.createStudent({
+        data: {
+          name: studentGeneralForm.name,
+          phone: studentContactForm.phone,
+          address: studentContactForm.currentLive,
+          notes: studentNoteForm.notes,
+          email: studentContactForm.email,
+          gender: studentGeneralForm.gender,
+          dob: studentGeneralForm.dob,
+          data: {
+            ...studentGeneralForm,
+            ...studentContactForm,
+            ...studentFamilyForm,
+            ...studentNoteForm,
+          },
+        },
       })
       this.dialog = false
       this.reset()
-      this.$emit('done', student)
     },
-    async nameLostFocus () {
+    async nameLostFocus() {
       const {
         username,
         // eslint-disable-next-line
@@ -204,7 +135,7 @@ export default {
       // eslint-disable-next-line
       this.username_no = username_no
     },
-    async emailLostFocus () {
+    async emailLostFocus() {
       try {
         this.loading += 1
         if (this.email !== this.lastemail) {
@@ -215,22 +146,22 @@ export default {
         this.loading -= 1
       }
     },
-    cancel () {
+    cancel() {
       this.dialog = false
       this.reset()
       this.$emit('cancel')
     },
-    reset () {
+    reset() {
       this.name = ''
       this.username = ''
       this.phone = ''
       this.status = 'active'
       this.password = ''
       this.email = ''
-    }
+    },
   },
   watch: {
-    state (state) {
+    state(state) {
       this.dialog = true
       this.phone = this.defaultPhone || ''
       this.email = this.defaultEmail || ''
@@ -239,7 +170,7 @@ export default {
         this.nameLostFocus()
       }
     },
-    rootMajor () {}
-  }
+    rootMajor() {},
+  },
 }
 </script>
