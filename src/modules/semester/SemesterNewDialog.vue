@@ -15,7 +15,7 @@
 
       <v-form class="pa-4" ref="form">
         <v-text-field
-          v-model="semester"
+          v-model="title"
           placeholder="Tên học kỳ"
           outlined
           clearable
@@ -32,15 +32,15 @@
         ></autocomplete-generation>
         <date-iso-picker
           :rules="[rules.required]"
+          :date.sync="startDate"
           outlined
           placeholder="Ngày bắt đầu"
-          v-model="startDate"
         ></date-iso-picker>
         <date-iso-picker
           :rules="[rules.required]"
+          :date.sync="endDate"
           outlined
           placeholder="Ngày kết thúc"
-          v-model="endDate"
         ></date-iso-picker>
         <v-textarea v-model="notes" outlined placeholder="Ghi chú"></v-textarea>
       </v-form>
@@ -55,6 +55,7 @@
           medium
           dark
           :disabled="isLoading"
+          @click="save"
         >
           <span>Lưu</span>
         </v-btn>
@@ -64,7 +65,7 @@
 </template>
 
 <script>
-// import { mapActions, mapState, mapGetters } from 'vuex'
+import { mapActions, mapState, mapGetters } from 'vuex'
 import AutocompleteGeneration from '@/components/basic/input/AutocompleteGeneration.vue'
 import DateIsoPicker from '@/components/basic/picker/DateIOSPicker'
 
@@ -83,6 +84,7 @@ export default {
       startDate: '',
       endDate: '',
       notes: '',
+      title: ''
     }
   },
   props: {
@@ -94,12 +96,29 @@ export default {
     },
   },
   methods: {
+    ...mapActions('semester', ['createSemester']),
+    async save() {
+      this.loading = true
+      const data = {
+        'title': this.title,
+        'generation': this.generation,
+        'config': {
+          'startDate': this.startDate,
+          'endDate': this.endDate,
+          'notes': this.notes,
+        }
+      }
+      await this.createSemester({ ...data })
+      this.$alert.success('Tạo học kỳ mới thành công')
+      this.loading = false
+      this.dialog = false
+    },
     cancel() {
       this.dialog = false
       this.reset()
     },
     reset() {
-      this.semester = ''
+      this.title = ''
       this.generation = ''
       this.startDate = ''
       this.endDate = ''
@@ -113,6 +132,3 @@ export default {
   },
 }
 </script>
-
-<style>
-</style>

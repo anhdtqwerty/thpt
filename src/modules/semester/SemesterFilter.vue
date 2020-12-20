@@ -9,14 +9,6 @@
         dense
         clearable
       ></autocomplete-generation>
-      <autocomplete-semester
-        v-model="semester"
-        class="mr-4"
-        placeholder="Học kỳ"
-        filled
-        dense
-        clearable
-      ></autocomplete-semester>
       <v-btn
         class="py-5"
         depressed
@@ -32,23 +24,19 @@
 
 <script>
 import AutocompleteGeneration from '@/components/basic/input/AutocompleteGeneration'
-import AutocompleteSemester from '@/components/basic/input/AutocompleteSemester'
 
 export default {
   components: {
     AutocompleteGeneration,
-    AutocompleteSemester,
   },
   data: () => ({
     generation: '',
-    semester: '',
   }),
   computed: {},
   methods: {
     onFilterChanged() {
       this.$emit('onFilterChanged', {
         generation: this.generation,
-        semester: this.semester,
       })
     },
   },

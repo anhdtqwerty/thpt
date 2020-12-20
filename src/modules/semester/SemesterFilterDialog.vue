@@ -3,12 +3,7 @@
     <v-dialog fullscreen v-model="dialog">
       <v-card>
         <!-- toolbar -->
-        <v-toolbar
-          color="#0D47A1"
-          dense
-          dark
-          class="elevation-0"
-        >
+        <v-toolbar color="#0D47A1" dense dark class="elevation-0">
           <v-toolbar-title>LỌC TÌM KIẾM</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-btn icon>
@@ -26,13 +21,6 @@
             dense
             clearable
           ></autocomplete-generation>
-          <autocomplete-semester
-            v-model="semester"
-            placeholder="Học kỳ"
-            filled
-            dense
-            clearable
-          ></autocomplete-semester>
         </v-form>
 
         <v-card-actions>
@@ -58,12 +46,10 @@
 <script>
 import { mapActions } from 'vuex'
 import AutocompleteGeneration from '@/components/basic/input/AutocompleteGeneration'
-import AutocompleteSemester from '@/components/basic/input/AutocompleteSemester'
 
 export default {
   components: {
     AutocompleteGeneration,
-    AutocompleteSemester
   },
   data() {
     return {
@@ -71,8 +57,7 @@ export default {
       loading: 0,
       name: '',
       dialog: false,
-      semester: '',
-      generation: ''
+      generation: '',
     }
   },
   props: {
@@ -90,13 +75,11 @@ export default {
       this.$refs.form.reset()
     },
     reset() {
-      this.name = ''
+      this.generation = ''
     },
     ...mapActions('staff', ['updateStudent']),
     onFilterChanged() {
-      this.$emit('onFilterChanged', {
-        id: this.name,
-      })
+      this.$emit('onFilterChanged', { generation: this.generation })
       this.dialog = false
       this.reset()
       this.$refs.form.reset()
@@ -109,6 +92,3 @@ export default {
   },
 }
 </script>
-
-<style>
-</style>
