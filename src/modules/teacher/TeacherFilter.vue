@@ -14,24 +14,26 @@
       ></autocomplete-teacher>
       <v-btn
         class="ma-2"
-        dark
+        outlined
         height="41"
-        color="amber dark-1"
+        color="#0D47A1"
         depressed
         @click="onFilterChanged"
       >
-        <v-icon class="" left>filter_alt</v-icon>Lọc
+        <v-icon class="" left>mdi-filter-outline</v-icon>Lọc
       </v-btn>
     </v-row>
-    
+
     <v-row class="d-flex d-md-none justify-end">
-      <v-btn icon @click="filterState=!filterState">
-        <v-icon left>filter_alt</v-icon>
+      <v-btn icon @click="filterState = !filterState">
+        <v-icon left>mdi-filter-outline</v-icon>
       </v-btn>
 
-      <teacher-filter-dialog @onFilterChanged="onFilterDialogChange" :state="filterState" />
+      <teacher-filter-dialog
+        @onFilterChanged="onFilterDialogChange"
+        :state="filterState"
+      />
     </v-row>
-    
   </div>
 </template>
 
@@ -60,13 +62,12 @@ export default {
   methods: {
     onFilterChanged() {
       this.$emit('onFilterChanged', {
-        id: this.name
+        id: this.name,
       })
     },
     onFilterDialogChange(id) {
-      this.$emit('onFilterChanged',id)
-    }
+      this.$emit('onFilterChanged', id)
+    },
   },
-  
 }
 </script>
