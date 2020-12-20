@@ -4,19 +4,20 @@ import { Subject } from '@/plugins/api'
 export default {
   namespaced: true,
   state: {
-    subject: []
+    subjects: []
   },
   actions: {
     async fetchSubject ({ commit }, options) {
       try {
-        commit('setSubject', await Subject.fetch(options))
+        commit('setSubjects', await Subject.fetch(options))
       } catch (e) {
         alert.error(e)
       }
     },
   },
   mutations: {
-
-  },
-  getters: {}
+    setSubjects (state, subjects) {
+      state.subjects = subjects
+    }
+  }
 }

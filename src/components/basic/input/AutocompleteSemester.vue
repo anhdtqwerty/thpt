@@ -2,44 +2,42 @@
   <v-autocomplete
     v-bind="this.$attrs"
     item-text="title"
-    :items="classList"
-    clearable
+    :items="semesterList"
     item-value="id"
     @change="onChange"
+    clearable
     return-object
     :rules="[v => !!v || 'Item is required']"
-    @input="onChange"
+    v-on:input="$emit('input', $event)"
   ></v-autocomplete>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import { Class } from '@/plugins/api'
+import { Semester } from '@/plugins/api'
 
 export default {
   data: () => ({
-    classes: []
+    semesters: []
   }),
   props: {
     filter: Object,
-    defaultClasses: Array
+    defaultSemesters: Array
   },
   computed: {
     ...mapGetters('app', ['department', 'roles', 'roleIdByName']),
-    classList () {
-      return this.classes.map(c => ({ ...c, title: `${c.code} - ${c.title}` }))
+    semesterList () {
+      return this.semesters.map(c => ({ ...c, title: `${c.title}` }))
     }
   },
   created () {
-    this.classes = this.defaultClasses || []
-    this.fetchClass()
+    this.semesters = this.defaultSemesters || []
+    this.fetchSemester()
   },
   methods: {
-    async fetchClass () {
-      this.classes = await Class.fetch({
-        ...this.filter,
-        department: this.department.id,
-        status_in: ['opened', 'running']
+    async fetchSemester() {
+      this.semesters = await Semester.fetch({
+        ...this.filter
       })
     },
     onChange (data) {
@@ -48,7 +46,7 @@ export default {
   },
   watch: {
     filters (filters) {
-      this.fetchClass()
+      this.fetchSemester()
     }
   }
 }
