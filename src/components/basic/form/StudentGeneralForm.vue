@@ -8,6 +8,7 @@
           label="Họ và tên"
           placeholder="Nhập tên học sinh"
           required
+          outlined
           dense
         ></v-text-field>
         <date-picker
@@ -15,6 +16,7 @@
           label="Ngày Sinh"
           placeholder="Nhập Ngày Sinh"
           dense
+          outlined
         ></date-picker>
         <v-select
           ref="gender"
@@ -23,6 +25,7 @@
           label="Giới Tính"
           placeholder="Chọn giới tính"
           dense
+          outlined
           required
         ></v-select>
         <v-text-field
@@ -31,6 +34,7 @@
           label="Quê quán"
           placeholder="Nhập địa chỉ thường trú"
           required
+          outlined
           dense
         ></v-text-field>
         <v-text-field
@@ -39,6 +43,7 @@
           label="Dân tộc"
           placeholder="Nhập dân tộc"
           required
+          outlined
           dense
         ></v-text-field>
       </v-col>
@@ -54,7 +59,6 @@ export default {
   props: {
     student: {
       type: [Object],
-      required: true,
       default: () => {},
     },
   },
@@ -67,7 +71,9 @@ export default {
     frequentlyAddress: '',
   }),
   created() {
-    this.reset()
+    if (this.student) {
+      this.reset()
+    }
   },
   methods: {
     getData() {

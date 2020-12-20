@@ -8,6 +8,7 @@
           v-model="dadName"
           label="Họ Và Tên Bố"
           placeholder="Nhập họ và tên bố"
+          outlined
           dense
         ></v-text-field>
         <v-text-field
@@ -15,6 +16,7 @@
           v-model="dadPhone"
           label="Số điện thoại bố"
           placeholder="Nhập số điện thoại bố"
+          outlined
           dense
         ></v-text-field>
         <v-text-field
@@ -23,6 +25,7 @@
           label="Email Bố"
           placeholder="Nhập email bố"
           dense
+          outlined
         ></v-text-field>
       </v-col>
       <v-col class="pl-2" cols="12" md="6">
@@ -32,6 +35,7 @@
           v-model="momName"
           label="Họ Và Tên Mẹ"
           placeholder="Nhập họ và tên mẹ"
+          outlined
           dense
         ></v-text-field>
         <v-text-field
@@ -39,6 +43,7 @@
           v-model="momPhone"
           label="Số Điện Thoại Mẹ"
           placeholder="Nhập số điện thoại mẹ"
+          outlined
           dense
         ></v-text-field>
         <v-text-field
@@ -46,6 +51,7 @@
           v-model="momEmail"
           label="Email Mẹ"
           placeholder="Nhập email mẹ"
+          outlined
           dense
         ></v-text-field>
       </v-col>
@@ -58,7 +64,6 @@ export default {
   props: {
     student: {
       type: [Object],
-      required: true,
       default: () => {},
     },
   },
@@ -72,7 +77,9 @@ export default {
     momPhone: '',
   }),
   created() {
-    this.reset()
+    if (this.student) {
+      this.reset()
+    }
   },
   methods: {
     validate() {
