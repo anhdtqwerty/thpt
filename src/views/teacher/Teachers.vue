@@ -7,9 +7,14 @@
       </v-col>
 
       <v-col cols="4" class="text-right md-6 px-0 py-2">
-        <v-btn medium class="teacher-btn" color="success" @click="createState=!createState">
+        <v-btn
+          medium
+          class="teacher-btn"
+          color="primary"
+          @click="createState = !createState"
+        >
           <v-icon left>add</v-icon>
-          <span>{{titleBtn}}</span>
+          <span>{{ titleBtn }}</span>
         </v-btn>
       </v-col>
     </v-row>
@@ -32,7 +37,10 @@
             </v-col>
 
             <v-col class="text-right" cols="2" md="6">
-              <setting-table-header :default-headers="originHeaders" @change="headers = $event"/>
+              <setting-table-header
+                :default-headers="originHeaders"
+                @change="headers = $event"
+              />
               <KebapMenu v-if="!$vuetify.breakpoint.xs">
                 <v-list>
                   <v-list-item>
@@ -47,7 +55,17 @@
         <template v-slot:[`item.name`]="{ item }">
           <user-item :teacher="item" :to="'teacher/' + item.id"></user-item>
         </template>
-
+        <template v-slot:[`item.status`]="{ item }">
+          <span v-if="item.status" :class="getColor(item.status)">
+            {{
+              item.status === 'active'
+                ? 'Đang dạy'
+                : item.status === 'block'
+                ? 'Không dạy'
+                : ''
+            }}
+          </span>
+        </template>
         <template v-slot:[`item.actions`]="{ item }">
           <teacher-list-actions :item="item"></teacher-list-actions>
         </template>
@@ -74,26 +92,37 @@ const originHeaders = [
     value: 'name',
     align: 'left',
     sortable: false,
-    class: 'font-weight-black',
-    show: true
+    show: true,
   },
   {
-    text: 'Số Điện Thoại',
-    value: 'phone',
+    text: 'Ngày sinh',
+    value: 'data.dob',
     align: 'left',
     sortable: false,
-    class: 'font-weight-black',
-    show: true
+    show: true,
   },
   {
-    text: 'Email',
-    value: 'email',
+    text: 'Giới tính',
+    value: 'gender',
     align: 'left',
     sortable: false,
-    class: 'font-weight-black',
-    show: true
+    show: true,
   },
-  { text: 'Hành động', value: 'actions', show: true }
+  {
+    text: 'Loại cán bộ',
+    value: 'type',
+    align: 'left',
+    sortable: false,
+    show: true,
+  },
+  {
+    text: 'Trạng thái',
+    value: 'status',
+    align: 'left',
+    sortable: false,
+    show: true,
+  },
+  { text: 'Hành động', value: 'actions', show: true },
 ]
 Vue.use(Vuetify)
 
@@ -106,7 +135,7 @@ export default {
     SettingTableHeader,
     ExportExcel,
     KebapMenu,
-    NewTeacherDialog
+    NewTeacherDialog,
   },
   data() {
     return {
@@ -127,24 +156,30 @@ export default {
   computed: {
     ...mapGetters('teacher', ['teachers', 'teacher']),
     ...mapState('app', ['department']),
-    titleBtn () {
+    titleBtn() {
       switch (this.$vuetify.breakpoint.name) {
         case 'xs':
-        case 'sm': return 'Thêm'
-        default: return 'Thêm Giáo viên'
+        case 'sm':
+          return 'Thêm'
+        default:
+          return 'Thêm Giáo viên'
       }
-    }
+    },
   },
   methods: {
-    ...mapActions('teacher', [
-      'fetchTeachers',
-      'setTeachers',
-    ]),
+    ...mapActions('teacher', ['fetchTeachers', 'setTeachers']),
+    getColor(status) {
+      if (status === 'active') return 'green--text'
+      if (status === 'block') return 'red--text'
+      else return 'gray--text'
+    },
     refresh(query) {
       this.isLoading = true
-      this.fetchTeachers({ ...query, department: this.department.id }).then(() => {
-        this.isLoading = false
-      })
+      this.fetchTeachers({ ...query, department: this.department.id }).then(
+        () => {
+          this.isLoading = false
+        }
+      )
     },
   },
 }
