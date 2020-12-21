@@ -26,13 +26,13 @@ import StudentDashboard from '@/views/student/Dashboard'
 import Student from '@/views/student/Student'
 import StudentClasses from '@/views/student/Classes'
 import StudentImporter from '@/views/student/StudentImporter.vue'
-// ---------------- DEPARTMENT -------------------------------
-import Department from '@/views/department/Department'
+// ---------------- Score -------------------------------
+import InputScore from '@/views/score/InputScore.vue'
+
 import DashBoard from '@/views/dashboard/Dashboard.vue'
 // ---------------- LEARNING -----------------------------
 import Schedule from '@/views/schedule/Schedule.vue'
-// -----------------HIGH SCHOOL---------------------------
-import Classes from '@/views/class/Classes.vue'
+
 // ---------------- LAYOUT -------------------------------
 import GuestLayout from '../components/layout/GuestLayout'
 import MainLayout from '../components/layout/MainLayout'
@@ -314,20 +314,11 @@ const routes = [
         }
       },
       {
-        path: 'department/:id',
-        name: 'Department',
-        component: Department,
+        path: 'marks-input',
+        name: 'Nhập điểm',
+        component: InputScore,
         meta: {
-          title: 'Department',
-          auth: true
-        }
-      },
-      {
-        path: 'classes',
-        name: 'Danh sách lớp',
-        component: Classes,
-        meta: {
-          title: 'Lớp học',
+          title: 'Nhâp điểm',
           auth: true
         }
       },

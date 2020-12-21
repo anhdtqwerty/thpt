@@ -5,7 +5,7 @@
     height="64px"
     class="elevation-2 white"
     :class="{ blue: isXsScreen, 'darken-4': isXsScreen }"
-  > 
+  >
     <v-app-bar-nav-icon
       dark
       class="d-flex d-sm-none"

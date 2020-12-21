@@ -39,7 +39,7 @@ function _resetPlugins () {
 
 function _authGuard (to) {
   if (!to.name) {
-    return '/bill'
+    return '/dashboard'
   }
 
   let hasAuthRule = false
@@ -63,7 +63,7 @@ function _authGuard (to) {
         ? true
         : '/signin'
       : isAuthenticated && to.name !== 'resetPassword'
-        ? '/bill'
+        ? '/dashboard'
         : true
     : true
 }
