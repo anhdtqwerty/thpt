@@ -136,11 +136,7 @@ export default {
         subjectObj: '',
         factorObj: '',
         semesterObj: '',
-        studentObj: '',
-        lastAction: {
-          label: 'Thao tác lần cuối',
-          value: '',
-        },
+        studentObj: ''
       },
       originHeaders: [
         { text: 'STT', value: 'order', align: 'left', sortable: false, show: true },
@@ -157,6 +153,15 @@ export default {
     }
   },
   watch: {
+    filterMode () {
+      this.filterInputs = {
+        classObj: '',
+        subjectObj: '',
+        factorObj: '',
+        semesterObj: '',
+        studentObj: ''
+      }
+    },
     filterInputs: {
       handler (data) {
         const classId = _.get(data, 'classObj.id')
@@ -256,8 +261,7 @@ export default {
           ...this.marks[id],
           value
         }))
-      console.log(updatedMarks)
-      // this.updateMarks(updatedMarks.map({id, value} => Object.assign({}, this.marks[id], { value } )))
+      this.updateMarks(updatedMarks)
     }
   }
 }
