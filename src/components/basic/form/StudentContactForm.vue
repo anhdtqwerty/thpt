@@ -8,6 +8,7 @@
           label="Địa chỉ liên lạc"
           placeholder="Nhập địa chỉ hiện tại"
           required
+          outlined
           dense
         ></v-text-field>
         <v-text-field
@@ -16,6 +17,7 @@
           label="Tỉnh/Thành phố"
           placeholder="Nhập tỉnh/thành phố đang sống"
           required
+          outlined
           dense
         ></v-text-field>
         <v-text-field
@@ -24,6 +26,7 @@
           label="Quận/Huyện"
           placeholder="Nhập quận/huyện đang sống"
           required
+          outlined
           dense
         ></v-text-field>
         <v-text-field
@@ -32,6 +35,7 @@
           label="Số điện thoại"
           placeholder="Nhập số điện thoại"
           required
+          outlined
           dense
         ></v-text-field>
         <v-text-field
@@ -39,6 +43,7 @@
           v-model="email"
           label="Email Học Sinh"
           placeholder="Nhập email học sinh"
+          outlined
           dense
         ></v-text-field>
       </v-col>
@@ -52,7 +57,6 @@ export default {
   props: {
     student: {
       type: [Object],
-      required: true,
       default: () => {},
     },
   },
@@ -65,7 +69,9 @@ export default {
     district: '',
   }),
   created() {
-    this.reset()
+    if (this.student) {
+      this.reset()
+    }
   },
   methods: {
     validate() {

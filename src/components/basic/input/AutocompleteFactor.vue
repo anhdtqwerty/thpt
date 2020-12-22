@@ -2,44 +2,42 @@
   <v-autocomplete
     v-bind="this.$attrs"
     item-text="title"
-    :items="classList"
-    clearable
+    :items="factorList"
     item-value="id"
+    clearable
     @change="onChange"
     return-object
     :rules="[v => !!v || 'Item is required']"
-    @input="onChange"
+    v-on:input="$emit('input', $event)"
   ></v-autocomplete>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import { Class } from '@/plugins/api'
+import { Factor } from '@/plugins/api'
 
 export default {
   data: () => ({
-    classes: []
+    factors: []
   }),
   props: {
     filter: Object,
-    defaultClasses: Array
+    defaultFactors: Array
   },
   computed: {
     ...mapGetters('app', ['department', 'roles', 'roleIdByName']),
-    classList () {
-      return this.classes.map(c => ({ ...c, title: `${c.code} - ${c.title}` }))
+    factorList () {
+      return this.factors.map(c => ({ ...c, title: `${c.title}` }))
     }
   },
   created () {
-    this.classes = this.defaultClasses || []
-    this.fetchClass()
+    this.factors = this.defaultFactors || []
+    this.fetchFactor()
   },
   methods: {
-    async fetchClass () {
-      this.classes = await Class.fetch({
-        ...this.filter,
-        department: this.department.id,
-        status_in: ['opened', 'running']
+    async fetchFactor() {
+      this.factors = await Factor.fetch({
+        ...this.filter
       })
     },
     onChange (data) {
@@ -48,7 +46,7 @@ export default {
   },
   watch: {
     filters (filters) {
-      this.fetchClass()
+      this.fetchFactor()
     }
   }
 }

@@ -27,7 +27,12 @@
         />
       </v-col>
       <v-col md="3">
-        <date-picker :date.sync="dob" ></date-picker>
+        <date-picker
+          placeholder="Ngày sinh"
+          filled
+          outline
+          :date.sync="dob"
+        ></date-picker>
       </v-col>
     </v-row>
     <v-row no-gutters>
@@ -109,7 +114,7 @@ export default {
       { title: 'Nam', value: 'male' },
       { title: 'Nữ', value: 'female' },
       { title: 'Khác', value: 'other' },
-    ]
+    ],
   }),
   computed: {
     ...mapState('constant', ['studentStatus']),

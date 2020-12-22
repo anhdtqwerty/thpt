@@ -37,7 +37,7 @@
             />
           </v-col>
           <v-col class="mt-4" cols="12">
-            <date-iso-picker :date.sync="dob" ></date-iso-picker>
+            <date-iso-picker filled outline :date.sync="dob"></date-iso-picker>
           </v-col>
           <v-col class="mt-4" cols="12">
             <v-text-field
@@ -84,12 +84,7 @@
       </v-form>
       <v-card-actions class="pa-4">
         <v-spacer></v-spacer>
-        <v-btn
-          depressed
-          color="#0D47A1"
-          @click="onFilterChanged"
-          dark
-        >
+        <v-btn depressed color="#0D47A1" @click="onFilterChanged" dark>
           <v-icon left dark>mdi-filter-outline</v-icon>Lọc
         </v-btn>
       </v-card-actions>
@@ -104,7 +99,7 @@ import moment from 'moment'
 
 export default {
   components: {
-    DateIsoPicker
+    DateIsoPicker,
   },
   props: {
     state: Boolean,
@@ -123,7 +118,7 @@ export default {
       { title: 'Nam', value: 'male' },
       { title: 'Nữ', value: 'female' },
       { title: 'Khác', value: 'other' },
-    ]
+    ],
   }),
   computed: {
     ...mapState('constant', ['studentStatus']),
