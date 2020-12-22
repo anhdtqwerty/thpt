@@ -1,19 +1,19 @@
 <template>
   <div>
-    <v-row class="d-none d-md-flex justify-space-around">
+    <v-row no-gutters>
       <autocomplete-teacher
         v-model="name"
         item-text=""
         item-value=""
         label="Họ tên"
-        class="ma-2"
+        class="mr-4"
         filled
         clearable
         single-line
         dense
       ></autocomplete-teacher>
       <v-btn
-        class="ma-2"
+        class="py-5"
         outlined
         height="41"
         color="#0D47A1"

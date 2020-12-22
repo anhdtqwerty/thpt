@@ -1,7 +1,7 @@
 <template>
   <v-form>
     <v-row no-gutters>
-      <v-col md="3">
+      <v-col class="pa-0 mr-2" md="3">
         <v-text-field
           v-model="name"
           placeholder="Tên học sinh"
@@ -13,7 +13,7 @@
           hide-details
         />
       </v-col>
-      <v-col md="3">
+      <v-col class="pa-0 mr-2" md="3">
         <v-text-field
           v-model="classes"
           clear-icon="mdi-close"
@@ -26,7 +26,7 @@
           hide-details
         />
       </v-col>
-      <v-col md="3">
+      <v-col class="pa-0 mr-2" md="3">
         <date-picker
           placeholder="Ngày sinh"
           filled
@@ -36,7 +36,7 @@
       </v-col>
     </v-row>
     <v-row no-gutters>
-      <v-col md="3">
+      <v-col class="pa-0 mr-2" md="3">
         <v-text-field
           v-model="code"
           clear-icon="mdi-close"
@@ -48,7 +48,7 @@
           hide-details
         />
       </v-col>
-      <v-col md="3">
+      <v-col class="pa-0 mr-2" md="3">
         <v-autocomplete
           v-model="status"
           :items="studentStatus"
@@ -63,7 +63,7 @@
           hide-details
         ></v-autocomplete>
       </v-col>
-      <v-col md="3">
+      <v-col class="pa-0 mr-2" md="3">
         <v-autocomplete
           :items="genders"
           item-text="title"
@@ -77,7 +77,7 @@
           hide-details
         />
       </v-col>
-      <v-col md="3">
+      <!-- <v-col class="pa-0" md="3">
         <v-btn
           class="py-5"
           depressed
@@ -87,7 +87,7 @@
         >
           <v-icon left dark>mdi-filter-outline</v-icon>Lọc
         </v-btn>
-      </v-col>
+      </v-col> -->
     </v-row>
   </v-form>
 </template>

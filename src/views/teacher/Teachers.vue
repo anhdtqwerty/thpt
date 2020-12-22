@@ -1,25 +1,23 @@
 <template>
   <div>
-    <v-row class="mx-2 justify-space-between align-center">
-      <v-col cols="8" class="md-6 px-0 py-2">
-        <h2>Giáo viên</h2>
-        <breadcrumbs />
-      </v-col>
-
-      <v-col cols="4" class="text-right md-6 px-0 py-2">
-        <v-btn
-          medium
-          class="teacher-btn"
-          color="primary"
-          @click="createState = !createState"
-        >
-          <v-icon left>add</v-icon>
-          <span>{{ titleBtn }}</span>
+    <div class="pa-4 pa-md-2 d-flex justify-space-between align-center">
+      <div>
+        <Breadcrumbs
+          headline="Danh sách"
+          :link="[
+            { text: 'Giáo viên', href: '../teachers' },
+            { text: 'Danh sách' },
+          ]"
+        />
+      </div>
+      <div class="flex-center">
+        <v-btn dark color="#0D47A1" @click.stop="createState = !createState">
+          <v-icon left>add</v-icon>{{ titleBtn }}
         </v-btn>
-      </v-col>
-    </v-row>
+      </div>
+    </div>
 
-    <v-card class="px-md-6 px-2 mx-md-2">
+    <v-card class="pa-2 pa-md-4 ma-md-2 elevation-1">
       <v-data-table
         :items-per-page="5"
         item-key="id"
@@ -30,27 +28,26 @@
         :search="search"
         dense
       >
-        <template v-slot:top>
-          <v-row>
-            <v-col cols="10" md="6">
-              <teacher-filter @onFilterChanged="refresh"> </teacher-filter>
-            </v-col>
-
-            <v-col class="text-right" cols="2" md="6">
-              <setting-table-header
-                :default-headers="originHeaders"
-                @change="headers = $event"
-              />
-              <KebapMenu v-if="!$vuetify.breakpoint.xs">
-                <v-list>
-                  <v-list-item>
-                    <export-excel :custom-header="headers" api="/teachers/" />
-                  </v-list-item>
-                </v-list>
-              </KebapMenu>
-            </v-col>
-          </v-row>
-        </template>
+        <div slot="top" class="d-flex mb-4">
+          <div v-if="!$vuetify.breakpoint.mobile">
+            <teacher-filter @onFilterChanged="refresh"></teacher-filter>
+          </div>
+          <v-spacer></v-spacer>
+          <div>
+            <v-btn
+              v-if="$vuetify.breakpoint.mobile"
+              icon
+              @click.stop="filterState = !filterState"
+            >
+              <v-icon right>mdi-filter-outline</v-icon>
+            </v-btn>
+            <setting-table-header
+              :default-headers="originHeaders"
+              @change="headers = $event"
+            />
+            <KebapMenu v-if="!$vuetify.breakpoint.mobile"></KebapMenu>
+          </div>
+        </div>
 
         <template v-slot:[`item.name`]="{ item }">
           <user-item :teacher="item" :to="'teacher/' + item.id"></user-item>
@@ -82,7 +79,6 @@ import TeacherListActions from '@/modules/teacher/TeacherListActions'
 import NewTeacherDialog from '@/modules/teacher/TeacherNewDialog'
 import Breadcrumbs from '@/components/basic/Breadcrumbs'
 import SettingTableHeader from '@/components/basic/table/SettingHeaders'
-import ExportExcel from '@/components/basic/ExportExcel'
 import KebapMenu from '@/components/basic/menu/KebapMenu.vue'
 import Vuetify from 'vuetify'
 import Vue from 'vue'
@@ -133,9 +129,8 @@ export default {
     TeacherFilter,
     TeacherListActions,
     SettingTableHeader,
-    ExportExcel,
-    KebapMenu,
     NewTeacherDialog,
+    KebapMenu
   },
   data() {
     return {
