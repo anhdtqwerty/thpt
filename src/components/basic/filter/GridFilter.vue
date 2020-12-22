@@ -6,14 +6,12 @@
           <component class="ma-0" :is="input.tag" v-bind="input.props" v-model="input.data[input.key]" />
         </v-col>
         </template>
-        <v-col v-if="!hideAction" cols="12" :md="evalWidthCol(colNumber, 1)">
+        <v-col v-if="!hideAction" style="display: flex; align-items: center" cols="12" :md="evalWidthCol(colNumber, 1)">
           <slot name="action">
-          <div class="text-right">
-            <v-btn color="primary">
-            <v-icon>mdi-filter</v-icon>
-            <span>Lọc</span>
-          </v-btn>
-          </div>
+            <v-btn style="width: 100%" color="primary">
+              <v-icon>mdi-filter</v-icon>
+              <span>Lọc</span>
+            </v-btn>
           </slot>
         </v-col>
       </v-row>
@@ -168,6 +166,9 @@ export default {
     },
     getFormData () {
       return this.formData
+    },
+    onClickFilter () {
+      this.$emit('filter')
     }
   }
 }

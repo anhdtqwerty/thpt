@@ -26,7 +26,7 @@
     <v-col class="" cols="12" md="8">
       <v-card :flat="$vuetify.breakpoint.smAndDown" class="pa-md-4">
         <v-row no-gutters>
-          <v-col class="pa-4" md="9">
+          <v-col cols="12" class="pa-4" md="9">
             <h3>1. Thông tin cơ bản</h3>
             <student-general-form
               ref="studentGeneralForm"
@@ -40,21 +40,21 @@
           >
             <v-btn depressed color="primary">Lưu</v-btn>
           </v-col>
-          <v-col class="pa-4" md="9">
+          <v-col cols="12" class="pa-4" md="9">
             <h3>2. Thông tin liên lạc</h3>
             <student-contact-form
               :student="student"
               ref="studentContactForm"
             ></student-contact-form>
           </v-col>
-          <v-col class="pa-4" md="9">
+          <v-col cols="12" class="pa-4" md="9">
             <h3>3. Ghi chú về học sinh</h3>
             <student-note-form
               :student="student"
               ref="studentNoteForm"
             ></student-note-form>
           </v-col>
-          <v-col class="pa-4" md="12">
+          <v-col cols="12" class="pa-4" md="12">
             <h3>4. Thông tin gia đình</h3>
             <student-family-form
               :student="student"
