@@ -96,7 +96,7 @@ const originHeaders = [
   },
   {
     text: 'Ngày sinh',
-    value: 'data.dob',
+    value: 'metadata.dob',
     align: 'left',
     sortable: false,
     show: true,
@@ -122,7 +122,13 @@ const originHeaders = [
     sortable: false,
     show: true,
   },
-  { text: 'Hành động', value: 'actions', show: true },
+  {
+    text: 'Ghi chú',
+    value: 'metadata.notes',
+    align: 'left',
+    sortable: false,
+    show: true,
+  },
 ]
 Vue.use(Vuetify)
 
