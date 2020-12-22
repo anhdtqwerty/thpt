@@ -54,7 +54,6 @@ export default {
   props: {
     teacher: {
       type: [Object],
-      required: true,
       default: () => {},
     },
   },

@@ -10,12 +10,22 @@
           dense
         ></v-text-field>
         <v-text-field
-          ref="type"
+          ref="schoolDate"
           v-model="schoolDate"
           placeholder="Năm vào trường"
           required
           dense
         ></v-text-field>
+        <v-autocomplete
+          :item="teacherStatus"
+          item-text="title"
+          item-value="value"
+          ref="status"
+          v-model="status"
+          placeholder="Trạng thái hiện tại"
+          required
+          dense
+        ></v-autocomplete>
       </v-col>
     </v-row>
   </v-form>
@@ -23,23 +33,22 @@
 
 <script>
 // import { get } from 'lodash'
-import DatePicker from '@/components/basic/picker/DateIOSPicker.vue'
 export default {
-  components: { DatePicker },
   props: {
-    student: {
+    teacher: {
       type: [Object],
-      required: true,
       default: () => {},
     },
   },
   data: () => ({
     valid: true,
-    name: '',
-    gender: '',
-    dob: '',
-    ethnic: '',
-    frequentlyAddress: '',
+    type: '',
+    schoolDate: '',
+    status: '',
+    teacherStatus: [
+      { title: 'Đang dạy', value: 'active' },
+      { title: 'Không dạy', value: 'block' },
+    ],
   }),
   created() {
     this.reset()
@@ -47,34 +56,27 @@ export default {
   methods: {
     getData() {
       return {
-        name: this.name,
-        gender: this.gender,
-        dob: this.dob,
-        ethnic: this.ethnic,
-        frequentlyAddress: this.frequentlyAddress,
+        type: this.type,
+        schoolDate: this.schoolDate,
+        status: this.status,
       }
     },
     validate() {
       this.$refs.form.validate()
     },
     reset() {
-      this.name = this.student.name
-      this.gender = this.student.gender
-      this.dob = this.student.dob
-      this.ethnic = this.student.data.ethnic
-      this.frequentlyAddress = this.student.data.frequentlyAddress
+      this.type = this.teacher.type
+      this.schoolDate = this.teacher.metadata.schoolDate
+      this.status = this.teacher.status
     },
     resetValidation() {
       this.$refs.form.resetValidation()
     },
   },
   watch: {
-    student(student) {
+    teacher(teacher) {
       this.reset()
     },
   },
 }
 </script>
-
-<style scoped>
-</style>

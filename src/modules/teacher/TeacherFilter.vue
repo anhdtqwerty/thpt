@@ -23,35 +23,16 @@
         <v-icon class="" left>mdi-filter-outline</v-icon>Lọc
       </v-btn>
     </v-row>
-
-    <v-row class="d-flex d-md-none justify-end">
-      <v-btn icon @click="filterState = !filterState">
-        <v-icon left>mdi-filter-outline</v-icon>
-      </v-btn>
-
-      <teacher-filter-dialog
-        @onFilterChanged="onFilterDialogChange"
-        :state="filterState"
-      />
-    </v-row>
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import moment from 'moment'
 import AutocompleteTeacher from '@/components/basic/input/AutocompleteTeacher'
-import AutocompleteClass from '@/components/basic/input/AutocompleteClass'
-import AutocompleteMajor from '@/components/basic/input/AutocompleteMajor'
-import DateRangePicker from '@/components/basic/picker/DateRangeIOSPicker'
-import TeacherFilterDialog from '@/modules/teacher/TeacherFilterDialog'
 
 export default {
   components: {
     AutocompleteTeacher,
-    AutocompleteClass,
-    AutocompleteMajor,
-    TeacherFilterDialog,
   },
   data: () => ({
     query: '',
