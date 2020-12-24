@@ -30,11 +30,13 @@ import Violation from '@/views/violation/Violations.vue'
 
 // ---------------- DEPARTMENT -------------------------------
 import Department from '@/views/department/Department'
+// ---------------- Score -------------------------------
+import InputScore from '@/views/score/InputScore.vue'
+
 import DashBoard from '@/views/dashboard/Dashboard.vue'
 // ---------------- LEARNING -----------------------------
 import Schedule from '@/views/schedule/Schedule.vue'
-// -----------------HIGH SCHOOL---------------------------
-import Classes from '@/views/class/Classes.vue'
+
 // ---------------- LAYOUT -------------------------------
 import GuestLayout from '../components/layout/GuestLayout'
 import MainLayout from '../components/layout/MainLayout'
@@ -43,6 +45,7 @@ import Page404 from '@/views/Page404'
 import Divisions from '@/views/division/Divisions.vue'
 import Semesters from '@/views/semester/Semesters.vue'
 import Grades from '@/views/grade/Grades.vue'
+import Classes from '@/views/class/Classes'
 const routes = [
   {
     path: '/',
@@ -135,6 +138,15 @@ const routes = [
         name: 'Division',
         meta: {
           title: 'Quản lý phân ban',
+          auth: true
+        }
+      },
+      {
+        path: 'classes',
+        component: Classes,
+        name: 'Lớp Học',
+        meta: {
+          title: 'Quản lý lớp',
           auth: true
         }
       },
@@ -325,20 +337,11 @@ const routes = [
         }
       },
       {
-        path: 'department/:id',
-        name: 'Department',
-        component: Department,
+        path: 'marks-input',
+        name: 'Nhập điểm',
+        component: InputScore,
         meta: {
-          title: 'Department',
-          auth: true
-        }
-      },
-      {
-        path: 'classes',
-        name: 'Danh sách lớp',
-        component: Classes,
-        meta: {
-          title: 'Lớp học',
+          title: 'Nhâp điểm',
           auth: true
         }
       },

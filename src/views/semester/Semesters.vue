@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="pa-2 d-flex justify-space-between align-center">
+    <div class="pa-4 pa-md-2 d-flex justify-space-between align-center">
       <div>
         <Breadcrumbs
           headline="Quản lý học kỳ"
@@ -14,7 +14,7 @@
       </div>
     </div>
 
-    <v-card class="pa-4 ma-md-2 elevation-1">
+    <v-card class="pa-2 pa-md-4 ma-md-2 elevation-1">
       <v-data-table
         :loading="loading"
         :headers="headers"

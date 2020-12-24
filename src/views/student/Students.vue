@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="pa-2 d-flex justify-space-between align-center">
+    <div class="pa-4 pa-md-2 d-flex justify-space-between align-center">
       <div>
         <Breadcrumbs
           headline="Danh sách"
@@ -17,7 +17,7 @@
       </div>
     </div>
 
-    <v-card class="pa-2 ma-md-2 elevation-1">
+    <v-card class="pa-2 pa-md-4 ma-md-2 elevation-1">
       <v-data-table
         item-key="id"
         :options.sync="studentTableOptions"
@@ -62,7 +62,7 @@
           </span>
         </template>
         <template v-slot:[`item.classes`]="{ item }">
-          <span>{{ item.classes | getClassCount }}</span>
+          <span v-if="item.classes">{{ item.classes[item.classes.length-1].title }}</span>
         </template>
         <template v-slot:[`item.gender`]="{ item }">{{
           item.gender === 'male'
@@ -191,6 +191,7 @@ export default {
       'searchStudents',
       'updateStudent',
     ]),
+    ...mapActions('student', ['fetchStudents']),
     updateDraw(draw) {
       this.draw = draw
     },
@@ -198,9 +199,6 @@ export default {
       if (status === 'active') return 'green--text'
       if (status === 'reserved') return 'orange--text'
       else return 'gray--text'
-    },
-    getType(type) {
-      return type ? type.title : ''
     },
     async refresh(query) {
       this.loading = true

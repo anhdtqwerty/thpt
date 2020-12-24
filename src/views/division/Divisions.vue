@@ -1,44 +1,34 @@
 <template>
-  <div :class="{ 'px-3': $vuetify.breakpoint.mdAndUp }">
-    <new-division-dialog :state="createDivision" />
-    <v-row
-      :class="{
-        'px-2 mt-2': $vuetify.breakpoint.smAndDown,
-        'mx-n2': $vuetify.breakpoint.mdAndUp,
-      }"
-      no-gutters
-    >
-      <v-col>
+  <div>
+    <div class="pa-4 pa-md-2 d-flex justify-space-between align-center">
+      <div>
         <Breadcrumbs
           headline="Quản lý phân ban"
           :link="[{ text: 'Quản lý phân ban', href: '../divisions' }]"
         />
-      </v-col>
-      <v-col class="d-flex justify-end pt-4">
-        <v-btn color="primary" @click="createDivision = !createDivision">
+      </div>
+      <div class="flex-center">
+        <v-btn @click="createState = !createState" dark color="#0D47A1">
           <v-icon left>add</v-icon>{{ addButtonText }}
         </v-btn>
-      </v-col>
-    </v-row>
-    <v-card class="pa-6">
+      </div>
+    </div>
+    <new-division-dialog :state="createDivision" />
+    <v-card class="pa-2 pa-md-4 ma-md-2 elevation-1">
       <p class="text-uppercase text-h6" style="color: #0d47a1">
         Danh sách các ban chuyên
       </p>
       <v-data-table :headers="headers" :items="divisions">
         <template v-slot:item.subjects="{ item }">
-            <p>{{ item | getSubject }}</p>
+          <p>{{ item | getSubject }}</p>
         </template>
         <template v-slot:item.actions="{ item }">
-            <division-actions
-            :selected="item">
-            </division-actions>
+          <division-actions :selected="item"> </division-actions>
         </template>
       </v-data-table>
     </v-card>
   </div>
 </template>
-
-
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex'
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
@@ -71,7 +61,7 @@ export default {
       selected: {},
     }
   },
-  
+
   computed: {
     ...mapState('app', ['department']),
     ...mapState('division', ['divisions']),
@@ -86,7 +76,7 @@ export default {
     },
   },
   async created() {
-    await this.refresh({}) 
+    await this.refresh({})
   },
   methods: {
     ...mapActions('division', ['fetchDivision']),
@@ -98,12 +88,16 @@ export default {
     },
     onDivisionSelected(division) {
       this.setDivision(division)
-    },    
+    },
   },
-  filters:{
+  filters: {
     getSubject(division) {
-      return division.subjects.map((value) =>{return value.title}).join(' - ')
-    }
-  }
+      return division.subjects
+        .map((value) => {
+          return value.title
+        })
+        .join(' - ')
+    },
+  },
 }
 </script>

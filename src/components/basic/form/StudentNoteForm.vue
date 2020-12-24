@@ -7,6 +7,7 @@
           v-model="notes"
           label="Ghi chú"
           placeholder="Nhập ghi chú về học sinh"
+          outlined
           dense
         ></v-text-field>
         <v-text-field
@@ -15,16 +16,22 @@
           label="Những thay đổi cần ghi chú"
           placeholder="Nhập thay đổi"
           dense
+          outlined
         ></v-text-field>
         <v-row no-gutters>
           <v-col class="pa-0" cols="6">
-            <v-checkbox class="pa-0 ma-0" v-model="isYoung" label="Đội viên"></v-checkbox>
+            <v-checkbox
+              class="pa-0 ma-0"
+              v-model="isYoung"
+              label="Đội viên"
+            ></v-checkbox>
           </v-col>
           <v-col class="pa-0" cols="6">
             <date-picker
               :disabled="!isYoung"
               v-model="youngJoinedDate"
               label="Ngày vào Đội"
+              outlined
               placeholder="Ngày vào Đội"
               dense
             ></date-picker>
@@ -32,7 +39,11 @@
         </v-row>
         <v-row no-gutters>
           <v-col class="pa-0" cols="6">
-            <v-checkbox class="pa-0 ma-0" v-model="isCommunist" label="Đoàn viên"></v-checkbox>
+            <v-checkbox
+              class="pa-0 ma-0"
+              v-model="isCommunist"
+              label="Đoàn viên"
+            ></v-checkbox>
           </v-col>
           <v-col class="pa-0" cols="6">
             <date-picker
@@ -41,6 +52,7 @@
               label="Ngày vào Đoàn"
               placeholder="Ngày vào Đoàn"
               dense
+              outlined
             ></date-picker>
           </v-col>
         </v-row>
@@ -59,7 +71,6 @@ export default {
   props: {
     student: {
       type: [Object],
-      required: true,
       default: () => {},
     },
   },
@@ -70,10 +81,12 @@ export default {
     youngJoinedDate: '',
     communistJoinedDate: '',
     isCommunist: false,
-    isYoung: false
+    isYoung: false,
   }),
   created() {
-    this.reset()
+    if (this.student) {
+      this.reset()
+    }
   },
   methods: {
     validate() {

@@ -1,26 +1,21 @@
 <template>
-  <div :class="{ 'px-3': $vuetify.breakpoint.mdAndUp }">
-    <new-grade-dialog :state="createGrade" />
-    <v-row
-      :class="{
-        'px-2 mt-2': $vuetify.breakpoint.smAndDown,
-        'mx-n2': $vuetify.breakpoint.mdAndUp,
-      }"
-      no-gutters
-    >
-      <v-col>
+  <div>
+    <div class="pa-4 pa-md-2 d-flex justify-space-between align-center">
+      <div>
         <Breadcrumbs
           headline="Quản lý khối"
           :link="[{ text: 'Quản lý khối', href: '../grades' }]"
         />
-      </v-col>
-      <v-col class="d-flex justify-end pt-4">
-        <v-btn color="primary" @click="createGrade = !createGrade">
+      </div>
+      <div class="flex-center">
+        <v-btn @click="createGrade = !createGrade" dark color="#0D47A1">
           <v-icon left>add</v-icon>{{ addButtonText }}
         </v-btn>
-      </v-col>
-    </v-row>
-    <v-card class="pa-6">
+      </div>
+    </div>
+    <new-grade-dialog :state="createGrade" />
+
+    <v-card class="pa-2 pa-md-4 ma-md-2 elevation-1">
       <p class="text-uppercase text-h6" style="color: #0d47a1">
         Danh sách các khối
       </p>
@@ -32,7 +27,6 @@
     </v-card>
   </div>
 </template>
-
 
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex'

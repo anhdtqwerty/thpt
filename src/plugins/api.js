@@ -30,6 +30,7 @@ const SEMESTER_API = '/semesters/'
 const GRADE_API = '/grades/'
 const SUBJECT_API = '/subjects/'
 const VIOLATION_API = '/violation/'
+const FACTOR_API = '/factors/'
 const APIHelper = api => ({
   search: (params, option) =>
     axios.get(api, { params: utils.filterObject(params) }, option),
@@ -83,7 +84,7 @@ export const Grade = APIHelper(GRADE_API)
 export const Semester = APIHelper(SEMESTER_API)
 export const Subject = APIHelper(SUBJECT_API)
 export const Violation = APIHelper(VIOLATION_API)
-
+export const Factor = APIHelper(FACTOR_API)
 export const Upload = {
   upload: formData =>
     axios.post(UPLOAD_API, formData, {
@@ -116,5 +117,6 @@ export default {
   Division,
   Grade,
   Subject,
-  Violation
+  Violation,
+  Factor
 }
