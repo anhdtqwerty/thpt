@@ -5,6 +5,7 @@
     v-bind="this.$attrs"
     :items="semesters"
     @change="onChange"
+    return-object
     v-on:input="$emit('input', $event)"
   ></v-autocomplete>
 </template>
