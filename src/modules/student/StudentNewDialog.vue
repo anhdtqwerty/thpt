@@ -5,7 +5,7 @@
     width="661"
   >
     <v-card>
-      <v-toolbar dense class="elevation-0" color="#0D47A1" dark>
+      <v-toolbar dense class="elevation-0 px-2" color="#0D47A1" dark>
         <v-toolbar-title>Thêm Mới Học Sinh</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-btn icon>

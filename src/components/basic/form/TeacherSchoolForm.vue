@@ -7,6 +7,7 @@
           v-model="type"
           placeholder="Loại cán bộ"
           required
+          outlined
           dense
         ></v-text-field>
         <v-text-field
@@ -14,16 +15,18 @@
           v-model="schoolDate"
           placeholder="Năm vào trường"
           required
+          outlined
           dense
         ></v-text-field>
         <v-autocomplete
-          :item="teacherStatus"
+          :items="teacherStatus"
           item-text="title"
           item-value="value"
           ref="status"
           v-model="status"
           placeholder="Trạng thái hiện tại"
           required
+          outlined
           dense
         ></v-autocomplete>
       </v-col>
@@ -51,7 +54,9 @@ export default {
     ],
   }),
   created() {
-    this.reset()
+    if (this.teacher) {
+      this.reset()
+    }
   },
   methods: {
     getData() {

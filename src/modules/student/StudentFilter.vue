@@ -77,7 +77,7 @@
           hide-details
         />
       </v-col>
-      <!-- <v-col class="pa-0" md="3">
+      <v-col class="pa-0" md="3">
         <v-btn
           class="py-5"
           depressed
@@ -87,7 +87,7 @@
         >
           <v-icon left dark>mdi-filter-outline</v-icon>Lọc
         </v-btn>
-      </v-col> -->
+      </v-col>
     </v-row>
   </v-form>
 </template>

@@ -31,13 +31,13 @@
         }"
         dense
       >
-        <div slot="top" class="d-flex mb-4">
+        <div slot="top" class="d-flex mb-4" style="box-si">
           <div v-if="!$vuetify.breakpoint.mobile">
             <student-filter
               @onFilterChanged="refresh"
             ></student-filter>
           </div>
-          <v-spacer></v-spacer>
+          <!-- <v-spacer></v-spacer> -->
           <div>
             <v-btn
               v-if="$vuetify.breakpoint.mobile"

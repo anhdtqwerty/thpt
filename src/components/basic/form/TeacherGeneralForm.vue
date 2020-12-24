@@ -5,40 +5,40 @@
         <v-text-field
           ref="name"
           v-model="name"
-          label="Họ và tên"
           placeholder="Nhập tên giáo viên"
           required
+          outlined
           dense
         ></v-text-field>
         <date-picker
           :date.sync="dob"
-          label="Ngày Sinh"
           placeholder="Nhập Ngày Sinh"
+          outlined
           dense
         ></date-picker>
         <v-select
           ref="gender"
           v-model="gender"
           :items="['male', 'female']"
-          label="Giới Tính"
           placeholder="Chọn giới tính"
+          outlined
           dense
           required
         ></v-select>
         <v-text-field
           ref="frequentlyAddress"
           v-model="frequentlyAddress"
-          label="Quê quán"
           placeholder="Nhập địa chỉ thường trú"
           required
+          outlined
           dense
         ></v-text-field>
         <v-text-field
           ref="ethinic"
           v-model="ethnic"
-          label="Dân tộc"
           placeholder="Nhập dân tộc"
           required
+          outlined
           dense
         ></v-text-field>
       </v-col>
@@ -66,7 +66,9 @@ export default {
     frequentlyAddress: '',
   }),
   created() {
-    this.reset()
+    if (this.teacher) {
+      this.reset()
+    }
   },
   methods: {
     getData() {

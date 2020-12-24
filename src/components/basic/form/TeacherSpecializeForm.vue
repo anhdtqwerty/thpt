@@ -7,6 +7,7 @@
           v-model="level"
           placeholder="Trình độ"
           required
+          outlined
           dense
         ></v-text-field>
         <v-text-field
@@ -14,6 +15,7 @@
           v-model="subject"
           placeholder="Lĩnh vực"
           required
+          outlined
           dense
         ></v-text-field>
         <v-text-field
@@ -21,6 +23,7 @@
           v-model="trainingPlace"
           placeholder="Nơi đào tạo"
           required
+          outlined
           dense
         ></v-text-field>
         <v-text-field
@@ -28,6 +31,7 @@
           v-model="majorDate"
           placeholder="Năm vào ngành"
           required
+          outlined
           dense
         ></v-text-field>
       </v-col>
@@ -52,15 +56,17 @@ export default {
     majorDate: '',
   }),
   created() {
-    this.reset()
+    if (this.teacher) {
+      this.reset()
+    }
   },
   methods: {
     getData() {
       return {
-        level: this.teacher.metadata.level,
-        subject: this.teacher.subject,
-        trainingPlace: this.teacher.meatdata.trainingPlace,
-        majorDate: this.teacher.metadata.majorDate,
+        level: this.level,
+        subject: this.subject,
+        trainingPlace: this.trainingPlace,
+        majorDate: this.majorDate,
       }
     },
     validate() {

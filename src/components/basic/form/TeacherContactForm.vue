@@ -5,7 +5,6 @@
         <v-text-field
           ref="currentLive"
           v-model="currentLive"
-          label="Địa chỉ liên lạc"
           placeholder="Nhập địa chỉ hiện tại"
           required
           outlined
@@ -14,7 +13,6 @@
         <v-text-field
           ref="province"
           v-model="province"
-          label="Tỉnh/Thành phố"
           placeholder="Nhập tỉnh/thành phố đang sống"
           required
           outlined
@@ -23,15 +21,13 @@
         <v-text-field
           ref="email"
           v-model="email"
-          label="Địa chỉ email"
           placeholder="Nhập địa chỉ email"
           outlined
           dense
         ></v-text-field>
         <v-text-field
           ref="mobilePhone"
-          v-model="phone"
-          label="Điện thoại di động"
+          v-model="mobilePhone"
           placeholder="Điện thoại di động"
           required
           outlined
@@ -39,8 +35,7 @@
         ></v-text-field>
         <v-text-field
           ref="landlinePhone"
-          v-model="phone"
-          label="Điện thoại nhà riêng"
+          v-model="landlinePhone"
           placeholder="Điện thoại nhà riêng"
           required
           outlined
@@ -79,11 +74,11 @@ export default {
     },
     getData() {
       return {
-        currentLive: this.teacher.metadata.currentLive,
-        province: this.teacher.metadata.province,
-        email: this.teacher.email,
-        mobilePhone: this.teacher.metadata.mobilePhone,
-        landlinePhone: this.teacher.metadata.landlinePhone,
+        currentLive: this.currentLive,
+        province: this.province,
+        email: this.email,
+        mobilePhone: this.mobilePhone,
+        landlinePhone: this.landlinePhone,
       }
     },
     reset() {
