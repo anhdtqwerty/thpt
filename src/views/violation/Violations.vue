@@ -33,9 +33,9 @@
 </template>
 
 <script>
-import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import { mapActions, mapState, mapGetters } from 'vuex'
 import DropMenu from '@/modules/student/menu/Menu.vue'
+import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import SettingTableHeader from '@/components/basic/table/SettingHeaders'
 
 const originHeaders = [
@@ -48,14 +48,14 @@ const originHeaders = [
   },
   {
     text: 'Họ tên',
-    value: 'generation.name',
+    value: 'title',
     align: 'left',
     sortable: false,
     show: true,
   },
   {
     text: 'Lớp',
-    value: 'config.startDate',
+    value: '',
     align: 'left',
     sortable: false,
     show: true,
