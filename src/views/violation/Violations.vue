@@ -3,7 +3,6 @@
     <v-row
       :class="{
         'px-2 mt-2': $vuetify.breakpoint.smAndDown,
-        'mx-n2': $vuetify.breakpoint.mdAndUp,
       }"
       no-gutters
     >
@@ -30,9 +29,6 @@
       >
       </v-data-table>
     </v-card>
-<!-- 
-    <semester-new-dialog :state="createState"></semester-new-dialog>
-    <semester-filter-dialog :state="filterState"></semester-filter-dialog> -->
   </div>
 </template>
 
@@ -103,7 +99,6 @@ export default {
     }
   },
   computed: {
-    ...mapState('app', ['']),
     ...mapState('violation', ['violations']),
   },
 }
