@@ -78,12 +78,6 @@
         </v-card>
       </v-col>
     </v-row>
-    <class-attendance-dialog
-      :state="attendanceDialogState"
-      :slotData="selectedSlot"
-      :classData="classData"
-      :attendances="attendances"
-    ></class-attendance-dialog>
     <class-update-dialog
       :state="updateDialogState"
       :classData="classInfo"
@@ -96,14 +90,12 @@
 import { mapActions, mapGetters } from 'vuex'
 import { get } from 'lodash'
 import Breadcrumbs from '@/components/layout/Breadcrumbs.vue'
-import ClassAttendanceDialog from '@/modules/class/attendance/ClassAttendanceDialog.vue'
 import ClassUpdateDialog from '@/modules/class/ClassUpdateDialog.vue'
 import StudentTable from '@/modules/class/student/StudentTable.vue'
 import DropMenu from '@/modules/class/student/Menu.vue'
 export default {
   components: {
     Breadcrumbs,
-    ClassAttendanceDialog,
     ClassUpdateDialog,
     StudentTable,
     DropMenu

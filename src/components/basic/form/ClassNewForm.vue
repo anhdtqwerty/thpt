@@ -1,5 +1,40 @@
 <template>
   <v-form ref="form" flat class="pa-6">
+    <div class="d-flex">
+      <autocomplete-grade
+        class="mr-2"
+        v-model="grade"
+        item-text="title"
+        item-value="id"
+        label="Khối"
+        required
+        dense
+        outlined
+        auto-select-first
+      ></autocomplete-grade>
+      <autocomplete-division
+        class="mr-2"
+        v-model="division"
+        item-text="title"
+        item-value="id"
+        label="Ban"
+        required
+        dense
+        outlined
+        auto-select-first
+      />
+
+      <autocomplete-generation
+        v-model="generation"
+        item-text="title"
+        item-value="id"
+        label="năm học"
+        required
+        dense
+        outlined
+        auto-select-first
+      />
+    </div>
     <v-text-field
       ref="title"
       v-model="title"
@@ -9,29 +44,6 @@
       required
       dense
     />
-    <div class="d-flex">
-      <autocomplete-grade
-        class="mr-2"
-        v-model="grade"
-        item-text="title"
-        item-value="id"
-        label="Khối"
-        return-object
-        required
-        dense
-        outlined
-      ></autocomplete-grade>
-      <autocomplete-division
-        v-model="division"
-        item-text="title"
-        item-value="id"
-        label="Ban"
-        return-object
-        required
-        dense
-        outlined
-      />
-    </div>
     <autocomplete-teacher
       v-model="teachers"
       item-text="name"
@@ -57,12 +69,13 @@ import { get } from 'lodash'
 import AutocompleteTeacher from '@/components/basic/input/AutocompleteTeacher'
 import AutocompleteGrade from '@/components/basic/input/AutocompleteGrade'
 import AutocompleteDivision from '@/components/basic/input/AutocompleteDivision'
-import { mapActions, mapGetters } from 'vuex'
+import AutocompleteGeneration from '@/components/basic/input/AutocompleteGeneration'
 export default {
   components: {
     AutocompleteTeacher,
     AutocompleteGrade,
-    AutocompleteDivision
+    AutocompleteDivision,
+    AutocompleteGeneration
   },
   props: {
     classData: {
@@ -81,7 +94,7 @@ export default {
     title: '',
     description: '',
     teachers: [],
-    staff: {}
+    generation: {}
   }),
   computed: {
     getCourseItems() {
@@ -100,7 +113,7 @@ export default {
         this.course = this.courseData || this.classData.course
         this.grade = this.gradeData || this.classData.grade
         this.description = this.classData.description
-        this.staff = get(this.classData, 'staff.id', null)
+        this.generation = get(this.classData, 'generation.id', null)
       } else {
         this.teachers = []
         this.code = ''
@@ -108,7 +121,7 @@ export default {
         this.course = null
         this.grade = null
         this.description = ''
-        this.staff = ''
+        this.generation = ''
       }
     },
     getData() {
@@ -116,6 +129,9 @@ export default {
         return {
           teachers: this.teachers,
           description: this.description,
+          generation: this.generation,
+          division: this.division,
+          grade: this.grade,
           code: this.code,
           title: this.title
         }

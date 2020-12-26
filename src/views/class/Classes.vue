@@ -76,8 +76,10 @@
                 {{ item.generation | getGeneration }}
               </p>
             </template>
-            <template v-slot:item.tags="{ item }">
-              <p style="margin: 0; white-space: nowrap">{{ item.tags }}</p>
+            <template v-slot:item.division="{ item }">
+              <p style="margin: 0; white-space: nowrap">
+                {{ item.division | getDivision }}
+              </p>
             </template>
             <template v-slot:item.teachers="{ item }">
               <p style="margin: 0; white-space: nowrap">
@@ -236,6 +238,9 @@ export default {
     },
     getTeacherNames: classData => {
       return classData.teachers.map(teacher => teacher.name).join(',')
+    },
+    getDivision: division => {
+      return division ? division.title : ''
     },
     displayDate: date => {
       if (date) return moment(date).format('DD/MM')
