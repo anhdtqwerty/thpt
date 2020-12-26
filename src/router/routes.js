@@ -31,6 +31,7 @@ import Violation from '@/views/violation/Violations.vue'
 import Department from '@/views/department/Department'
 // ---------------- Score -------------------------------
 import InputScore from '@/views/score/InputScore.vue'
+import ViewScore from '@/views/score/ViewScore.vue'
 
 import DashBoard from '@/views/dashboard/Dashboard.vue'
 // ---------------- LEARNING -----------------------------
@@ -342,6 +343,15 @@ const routes = [
         component: InputScore,
         meta: {
           title: 'Nhâp điểm',
+          auth: true
+        }
+      },
+      {
+        path: 'marks',
+        name: 'Sổ điểm',
+        component: ViewScore,
+        meta: {
+          title: 'Sổ điểm',
           auth: true
         }
       },

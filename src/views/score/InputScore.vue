@@ -11,19 +11,6 @@
     </div>
     <v-card class="pa-2 pa-md-4 ma-md-2 elevation-1 mb-5">
       <v-card-text class="px-5">
-        <div class="text-right">
-          <setting-table-header
-            :default-headers="originHeaders"
-            @change="headers = $event"
-          />
-          <KebapMenu v-if="!$vuetify.breakpoint.xs">
-            <v-list>
-              <v-list-item>
-                <export-excel :custom-header="headers" api="/classes/" />
-              </v-list-item>
-            </v-list>
-          </KebapMenu>
-        </div>
         <v-row>
           <v-col cols="12">
             <v-row class="basic-filter" v-if="filterMode === 'normal'">
@@ -53,7 +40,7 @@
                 />
               </v-col>
               <v-col cols="12" md="2">
-                <v-btn color="primary" style="width: 100%">Tìm kiếm</v-btn>
+                <v-btn color="primary" style="width: 100%" @click="onClickSearch">Tìm kiếm</v-btn>
               </v-col>
             </v-row>
 
@@ -105,7 +92,7 @@
                 />
               </v-col>
               <v-col cols="12" md="4">
-                <v-btn color="primary" style="width: 100%">Tìm kiếm</v-btn>
+                <v-btn color="primary" style="width: 100%" @click="onClickSearch">Tìm kiếm</v-btn>
               </v-col>
             </v-row>
           </v-col>
@@ -114,16 +101,15 @@
     </v-card>
     <v-card class="pa-2 pa-md-4 ma-md-2 elevation-1">
       <v-card-text>
-        <template v-if="filterInputs.subjectObj">
+        <template v-if="filterInputs.subjectObj && filterInputs.classObj && filterInputs.factorObj">
           <div class="table-label primary--text mb-3">
             <div>
               <div class="mb-5">
-                Nhập điểm {{ filterInputs.subjectObj.title }} -
-                {{ filterInputs.classObj.title }} -
-                {{ filterInputs.factorObj.title }}
+                {{ titleTable }}
               </div>
               <div>
                 <autocomplete-student
+                 style="max-width: 275px"
                   placeholder="Chọn học sinh"
                   filled
                   dense
@@ -135,7 +121,7 @@
               <v-btn color="success" @click="onClickSaveButton">Lưu</v-btn>
             </div>
           </div>
-          <v-data-table :headers="headers" :items="items" :loading="loading">
+          <v-data-table :headers="originHeaders" :items="items" :loading="loading">
             <template v-slot:item.mark="{ item }">
               <input
                 v-for="mark in item.marks"
@@ -161,9 +147,6 @@
 
 <script>
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
-import SettingTableHeader from '@/components/basic/table/SettingHeaders'
-import ExportExcel from '@/components/basic/ExportExcel'
-import KebapMenu from '@/components/basic/menu/KebapMenu.vue'
 import _ from 'lodash'
 import AutocompleteClass from '@/components/basic/input/AutocompleteClass'
 import AutocompleteSubject from '@/components/basic/input/AutocompleteSubject'
@@ -174,9 +157,6 @@ import { mapState, mapActions } from 'vuex'
 export default {
   components: {
     Breadcrumbs,
-    SettingTableHeader,
-    KebapMenu,
-    ExportExcel,
     AutocompleteClass,
     AutocompleteSubject,
     AutocompleteFactor,
@@ -226,14 +206,13 @@ export default {
           show: true,
         },
         {
-          text: 'Điểm miệng',
+          text: '',
           value: 'mark',
           align: 'left',
           sortable: false,
           show: true,
         },
       ],
-      headers: [],
       totalClass: 0,
       options: {},
       loading: false,
@@ -251,32 +230,6 @@ export default {
         studentObj: '',
       }
     },
-    filterInputs: {
-      handler(data) {
-        const classId = _.get(data, 'classObj.id')
-        const subjectId = _.get(data, 'subjectObj.id')
-        const factorId = _.get(data, 'factorObj.id')
-        const semesterId = _.get(data, 'semesterObj.id')
-        const studentId = _.get(data, 'studentObj.id')
-        console.log({
-          class: classId,
-          subject: subjectId,
-          factor: factorId,
-          semester: semesterId,
-          student: studentId
-        })
-        if (subjectId && classId && factorId) {
-          this.fetchMarks({
-            class: classId,
-            subject: subjectId,
-            factor: factorId,
-            semester: semesterId,
-            student: studentId,
-          })
-        }
-      },
-      deep: true,
-    },
     marks(data) {
       this.items = this.groupBy('studentId')(
         this.generateDataTable(this.setOrderForMark(Object.values(data)))
@@ -285,6 +238,12 @@ export default {
   },
   computed: {
     ...mapState('mark', ['marks']),
+    titleTable () {
+      const subjectTitle = _.get(this.filterInputs, 'subjectObj.title')
+      const classTitle = _.get(this.filterInputs, 'classObj.title')
+      const factorTitle = _.get(this.filterInputs, 'factorObj.title')
+      return `Nhập điểm ${[subjectTitle, classTitle, factorTitle].filter(Boolean).join(' - ')}`
+    }
   },
   methods: {
     ...mapActions('mark', ['fetchMarks', 'updateMarks']),
@@ -362,6 +321,29 @@ export default {
         }))
       this.updateMarks(updatedMarks)
     },
+    onClickSearch () {
+      const data = this.filterInputs
+      const classId = _.get(data, 'classObj.id')
+      const subjectId = _.get(data, 'subjectObj.id')
+      const factorId = _.get(data, 'factorObj.id')
+      const factorTitle = _.get(data, 'factorObj.title')
+      const semesterId = _.get(data, 'semesterObj.id')
+      const studentId = _.get(data, 'studentObj.id')
+
+      this.originHeaders = this.originHeaders.map((item, index) => {
+        if (index === 3) {
+          item.text = factorTitle
+        }
+        return item
+      })
+      this.fetchMarks({
+        class: classId,
+        subject: subjectId,
+        factor: factorId,
+        semester: semesterId,
+        student: studentId,
+      })
+    }
   },
 }
 </script>
