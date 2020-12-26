@@ -126,10 +126,10 @@ export default {
     },
     setDepartment(state, department) {
       state.department = department
-      if (department.currentGeneration.id) {
+      if (department.currentGeneration && department.currentGeneration.id) {
         state.currentGeneration = department.currentGeneration
       }
-      if (department.currentGeneration.currentSemester) {
+      if (department.currentSemester && department.currentSemester.id) {
         state.currentSemester = department.currentSemester
       }
     },

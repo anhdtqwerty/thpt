@@ -22,6 +22,10 @@ export default {
       commit('setMark', await Mark.create(data, options))
       alert.success('Cập nhật thành công!')
     },
+    async updateMark ({ commit }, { id, data, options }) {
+      commit('setMark', await Mark.update(id, data, options))
+      alert.success('Cập nhật thành công!')
+    },
     async removeMark ({ commit }, id) {
       await Mark.remove(id)
       commit('removeMark', id)
@@ -36,8 +40,9 @@ export default {
       }
     },
     async updateMarks ({ dispatch }, items) {
-      await Promise.all(items.map(item => dispatch('createMark', { data: item })))
+      await Promise.all(items.map(item => dispatch('updateMark', { id: item.id, data: item })))
     }
+
   },
   mutations: {
     setMarks (state, marks) {

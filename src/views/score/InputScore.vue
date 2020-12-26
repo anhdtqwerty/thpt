@@ -64,10 +64,10 @@
                   <div class="table-label primary--text mb-3">
                     <div>
                       <div class="mb-5">
-                        Nhập điểm {{ filterInputs.subjectObj.title }} - {{ filterInputs.classObj.title }} - {{filterInputs.factorObj.title}}
+                        {{ tableTitle }}
                       </div>
                       <div>
-                        <autocomplete-student placeholder="Chọn học sinh" filled dense @change="filterInputs.studentObj = $event"/>
+                        <autocomplete-student style="max-width: 275px" placeholder="Chọn học sinh" filled dense @change="filterInputs.studentObj = $event"/>
                       </div>
                     </div>
                     <div>
@@ -164,12 +164,20 @@ export default {
     },
     filterInputs: {
       handler (data) {
+        console.log(data)
         const classId = _.get(data, 'classObj.id')
         const subjectId = _.get(data, 'subjectObj.id')
         const factorId = _.get(data, 'factorObj.id')
         const semesterId = _.get(data, 'semesterObj.id')
         const studentId = _.get(data, 'studentObj.id')
-        if (subjectId) {
+        console.log({
+          class: classId,
+            subject: subjectId,
+            factor: factorId,
+            semester: semesterId,
+            student: studentId
+        })
+        if (subjectId && classId && factorId) {
           this.fetchMarks({
             class: classId,
             subject: subjectId,
@@ -191,7 +199,13 @@ export default {
     }
   },
   computed: {
-    ...mapState('mark', ['marks'])
+    ...mapState('mark', ['marks']),
+    tableTitle () {
+      const subjectName = _.get(this.filterInputs, 'subjectObj.title')
+      const className = _.get(this.filterInputs, 'classObj.title')
+      const factorName = _.get(this.filterInputs, 'factorObj.title')
+      return `Nhập điểm ${[subjectName, className, factorName].filter(Boolean).join(' - ')}`
+    }
   },
   methods: {
     ...mapActions('mark', ['fetchMarks', 'updateMarks']),
@@ -277,6 +291,8 @@ export default {
     text-transform: uppercase;
   }
   .custom-input {
+    max-width: 80px;
+    margin-right: 10px !important;
     text-align: right;
     padding: 8px;
     border: 1px solid #E0E0E0;
