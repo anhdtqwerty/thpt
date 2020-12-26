@@ -9,7 +9,7 @@ export default {
     roles: []
   },
   actions: {
-    fetchRoles ({ state, commit }) {
+    fetchRoles({ state, commit }) {
       if (!state.roles.length) {
         return axios
           .get(ROLE_API)
@@ -17,15 +17,15 @@ export default {
           .catch(e => alert.error(e))
       }
     },
-    setRole ({ commit }, role) {
+    setRole({ commit }, role) {
       commit('setRole', role)
     }
   },
   mutations: {
-    setRoles (state, roles) {
+    setRoles(state, roles) {
       state.roles = roles
     },
-    setRole (state, role) {
+    setRole(state, role) {
       state.role = role
     }
   },

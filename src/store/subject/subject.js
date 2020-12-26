@@ -7,16 +7,16 @@ export default {
     subjects: []
   },
   actions: {
-    async fetchSubject ({ commit }, options) {
+    async fetchSubject({ commit }, options) {
       try {
         commit('setSubjects', await Subject.fetch(options))
       } catch (e) {
         alert.error(e)
       }
-    },
+    }
   },
   mutations: {
-    setSubjects (state, subjects) {
+    setSubjects(state, subjects) {
       state.subjects = subjects
     }
   }

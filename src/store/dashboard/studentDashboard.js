@@ -8,7 +8,7 @@ export default {
     count: 0
   },
   actions: {
-    async fetchClasses ({ commit }, options) {
+    async fetchClasses({ commit }, options) {
       try {
         const classes = await Class.fetch(options)
         commit('setClasses', classes)
@@ -17,7 +17,7 @@ export default {
         alert.error(e)
       }
     },
-    async fetchSlots ({ commit }, options) {
+    async fetchSlots({ commit }, options) {
       try {
         commit('setSlots', await Slot.fetch({ ...options, _limit: 999 }))
       } catch (e) {
@@ -26,27 +26,27 @@ export default {
     }
   },
   mutations: {
-    setSlots (state, slots) {
+    setSlots(state, slots) {
       state.slots = slots
     },
-    setClasses (state, classes) {
+    setClasses(state, classes) {
       state.classes = classes
     },
-    setCount (state, count) {
+    setCount(state, count) {
       state.count = count
     }
   },
   getters: {
-    slots: (state) => {
+    slots: state => {
       return state.slots
     },
-    classes: (state) => {
+    classes: state => {
       return state.classes
     },
-    slot: (state) => (id) => {
+    slot: state => id => {
       return state.slots[id]
     },
-    count: (state) => {
+    count: state => {
       return state.count
     }
   }

@@ -7,7 +7,7 @@ export default {
     factors: []
   },
   actions: {
-    async fetchAllFactor ({ commit }, options) {
+    async fetchAllFactor({ commit }, options) {
       try {
         const factors = await Factor.fetch(options)
         commit('setFactors', factors)
@@ -17,7 +17,7 @@ export default {
     }
   },
   mutations: {
-    setFactors (state, payload) {
+    setFactors(state, payload) {
       state.factors = payload
     }
   }

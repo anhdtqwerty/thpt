@@ -13,7 +13,7 @@ export default {
     isAuthenticated: false
   },
   actions: {
-    async signIn ({ commit }, { identifier = '', password = '' } = {}) {
+    async signIn({ commit }, { identifier = '', password = '' } = {}) {
       try {
         const { jwt, user } = await api.Auth.create({ identifier, password })
         commit('setUser', { user, jwt })
@@ -28,28 +28,28 @@ export default {
         console.error('signIn', error)
       }
     },
-    signOut () {
+    signOut() {
       this.reset()
       router.push('signIn')
     },
-    setRole ({ commit }, role) {
+    setRole({ commit }, role) {
       commit('setRole', role)
     },
-    async fetchProfile ({ commit }, query) {
+    async fetchProfile({ commit }, query) {
       commit('setProfile', await api.Staff.fetch(query))
     },
-    async fetchTeacher ({ commit }, query) {
+    async fetchTeacher({ commit }, query) {
       commit('setProfile', await Teacher.fetch(query))
     },
-    async fetchStudent ({ commit }, query) {
+    async fetchStudent({ commit }, query) {
       commit('setProfile', await Student.fetch(query))
     },
-    signUp (context, credentials = {}) {},
-    async forgotPassword (context, email) {
+    signUp(context, credentials = {}) {},
+    async forgotPassword(context, email) {
       await api.Auth.forgotPassword(email)
       alert.success('Hãy kiểm tra mail của bạn')
     },
-    async resetPassword ({ commit }, { code, password, passwordConfirmation }) {
+    async resetPassword({ commit }, { code, password, passwordConfirmation }) {
       const { user, jwt } = await api.Auth.resetPassword(
         code,
         password,
@@ -66,7 +66,7 @@ export default {
     }
   },
   mutations: {
-    setUser (state, { user, jwt }) {
+    setUser(state, { user, jwt }) {
       state.jwt = jwt
       state.user = user
       if (user) {
@@ -77,27 +77,27 @@ export default {
         state.role = null
       }
     },
-    setRole (state, role) {
+    setRole(state, role) {
       state.role = role
     },
-    setProfile (state, profile) {
+    setProfile(state, profile) {
       state.profile = _.get(profile, '0', {})
     }
   },
   getters: {
-    jwt (state) {
+    jwt(state) {
       return state.jwt
     },
-    user (state) {
+    user(state) {
       return !state.user ? {} : state.user
     },
-    role (state) {
+    role(state) {
       return state.role || state.user.role || {}
     },
-    profile (state) {
+    profile(state) {
       return !state.profile ? {} : state.profile
     },
-    isAuthenticated (state) {
+    isAuthenticated(state) {
       return state.isAuthenticated
     }
   }

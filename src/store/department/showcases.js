@@ -9,14 +9,14 @@ export default {
     count: 0
   },
   actions: {
-    async fetchShowcases ({ commit }, options) {
+    async fetchShowcases({ commit }, options) {
       try {
         commit('setShowcases', await Showcase.fetch(options))
       } catch (e) {
         alert.error(e)
       }
     },
-    async fetchMajors ({ commit }, options) {
+    async fetchMajors({ commit }, options) {
       try {
         commit(
           'setMajors',
@@ -30,21 +30,21 @@ export default {
         alert.error(e)
       }
     },
-    async countShowcases ({ commit }, options) {
+    async countShowcases({ commit }, options) {
       try {
         commit('setCount', await Showcase.count(options))
       } catch (e) {
         alert.error(e)
       }
     },
-    async fetchShowcase ({ commit }, showcaseId) {
+    async fetchShowcase({ commit }, showcaseId) {
       try {
         commit('setShowcase', await Showcase.fetchOne(showcaseId))
       } catch (e) {
         alert.error(e)
       }
     },
-    async createShowcase ({ commit }, data) {
+    async createShowcase({ commit }, data) {
       try {
         let showcase = await Showcase.create(data)
         commit('setShowcase', showcase)
@@ -53,7 +53,7 @@ export default {
         alert.error(e)
       }
     },
-    async updateShowcase ({ commit, state }, { id, ...showcase }) {
+    async updateShowcase({ commit, state }, { id, ...showcase }) {
       try {
         commit('setShowcase', [await Showcase.update(id, showcase)])
         alert.success('Cập nhật thành công!')
@@ -61,7 +61,7 @@ export default {
         alert.error(e)
       }
     },
-    async removeShowcase ({ commit }, id) {
+    async removeShowcase({ commit }, id) {
       try {
         await Showcase.remove(id)
         commit('removeShowcase', id)
@@ -70,15 +70,15 @@ export default {
         alert.error(e)
       }
     },
-    setShowcase ({ commit, state }, showcase) {
+    setShowcase({ commit, state }, showcase) {
       commit('setShowcase', showcase)
     },
-    async removeShowcases ({ dispatch }, items) {
+    async removeShowcases({ dispatch }, items) {
       for (let item of items) {
         await dispatch('removeShowcase', item.id)
       }
     },
-    async upload ({ commit }, { showcaseId, file }) {
+    async upload({ commit }, { showcaseId, file }) {
       try {
         let formData = new FormData()
         formData.append('files', file)
@@ -90,7 +90,7 @@ export default {
         alert.error(e)
       }
     },
-    async destroyAvatar ({ commit }, id) {
+    async destroyAvatar({ commit }, id) {
       try {
         await Upload.destroy(id)
       } catch (e) {
@@ -99,7 +99,7 @@ export default {
     }
   },
   mutations: {
-    setShowcases (state, showcases) {
+    setShowcases(state, showcases) {
       state.showcases = showcases.reduce(
         (accumulator, currentValue) => ({
           ...accumulator,
@@ -108,20 +108,20 @@ export default {
         {}
       )
     },
-    setMajors (state, majors) {
+    setMajors(state, majors) {
       state.majors = majors
     },
-    setShowcase (state, showcase) {
+    setShowcase(state, showcase) {
       state.showcases = {
         ...state.showcases,
         [showcase.id]: showcase
       }
     },
-    removeShowcase (state, showcaseId) {
+    removeShowcase(state, showcaseId) {
       delete state.showcases[showcaseId]
       state.showcases = { ...state.showcases }
     },
-    setAvatar (state, { showcaseId, avatar }) {
+    setAvatar(state, { showcaseId, avatar }) {
       set(state.showcases, `${showcaseId}.avatar`, avatar)
       state.showcases = { ...state.showcases }
     }

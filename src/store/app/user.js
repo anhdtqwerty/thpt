@@ -18,7 +18,7 @@ export default {
     user: null
   },
   actions: {
-    fetchUsersCount ({ commit }, filters = []) {
+    fetchUsersCount({ commit }, filters = []) {
       const params = { _limit: 9999 }
       filters.forEach(f => {
         if (f.value === 0 || f.value) {
@@ -32,7 +32,7 @@ export default {
         })
         .catch(e => alert.error(e))
     },
-    fetchUsers ({ commit }, options = {}) {
+    fetchUsers({ commit }, options = {}) {
       const {
         filters = [],
         sortBy: { key = 'createdAt', asc = false } = {},
@@ -59,7 +59,7 @@ export default {
           alert.error(e)
         })
     },
-    async searchUsers (
+    async searchUsers(
       { commit, getters, dispatch },
       { role, keywords, skip, limit }
     ) {
@@ -80,14 +80,14 @@ export default {
         })
         .catch(e => alert.error(e))
     },
-    fetchUser ({ commit, state }, userId) {
+    fetchUser({ commit, state }, userId) {
       if (!userId || (state.user && state.user.id === userId)) return
       return axios
         .get(USER_API + userId)
         .then(user => commit('setUser', user))
         .catch(e => alert.error(e))
     },
-    fetchRoles ({ state, commit }) {
+    fetchRoles({ state, commit }) {
       if (!state.roles.length) {
         return axios
           .get(ROLE_API)
@@ -95,7 +95,7 @@ export default {
           .catch(e => alert.error(e))
       }
     },
-    createUser ({ commit, getters }, { role, avatarFile, ...user }) {
+    createUser({ commit, getters }, { role, avatarFile, ...user }) {
       return axios
         .post(USER_API, utils.filterObject(user))
         .then(updatedUser => {
@@ -106,7 +106,7 @@ export default {
         })
         .catch(e => alert.error(e))
     },
-    updateUserAvatar ({ commit, state }, { userId, avatar }) {
+    updateUserAvatar({ commit, state }, { userId, avatar }) {
       if (avatar) {
         return axios
           .post(USER_AVATAR_API + userId, avatar)
@@ -117,7 +117,7 @@ export default {
           .catch(e => alert.error(e))
       }
     },
-    async removeUsers ({ commit }, users) {
+    async removeUsers({ commit }, users) {
       const { dones, errs } = await utils.bulkRequest(users, user => {
         return axios.delete(USER_API + user.id).then(user => {
           commit('removeUser', user.id)
@@ -134,7 +134,7 @@ export default {
         alert.error('Fail to delete users!')
       }
     },
-    updateUser ({ commit, rootState }, { id, ...user }) {
+    updateUser({ commit, rootState }, { id, ...user }) {
       return axios
         .put(USER_API + id, user)
         .then(updatedUser => {
@@ -152,7 +152,7 @@ export default {
         })
         .catch(e => alert.error(e))
     },
-    async updateUsers ({ commit }, { users = [], data = {} }) {
+    async updateUsers({ commit }, { users = [], data = {} }) {
       const { dones, errs } = await utils.bulkRequest(users, user => {
         return axios.put(USER_API + user.id, data).then(user => {
           commit('receiveUser', user)
@@ -164,7 +164,7 @@ export default {
       }
     },
     // eslint-disable-next-line
-    async validateEmail({ }, email) {
+    async validateEmail({}, email) {
       let errMsg = !!email || 'Required.'
       errMsg =
         errMsg === true ? /.+@.+/.test(email) || 'E-mail must be valid' : errMsg
@@ -177,8 +177,17 @@ export default {
       return errMsg === true ? '' : errMsg
     },
     // eslint-disable-next-line
-    async generateUserName({ }, name = '') {
-      const nameArr = utils.removeUnicode(name.trim().toLowerCase().replace(/ +(?= )/g, '')).split('-').join(' ').split(' ')
+    async generateUserName({}, name = '') {
+      const nameArr = utils
+        .removeUnicode(
+          name
+            .trim()
+            .toLowerCase()
+            .replace(/ +(?= )/g, '')
+        )
+        .split('-')
+        .join(' ')
+        .split(' ')
       console.log(nameArr)
       // eslint-disable-next-line
       let username_indexing = _.last(nameArr)
@@ -219,26 +228,27 @@ export default {
       // eslint-disable-next-line
       if (username_indexing) {
         // eslint-disable-next-line
-        username = username_no > 0 ? username_indexing + username_no : username_indexing
+        username =
+          username_no > 0 ? username_indexing + username_no : username_indexing
       }
 
       return { username, username_indexing, username_no }
     }
   },
   mutations: {
-    setUsers (state, users) {
+    setUsers(state, users) {
       state.users = users
     },
-    setUser (state, user) {
+    setUser(state, user) {
       state.user = user
     },
-    setCount (state, count) {
+    setCount(state, count) {
       state.count = count
     },
-    setRoles (state, roles) {
+    setRoles(state, roles) {
       state.roles = roles
     },
-    receiveUser (state, user) {
+    receiveUser(state, user) {
       const i = state.users.findIndex(({ id }) => user.id === id)
       if (i > -1) {
         state.users.splice(i, 1, user)
@@ -246,7 +256,7 @@ export default {
         state.users.unshift(user)
       }
     },
-    removeUser (state, userId) {
+    removeUser(state, userId) {
       const i = state.users.findIndex(user => user.id === userId)
       if (i > -1) state.users.splice(i, 1)
     }
