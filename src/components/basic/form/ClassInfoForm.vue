@@ -1,77 +1,47 @@
 <template>
   <v-form ref="form" flat class="pa-6">
-    <autocomplete-major
-      v-model="major"
-      :defaultMajors="[major]"
+    <v-text-field
+      ref="title"
+      v-model="title"
+      label="Tên lớp"
+      placeholder="Nhập tên lớp"
+      outlined
+      required
+      dense
+    />
+    <autocomplete-grade
+      v-model="grade"
+      :defaultGrades="grade"
       item-text="title"
       item-value="id"
-      label="Chuyên Ngành"
+      label="Khối"
       return-object
       required
       dense
       outlined
       disabled
-    ></autocomplete-major>
-    <v-text-field
-      v-model="classData.course.title"
-      label="Môn học"
-      required
-      outlined
-      dense
-      disabled
-    ></v-text-field>
-    <v-text-field
-      v-model="tags"
-      label="Nhóm"
-      placeholder="Nhập tên nhóm "
-      required
-      outlined
-      dense
-      disabled
-    ></v-text-field>
-    <text-field-code
-      patern="XXXX-XX"
-      ref="code"
-      v-model="code"
-      label="Mã lớp"
-      placeholder="Nhập mã lớp"
-      required
-      dense
-      outlined
-      disabled
-    ></text-field-code>
-    <v-select
-      v-model="room"
+    ></autocomplete-grade>
+    <autocomplete-division
+      v-model="division"
+      :defaultDivision="division"
       item-text="title"
       item-value="id"
-      :items="rooms"
-      label="Phòng Học"
-      placeholder="Chọn một phòng học"
-      height="42"
+      label="Ban"
+      return-object
+      required
       dense
       outlined
-    ></v-select>
+      disabled
+    />
     <autocomplete-teacher
       v-model="teachers"
       :defaultTeachers="teachers"
       item-text="name"
       item-value="id"
-      label="Giáo viên"
+      label="Giáo viên chủ nhiệm"
       deletable-chips
       chips
       small-chips
-      multiple
-      dense
-      outlined
-    ></autocomplete-teacher>
-    <autocomplete-teacher
-      v-model="mentors"
-      item-text="name"
-      item-value="id"
-      label="Trợ Giảng"
-      chips
-      small-chips
-      deletable-chips
       multiple
       dense
       outlined
@@ -87,14 +57,14 @@
 <script>
 import { get } from 'lodash'
 import AutocompleteTeacher from '@/components/basic/input/AutocompleteTeacher'
-import AutocompleteMajor from '@/components/basic/input/AutocompleteMajor'
-import TextFieldCode from '@/components/basic/input/TextFieldCode'
+import AutocompleteGrade from '@/components/basic/input/AutocompleteGrade'
+import AutocompleteDivision from '@/components/basic/input/AutocompleteDivision'
 import { mapActions, mapGetters } from 'vuex'
 export default {
   components: {
     AutocompleteTeacher,
-    AutocompleteMajor,
-    TextFieldCode
+    AutocompleteGrade,
+    AutocompleteDivision
   },
   props: {
     classData: {
@@ -102,43 +72,39 @@ export default {
       required: true,
       default: () => {}
     },
-    majorData: Object,
+    gradeData: Object,
     courseData: Object
   },
   data: () => ({
-    room: '',
     valid: true,
     course: '',
-    major: '',
+    grade: '',
+    division: '',
     startTime: '',
     endTime: '',
-    code: '',
-    tags: '',
+    title: '',
     description: '',
     teachers: [],
     mentors: [],
     staff: {}
   }),
   computed: {
-    ...mapGetters('rooms', ['rooms']),
-    getCourseItems () {
-      return this.major ? this.major.courses : []
+    getCourseItems() {
+      return this.grade ? this.grade.courses : []
     }
   },
   methods: {
-    ...mapActions('rooms', ['fetchRooms']),
-    getCourseFilter () {
-      return { major: get(this.major, 'id', null) }
+    getCourseFilter() {
+      return { grade: get(this.grade, 'id', null) }
     },
-    resetDefault () {
+    resetDefault() {
       if (this.classData) {
         this.teachers = this.classData.teachers
         this.mentors = this.classData.mentors
         this.code = this.classData.code
-        this.room = this.classData.room
-        this.tags = this.classData.tags
+        this.title = this.classData.title
         this.course = this.courseData || this.classData.course
-        this.major = this.majorData || this.classData.major
+        this.grade = this.gradeData || this.classData.grade
         this.startTime = this.classData.startTime
         this.description = this.classData.description
         this.endTime = this.classData.endTime
@@ -147,40 +113,36 @@ export default {
         this.teachers = []
         this.mentors = []
         this.code = ''
-        this.room = ''
-        this.tags = ''
+        this.title = ''
         this.course = null
-        this.major = null
+        this.grade = null
         this.startTime = ''
         this.description = ''
         this.endTime = ''
         this.staff = ''
       }
     },
-    getData () {
+    getData() {
       if (this.$refs.form.validate()) {
         return {
           teachers: this.teachers,
           description: this.description,
           code: this.code,
-          room: this.room,
-          tags: this.tags,
+          title: this.title,
           mentors: this.mentors
         }
       }
     }
   },
-  created () {
+  created() {
     this.resetDefault()
-    this.fetchRooms({ department: this.classData.department.id })
   },
   watch: {
-    classData () {
+    classData() {
       this.resetDefault()
     }
   }
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

@@ -10,7 +10,14 @@
       attach
     >
       <template v-slot:activator="{ on, attrs }">
-        <v-btn x-small icon class="hidden-xs-only" dark v-bind="attrs" v-on="on">
+        <v-btn
+          x-small
+          icon
+          class="hidden-xs-only"
+          dark
+          v-bind="attrs"
+          v-on="on"
+        >
           <v-icon small color="grey">mdi-settings</v-icon>
         </v-btn>
       </template>
@@ -52,7 +59,7 @@
         </v-btn>
       </template>
       <v-card>
-        <v-card-title class="amber dark-1 white--text font-weight-regular"
+        <v-card-title class="white--text font-weight-regular"
           >CÀI ĐẶT CỘT HIỂN THỊ</v-card-title
         >
         <v-row no-gutters>
@@ -97,20 +104,20 @@ export default {
       type: Array,
       default() {
         return []
-      },
+      }
     },
     value: {
       type: Array,
       default() {
         return []
-      },
-    },
+      }
+    }
   },
   data() {
     return {
       itemPerCol: 4,
       originHeaders: [],
-      dialog: false,
+      dialog: false
     }
   },
   created() {
@@ -119,20 +126,20 @@ export default {
   computed: {
     colNumber() {
       return Math.ceil(this.originHeaders.length / this.itemPerCol)
-    },
+    }
   },
   watch: {
     originHeaders: {
       handler(val) {
         this.$emit(
           'change',
-          val.filter((item) => item.show)
+          val.filter(item => item.show)
         )
       },
       deep: true,
-      immediate: true,
-    },
-  },
+      immediate: true
+    }
+  }
 }
 </script>
 

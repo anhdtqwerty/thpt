@@ -5,7 +5,7 @@
     :fullscreen="$vuetify.breakpoint.smAndDown"
   >
     <v-card>
-      <v-card-title class="white--text primary"
+      <v-card-title class="primary white--text "
         >Thêm lớp học
         <v-spacer />
         <v-icon color="white" @click="cancel">close</v-icon>
