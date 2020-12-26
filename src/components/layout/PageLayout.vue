@@ -1,5 +1,5 @@
 <template>
-  <div class="page-layout pa-5">
+  <div class="page-layoutW">
       <div class="page__header">
         <div class="page__header--left">
           <div class="py-2">

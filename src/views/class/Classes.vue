@@ -1,25 +1,19 @@
 <template>
-  <div :class="{ 'px-3': $vuetify.breakpoint.mdAndUp }">
-    <v-row
-      :class="{
-        'px-2 mt-2': $vuetify.breakpoint.smAndDown,
-        'mx-n2': $vuetify.breakpoint.mdAndUp
-      }"
-      no-gutters
-    >
-      <v-col>
+  <div>
+    <div class="pa-4 pa-md-2 d-flex justify-space-between align-center">
+      <div>
         <Breadcrumbs
           headline="Lớp học"
           :link="[{ text: 'Lớp học', href: '../classes' }]"
         />
-      </v-col>
-      <v-col class="d-flex justify-end pt-4">
+      </div>
+      <div class="flex-center">
         <v-btn color="primary" @click="dialog = !dialog"
           ><v-icon left>add</v-icon>{{ addButtonText }}</v-btn
         >
-      </v-col>
-    </v-row>
-    <v-card class="px-4">
+      </div>
+    </div>
+    <v-card class="pa-2 pa-md-4 ma-md-2 elevation-1">
       <v-row>
         <v-col cols="12" md="11">
           <class-filter

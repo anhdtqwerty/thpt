@@ -1,36 +1,53 @@
 <template>
-  <v-menu open-on-hover bottom offset-y>
-    <template v-slot:activator="{ on }">
-      <v-btn text v-on="on" icon>
-        <v-icon>mdi-dots-vertical</v-icon>
-      </v-btn>
-    </template>
-    <v-list>
-      <v-list-item @click="getXLSX()">
-        <v-list-item-title>Xuất File</v-list-item-title>
-      </v-list-item>
-    </v-list>
-  </v-menu>
+  <div>
+    <v-menu open-on-hover bottom offset-y>
+      <template v-slot:activator="{ on }">
+        <v-btn text v-on="on" icon>
+          <v-icon>mdi-dots-vertical</v-icon>
+        </v-btn>
+      </template>
+      <v-list>
+        <v-list-item @click="getXLSX()">
+          <v-list-item-title>Xuất File</v-list-item-title>
+        </v-list-item>
+        <v-list-item @click="newDialogState = !newDialogState">
+          <v-list-item-title>Thêm Học Sinh</v-list-item-title>
+        </v-list-item>
+        <v-list-item @click="newDialogState = !newDialogState">
+          <v-list-item-title>Tạo mới Học Sinh</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
+    <student-new-dialog
+      :state="newDialogState"
+      :data="{ class: classData.id }"
+      @done="addStudentToClass"
+    />
+  </div>
 </template>
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import { parse } from 'json2csv'
 import { saveAs } from 'file-saver'
+import StudentNewDialog from '@/modules/student/StudentNewDialog'
 export default {
   props: {
     role: String
   },
-  data () {
+  components: { StudentNewDialog },
+  data() {
     return {
-      studentTableOptions: {}
+      studentTableOptions: {},
+      newDialogState: false
     }
   },
-  async created () {},
+  async created() {},
   computed: {
     ...mapGetters('classDetail', ['students', 'classData'])
   },
   methods: {
-    getXLSX () {
+    ...mapActions('classDetail', ['updateClass']),
+    getXLSX() {
       try {
         const csv = parse(
           this.students.map(s => ({
@@ -50,6 +67,12 @@ export default {
       } catch (err) {
         console.error(err)
       }
+    },
+    async addStudentToClass(student) {
+      await this.updateClass({
+        id: this.classData.id,
+        students: [...new Set([...this.classData.students, student.id])]
+      })
     }
   },
   watch: {}
