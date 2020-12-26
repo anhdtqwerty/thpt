@@ -22,7 +22,7 @@ export default {
     }
   },
   actions: {
-    uploadAvatar ({ commit }, formData) {
+    uploadAvatar({ commit }, formData) {
       return axios
         .post(UPLOAD_API, formData, {
           headers: {
@@ -35,10 +35,10 @@ export default {
         })
         .catch(e => alert.error(e))
     },
-    async createMark ({ commit }, { data, options }) {
+    async createMark({ commit }, { data, options }) {
       commit('setMark', await Mark.create(data, options))
     },
-    destroyAvatar ({ commit }, id) {
+    destroyAvatar({ commit }, id) {
       return axios
         .delete(DESTROY_API + id)
         .then(staff => {
@@ -46,17 +46,17 @@ export default {
         })
         .catch(e => alert.error(e))
     },
-    async fetchLogs ({ commit }, params) {
+    async fetchLogs({ commit }, params) {
       const logs = await Log.fetch(params)
       commit('setLogs', logs)
     },
-    async fetchMajors ({ commit }, params) {
+    async fetchMajors({ commit }, params) {
       commit('setMajors', await Major.fetch(params))
     },
-    async fetchClasses ({ commit }, params) {
+    async fetchClasses({ commit }, params) {
       commit('setClasses', await Class.fetch(params))
     },
-    async fetchStudent ({ commit }, studentId) {
+    async fetchStudent({ commit }, studentId) {
       commit('setStudent', null)
       const student = await Student.fetchOne(studentId)
       commit('setStudent', student)
@@ -64,31 +64,16 @@ export default {
     async fetchStudents({ commit }, options) {
       commit('setStudents', await Student.fetch(options))
     },
-    async createStudent({ commit }, { data }) {
-      try {
-        const student = await Student.create({ ...data })
-        if (student) {
-          data.student = student.id
-          data.code = student.username
-          commit('setStudent', await Student.create({ ...data }))
-          alert.success('Tạo Học sinh Thành Công!')
-        } else {
-          alert.error('Tạo Thất Bại!')
-        }
-      } catch (error) {
-        console.error(error)
-      }
-    },
-    async fetchMarks ({ commit }, studentId) {
+    async fetchMarks({ commit }, studentId) {
       commit('setMarks', await Mark.fetch({ student: studentId }))
     },
-    async fetchTuitions ({ commit }, query) {
+    async fetchTuitions({ commit }, query) {
       commit('setTuitions', await Lead.fetch(query))
     },
-    async setTuitions ({ commit }, tuitions) {
+    async setTuitions({ commit }, tuitions) {
       commit('setTuitions', tuitions)
     },
-    updateStudent ({ commit, state }, { id, ...student }) {
+    updateStudent({ commit, state }, { id, ...student }) {
       return axios
         .put(STUDENT_API + id, student)
         .then(student => {
@@ -99,7 +84,7 @@ export default {
         })
         .catch(e => alert.error(e))
     },
-    async removeStudent ({ commit }, student) {
+    async removeStudent({ commit }, student) {
       if (student.user) {
         await axios
           .delete(USER_API + student.user.id)
@@ -112,37 +97,37 @@ export default {
         })
         .catch(e => alert.error(e))
     },
-    setStudent ({ commit }, student) {
+    setStudent({ commit }, student) {
       commit('setStudent', student)
     }
   },
   mutations: {
-    setAvatar (state, avatar) {
+    setAvatar(state, avatar) {
       state.student = {
         ...state.student,
         avatar: avatar
       }
       state.avatar = avatar
     },
-    setMarks (state, marks) {
+    setMarks(state, marks) {
       state.marks = marks.reduce(
         (acc, cur) => ({ ...acc, [_.get(cur, 'course.id', '')]: cur }),
         {}
       )
     },
-    setMark (state, mark) {
+    setMark(state, mark) {
       state.marks = {
         ...state.marks,
         [mark.course.id]: mark
       }
     },
-    setTuitions (state, tuitions) {
+    setTuitions(state, tuitions) {
       state.tuitions = tuitions
     },
-    setSearch (state, search) {
+    setSearch(state, search) {
       state.search = search
     },
-    setCount (state, count) {
+    setCount(state, count) {
       state.count = count
     },
     setStudents(state, students) {
@@ -154,17 +139,17 @@ export default {
         {}
       )
     },
-    setStudent (state, student) {
+    setStudent(state, student) {
       state.student = student
     },
-    removeStudent (state, studentId) {},
-    setLogs (state, logs) {
+    removeStudent(state, studentId) {},
+    setLogs(state, logs) {
       state.logs = logs
     },
-    setMajors (state, majors) {
+    setMajors(state, majors) {
       state.majors = majors
     },
-    setClasses (state, classes) {
+    setClasses(state, classes) {
       state.classes = classes.reduce(
         (acc, cur) => ({ ...acc, [_.get(cur, 'course.id', '')]: cur }),
         {}

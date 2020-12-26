@@ -92,10 +92,12 @@ export default {
       try {
         const user = await api.User.create({ ...userData })
         userData.user = user.id
-        return await api.Student.create({
+        const student = await api.Student.create({
           ...userData,
           code: userData.username
         })
+        console.log(student)
+        return student
       } catch (error) {
         console.error(error)
       }

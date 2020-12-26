@@ -14,7 +14,6 @@ import Teacher from '@/views/teacher/Teacher'
 // ---------------- CLASSES -------------------------------
 
 import ClassDetail from '@/views/class/ClassDetail'
-import ClassStudents from '@/views/class/ClassStudents'
 import ClassMark from '@/views/class/ClassMark'
 import ClassSlots from '@/views/class/ClassSlots'
 
@@ -293,15 +292,6 @@ const routes = [
         component: ClassDetail,
         meta: {
           title: 'Lớp học',
-          auth: true
-        }
-      },
-      {
-        path: 'class/students/:id',
-        name: 'class-student',
-        component: ClassStudents,
-        meta: {
-          title: 'Học viên',
           auth: true
         }
       },
