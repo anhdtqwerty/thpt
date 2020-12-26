@@ -20,7 +20,9 @@
     <v-card class="pa-4 ma-md-2 elevation-1">
       <v-data-table item-key="id" :headers="headers" :items="generations">
         <div slot="top" class="d-flex mb-4">
-          <h3><span class="primary--text">DANH SÁCH CÁC KHÓA</span></h3>
+          <p class="text-uppercase text-h6" style="color: #0d47a1">
+            DANH SÁCH CÁC KHÓA
+          </p>
           <v-spacer></v-spacer>
           <div>
             <setting-table-header
