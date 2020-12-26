@@ -96,9 +96,10 @@ export default {
           ...userData,
           code: userData.username
         })
-        console.log(student)
+        alert.success('Tạo học sinh thành công')
         return student
       } catch (error) {
+        alert.error('Tạo học sinh thất bại')
         console.error(error)
       }
     },

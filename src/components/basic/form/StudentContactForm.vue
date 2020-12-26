@@ -29,23 +29,6 @@
           outlined
           dense
         ></v-text-field>
-        <v-text-field
-          ref="phone"
-          v-model="phone"
-          label="Số điện thoại"
-          placeholder="Nhập số điện thoại"
-          required
-          outlined
-          dense
-        ></v-text-field>
-        <v-text-field
-          ref="email"
-          v-model="email"
-          label="Email Học Sinh"
-          placeholder="Nhập email học sinh"
-          outlined
-          dense
-        ></v-text-field>
       </v-col>
     </v-row>
   </v-form>
@@ -62,8 +45,6 @@ export default {
   },
   data: () => ({
     valid: true,
-    email: '',
-    phone: '',
     currentLive: '',
     province: '',
     district: '',
@@ -79,16 +60,12 @@ export default {
     },
     getData() {
       return {
-        email: this.email,
-        phone: this.phone,
         currentLive: this.currentLive,
         province: this.province,
         district: this.district,
       }
     },
     reset() {
-      this.email = this.student.email
-      this.phone = this.student.phone
       this.currentLive = this.student.data.currentLive
       this.province = this.student.data.province
       this.district = this.student.data.district

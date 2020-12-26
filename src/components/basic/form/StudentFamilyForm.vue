@@ -1,7 +1,7 @@
 <template>
   <v-form v-model="valid" ref="form">
-    <v-row no-gutters>
-      <v-col class="pl-0" cols="12" md="6">
+    <v-row>
+      <v-col cols="12" md="6">
         <h4>Bố</h4>
         <v-text-field
           ref="dadName"
@@ -28,7 +28,7 @@
           outlined
         ></v-text-field>
       </v-col>
-      <v-col class="pl-2" cols="12" md="6">
+      <v-col cols="12" md="6">
         <h4>Mẹ</h4>
         <v-text-field
           ref="momName"
