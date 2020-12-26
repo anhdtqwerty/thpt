@@ -9,7 +9,7 @@
       <v-col>
         <Breadcrumbs
           headline="Khen thưởng kỷ luật"
-          :link="[{ text: 'Khen thưởng kỷ luật', href: '' }]"
+          :link="[{ text: 'Học sinh', href: '' },{ text: 'Khen thưởng kỷ luật', href: '/complimented' }]"
         />
       </v-col>
       <v-col class="d-flex justify-end pt-4">

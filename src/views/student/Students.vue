@@ -5,8 +5,8 @@
         <Breadcrumbs
           headline="Danh sách"
           :link="[
-            { text: 'Học sinh', href: '../students' },
-            { text: 'Danh sách'}
+            { text: 'Học sinh'},
+            { text: 'Danh sách', href: '../students' }
           ]"
         />
       </div>

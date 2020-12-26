@@ -9,8 +9,8 @@
     >
       <v-col>
         <Breadcrumbs
-          headline="Dach sách lớp"
-          :link="[{ text: 'Danh sách lớp', href: '../classes' }]"
+          headline="Lớp học"
+          :link="[{ text: 'Lớp học', href: '../classes' }]"
         />
       </v-col>
       <v-col class="d-flex justify-end pt-4">
