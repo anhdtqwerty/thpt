@@ -1,11 +1,11 @@
 <template>
   <v-dialog
     v-model="dialog"
-    width="600px"
+    width="800px"
     :fullscreen="$vuetify.breakpoint.smAndDown"
   >
     <v-card>
-      <v-card-title class="white--text primary"
+      <v-card-title class="primary white--text "
         >Thêm lớp học
         <v-spacer />
         <v-icon color="white" @click="cancel">close</v-icon>
@@ -21,10 +21,10 @@
         <v-spacer />
         <v-btn
           depressed
-          color="success"
+          color="primary"
           class="mr-4 mt-n4 mb-2 white--text"
           @click="save"
-          ><v-icon color="white" left> mdi-plus </v-icon>Thêm</v-btn
+          ><v-icon color="white" left> mdi-plus </v-icon>Lưu</v-btn
         >
       </v-card-actions>
     </v-card>

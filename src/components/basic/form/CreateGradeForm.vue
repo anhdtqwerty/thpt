@@ -2,14 +2,14 @@
   <v-form ref="form" flat class="pa-6">
     <v-text-field
       label="Tên khối mới"
-      v-model="grade.title"
+      v-model="title"
       dense
       outlined
       required
     ></v-text-field>
     <v-textarea
       ref="description"
-      v-model="grade.description"
+      v-model="description"
       label="Ghi chú"
       outlined
       dense
@@ -26,6 +26,7 @@ export default {
   data: () => ({
     valid: true,
     description: '',
+    title: '',
   }),
   computed: {
     ...mapGetters('app', ['department']),

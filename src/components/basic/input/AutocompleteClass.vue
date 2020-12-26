@@ -7,6 +7,7 @@
     item-value="id"
     @change="onChange"
     return-object
+    v-on:input="$emit('input', $event)"
     :rules="[v => !!v || 'Item is required']"
     @input="onChange"
   ></v-autocomplete>
@@ -26,28 +27,28 @@ export default {
   },
   computed: {
     ...mapGetters('app', ['department', 'roles', 'roleIdByName']),
-    classList () {
+    classList() {
       return this.classes.map(c => ({ ...c, title: `${c.code} - ${c.title}` }))
     }
   },
-  created () {
+  created() {
     this.classes = this.defaultClasses || []
     this.fetchClass()
   },
   methods: {
-    async fetchClass () {
+    async fetchClass() {
       this.classes = await Class.fetch({
         ...this.filter,
         department: this.department.id,
         status_in: ['opened', 'running']
       })
     },
-    onChange (data) {
+    onChange(data) {
       this.$emit('change', data)
     }
   },
   watch: {
-    filters (filters) {
+    filters(filters) {
       this.fetchClass()
     }
   }

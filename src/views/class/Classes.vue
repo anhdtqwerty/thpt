@@ -3,8 +3,8 @@
     <div class="pa-4 pa-md-2 d-flex justify-space-between align-center">
       <div>
         <Breadcrumbs
-          headline="Dach sách lớp"
-          :link="[{ text: 'Danh sách lớp', href: '../classes' }]"
+          headline="Lớp học"
+          :link="[{ text: 'Lớp học', href: '../classes' }]"
         />
       </div>
       <div class="flex-center">
@@ -76,8 +76,10 @@
                 {{ item.generation | getGeneration }}
               </p>
             </template>
-            <template v-slot:item.tags="{ item }">
-              <p style="margin: 0; white-space: nowrap">{{ item.tags }}</p>
+            <template v-slot:item.division="{ item }">
+              <p style="margin: 0; white-space: nowrap">
+                {{ item.division | getDivision }}
+              </p>
             </template>
             <template v-slot:item.teachers="{ item }">
               <p style="margin: 0; white-space: nowrap">
@@ -236,6 +238,9 @@ export default {
     },
     getTeacherNames: classData => {
       return classData.teachers.map(teacher => teacher.name).join(',')
+    },
+    getDivision: division => {
+      return division ? division.title : ''
     },
     displayDate: date => {
       if (date) return moment(date).format('DD/MM')

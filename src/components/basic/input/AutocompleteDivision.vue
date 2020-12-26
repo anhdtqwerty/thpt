@@ -20,7 +20,7 @@ export default {
   }),
   props: {
     filters: Object,
-    defaultDivisions: Array,
+    defaultDivisions: Object,
     options: Object
   },
   computed: {

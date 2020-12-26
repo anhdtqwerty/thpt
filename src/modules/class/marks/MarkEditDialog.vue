@@ -2,7 +2,7 @@
   <v-row justify="center">
     <v-dialog v-model="dialog" persistent max-width="450px">
       <v-card v-if="student">
-        <v-toolbar dense class="elevation-0 white--text" color="#0D47A1">
+        <v-toolbar dense class="elevation-0 white--text primary">
           <v-toolbar-title>{{ student.name }}</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-btn icon>

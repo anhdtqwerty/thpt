@@ -25,6 +25,10 @@ import StudentDashboard from '@/views/student/Dashboard'
 import Student from '@/views/student/Student'
 import StudentClasses from '@/views/student/Classes'
 import StudentImporter from '@/views/student/StudentImporter.vue'
+import Violation from '@/views/violation/Violations.vue'
+
+// ---------------- DEPARTMENT -------------------------------
+import Department from '@/views/department/Department'
 // ---------------- Score -------------------------------
 import InputScore from '@/views/score/InputScore.vue'
 
@@ -151,6 +155,15 @@ const routes = [
         name: 'Grade',
         meta: {
           title: 'Quản lý khối',
+          auth: true
+        }
+      },
+      {
+        path: 'complimented',
+        component: Violation,
+        name: 'Violation',
+        meta: {
+          title: 'Khen thưởng kỷ luật',
           auth: true
         }
       },

@@ -11,7 +11,7 @@
         <v-icon color="white" @click="cancel">close</v-icon>
       </v-card-title>
       <v-divider></v-divider>
-      <grade-info-form ref="form" :editCode="true" />
+      <create-grade-form ref="form" :editCode ='true'  />
       <v-row class="pr-6 pb-6 mt-n7" no-gutters>
         <v-spacer></v-spacer>
         <v-btn
@@ -29,12 +29,11 @@
 </template>
 
 <script>
-import GradeInfoForm from '@/components/basic/form/GradeForm.vue'
+import CreateGradeForm from '@/components/basic/form/CreateGradeForm.vue'
 import { mapActions, mapState } from 'vuex'
-
 export default {
   components: {
-    GradeInfoForm
+    CreateGradeForm
   },
   props: {
     state: Boolean
