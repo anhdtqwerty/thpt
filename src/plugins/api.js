@@ -29,7 +29,7 @@ const DIVISION_API = '/divisions/'
 const SEMESTER_API = '/semesters/'
 const GRADE_API = '/grades/'
 const SUBJECT_API = '/subjects/'
-const VIOLATION_API = '/violation/'
+const VIOLATION_API = '/violations/'
 const FACTOR_API = '/factors/'
 const APIHelper = api => ({
   search: (params, option) =>

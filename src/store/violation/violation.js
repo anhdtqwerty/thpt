@@ -6,17 +6,29 @@ export default {
     violations: []
   },
   actions: {
-    async fetchViolations ({ commit }, options) {
+    async fetchViolation ({ commit }, options) {
       try {
-        commit('setViolations', await Violation.fetch(options))
-      } catch (error) {
-        alert.error(error)
+        commit('setViolation', await Violation.fetch(options))
+      } catch (e) {
+        alert.error(e)
+      }
+    },
+    async removeDivision({ commit }, id) {
+      try {
+        await Violation.remove(id)
+        commit('removeViolation', id)
+        alert.success('Xóa thành công!')
+      } catch (e) {
+        alert.error(e)
       }
     },
   },
   mutations: {
-    setViolations (state, payload) {
+    setViolation(state, payload) {
       state.violations = payload
+    },
+    removeViolation(state, id) {
+      state.violations = state.violations.filter(violation => violation.id != id)
     },
   }
 }

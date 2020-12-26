@@ -23,10 +23,13 @@
       <v-data-table
         :loading="loading"
         :headers="originHeaders"
-        :items="violation"
+        :items="violations"
         item-key="id"
         dense
       >
+      <template v-slot:item.action="{ item }">
+          <division-actions :selected="item"> </division-actions>
+      </template>
       </v-data-table>
     </v-card>
   </div>
@@ -37,11 +40,12 @@ import { mapActions, mapState, mapGetters } from 'vuex'
 import DropMenu from '@/modules/student/menu/Menu.vue'
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import SettingTableHeader from '@/components/basic/table/SettingHeaders'
+import ViolationAction from '@/modules/violation/ViolationListActions.vue'
 
 const originHeaders = [
   {
     text: 'Ngày',
-    value: 'title',
+    value: 'createdAt',
     align: 'left',
     sortable: false,
     show: true,
@@ -55,7 +59,7 @@ const originHeaders = [
   },
   {
     text: 'Lớp',
-    value: '',
+    value: 'class.title',
     align: 'left',
     sortable: false,
     show: true,
@@ -69,7 +73,7 @@ const originHeaders = [
   },
   {
     text: 'Nội dung',
-    value: 'config.notes',
+    value: 'description',
     align: 'left',
     sortable: false,
     show: true,
@@ -88,6 +92,7 @@ export default {
     Breadcrumbs,
     DropMenu,
     SettingTableHeader,
+    ViolationAction
   },
   data() {
     return {
@@ -100,6 +105,19 @@ export default {
   },
   computed: {
     ...mapState('violation', ['violations']),
+  },
+  async created() {
+    await this.refresh({})
+    console.log(this.violations)
+  },
+  methods: {
+    ...mapActions('violation', ['fetchViolation']),
+    updateDraw(draw) {
+      this.draw = draw
+    },
+    refresh() {
+      this.fetchViolation()
+    },
   },
 }
 </script>
