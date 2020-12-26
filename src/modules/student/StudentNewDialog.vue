@@ -36,7 +36,6 @@
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex'
 
-import { get } from 'lodash'
 import StudentGeneralForm from '@/components/basic/form/StudentGeneralForm.vue'
 import StudentContactForm from '@/components/basic/form/StudentContactForm.vue'
 import StudentNoteForm from '@/components/basic/form/StudentNoteForm.vue'
@@ -47,7 +46,7 @@ export default {
     StudentGeneralForm,
     StudentContactForm,
     StudentNoteForm,
-    StudentFamilyForm,
+    StudentFamilyForm
   },
   data() {
     return {
@@ -69,10 +68,10 @@ export default {
       password: '',
       emailError: '',
       rules: {
-        required: (value) => !!value || 'Required.',
-        min: (v) => v.length >= 6 || 'Min 8 characters',
-        email: (v) => /.+@.+/.test(v) || 'E-mail must be valid',
-      },
+        required: value => !!value || 'Required.',
+        min: v => v.length >= 6 || 'Min 8 characters',
+        email: v => /.+@.+/.test(v) || 'E-mail must be valid'
+      }
     }
   },
   props: {
@@ -81,6 +80,7 @@ export default {
     defaultPhone: String,
     defaultEmail: String,
     defaultName: String,
+    defaultOveride: Object
   },
   computed: {
     ...mapState('app', ['roles', 'department']),
@@ -90,18 +90,19 @@ export default {
     },
     majors() {
       return this.rootMajor.majors || []
-    },
+    }
   },
   methods: {
     ...mapActions('user', ['generateUserName', 'validateEmail']),
-    ...mapActions('student', ['createStudent']),
+    ...mapActions('students', ['createStudent']),
     async save() {
       if (!this.$refs.form.validate()) return
       const studentGeneralForm = this.$refs.studentGeneralForm.getData()
       const studentContactForm = this.$refs.studentContactForm.getData()
       const studentNoteForm = this.$refs.studentNoteForm.getData()
       const studentFamilyForm = this.$refs.studentFamilyForm.getData()
-      this.createStudent({
+      const overide = this.defaultOveride || {}
+      const student = await this.createStudent({
         data: {
           name: studentGeneralForm.name,
           phone: studentContactForm.phone,
@@ -114,12 +115,15 @@ export default {
             ...studentGeneralForm,
             ...studentContactForm,
             ...studentFamilyForm,
-            ...studentNoteForm,
+            ...studentNoteForm
           },
-        },
+          ...overide
+        }
       })
+      console.log(student)
       this.dialog = false
       this.reset()
+      this.$emit('done', student)
     },
     async nameLostFocus() {
       const {
@@ -127,7 +131,7 @@ export default {
         // eslint-disable-next-line
         username_indexing,
         // eslint-disable-next-line
-        username_no,
+        username_no
       } = await this.generateUserName(this.name)
       this.username = username
       // eslint-disable-next-line
@@ -158,10 +162,11 @@ export default {
       this.status = 'active'
       this.password = ''
       this.email = ''
-    },
+    }
   },
   watch: {
     state(state) {
+      console.log(123)
       this.dialog = true
       this.phone = this.defaultPhone || ''
       this.email = this.defaultEmail || ''
@@ -170,7 +175,7 @@ export default {
         this.nameLostFocus()
       }
     },
-    rootMajor() {},
-  },
+    rootMajor() {}
+  }
 }
 </script>
