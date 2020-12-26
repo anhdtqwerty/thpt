@@ -1,4 +1,4 @@
-<templgate>
+<template>
   <div>
     <p class="font-weight-bold text-h5 ma-0">{{ headline }}</p>
     <v-breadcrumbs :items="links" style="pa-0 ma-0" icon=""><template v-slot:divider>
@@ -19,7 +19,7 @@ export default {
       {
         text: 'Trang chủ',
         disabled: false,
-        href: 'dashboard'
+        href: ''
       }
     ]
   }),

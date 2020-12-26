@@ -3,11 +3,10 @@
     <div class="pa-4 pa-md-2 d-flex justify-space-between align-center">
       <div>
         <Breadcrumbs
-          headline="Danh sách"
+          headline="Giáo viên"
           :link="[
             { text: 'Giáo viên', href: '../teachers' },
-            { text: 'Danh sách' },
-          ]"
+            ]"
         />
       </div>
       <div class="flex-center">
@@ -77,7 +76,7 @@ import UserItem from '@/components/basic/card/CardTeacherName.vue'
 import TeacherFilter from '@/modules/teacher/TeacherFilter.vue'
 import TeacherListActions from '@/modules/teacher/TeacherListActions'
 import NewTeacherDialog from '@/modules/teacher/TeacherNewDialog'
-import Breadcrumbs from '@/components/basic/Breadcrumbs'
+import Breadcrumbs from '@/components/layout/Breadcrumbs.vue'
 import SettingTableHeader from '@/components/basic/table/SettingHeaders'
 import KebapMenu from '@/components/basic/menu/KebapMenu.vue'
 import Vuetify from 'vuetify'
