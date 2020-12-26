@@ -258,7 +258,14 @@ export default {
         const factorId = _.get(data, 'factorObj.id')
         const semesterId = _.get(data, 'semesterObj.id')
         const studentId = _.get(data, 'studentObj.id')
-        if (subjectId) {
+        console.log({
+          class: classId,
+          subject: subjectId,
+          factor: factorId,
+          semester: semesterId,
+          student: studentId
+        })
+        if (subjectId && classId && factorId) {
           this.fetchMarks({
             class: classId,
             subject: subjectId,
@@ -360,18 +367,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.table-label {
-  font-weight: 500;
-  font-size: 18px;
-  line-height: 21px;
-  display: flex;
-  justify-content: space-between;
-  text-transform: uppercase;
-}
-.custom-input {
-  text-align: right;
-  padding: 8px;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
-}
+  .table-label {
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 21px;
+    display: flex;
+    justify-content: space-between;
+    text-transform: uppercase;
+  }
+  .custom-input {
+    max-width: 80px;
+    margin-right: 10px !important;
+    text-align: right;
+    padding: 8px;
+    border: 1px solid #E0E0E0;
+    border-radius: 4px;
+  }
 </style>
