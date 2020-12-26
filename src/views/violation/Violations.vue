@@ -28,7 +28,7 @@
         dense
       >
       <template v-slot:item.action="{ item }">
-          <division-actions :selected="item"> </division-actions>
+          <violation-actions :selected="item"> </violation-actions>
       </template>
       </v-data-table>
     </v-card>
@@ -40,7 +40,7 @@ import { mapActions, mapState, mapGetters } from 'vuex'
 import DropMenu from '@/modules/student/menu/Menu.vue'
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import SettingTableHeader from '@/components/basic/table/SettingHeaders'
-import ViolationAction from '@/modules/violation/ViolationListActions.vue'
+import ViolationActions from '@/modules/violation/ViolationListActions.vue'
 
 const originHeaders = [
   {
@@ -92,7 +92,7 @@ export default {
     Breadcrumbs,
     DropMenu,
     SettingTableHeader,
-    ViolationAction
+    ViolationActions
   },
   data() {
     return {

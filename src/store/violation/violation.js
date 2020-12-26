@@ -13,7 +13,7 @@ export default {
         alert.error(e)
       }
     },
-    async removeDivision({ commit }, id) {
+    async removeViolation({ commit }, id) {
       try {
         await Violation.remove(id)
         commit('removeViolation', id)

@@ -1,7 +1,7 @@
 <template>
   <div>
-    <division-update-dialog v-bind:division=selected :state="EditDivision"/>
-    <v-btn class="elevation-0" icon  @click="EditDivision=!EditDivision">
+    <violation-update-dialog v-bind:division=selected :state="EditViolation"/>
+    <v-btn class="elevation-0" icon  @click="EditViolation=!EditViolation">
       <v-icon >mdi-pencil</v-icon>
     </v-btn>
     <v-btn class="elevation-0" icon @click="onRemove()">
@@ -11,9 +11,11 @@
 </template>
 <script>
 import { mapActions, mapState } from 'vuex'
+import ViolationUpdateDialog from '@/modules/violation/ViolationUpdateDialog.vue'
 
 export default {
   components: {
+    ViolationUpdateDialog
   },
   props: {
     selected: { type: Object, default: () => [] }
@@ -21,27 +23,26 @@ export default {
   data() {
     return {
       sending: null,
-      EditDivision: false
+      EditViolation: false
     }
   },
   computed: {
-    ...mapState('division', ['divisions'])
+    ...mapState('violation', ['violations'])
   },
   methods: {
-    ...mapActions('division', ['removeDivision', 'updateDivision']),
+    ...mapActions('violation', ['removeViolation', 'updateDivision']),
     onRemove() {
       this.$dialog.confirm({
-        title: 'Xóa phân ban',
-        text: 'Bạn có chắc muốn phân ban này?',
+        title: 'Xóa',
+        text: 'Bạn có chắc muốn xóa không?',
         okText: 'Có',
         cancelText: 'Không',
         done: async () => {
-          await this.removeDivision(this.selected.id)
+          await this.removeViolation(this.selected.id)
         }
       })
     },
     onEdit() {
-      console.log(12)
       this.$emit('onEdit', this.selected)
     }
   }
