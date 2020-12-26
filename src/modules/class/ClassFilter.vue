@@ -73,9 +73,9 @@
           depressed
           width="80px"
           height="42px"
-          color="#0D47A1"
           @click="onFilterChanged"
-          class="white--text ml-1"
+          color="#0D47A1"
+          outlined
         >
           <v-icon left dark>mdi-filter-outline</v-icon>Lọc
         </v-btn>
@@ -93,17 +93,17 @@ export default {
   components: {
     AutocompleteTeacher,
     AutocompleteGrade,
-    AutocompleteDivision
+    AutocompleteDivision,
   },
   data: () => ({
     division: '',
     teacher: {},
     grade: '',
     status: 'running',
-    tags: ''
+    tags: '',
   }),
   computed: {
-    ...mapState('constant', ['classStatus'])
+    ...mapState('constant', ['classStatus']),
   },
   methods: {
     onFilterChanged() {
@@ -112,14 +112,14 @@ export default {
         grade: this.grade,
         division: this.division,
         teacher: this.teacher,
-        _sort: 'createdAt:desc'
+        _sort: 'createdAt:desc',
       })
       this.$emit('onFilterChanged', {
         dialog: false,
         grade: this.grade,
         division: this.division,
         teachers: this.teacher,
-        _sort: 'createdAt:desc'
+        _sort: 'createdAt:desc',
       })
     },
     reset() {
@@ -129,8 +129,8 @@ export default {
       this.status = 'running'
       this.division = ''
       this.teacher = ''
-    }
-  }
+    },
+  },
 }
 </script>
 
