@@ -1,6 +1,6 @@
 <template>
   <div>
-    <violation-update-dialog v-bind:division=selected :state="EditViolation"/>
+    <violation-update-dialog v-bind:violation=selected :state="EditViolation"/>
     <v-btn class="elevation-0" icon  @click="EditViolation=!EditViolation">
       <v-icon >mdi-pencil</v-icon>
     </v-btn>

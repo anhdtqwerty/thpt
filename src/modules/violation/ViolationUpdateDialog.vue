@@ -11,7 +11,7 @@
         <v-icon color="white" @click="cancel">close</v-icon>
       </v-card-title>
       <v-divider></v-divider>
-      <violation-info-form v-bind:violation=violation ref="form" />
+      <violation-edit-form v-bind:violation=violation ref="form" />
       <v-row class="pr-6 pb-6 mt-n7" no-gutters>
         <v-spacer></v-spacer>
         <v-btn
@@ -36,12 +36,12 @@
   </v-dialog>
 </template>
 <script>
-import ViolationInfoForm from '@/components/basic/form/ViolationForm.vue'
+import ViolationEditForm from '@/components/basic/form/ViolationForm.vue'
 import { mapActions, mapState } from 'vuex'
 
 export default {
   components: {
-    ViolationInfoForm,
+    ViolationEditForm,
   },
   props: {
     state: Boolean,
