@@ -25,9 +25,7 @@ export default {
   },
   data: () => ({
     valid: true,
-    subjects: '',
     description: '',
-    title: '',
   }),
   computed: {
     ...mapGetters('app', ['department']),
@@ -35,9 +33,6 @@ export default {
   props: {
     grade: { type: Object, default: () => {} },
     editCode: { type: Boolean, default: false },
-  },
-    created(){
-    console.log(this.grade)
   },
   methods: {
     reset() {
