@@ -44,6 +44,7 @@ import Page404 from '@/views/Page404'
 import Divisions from '@/views/division/Divisions.vue'
 import Semesters from '@/views/semester/Semesters.vue'
 import Grades from '@/views/grade/Grades.vue'
+import Subjects from '@/views/subject/Subjects.vue'
 import Classes from '@/views/class/Classes'
 const routes = [
   {
@@ -150,11 +151,20 @@ const routes = [
         }
       },
       {
-        path: 'Grades',
+        path: 'grades',
         component: Grades,
         name: 'Grade',
         meta: {
           title: 'Quản lý khối',
+          auth: true
+        }
+      },
+      {
+        path: 'subjects',
+        component: Subjects,
+        name: 'Subjects',
+        meta: {
+          title: 'Quản Môn Học',
           auth: true
         }
       },

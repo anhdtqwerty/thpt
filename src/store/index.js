@@ -40,6 +40,7 @@ import teacherDashboard from './dashboard/teacherDashboard'
 
 import division from './division/division'
 import grade from './grade/grade'
+import subjects from './subject/subjects'
 import violation from './violation/violation'
 /**
  * APPLICATIONS
@@ -106,6 +107,7 @@ export default createStore(Vuex.Store, {
     grade,
     subject,
     factor,
+    subjects,
     violation
   },
   mixins: {

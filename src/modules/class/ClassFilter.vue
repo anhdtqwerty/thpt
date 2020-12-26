@@ -63,20 +63,8 @@
         </v-row>
       </v-col>
 
-      <v-col
-        cols="12"
-        class="d-flex"
-        :class="{ 'mt-1': $vuetify.breakpoint.smAndDown }"
-        md="2"
-      >
-        <v-btn
-          depressed
-          width="80px"
-          height="42px"
-          @click="onFilterChanged"
-          color="#0D47A1"
-          outlined
-        >
+      <v-col cols="12" md="2">
+        <v-btn large dark @click="onFilterChanged" color="primary" outlined>
           <v-icon left dark>mdi-filter-outline</v-icon>Lọc
         </v-btn>
       </v-col>
@@ -93,17 +81,17 @@ export default {
   components: {
     AutocompleteTeacher,
     AutocompleteGrade,
-    AutocompleteDivision,
+    AutocompleteDivision
   },
   data: () => ({
     division: '',
     teacher: {},
     grade: '',
     status: 'running',
-    tags: '',
+    tags: ''
   }),
   computed: {
-    ...mapState('constant', ['classStatus']),
+    ...mapState('constant', ['classStatus'])
   },
   methods: {
     onFilterChanged() {
@@ -112,14 +100,14 @@ export default {
         grade: this.grade,
         division: this.division,
         teacher: this.teacher,
-        _sort: 'createdAt:desc',
+        _sort: 'createdAt:desc'
       })
       this.$emit('onFilterChanged', {
         dialog: false,
         grade: this.grade,
         division: this.division,
         teachers: this.teacher,
-        _sort: 'createdAt:desc',
+        _sort: 'createdAt:desc'
       })
     },
     reset() {
@@ -129,8 +117,8 @@ export default {
       this.status = 'running'
       this.division = ''
       this.teacher = ''
-    },
-  },
+    }
+  }
 }
 </script>
 
