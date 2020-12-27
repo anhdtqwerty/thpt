@@ -32,7 +32,7 @@
                 />
               </v-col>
               <v-col cols="12" md="2">
-                <v-btn color="primary" style="width: 100%">Tìm kiếm</v-btn>
+                <v-btn color="primary" style="width: 100%" @click="onClickSearchButton">Tìm kiếm</v-btn>
               </v-col>
             </v-row>
 
@@ -51,6 +51,14 @@
 
             <v-row class="advance-filter" v-if="filterMode === 'advanced'">
               <v-col cols="12" md="4">
+                <autocomplete-grade
+                  placeholder="Chọn khối"
+                  filled
+                  dense
+                  @change="filterInputs.gradeObj = $event"
+                />
+              </v-col>
+              <v-col cols="12" md="4">
                 <autocomplete-class
                   placeholder="Chọn lớp"
                   filled
@@ -68,15 +76,7 @@
                 />
               </v-col>
               <v-col cols="12" md="4">
-                <autocomplete-factor
-                  placeholder="Chọn đầu điểm"
-                  filled
-                  dense
-                  @change="filterInputs.factorObj = $event"
-                />
-              </v-col>
-              <v-col cols="12" md="4">
-                <v-btn color="primary" style="width: 100%">Tìm kiếm</v-btn>
+                <v-btn color="primary" style="width: 100%" @click="onClickSearchButton">Tìm kiếm</v-btn>
               </v-col>
             </v-row>
           </v-col>
@@ -85,32 +85,32 @@
     </v-card>
     <v-card class="pa-2 pa-md-4 ma-md-2 elevation-1">
       <v-card-text>
+        <div class="table-label primary--text mb-5">
+          {{ titleTable }}
+        </div>
         <template v-if="filterInputs.subjectObj">
           <div class="text-right">
-          <setting-table-header
-            :default-headers="[]"
-          />
-          <KebapMenu v-if="!$vuetify.breakpoint.xs">
-            <v-list>
-              <v-list-item>
-                <export-excel :custom-header="[]" api="/classes/" />
-              </v-list-item>
-            </v-list>
-          </KebapMenu>
-        </div>
-          <div class="table-label primary--text mb-5">
-            {{ titleTable }}
+            <setting-table-header
+              :default-headers="originHeaders"
+              @change="headers = $event"
+            />
+            <KebapMenu v-if="!$vuetify.breakpoint.xs">
+              <v-list>
+                <v-list-item>
+                  <export-excel :custom-header="[]" api="/classes/" />
+                </v-list-item>
+              </v-list>
+            </KebapMenu>
           </div>
-        </template>
-        <table class="mark-table">
+          <table class="mark-table">
           <thead>
             <tr>
               <th rowspan="2">STT</th>
               <th rowspan="2">Học sinh</th>
-              <th class="semseter-header" :colspan="semestersColSpan" v-for="semester in refrencesInfo.semesters" :key="semester.id">{{ semester.title }}</th>
+              <th class="semseter-header" :colspan="semestersColSpan" v-for="semester in headers" :key="semester.id">{{ semester.text }}</th>
             </tr>
             <tr>
-              <template v-for="semester in refrencesInfo.semesters">
+              <template v-for="semester in headers">
                 <th v-for="factor in refrencesInfo.factors" :key="factor.id + semester.id" :colspan="factor.quantity">{{ factor.title }}</th>
               </template>
             </tr>
@@ -119,7 +119,7 @@
             <tr v-for="(item, order) in items" :key="item.studentId">
               <td>{{ order + 1 }}</td>
               <td>{{ item.fullName }}</td>
-              <template v-for="semester in refrencesInfo.semesters">
+              <template v-for="semester in headers">
                 <template  v-for="factor in refrencesInfo.factors" >
                   <td class="mark-td" v-for="index in factor.quantity" :key="factor.id + semester.id + index">
                     {{ getValues(filterMarkByFactorAndSemeter(semester.id)(factor.id)(item.marks)[index - 1]) }}
@@ -129,6 +129,7 @@
             </tr>
           </tbody>
         </table>
+        </template>
       </v-card-text>
     </v-card>
   </div>
@@ -142,7 +143,7 @@ import KebapMenu from '@/components/basic/menu/KebapMenu.vue'
 import _ from 'lodash'
 import AutocompleteClass from '@/components/basic/input/AutocompleteClass'
 import AutocompleteSubject from '@/components/basic/input/AutocompleteSubject'
-import AutocompleteFactor from '@/components/basic/input/AutocompleteFactor'
+import AutocompleteGrade from '@/components/basic/input/AutocompleteGrade'
 import { mapState, mapActions } from 'vuex'
 import { Semester, Factor } from '@/plugins/api'
 export default {
@@ -153,7 +154,7 @@ export default {
     ExportExcel,
     AutocompleteClass,
     AutocompleteSubject,
-    AutocompleteFactor,
+    AutocompleteGrade
   },
   data() {
     return {
@@ -172,10 +173,12 @@ export default {
         classObj: '',
         subjectObj: '',
         studentObj: '',
+        gradeObj: ''
       },
       loading: false,
       filterQuery: {},
       items: [],
+      headers: [],
       refrencesInfo: {
         semesters: [],
         factors: []
@@ -190,21 +193,6 @@ export default {
         studentObj: '',
       }
     },
-    filterInputs: {
-      handler(data) {
-        const classId = _.get(data, 'classObj.id')
-        const subjectId = _.get(data, 'subjectObj.id')
-        const studentId = _.get(data, 'studentObj.id')
-        if (subjectId && classId) {
-          this.fetchMarks({
-            class: classId,
-            subject: subjectId,
-            student: studentId,
-          })
-        }
-      },
-      deep: true,
-    },
     marks(data) {
       this.items = this.groupBy('studentId')(
         this.generateDataTable(Object.values(data))
@@ -214,14 +202,20 @@ export default {
   computed: {
     ...mapState('mark', ['marks']),
     titleTable () {
-      const subjectTitle = _.get(this.filterInputs, 'filterInputs.subjectObj.title')
-      const classTitle = _.get(this.filterInputs, 'filterInputs.classObj.title')
-      const factorTitle = _.get(this.filterInputs, 'filterInputs.factorObj.title')
-      return `Nhập điểm ${[subjectTitle, classTitle, factorTitle].filter(Boolean).join(' - ')}`
+      const subjectTitle = _.get(this.filterInputs, 'subjectObj.title')
+      const classTitle = _.get(this.filterInputs, 'classObj.title')
+      return `Bảng điểm ${[subjectTitle, classTitle].filter(Boolean).join(' - ')}`
     },
     semestersColSpan () {
       const markNumber = this.refrencesInfo.factors.reduce((acc, item) => acc + item.quantity, 0)
       return markNumber
+    },
+    originHeaders () {
+      return this.refrencesInfo.semesters.map(item => ({
+        text: item.title,
+        id: item.id,
+        show: true,
+      }))
     }
   },
   methods: {
@@ -272,6 +266,22 @@ export default {
       } else {
         this.filterMode = 'normal'
       }
+    },
+    onClickSearchButton () {
+      const data = this.filterInputs
+      console.log(data)
+      const classId = _.get(data, 'classObj.id')
+      const subjectId = _.get(data, 'subjectObj.id')
+      const studentId = _.get(data, 'studentObj.id')
+      const gradeId = _.get(data, 'gradeObj.id')
+      if (subjectId && classId) {
+        this.fetchMarks({
+          class: classId,
+          subject: subjectId,
+          student: studentId,
+          grade: gradeId
+        })
+      }
     }
   },
   created () {
@@ -295,6 +305,7 @@ export default {
     text-transform: uppercase;
   }
   .mark-table {
+    width: 100%;
     td, tr, th {
       border: 1px solid #E0E0E0;
     }
