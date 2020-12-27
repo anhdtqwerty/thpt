@@ -98,38 +98,33 @@
             </v-list>
           </KebapMenu>
         </div>
-          <div class="table-label primary--text mb-3">
+          <div class="table-label primary--text mb-5">
             {{ titleTable }}
           </div>
         </template>
         <table class="mark-table">
           <thead>
             <tr>
-              <td rowspan="2">STT</td>
-              <td rowspan="2">Học sinh</td>
-              <td :colspan="refrencesInfo.factors.length" v-for="semester in refrencesInfo.semesters" :key="semester.id">{{ semester.title }}</td>
+              <th rowspan="2">STT</th>
+              <th rowspan="2">Học sinh</th>
+              <th class="semseter-header" :colspan="semestersColSpan" v-for="semester in refrencesInfo.semesters" :key="semester.id">{{ semester.title }}</th>
             </tr>
             <tr>
               <template v-for="semester in refrencesInfo.semesters">
-                <td v-for="factor in refrencesInfo.factors" :key="factor.id + semester.id">{{ factor.title }}</td>
+                <th v-for="factor in refrencesInfo.factors" :key="factor.id + semester.id" :colspan="factor.quantity">{{ factor.title }}</th>
               </template>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in items" :key="item.studentId">
-              <td>{{ item.order }}</td>
+            <tr v-for="(item, order) in items" :key="item.studentId">
+              <td>{{ order + 1 }}</td>
               <td>{{ item.fullName }}</td>
               <template v-for="semester in refrencesInfo.semesters">
                 <template  v-for="factor in refrencesInfo.factors" >
-                  <td class="mark-td" :key="factor.id + semester.id">
-                    <div class="mark-container">
-                      <div class="mark-cell" v-for="mark in filterMarkByFactorAndSemeter(semester.id)(factor.id)(item.marks)" :key="mark.id">
-                        {{ mark.value }}
-                      </div>
-                    </div>
+                  <td class="mark-td" v-for="index in factor.quantity" :key="factor.id + semester.id + index">
+                    {{ getValues(filterMarkByFactorAndSemeter(semester.id)(factor.id)(item.marks)[index - 1]) }}
                   </td>
                 </template>
-                
               </template>
             </tr>
           </tbody>
@@ -212,7 +207,7 @@ export default {
     },
     marks(data) {
       this.items = this.groupBy('studentId')(
-        this.generateDataTable(this.setOrderForMark(Object.values(data)))
+        this.generateDataTable(Object.values(data))
       )
     },
   },
@@ -223,10 +218,18 @@ export default {
       const classTitle = _.get(this.filterInputs, 'filterInputs.classObj.title')
       const factorTitle = _.get(this.filterInputs, 'filterInputs.factorObj.title')
       return `Nhập điểm ${[subjectTitle, classTitle, factorTitle].filter(Boolean).join(' - ')}`
+    },
+    semestersColSpan () {
+      const markNumber = this.refrencesInfo.factors.reduce((acc, item) => acc + item.quantity, 0)
+      return markNumber
     }
   },
   methods: {
     ...mapActions('mark', ['fetchMarks', 'updateMarks']),
+    getValues (obj) {
+      if (!obj) return 0
+      return _.get(obj, 'value')
+    },
     filterMarkByFactorAndSemeter: (semesterId) => (factorId) => (marks) => {
       return marks.filter(item => item.factorId === factorId && item.semesterId === semesterId)
     },
@@ -251,7 +254,6 @@ export default {
     },
     generateDataTable(marks) {
       return marks.map((item) => ({
-        order: item.order,
         studentId: item.student.id,
         fullName: item.student.name,
         marks: [
@@ -293,34 +295,18 @@ export default {
     text-transform: uppercase;
   }
   .mark-table {
-    td, tr {
+    td, tr, th {
       border: 1px solid #E0E0E0;
     }
-    td {
-      padding: 10px 20px;
+    td, th {
+      padding: 14px 20px;
     }
-    .mark-td {
-      padding: 10px 0;
-      position: relative;
+    .semseter-header {
+      font-size: 20px;
+      color: #0D47A1;
+      text-transform: uppercase;
     }
-    .mark-container {
-      display: flex;
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      .mark-cell {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        &:not(:last-child) {
-          border-right: 1px solid #E0E0E0;
-        }
-      }
-    }
+    color: #212121;
     border-collapse: collapse;
   }
 </style>
