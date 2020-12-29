@@ -46,6 +46,7 @@ import Divisions from '@/views/division/Divisions.vue'
 import Semesters from '@/views/semester/Semesters.vue'
 import Grades from '@/views/grade/Grades.vue'
 import Subjects from '@/views/subject/Subjects.vue'
+import Subject from '@/views/subject/Subject.vue'
 import Classes from '@/views/class/Classes'
 const routes = [
   {
@@ -166,6 +167,15 @@ const routes = [
         name: 'Subjects',
         meta: {
           title: 'Quản Môn Học',
+          auth: true
+        }
+      },
+      {
+        path: 'subject/:id',
+        component: Subject,
+        name: 'Subject',
+        meta: {
+          title: 'Môn Học',
           auth: true
         }
       },

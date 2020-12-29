@@ -6,12 +6,12 @@
   >
     <v-card>
       <v-card-title class="blue darken-4 white--text text-uppercase"
-        >Sửa {{ grade.title }}
+        >Sửa {{ subject.title }}
         <v-spacer />
         <v-icon color="white" @click="cancel">close</v-icon>
       </v-card-title>
       <v-divider></v-divider>
-      <grade-info-form v-bind:grade="grade" ref="form" />
+      <subject-info-form :subject="subject" ref="form" />
       <v-row class="pr-6 pb-6 mt-n7" no-gutters>
         <v-spacer></v-spacer>
         <v-btn
@@ -36,16 +36,16 @@
   </v-dialog>
 </template>
 <script>
-import GradeInfoForm from '@/components/basic/form/GradeForm.vue'
+import SubjectInfoForm from '@/components/basic/form/SubjectForm.vue'
 import { mapActions, mapState } from 'vuex'
 
 export default {
   components: {
-    GradeInfoForm
+    SubjectInfoForm
   },
   props: {
     state: Boolean,
-    grade: { type: Object, default: () => {} }
+    subject: Object
   },
   data() {
     return {
@@ -59,12 +59,11 @@ export default {
   },
 
   methods: {
-    ...mapActions('grade', ['updateGrade', 'fetchGrades']),
+    ...mapActions('subjects', ['updateSubject']),
     async save() {
       this.loading = true
       const data = this.$refs.form.getData()
-      await this.updateGrade({ id: this.grade.id, ...data })
-      await this.fetchGrades()
+      await this.updateSubject({ id: this.subject.id, ...data })
       this.$alert.success('Cập nhật thành công')
       this.$refs.form.resetDefault()
       this.loading = false
@@ -78,7 +77,8 @@ export default {
   watch: {
     state(state) {
       this.dialog = true
-    }
+    },
+    subject() {}
   }
 }
 </script>

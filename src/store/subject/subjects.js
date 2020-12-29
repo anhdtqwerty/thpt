@@ -3,12 +3,20 @@ import alert from '@/plugins/alert'
 export default {
   namespaced: true,
   state: {
-    subjects: []
+    subjects: [],
+    subject: {}
   },
   actions: {
     async fetchSubjects({ commit }, options) {
       try {
         commit('setSubjects', await Subject.fetch(options))
+      } catch (error) {
+        alert.error(error)
+      }
+    },
+    async fetchSubject({ commit }, id) {
+      try {
+        commit('setSubject', await Subject.fetchOne(id))
       } catch (error) {
         alert.error(error)
       }
@@ -31,8 +39,8 @@ export default {
     },
     async updateSubject({ commit }, { id, ...subject }) {
       try {
-        await Subject.update(id, subject)
-        commit('updateSubject', id, subject)
+        const res = await Subject.update(id, subject)
+        commit('updateSubject', { id, subject: res })
         alert.success('Cập nhật thành công!')
       } catch (e) {
         alert.error(e)
@@ -43,11 +51,15 @@ export default {
     setSubjects(state, subjects) {
       state.subjects = subjects
     },
-    updateSubject(state, subject) {
+    setSubject(state, subject) {
+      state.subject = subject
+    },
+    updateSubject(state, { subject, id }) {
       state.subjects = state.subjects.map(g => {
-        if (g.id === subject.id) return subject
+        if (g.id === id) return subject
         else return g
       })
+      state.subject = subject
     },
     createSubject(state, subject) {
       state.subjects = [subject, ...state.subjects]

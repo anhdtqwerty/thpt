@@ -17,22 +17,19 @@
   </v-form>
 </template>
 <script>
-import TextFieldCode from '@/components/basic/input/TextFieldCode'
 import { mapGetters } from 'vuex'
 export default {
-  components: {
-    TextFieldCode,
-  },
+  components: {},
   data: () => ({
     valid: true,
-    description: '',
+    description: ''
   }),
   computed: {
-    ...mapGetters('app', ['department']),
+    ...mapGetters('app', ['department'])
   },
   props: {
     grade: { type: Object, default: () => {} },
-    editCode: { type: Boolean, default: false },
+    editCode: { type: Boolean, default: false }
   },
   methods: {
     reset() {
@@ -45,7 +42,7 @@ export default {
       if (this.$refs.form.validate()) {
         return {
           title: this.title,
-          description: this.description,
+          description: this.description
         }
       }
     },
@@ -57,10 +54,10 @@ export default {
         this.title = ''
         this.description = ''
       }
-    },
+    }
   },
   created() {
     this.resetDefault()
-  },
+  }
 }
 </script>

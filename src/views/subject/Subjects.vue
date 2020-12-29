@@ -19,9 +19,23 @@
       <p class="text-uppercase text-h6" style="color: #0d47a1">
         Danh sách các môn
       </p>
-      <v-data-table :headers="headers" :items="subjects">
+      <v-data-table
+        :headers="headers"
+        :items="subjects"
+        @click:row="onSelected"
+      >
         <template v-slot:item.actions="{ item }">
-          <subject-list-actions :selected="item"> </subject-list-actions>
+          <div>
+            <v-btn class="elevation-0" icon small @click="onRemove()">
+              <v-icon>mdi-delete</v-icon>
+            </v-btn>
+          </div>
+        </template>
+        <template v-slot:item.grade="{ item }">
+          {{ item.grade.title }}
+        </template>
+        <template v-slot:item.divisions="{ item }">
+          {{ item.divisions | getDivision }}
         </template>
       </v-data-table>
     </v-card>
@@ -29,16 +43,14 @@
 </template>
 
 <script>
-import { mapActions, mapState, mapGetters } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import NewSubjectDialog from '@/modules/subject/SubjectNewDialog.vue'
-import SubjectListActions from '@/modules/subject/SubjectListActions.vue'
 
 export default {
   components: {
     NewSubjectDialog,
-    Breadcrumbs,
-    SubjectListActions
+    Breadcrumbs
   },
   props: {
     role: String
@@ -47,13 +59,16 @@ export default {
     return {
       headers: [
         { text: 'Tên môn', value: 'title', align: 'left', sortable: false },
+        { text: 'Khối', value: 'grade' },
+        { text: 'Phân ban', value: 'divisions' },
+        { text: 'Hệ số tổng kết', value: 'markMultiply' },
+        { text: 'Loại đánh giá', value: 'markType' },
         {
-          text: 'Ghi chú',
-          value: 'description',
-          align: 'left',
+          text: 'Hành động',
+          value: 'actions',
+          align: 'center',
           sortable: false
-        },
-        { text: 'Hành động', value: 'actions', align: 'left', sortable: false }
+        }
       ],
       createSubject: false,
       selected: {}
@@ -87,8 +102,27 @@ export default {
     },
     onSubjectSelected(subject) {
       this.setSubject(subject)
+    },
+    onSelected(subject) {
+      this.$router.push(`./subject/${subject.id}`)
+    },
+    onRemove() {
+      this.$dialog.confirm({
+        title: 'Xóa phân ban',
+        text: 'Bạn có chắc muốn phân ban này?',
+        okText: 'Có',
+        cancelText: 'Không',
+        done: async () => {
+          await this.removeGrade(this.selected.id)
+        }
+      })
     }
   },
-  filters: {}
+  filters: {
+    getDivision(divisions) {
+      if (!divisions || !divisions.length) return ''
+      return divisions.map(d => d.title).join(', ')
+    }
+  }
 }
 </script>
