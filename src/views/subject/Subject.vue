@@ -72,13 +72,18 @@
       <div class="d-flex justify-space-center align-center">
         <div class="caption">Cấu Hình Điểm</div>
         <v-spacer></v-spacer>
-        <v-btn color="primary" depressed small
+        <v-btn
+          color="primary"
+          depressed
+          small
+          @click="factorState = !factorState"
           ><v-icon>mdi-plus</v-icon> Thêm</v-btn
         >
       </div>
-      <v-data-table no-data-text="Chưa có cấu hình điểm"> </v-data-table>
+      <FactorTable no-data-text="Chưa có cấu hình điểm"> </FactorTable>
     </v-card>
     <SubjectEditDialog :subject="subject" :state="state" />
+    <FactorNewDialog :subject="subject" :state="factorState" />
   </div>
 </template>
 
@@ -86,34 +91,42 @@
 import { mapActions, mapState } from 'vuex'
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import SubjectEditDialog from '@/modules/subject/SubjectEditDialog'
+import FactorNewDialog from '@/modules/factor/FactorNewDialog'
+import FactorTable from '@/modules/factor/FactorTable.vue'
 export default {
   components: {
     Breadcrumbs,
-    SubjectEditDialog
+    SubjectEditDialog,
+    FactorNewDialog,
+    FactorTable
   },
   props: {
     role: String
   },
   data() {
     return {
-      state: false
+      state: false,
+      factorState: false
     }
   },
 
   computed: {
     ...mapState('app', ['department']),
-    ...mapState('subjects', ['subject'])
+    ...mapState('subjects', ['subject']),
+    ...mapState('factor', ['factors'])
   },
   async created() {
     await this.refresh({})
   },
   methods: {
     ...mapActions('subjects', ['fetchSubject']),
+    ...mapActions('factor', ['setFactors']),
     updateDraw(draw) {
       this.draw = draw
     },
     async refresh() {
       await this.fetchSubject(this.$route.params.id)
+      this.setFactors(this.subject.factors)
     }
   },
   filters: {

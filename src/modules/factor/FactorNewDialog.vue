@@ -11,7 +11,7 @@
         <v-icon color="white" @click="cancel">close</v-icon>
       </v-card-title>
       <v-divider></v-divider>
-      <create-factor-form ref="form" :editCode="true" />
+      <factor-form v-if="subject" :subject="subject" ref="form" />
       <v-row class="pr-6 pb-6 mt-n7" no-gutters>
         <v-spacer></v-spacer>
         <v-btn
@@ -29,14 +29,16 @@
 </template>
 
 <script>
-import CreateFactorForm from '@/components/basic/form/CreateFactorForm.vue'
+import FactorForm from '@/components/basic/form/FactorForm.vue'
 import { mapActions, mapState } from 'vuex'
 export default {
   components: {
-    CreateFactorForm
+    FactorForm
   },
   props: {
-    state: Boolean
+    state: Boolean,
+    factor: Object,
+    subject: Object
   },
   data() {
     return {
@@ -53,8 +55,8 @@ export default {
     async save() {
       this.loading = true
       const data = this.$refs.form.getData()
-      await this.createFactor({ ...data })
-      this.$alert.success('Tạo phân ban mới thành công')
+      await this.createFactor({ ...data, subject: this.subject.id })
+      this.$alert.success('Tạo đầu điểm mới thành công')
       this.$refs.form.resetDefault()
       this.loading = false
       this.dialog = false

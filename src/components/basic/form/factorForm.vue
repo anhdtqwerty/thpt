@@ -1,6 +1,6 @@
 <template>
   <v-form ref="form" flat class="pa-6">
-    <p class="caption">Đầu điểm</p>
+    <p class="caption">Đầu điểm cho môn: {{ subject.title }}</p>
     <v-text-field
       label="Tên đầu điểm *"
       v-model="title"
@@ -20,7 +20,7 @@
       ></v-text-field>
       <v-text-field
         label="Số lượng"
-        v-model="number"
+        v-model="quantity"
         dense
         type="number"
         outlined
@@ -45,6 +45,7 @@ export default {
       title: '',
       description: '',
       multiply: 1,
+      quantity: 3,
       type: ''
     }
   },
@@ -53,6 +54,7 @@ export default {
   },
   props: {
     factor: { type: Object, default: () => {} },
+    subject: { type: Object, default: () => {} },
     editCode: { type: Boolean, default: false }
   },
   methods: {
@@ -74,15 +76,12 @@ export default {
       }
     },
     resetDefault() {
-      console.log(this.factor)
       if (this.factor && this.factor.id) {
         this.title = this.factor.title
         this.type = this.factor.type
         this.multiply = this.factor.multiply
         this.description = this.factor.description
         this.quantity = this.factor.quantity
-      } else {
-        this.reset()
       }
     }
   },

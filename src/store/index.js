@@ -54,7 +54,6 @@ import rest from './other/rest'
 import auth from './app/auth'
 import view from './view'
 import user from './app/user'
-import subject from './subject/subject'
 import factor from './factor/factor'
 
 Vue.use(Vuex)
@@ -105,7 +104,6 @@ export default createStore(Vuex.Store, {
     studentImporter,
     division,
     grade,
-    subject,
     factor,
     subjects,
     violation
