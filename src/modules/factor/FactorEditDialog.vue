@@ -6,12 +6,12 @@
   >
     <v-card>
       <v-card-title class="blue darken-4 white--text text-uppercase"
-        >Sửa {{ subject.title }}
+        >Sửa {{ factor.title }}
         <v-spacer />
         <v-icon color="white" @click="cancel">close</v-icon>
       </v-card-title>
       <v-divider></v-divider>
-      <subject-info-form :subject="subject" ref="form" />
+      <factor-info-form :factor="factor" ref="form" />
       <v-row class="pr-6 pb-6 mt-n7" no-gutters>
         <v-spacer></v-spacer>
         <v-btn
@@ -36,16 +36,16 @@
   </v-dialog>
 </template>
 <script>
-import SubjectInfoForm from '@/components/basic/form/SubjectForm.vue'
+import FactorInfoForm from '@/components/basic/form/FactorForm.vue'
 import { mapActions, mapState } from 'vuex'
 
 export default {
   components: {
-    SubjectInfoForm
+    FactorInfoForm
   },
   props: {
     state: Boolean,
-    subject: Object
+    factor: Object
   },
   data() {
     return {
@@ -59,11 +59,11 @@ export default {
   },
 
   methods: {
-    ...mapActions('subjects', ['updateSubject']),
+    ...mapActions('factors', ['updateFactor']),
     async save() {
       this.loading = true
       const data = this.$refs.form.getData()
-      await this.updateSubject({ id: this.subject.id, ...data })
+      await this.updateFactor({ id: this.factor.id, ...data })
       this.$alert.success('Cập nhật thành công')
       this.$refs.form.resetDefault()
       this.loading = false
@@ -78,7 +78,7 @@ export default {
     state(state) {
       this.dialog = true
     },
-    subject() {}
+    factor() {}
   }
 }
 </script>

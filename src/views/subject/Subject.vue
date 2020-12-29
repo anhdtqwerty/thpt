@@ -76,14 +76,14 @@
           color="primary"
           depressed
           small
-          @click="factorState = !factorState"
+          @click="factorStateNewDialog = !factorStateNewDialog"
           ><v-icon>mdi-plus</v-icon> Thêm</v-btn
         >
       </div>
       <FactorTable no-data-text="Chưa có cấu hình điểm"> </FactorTable>
     </v-card>
     <SubjectEditDialog :subject="subject" :state="state" />
-    <FactorNewDialog :subject="subject" :state="factorState" />
+    <FactorNewDialog :subject="subject" :state="factorStateNewDialog" />
   </div>
 </template>
 
@@ -106,7 +106,9 @@ export default {
   data() {
     return {
       state: false,
-      factorState: false
+      factorStateNewDialog: false,
+      factorStateEditDialog: false,
+      factor: {}
     }
   },
 

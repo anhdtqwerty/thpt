@@ -11,7 +11,7 @@
         <v-icon color="white" @click="cancel">close</v-icon>
       </v-card-title>
       <v-divider></v-divider>
-      <create-grade-form ref="form" :editCode="true" />
+      <SubjectForm ref="form" :editCode="true" />
       <v-row class="pr-6 pb-6 mt-n7" no-gutters>
         <v-spacer></v-spacer>
         <v-btn
@@ -29,11 +29,11 @@
 </template>
 
 <script>
-import CreateGradeForm from '@/components/basic/form/CreateGradeForm.vue'
+import SubjectForm from '@/components/basic/form/SubjectForm'
 import { mapActions, mapState } from 'vuex'
 export default {
   components: {
-    CreateGradeForm
+    SubjectForm
   },
   props: {
     state: Boolean
@@ -49,11 +49,11 @@ export default {
     ...mapState('auth', ['user'])
   },
   methods: {
-    ...mapActions('grade', ['createGrade']),
+    ...mapActions('subjects', ['createSubject']),
     async save() {
       this.loading = true
       const data = this.$refs.form.getData()
-      await this.createGrade({ ...data })
+      await this.createSubject({ ...data })
       this.$alert.success('Tạo phân ban mới thành công')
       this.$refs.form.resetDefault()
       this.loading = false

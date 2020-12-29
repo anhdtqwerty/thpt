@@ -13,7 +13,7 @@
         </v-btn>
       </div>
     </div>
-    <new-subject-dialog :state="createSubject" />
+    <SubjectNewDialog :state="createSubject" />
 
     <v-card class="pa-2 pa-md-4 ma-md-2 elevation-1">
       <p class="text-uppercase text-h6" style="color: #0d47a1">
@@ -32,7 +32,7 @@
           </div>
         </template>
         <template v-slot:item.grade="{ item }">
-          {{ item.grade.title }}
+          {{ item.grade | getGrade }}
         </template>
         <template v-slot:item.divisions="{ item }">
           {{ item.divisions | getDivision }}
@@ -45,11 +45,11 @@
 <script>
 import { mapActions, mapState } from 'vuex'
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
-import NewSubjectDialog from '@/modules/subject/SubjectNewDialog.vue'
+import SubjectNewDialog from '@/modules/subject/SubjectNewDialog'
 
 export default {
   components: {
-    NewSubjectDialog,
+    SubjectNewDialog,
     Breadcrumbs
   },
   props: {
@@ -109,11 +109,11 @@ export default {
     onRemove() {
       this.$dialog.confirm({
         title: 'Xóa phân ban',
-        text: 'Bạn có chắc muốn phân ban này?',
+        text: 'Bạn có chắc muốn xóa môn này?',
         okText: 'Có',
         cancelText: 'Không',
         done: async () => {
-          await this.removeGrade(this.selected.id)
+          await this.removeSubject(this.selected.id)
         }
       })
     }
@@ -122,6 +122,10 @@ export default {
     getDivision(divisions) {
       if (!divisions || !divisions.length) return ''
       return divisions.map(d => d.title).join(', ')
+    },
+    getGrade(grade) {
+      if (!grade) return ''
+      return grade.title
     }
   }
 }

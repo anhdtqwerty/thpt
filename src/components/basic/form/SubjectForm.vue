@@ -108,7 +108,7 @@ export default {
       title: '',
       description: '',
       grade: '',
-      markType: 'number',
+      markType: 'mark',
       multiply: 1,
       divisions: '',
       type: '',
@@ -163,8 +163,6 @@ export default {
           this.anualyLesson = this.subject.data.anualyLesson
           this.weeklyLesson = this.subject.data.weeklyLesson
         }
-      } else {
-        this.reset()
       }
     }
   },
