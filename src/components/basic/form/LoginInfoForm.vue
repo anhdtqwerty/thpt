@@ -5,7 +5,7 @@
         <v-text-field
           v-model="phone"
           label="Số điện thoại"
-          required
+          :rules="[rules.required]"
           outlined
           dense
         ></v-text-field>
@@ -14,6 +14,7 @@
           label="Email Học Sinh"
           outlined
           dense
+          :rules="[rules.required, rules.email]"
         ></v-text-field>
         <v-text-field
           v-model="password"
@@ -44,6 +45,7 @@ export default {
   },
   data: () => ({
     valid: true,
+    show: false,
     phone: '',
     email: '',
     password: '',

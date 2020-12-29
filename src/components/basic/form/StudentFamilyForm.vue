@@ -7,7 +7,6 @@
           ref="dadName"
           v-model="dadName"
           label="Họ Và Tên Bố"
-          placeholder="Nhập họ và tên bố"
           outlined
           dense
         ></v-text-field>
@@ -15,7 +14,6 @@
           ref="dadPhone"
           v-model="dadPhone"
           label="Số điện thoại bố"
-          placeholder="Nhập số điện thoại bố"
           outlined
           dense
         ></v-text-field>
@@ -23,7 +21,6 @@
           ref="dadEmail"
           v-model="dadEmail"
           label="Email Bố"
-          placeholder="Nhập email bố"
           dense
           outlined
         ></v-text-field>
@@ -34,7 +31,6 @@
           ref="momName"
           v-model="momName"
           label="Họ Và Tên Mẹ"
-          placeholder="Nhập họ và tên mẹ"
           outlined
           dense
         ></v-text-field>
@@ -42,7 +38,6 @@
           ref="momPhone"
           v-model="momPhone"
           label="Số Điện Thoại Mẹ"
-          placeholder="Nhập số điện thoại mẹ"
           outlined
           dense
         ></v-text-field>
@@ -50,7 +45,6 @@
           ref="momEmail"
           v-model="momEmail"
           label="Email Mẹ"
-          placeholder="Nhập email mẹ"
           outlined
           dense
         ></v-text-field>
@@ -75,6 +69,11 @@ export default {
     momName: '',
     momEmail: '',
     momPhone: '',
+    rules: {
+      required: (value) => !!value || 'Required.',
+      min: (v) => v.length >= 6 || 'Min 8 characters',
+      email: (v) => /.+@.+/.test(v) || 'E-mail must be valid',
+    },
   }),
   created() {
     if (this.student) {

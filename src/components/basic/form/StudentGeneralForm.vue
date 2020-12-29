@@ -5,13 +5,13 @@
         <v-text-field
           v-model="name"
           label="Họ và tên"
-          required
           outlined
+          class="required"
           dense
           @blur="nameLostFocus()"
+          :rules="[rules.required]"
         ></v-text-field>
         <v-text-field
-          :rules="[rules.required]"
           v-model="username"
           outlined
           dense
@@ -19,12 +19,11 @@
           disabled
         ></v-text-field>
         <autocomplete-class
-          v-model="classData"
+          :rules="[rules.required]"
+          v-model="classes"
           return-object
           label="Chọn lớp"
-          required
           outlined
-          @onChange="console.log(this.classData)"
           dense
         ></autocomplete-class>
         <date-picker
@@ -32,6 +31,7 @@
           label="Ngày Sinh"
           dense
           outlined
+          :rules="[rules.required]"
         ></date-picker>
         <v-select
           v-model="gender"
@@ -39,21 +39,21 @@
           label="Giới Tính"
           dense
           outlined
-          required
+          :rules="[rules.required]"
         ></v-select>
         <v-text-field
           v-model="frequentlyAddress"
           label="Quê quán"
-          required
           outlined
           dense
+          :rules="[rules.required]"
         ></v-text-field>
         <v-text-field
           v-model="ethnic"
           label="Dân tộc"
-          required
           outlined
           dense
+          :rules="[rules.required]"
         ></v-text-field>
       </v-col>
     </v-row>
@@ -81,7 +81,7 @@ export default {
     dob: '',
     ethnic: '',
     frequentlyAddress: '',
-    classData: {},
+    classes: {},
     rules: {
       required: (value) => !!value || 'Required.',
       min: (v) => v.length >= 6 || 'Min 8 characters',
@@ -110,7 +110,6 @@ export default {
       this.username_no = username_no
     },
     getData() {
-      console.log(this.classData)
       return {
         name: this.name,
         username: this.username,
@@ -118,7 +117,7 @@ export default {
         dob: this.dob,
         ethnic: this.ethnic,
         frequentlyAddress: this.frequentlyAddress,
-        classData: this.classData,
+        classes: this.classes,
       }
     },
     validate() {
@@ -131,7 +130,7 @@ export default {
       this.dob = this.student.dob
       this.ethnic = this.student.data.ethnic
       this.frequentlyAddress = this.student.data.frequentlyAddress
-      this.classData = this.student.classData[0].title
+      this.classes = this.student.classes[0].title
     },
     resetValidation() {
       this.$refs.form.resetValidation()
@@ -141,9 +140,13 @@ export default {
     student(student) {
       this.reset()
     },
-    classData(classData) {
-      console.log(this.classData)
-    }
   },
 }
 </script>
+
+<style>
+.required label::after {
+    content: "*";
+    color: red;
+}
+</style>

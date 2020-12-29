@@ -58,7 +58,7 @@ export default {
       loading: 0,
       name: '',
       major: '',
-      classes: {},
+      classes: [],
       rootMajor: {},
       generation: '',
       phone: '',
@@ -99,39 +99,45 @@ export default {
   methods: {
     ...mapActions('students', ['createStudent']),
     async save() {
-      if (!this.$refs.form.validate()) return
+      if (
+        !this.$refs.studentGeneralForm.validate() ||
+        !this.$refs.studentContactForm.validate() ||
+        !this.$refs.loginInfoForm.validate()
+      ) {
+        return
+      }
       const studentGeneralForm = this.$refs.studentGeneralForm.getData()
       const studentContactForm = this.$refs.studentContactForm.getData()
       const studentNoteForm = this.$refs.studentNoteForm.getData()
       const studentFamilyForm = this.$refs.studentFamilyForm.getData()
       const loginInfoForm = this.$refs.loginInfoForm.getData()
+      this.classes.push(studentGeneralForm.classes)
       const overide = this.defaultOveride || {}
-      console.log(studentGeneralForm)
-      // const student = await this.createStudent({
-      //   generation: this.currentGeneration.id,
-      //   department: this.department.id,
-      //   classes: studentGeneralForm.classes,
-      //   name: studentGeneralForm.name,
-      //   username: studentGeneralForm.username,
-      //   password: loginInfoForm.password,
-      //   status: 'active',
-      //   phone: loginInfoForm.phone,
-      //   address: studentContactForm.currentLive,
-      //   notes: studentNoteForm.notes,
-      //   email: loginInfoForm.email,
-      //   gender: studentGeneralForm.gender,
-      //   dob: studentGeneralForm.dob,
-      //   data: {
-      //     ...studentGeneralForm,
-      //     ...studentContactForm,
-      //     ...studentFamilyForm,
-      //     ...studentNoteForm,
-      //   },
-      //   ...overide,
-      // })
-      // this.dialog = false
-      // this.reset()
-      // this.$emit('done', student)
+      const student = await this.createStudent({
+        generation: this.currentGeneration.id,
+        department: this.department.id,
+        classes: this.classes,
+        name: studentGeneralForm.name,
+        username: studentGeneralForm.username,
+        password: loginInfoForm.password,
+        status: 'active',
+        phone: loginInfoForm.phone,
+        address: studentContactForm.currentLive,
+        notes: studentNoteForm.notes,
+        email: loginInfoForm.email,
+        gender: studentGeneralForm.gender,
+        dob: studentGeneralForm.dob,
+        data: {
+          ...studentGeneralForm,
+          ...studentContactForm,
+          ...studentFamilyForm,
+          ...studentNoteForm,
+        },
+        ...overide,
+      })
+      this.dialog = false
+      this.reset()
+      this.$emit('done', student)
     },
     async emailLostFocus() {
       try {

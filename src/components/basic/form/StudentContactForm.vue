@@ -3,31 +3,25 @@
     <v-row>
       <v-col cols="12">
         <v-text-field
-          ref="currentLive"
           v-model="currentLive"
           label="Địa chỉ liên lạc"
-          placeholder="Nhập địa chỉ hiện tại"
-          required
           outlined
           dense
+          :rules="[rules.required]"
         ></v-text-field>
         <v-text-field
-          ref="province"
           v-model="province"
           label="Tỉnh/Thành phố"
-          placeholder="Nhập tỉnh/thành phố đang sống"
-          required
           outlined
           dense
+          :rules="[rules.required]"
         ></v-text-field>
         <v-text-field
-          ref="district"
           v-model="district"
           label="Quận/Huyện"
-          placeholder="Nhập quận/huyện đang sống"
-          required
           outlined
           dense
+          :rules="[rules.required]"
         ></v-text-field>
       </v-col>
     </v-row>
@@ -48,6 +42,11 @@ export default {
     currentLive: '',
     province: '',
     district: '',
+    rules: {
+      required: (value) => !!value || 'Required.',
+      min: (v) => v.length >= 6 || 'Min 8 characters',
+      email: (v) => /.+@.+/.test(v) || 'E-mail must be valid',
+    },
   }),
   created() {
     if (this.student) {
