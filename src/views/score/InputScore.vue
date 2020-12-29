@@ -123,7 +123,7 @@
           </div>
           <v-data-table :headers="originHeaders" :items="items" :loading="loading">
             <template v-slot:item.mark="{ item }">
-              <input
+              <!-- <input
                 v-for="mark in item.marks"
                 :key="mark.id"
                 class="custom-input"
@@ -133,7 +133,23 @@
                   (event) =>
                     onInputMark(item.studentId, mark.id, event.target.value)
                 "
-              />
+              /> -->
+
+                <v-select
+                  class="mark-selector"
+                  v-for="mark in item.marks"
+                  :key="mark.id"
+                  :items="[{ text:'Đạt', value: 1},{ text: 'Không đạt', value: 0}]"
+                  :value="mark.value"
+                  @change="
+                    (event) =>
+                      onInputMark(item.studentId, mark.id, event)
+                  "
+                  hide-details
+                  outlined
+                  dense
+                ></v-select>
+
             </template>
           </v-data-table>
         </template>
@@ -301,7 +317,7 @@ export default {
       }
     },
     onInputMark(studentId, markId, mark) {
-      this.items = this.updateMark(studentId, markId, Number(mark))(this.items)
+      this.items = this.updateMark(studentId, markId, mark)(this.items)
     },
     onChangeFilterMode() {
       if (this.filterMode === 'normal') {
@@ -357,12 +373,13 @@ export default {
     justify-content: space-between;
     text-transform: uppercase;
   }
-  .custom-input {
-    max-width: 80px;
-    margin-right: 10px !important;
-    text-align: right;
-    padding: 8px;
-    border: 1px solid #E0E0E0;
-    border-radius: 4px;
+  .mark-selector {
+    display: inline-block;
+    max-width: 150px;
+    margin-right: 10px;
+    // text-align: right;
+    // padding: 8px;
+    // border: 1px solid #E0E0E0;
+    // border-radius: 4px;
   }
 </style>

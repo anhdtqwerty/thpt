@@ -36,7 +36,7 @@
   </v-dialog>
 </template>
 <script>
-import FactorInfoForm from '@/components/basic/form/FactorForm.vue'
+import FactorInfoForm from '@/components/basic/form/factorForm.vue'
 import { mapActions, mapState } from 'vuex'
 
 export default {

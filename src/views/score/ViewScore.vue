@@ -221,8 +221,8 @@ export default {
   methods: {
     ...mapActions('mark', ['fetchMarks', 'updateMarks']),
     getValues (obj) {
-      if (!obj) return 0
-      return _.get(obj, 'value')
+      if (!obj) return 'Không Đạt'
+      return _.get(obj, 'value') ? 'Đạt' : 'Không Đạt'
     },
     filterMarkByFactorAndSemeter: (semesterId) => (factorId) => (marks) => {
       return marks.filter(item => item.factorId === factorId && item.semesterId === semesterId)
