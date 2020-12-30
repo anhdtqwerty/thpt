@@ -26,7 +26,7 @@
       >
         <template v-slot:item.actions="{ item }">
           <div>
-            <v-btn class="elevation-0" icon small @click="onRemove()">
+            <v-btn class="elevation-0" icon small @click="onRemove(item.id)">
               <v-icon>mdi-delete</v-icon>
             </v-btn>
           </div>
@@ -92,7 +92,7 @@ export default {
     await this.refresh({})
   },
   methods: {
-    ...mapActions('subjects', ['fetchSubjects']),
+    ...mapActions('subjects', ['fetchSubjects', 'removeSubject']),
     updateDraw(draw) {
       this.draw = draw
     },
@@ -106,14 +106,14 @@ export default {
     onSelected(subject) {
       this.$router.push(`./subject/${subject.id}`)
     },
-    onRemove() {
+    onRemove(id) {
       this.$dialog.confirm({
         title: 'Xóa phân ban',
         text: 'Bạn có chắc muốn xóa môn này?',
         okText: 'Có',
         cancelText: 'Không',
         done: async () => {
-          await this.removeSubject(this.selected.id)
+          await this.removeSubject(id)
         }
       })
     }
