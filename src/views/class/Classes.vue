@@ -25,17 +25,18 @@
           <span v-if="$vuetify.breakpoint.smAndDown">
             <class-filter-dialog @onFilterChanged="refresh" />
           </span>
-          <setting-table-header
+          <drop-menu
             :default-headers="originHeaders"
             @change="headers = $event"
-          />
+            v-if="$vuetify.breakpoint.mdAndUp"
+          ></drop-menu>
           <span v-if="$vuetify.breakpoint.mdAndUp">
             <kebap-menu>
-                <v-list>
-                  <v-list-item>
-                    <export-excel :custom-header="headers" api="/classes/" />
-                  </v-list-item>
-                </v-list>
+              <v-list>
+                <v-list-item>
+                  <export-excel :custom-header="headers" api="/classes/" />
+                </v-list-item>
+              </v-list>
             </kebap-menu>
           </span>
         </v-col>
@@ -107,7 +108,7 @@ import ClassListActions from '@/modules/class/ClassListActions'
 import ClassFilterDialog from '@/modules/class/ClassFilterDialog'
 import ExportExcel from '@/components/basic/ExportExcel'
 import KebapMenu from '@/components/basic/menu/KebapMenu'
-import SettingTableHeader from '@/components/basic/table/SettingHeaders'
+import DropMenu from '@/modules/student/menu/Menu.vue'
 import moment from 'moment'
 import _ from 'lodash'
 
@@ -151,7 +152,7 @@ const originHeaders = [
 export default {
   components: {
     ClassFilter,
-    SettingTableHeader,
+    DropMenu,
     NewClassDialog,
     ClassFilterDialog,
     ClassListActions,
@@ -164,7 +165,7 @@ export default {
   },
   data() {
     return {
-      headers: [],
+      headers: originHeaders,
       originHeaders: originHeaders,
       draw: false,
       search: '',
@@ -181,7 +182,6 @@ export default {
     }
   },
   async created() {
-    console.log(this.currentGeneration.id)
     await this.refresh({
       department: this.department.id,
       generation: this.currentGeneration.id,

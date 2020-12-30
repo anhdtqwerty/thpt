@@ -38,11 +38,11 @@
             >
               <v-icon right>mdi-filter-outline</v-icon>
             </v-btn>
-            <setting-table-header
+            <drop-menu
               :default-headers="originHeaders"
               @change="headers = $event"
-            />
-            <drop-menu v-if="!$vuetify.breakpoint.mobile"></drop-menu>
+              v-if="$vuetify.breakpoint.mdAndUp"
+            ></drop-menu>
           </div>
         </div>
 
@@ -139,7 +139,6 @@ export default {
   components: {
     Breadcrumbs,
     DropMenu,
-    SettingTableHeader,
     SemesterFilter,
     SemesterNewDialog,
     SemesterFilterDialog,
@@ -148,7 +147,7 @@ export default {
   data() {
     return {
       loading: false,
-      headers: [],
+      headers: originHeaders,
       originHeaders: originHeaders,
       createState: false,
       filterState: false

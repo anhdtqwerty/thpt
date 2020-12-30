@@ -7,11 +7,14 @@
         </v-btn>
       </template>
       <v-list>
-        <v-list-item @click.stop="changeState = !changeState">
+        <v-list-item>
           <v-list-item-title>Chuyển lớp</v-list-item-title>
         </v-list-item>
         <v-list-item>
           <v-list-item-title>Chuyển trạng thái</v-list-item-title>
+        </v-list-item>
+        <v-list-item @click="onRemove">
+          <v-list-item-title>Xóa học sinh</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-menu>
@@ -56,7 +59,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions('students', ['removeStudents', 'updateStudents']),
+    ...mapActions('students', ['removeStudent', 'updateStudents']),
     ...mapActions('noti', ['sendEmails', 'sendSMS']),
     ...mapActions('sale', ['setStudents']),
     disableStudent() {
@@ -80,7 +83,7 @@ export default {
         okText: 'Có',
         cancelText: 'Không',
         done: async () => {
-          await this.removeStudents(this.selected)
+          await this.removeStudent(this.item)
           this.$emit('removed')
         },
       })
