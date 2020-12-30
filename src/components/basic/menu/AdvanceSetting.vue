@@ -4,7 +4,7 @@
       <v-list-item-icon class="pl-2">
         <v-icon>mdi-layers</v-icon>
       </v-list-item-icon>
-      <v-list-item-title>Quản lý nâng cao</v-list-item-title>
+      <v-list-item-title>Nâng cao</v-list-item-title>
     </template>
     <v-list class="left-amber-border py-0">
       <v-list-item link to="/divisions">
@@ -25,8 +25,7 @@
       </v-list-item>
       <v-list-item link to="/subjects" active-class="left-amber-border">
         <v-list-item-action></v-list-item-action>
-        <v-list-item-title class="ml-3"
-          >Môn học</v-list-item-title >
+        <v-list-item-title class="ml-3">Môn học</v-list-item-title>
       </v-list-item>
     </v-list>
   </v-list-group>
@@ -39,10 +38,9 @@ export default {
     return { menu: null }
   },
   computed: {
-    ...mapGetters('auth', ['user', 'role']),
-  },
+    ...mapGetters('auth', ['user', 'role'])
+  }
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

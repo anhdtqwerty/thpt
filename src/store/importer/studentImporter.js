@@ -29,7 +29,7 @@ export default {
       delete userData.major
       let user = {}
       try {
-        user = await api.User.create({ ...userData })
+        user = await api.User.create({ ...userData, type: 'student' })
       } catch (e) {
         commit('receiveStudent', { ...userData, uploadStatus: 'failed' })
         return
@@ -70,13 +70,13 @@ export default {
         } else {
           student.uploadStatus = 'ready'
           // eslint-disable-next-line
-          const {
-            username,
-            username_indexing,
-            username_no
-          } = await dispatch('user/generateUserName', student.name, {
-            root: true
-          })
+          const { username, username_indexing, username_no } = await dispatch(
+            'user/generateUserName',
+            student.name,
+            {
+              root: true
+            }
+          )
           student = {
             ...student,
             email: student.email ? student.email : `${username}@quanlylop.com`,

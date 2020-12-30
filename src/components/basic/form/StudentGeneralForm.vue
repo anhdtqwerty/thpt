@@ -70,8 +70,8 @@ export default {
   props: {
     student: {
       type: [Object],
-      default: () => {},
-    },
+      default: () => {}
+    }
   },
   data: () => ({
     valid: true,
@@ -83,10 +83,10 @@ export default {
     frequentlyAddress: '',
     classes: {},
     rules: {
-      required: (value) => !!value || 'Required.',
-      min: (v) => v.length >= 6 || 'Min 8 characters',
-      email: (v) => /.+@.+/.test(v) || 'E-mail must be valid',
-    },
+      required: value => !!value || 'Required.',
+      min: v => v.length >= 6 || 'Min 8 characters',
+      email: v => /.+@.+/.test(v) || 'E-mail must be valid'
+    }
   }),
   created() {
     if (this.student) {
@@ -94,15 +94,15 @@ export default {
     }
   },
   methods: {
-    ...mapActions('user', ['generateUserName', 'validateEmail']),
+    ...mapActions('user', ['generateStudentCode', 'validateEmail']),
     async nameLostFocus() {
       const {
         username,
         // eslint-disable-next-line
         username_indexing,
         // eslint-disable-next-line
-        username_no,
-      } = await this.generateUserName(this.name)
+        username_no
+      } = await this.generateStudentCode(this.name)
       this.username = username
       // eslint-disable-next-line
       this.username_indexing = username_indexing
@@ -117,7 +117,7 @@ export default {
         dob: this.dob,
         ethnic: this.ethnic,
         frequentlyAddress: this.frequentlyAddress,
-        classes: this.classes,
+        classes: this.classes
       }
     },
     validate() {
@@ -134,19 +134,19 @@ export default {
     },
     resetValidation() {
       this.$refs.form.resetValidation()
-    },
+    }
   },
   watch: {
     student(student) {
       this.reset()
-    },
-  },
+    }
+  }
 }
 </script>
 
 <style>
 .required label::after {
-    content: "*";
-    color: red;
+  content: '*';
+  color: red;
 }
 </style>

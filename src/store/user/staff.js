@@ -49,7 +49,7 @@ export default {
     },
     async createStaff({ commit, rootGetters }, data) {
       try {
-        const user = await api.User.create({ ...data })
+        const user = await api.User.create({ ...data, type: 'staff' })
         if (user) {
           data.user = user.id
           data.code = user.username
