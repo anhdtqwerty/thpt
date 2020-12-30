@@ -17,6 +17,7 @@
           dense
           label="Mã học sinh"
           disabled
+          class="required"
         ></v-text-field>
         <autocomplete-class
           :rules="[rules.required]"
@@ -25,6 +26,7 @@
           label="Chọn lớp"
           outlined
           dense
+          class="required"
         ></autocomplete-class>
         <date-picker
           :date.sync="dob"
@@ -32,6 +34,7 @@
           dense
           outlined
           :rules="[rules.required]"
+          class="required"
         ></date-picker>
         <v-select
           v-model="gender"
@@ -40,6 +43,7 @@
           dense
           outlined
           :rules="[rules.required]"
+          class="required"
         ></v-select>
         <v-text-field
           v-model="frequentlyAddress"
@@ -47,6 +51,7 @@
           outlined
           dense
           :rules="[rules.required]"
+          class="required"
         ></v-text-field>
         <v-text-field
           v-model="ethnic"
@@ -54,6 +59,7 @@
           outlined
           dense
           :rules="[rules.required]"
+          class="required"
         ></v-text-field>
       </v-col>
     </v-row>
@@ -143,10 +149,3 @@ export default {
   },
 }
 </script>
-
-<style>
-.required label::after {
-    content: "*";
-    color: red;
-}
-</style>

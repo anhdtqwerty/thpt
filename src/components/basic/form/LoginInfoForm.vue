@@ -6,6 +6,7 @@
           v-model="phone"
           label="Số điện thoại"
           :rules="[rules.required]"
+          class="required"
           outlined
           dense
         ></v-text-field>
@@ -14,6 +15,7 @@
           label="Email Học Sinh"
           outlined
           dense
+          class="required"
           :rules="[rules.required, rules.email]"
         ></v-text-field>
         <v-text-field
@@ -26,6 +28,7 @@
           :type="show ? 'text' : 'password'"
           @click:append="show = !show"
           hint="At least 6 characters"
+          class="required"
         ></v-text-field>
       </v-col>
     </v-row>

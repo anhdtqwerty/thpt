@@ -37,7 +37,12 @@
             />
           </v-col>
           <v-col class="mt-4" cols="12">
-            <date-iso-picker filled outline :date.sync="dob"></date-iso-picker>
+            <date-iso-picker
+              placeholder="Ngày sinh"
+              filled
+              outline
+              :date.sync="dob"
+            ></date-iso-picker>
           </v-col>
           <v-col class="mt-4" cols="12">
             <v-text-field
@@ -84,7 +89,7 @@
       </v-form>
       <v-card-actions class="pa-4">
         <v-spacer></v-spacer>
-        <v-btn depressed color="#0D47A1" @click="onFilterChanged" dark>
+        <v-btn outlined color="#0D47A1" @click="onFilterChanged">
           <v-icon left dark>mdi-filter-outline</v-icon>Lọc
         </v-btn>
       </v-card-actions>

@@ -8,6 +8,7 @@
           outlined
           dense
           :rules="[rules.required]"
+          class="required"
         ></v-text-field>
         <v-text-field
           v-model="province"
@@ -15,6 +16,7 @@
           outlined
           dense
           :rules="[rules.required]"
+          class="required"
         ></v-text-field>
         <v-text-field
           v-model="district"
@@ -22,6 +24,7 @@
           outlined
           dense
           :rules="[rules.required]"
+          class="required"
         ></v-text-field>
       </v-col>
     </v-row>

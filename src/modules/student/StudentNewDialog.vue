@@ -1,6 +1,6 @@
 <template>
   <v-dialog
-    :fullscreen="$vuetify.breakpoint.mobile"
+    :fullscreen="$vuetify.breakpoint.smAndDown"
     v-model="dialog"
     width="661"
   >
@@ -27,7 +27,7 @@
       </v-form>
       <v-card-actions class="px-4">
         <v-spacer></v-spacer>
-        <v-btn dark color="#0D47A1" @click="save" :disabled="isLoading" dense
+        <v-btn dark color="#0D47A1" @click="save()" :disabled="isLoading" dense
           >Lưu</v-btn
         >
       </v-card-actions>
@@ -137,6 +137,7 @@ export default {
       })
       this.dialog = false
       this.reset()
+      // this.$router.push(`/student/${student.id}`)
       this.$emit('done', student)
     },
     async emailLostFocus() {

@@ -93,4 +93,8 @@ input {
 thead.v-data-table-header-mobile{
   display: none;
 }
+.required label::after {
+    content: "*";
+    color: red;
+}
 </style>
