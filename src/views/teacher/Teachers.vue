@@ -40,11 +40,11 @@
             >
               <v-icon right>mdi-filter-outline</v-icon>
             </v-btn>
-            <setting-table-header
+             <drop-menu
               :default-headers="originHeaders"
               @change="headers = $event"
-            />
-            <KebapMenu v-if="!$vuetify.breakpoint.mobile"></KebapMenu>
+              v-if="$vuetify.breakpoint.mdAndUp"
+            ></drop-menu>
           </div>
         </div>
 
@@ -88,7 +88,7 @@ import TeacherListActions from '@/modules/teacher/TeacherListActions'
 import NewTeacherDialog from '@/modules/teacher/TeacherNewDialog'
 import Breadcrumbs from '@/components/layout/Breadcrumbs.vue'
 import SettingTableHeader from '@/components/basic/table/SettingHeaders'
-import KebapMenu from '@/components/basic/menu/KebapMenu.vue'
+import DropMenu from '@/modules/student/menu/Menu.vue'
 import Vuetify from 'vuetify'
 import Vue from 'vue'
 const originHeaders = [
@@ -151,13 +151,12 @@ export default {
     TeacherFilter,
     TeacherListActions,
     TeacherFilterDialog,
-    SettingTableHeader,
     NewTeacherDialog,
-    KebapMenu,
+    DropMenu
   },
   data() {
     return {
-      headers: [],
+      headers: originHeaders,
       search: '',
       teacherId: '',
       isLoading: false,

@@ -28,11 +28,11 @@
           </p>
           <v-spacer></v-spacer>
           <div>
-            <setting-table-header
+            <drop-menu
               :default-headers="originHeaders"
               @change="headers = $event"
-            />
-            <drop-menu v-if="!$vuetify.breakpoint.mobile"></drop-menu>
+              v-if="$vuetify.breakpoint.mdAndUp"
+            ></drop-menu>
           </div>
         </div>
         <template v-slot:[`item.actions`]="{ item }">
@@ -121,7 +121,7 @@ export default {
   },
   data() {
     return {
-      headers: [],
+      headers: originHeaders,
       originHeaders: originHeaders,
       selected: {},
       draw: false,

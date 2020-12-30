@@ -5,8 +5,8 @@
         <Breadcrumbs
           headline="Danh sách"
           :link="[
-            { text: 'Học sinh'},
-            { text: 'Danh sách', href: '../students' }
+            { text: 'Học sinh' },
+            { text: 'Danh sách', href: '../students' },
           ]"
         />
       </div>
@@ -32,7 +32,7 @@
         dense
       >
         <div slot="top" class="d-flex mb-4">
-          <div v-if="$vuetify.breakpoint.mdAndUp">
+          <div class="ma-1" v-if="$vuetify.breakpoint.mdAndUp">
             <student-filter @onFilterChanged="refresh"></student-filter>
           </div>
           <!-- <v-spacer></v-spacer> -->
@@ -44,11 +44,11 @@
             >
               <v-icon right>mdi-filter-outline</v-icon>
             </v-btn>
-            <setting-table-header
+            <drop-menu
               :default-headers="originHeaders"
               @change="headers = $event"
-            />
-            <drop-menu v-if="$vuetify.breakpoint.mdAndUp"></drop-menu>
+              v-if="$vuetify.breakpoint.mdAndUp"
+            ></drop-menu>
           </div>
         </div>
         <template v-slot:[`item.name`]="{ item }">
@@ -87,7 +87,6 @@ import { mapActions, mapState } from 'vuex'
 import CardStudentName from '@/components/basic/card/CardStudentName.vue'
 import StudentFilter from '@/modules/student/StudentFilter'
 import DropMenu from '@/modules/student/menu/Menu.vue'
-import SettingTableHeader from '@/components/basic/table/SettingHeaders'
 import StudentNewDialog from '@/modules/student/StudentNewDialog'
 import StudentFilterDialog from '@/modules/student/StudentFilterDialog'
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
@@ -144,7 +143,6 @@ export default {
     DropMenu,
     StudentNewDialog,
     StudentFilter,
-    SettingTableHeader,
     StudentFilterDialog,
     Breadcrumbs,
     StudentListActions,
@@ -154,7 +152,7 @@ export default {
   },
   data() {
     return {
-      headers: [],
+      headers: originHeaders,
       originHeaders: originHeaders,
       draw: false,
       search: '',
@@ -243,8 +241,7 @@ export default {
       return classes ? classes.length : 0
     },
     getClasses(classes) {
-      if (classes && classes.length > 0) return classes[classes.length - 1].title
-      else return ''
+      if (classes && classes.length > 0) { return classes[classes.length - 1].title } else return ''
     },
   },
 }

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="pa-4 pa-md-2 py-md-4 d-flex justify-space-between align-center">
+    <div class="pa-4 pa-md-2 d-flex justify-space-between align-center">
       <Breadcrumbs
         headline="Nhập điểm"
         :link="[
@@ -40,7 +40,13 @@
                 />
               </v-col>
               <v-col cols="12" md="2">
-                <v-btn color="primary" style="width: 100%" @click="onClickSearch">Tìm kiếm</v-btn>
+                <v-btn
+                  color="primary"
+                  depressed
+                  style="width: 100%"
+                  @click="onClickSearch"
+                  >Tìm kiếm</v-btn
+                >
               </v-col>
             </v-row>
 
@@ -92,7 +98,12 @@
                 />
               </v-col>
               <v-col cols="12" md="4">
-                <v-btn color="primary" style="width: 100%" @click="onClickSearch">Tìm kiếm</v-btn>
+                <v-btn
+                  color="primary"
+                  style="width: 100%"
+                  @click="onClickSearch"
+                  >Tìm kiếm</v-btn
+                >
               </v-col>
             </v-row>
           </v-col>
@@ -101,7 +112,13 @@
     </v-card>
     <v-card class="pa-2 pa-md-4 ma-md-2 elevation-1">
       <v-card-text>
-        <template v-if="filterInputs.subjectObj && filterInputs.classObj && filterInputs.factorObj">
+        <template
+          v-if="
+            filterInputs.subjectObj &&
+            filterInputs.classObj &&
+            filterInputs.factorObj
+          "
+        >
           <div class="table-label primary--text mb-3">
             <div>
               <div class="mb-5">
@@ -109,7 +126,7 @@
               </div>
               <div>
                 <autocomplete-student
-                 style="max-width: 275px"
+                  style="max-width: 275px"
                   placeholder="Chọn học sinh"
                   filled
                   dense
@@ -121,7 +138,11 @@
               <v-btn color="success" @click="onClickSaveButton">Lưu</v-btn>
             </div>
           </div>
-          <v-data-table :headers="originHeaders" :items="items" :loading="loading">
+          <v-data-table
+            :headers="originHeaders"
+            :items="items"
+            :loading="loading"
+          >
             <template v-slot:item.mark="{ item }">
               <!-- <input
                 v-for="mark in item.marks"
@@ -135,21 +156,20 @@
                 "
               /> -->
 
-                <v-select
-                  class="mark-selector"
-                  v-for="mark in item.marks"
-                  :key="mark.id"
-                  :items="[{ text:'Đạt', value: 1},{ text: 'Không đạt', value: 0}]"
-                  :value="mark.value"
-                  @change="
-                    (event) =>
-                      onInputMark(item.studentId, mark.id, event)
-                  "
-                  hide-details
-                  outlined
-                  dense
-                ></v-select>
-
+              <v-select
+                class="mark-selector"
+                v-for="mark in item.marks"
+                :key="mark.id"
+                :items="[
+                  { text: 'Đạt', value: 1 },
+                  { text: 'Không đạt', value: 0 },
+                ]"
+                :value="mark.value"
+                @change="(event) => onInputMark(item.studentId, mark.id, event)"
+                hide-details
+                outlined
+                dense
+              ></v-select>
             </template>
           </v-data-table>
         </template>
@@ -254,12 +274,14 @@ export default {
   },
   computed: {
     ...mapState('mark', ['marks']),
-    titleTable () {
+    titleTable() {
       const subjectTitle = _.get(this.filterInputs, 'subjectObj.title')
       const classTitle = _.get(this.filterInputs, 'classObj.title')
       const factorTitle = _.get(this.filterInputs, 'factorObj.title')
-      return `Nhập điểm ${[subjectTitle, classTitle, factorTitle].filter(Boolean).join(' - ')}`
-    }
+      return `Nhập điểm ${[subjectTitle, classTitle, factorTitle]
+        .filter(Boolean)
+        .join(' - ')}`
+    },
   },
   methods: {
     ...mapActions('mark', ['fetchMarks', 'updateMarks']),
@@ -337,7 +359,7 @@ export default {
         }))
       this.updateMarks(updatedMarks)
     },
-    onClickSearch () {
+    onClickSearch() {
       const data = this.filterInputs
       const classId = _.get(data, 'classObj.id')
       const subjectId = _.get(data, 'subjectObj.id')
@@ -359,27 +381,27 @@ export default {
         semester: semesterId,
         student: studentId,
       })
-    }
+    },
   },
 }
 </script>
 
 <style lang="scss" scoped>
-  .table-label {
-    font-weight: 500;
-    font-size: 18px;
-    line-height: 21px;
-    display: flex;
-    justify-content: space-between;
-    text-transform: uppercase;
-  }
-  .mark-selector {
-    display: inline-block;
-    max-width: 150px;
-    margin-right: 10px;
-    // text-align: right;
-    // padding: 8px;
-    // border: 1px solid #E0E0E0;
-    // border-radius: 4px;
-  }
+.table-label {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 21px;
+  display: flex;
+  justify-content: space-between;
+  text-transform: uppercase;
+}
+.mark-selector {
+  display: inline-block;
+  max-width: 150px;
+  margin-right: 10px;
+  // text-align: right;
+  // padding: 8px;
+  // border: 1px solid #E0E0E0;
+  // border-radius: 4px;
+}
 </style>

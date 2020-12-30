@@ -103,6 +103,11 @@ export default {
   },
   created() {
     this.resetDefault()
+  },
+  watch: {
+    factor() {
+      this.resetDefault()
+    }
   }
 }
 </script>
