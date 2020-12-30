@@ -32,7 +32,7 @@
         dense
       >
         <div slot="top" class="d-flex mb-4">
-          <div v-if="$vuetify.breakpoint.mdAndUp">
+          <div class="ma-1" v-if="$vuetify.breakpoint.mdAndUp">
             <student-filter @onFilterChanged="refresh"></student-filter>
           </div>
           <v-spacer></v-spacer>
