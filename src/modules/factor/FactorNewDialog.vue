@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import FactorForm from '@/components/basic/form/factorForm.vue'
+import FactorForm from '@/components/basic/form/FactorForm.vue'
 import { mapActions, mapState } from 'vuex'
 export default {
   components: {
