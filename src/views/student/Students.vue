@@ -32,13 +32,13 @@
         dense
       >
         <div slot="top" class="d-flex mb-4">
-          <div v-if="!$vuetify.breakpoint.mobile">
+          <div v-if="$vuetify.breakpoint.mdAndUp">
             <student-filter @onFilterChanged="refresh"></student-filter>
           </div>
           <v-spacer></v-spacer>
           <div>
             <v-btn
-              v-if="$vuetify.breakpoint.mobile"
+              v-if="$vuetify.breakpoint.smAndDown"
               icon
               @click.stop="filterState = !filterState"
             >
@@ -48,7 +48,7 @@
               :default-headers="originHeaders"
               @change="headers = $event"
             />
-            <drop-menu v-if="!$vuetify.breakpoint.mobile"></drop-menu>
+            <drop-menu v-if="$vuetify.breakpoint.mdAndUp"></drop-menu>
           </div>
         </div>
         <template v-slot:[`item.name`]="{ item }">
@@ -179,7 +179,7 @@ export default {
     ...mapState('app', ['department']),
     ...mapState('students', ['totalItems', 'students']),
     btnTitle() {
-      if (this.$vuetify.breakpoint.mobile) {
+      if (this.$vuetify.breakpoint.smAndDown) {
         return 'Thêm'
       } else {
         return 'Thêm học sinh'

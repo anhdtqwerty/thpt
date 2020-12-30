@@ -17,6 +17,8 @@
           dense
           label="Mã học sinh"
           disabled
+          class="required"
+          :rules="[rules.required]"
         ></v-text-field>
         <autocomplete-class
           :rules="[rules.required]"
@@ -25,6 +27,7 @@
           label="Chọn lớp"
           outlined
           dense
+          class="required"
         ></autocomplete-class>
         <date-picker
           :date.sync="dob"
@@ -32,6 +35,7 @@
           dense
           outlined
           :rules="[rules.required]"
+          class="required"
         ></date-picker>
         <v-select
           v-model="gender"
@@ -40,6 +44,7 @@
           dense
           outlined
           :rules="[rules.required]"
+          class="required"
         ></v-select>
         <v-text-field
           v-model="frequentlyAddress"
@@ -47,6 +52,7 @@
           outlined
           dense
           :rules="[rules.required]"
+          class="required"
         ></v-text-field>
         <v-text-field
           v-model="ethnic"
@@ -54,6 +60,7 @@
           outlined
           dense
           :rules="[rules.required]"
+          class="required"
         ></v-text-field>
       </v-col>
     </v-row>
@@ -77,6 +84,8 @@ export default {
     valid: true,
     name: '',
     username: '',
+    username_indexing: '',
+    username_no: '',
     gender: '',
     dob: '',
     ethnic: '',
@@ -113,6 +122,8 @@ export default {
       return {
         name: this.name,
         username: this.username,
+        user_indexing: this.username_indexing,
+        username_no: this.username_no,
         gender: this.gender,
         dob: this.dob,
         ethnic: this.ethnic,
@@ -121,7 +132,7 @@ export default {
       }
     },
     validate() {
-      this.$refs.form.validate()
+      return this.$refs.form.validate()
     },
     reset() {
       this.name = this.student.name
@@ -143,10 +154,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.required label::after {
-  content: '*';
-  color: red;
-}
-</style>
