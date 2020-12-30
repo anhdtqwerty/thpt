@@ -1,11 +1,11 @@
 <template>
   <div>
-    <div class="pa-4 pa-md-2 py-md-4 d-flex justify-space-between align-center">
+    <div class="pa-4 pa-md-2 d-flex justify-space-between align-center">
       <Breadcrumbs
-        headline="Danh sách"
+        headline="Sổ điểm"
         :link="[
-          { text: 'Giáo viên', href: '../teachers' },
-          { text: 'Danh sách' },
+          { text: 'Điểm số' },
+          { text: 'Sổ điểm', href: '/marks' },
         ]"
       />
     </div>
@@ -136,7 +136,7 @@
 </template>
 
 <script>
-import Breadcrumbs from '@/components/basic/Breadcrumbs'
+import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import SettingTableHeader from '@/components/basic/table/SettingHeaders'
 import ExportExcel from '@/components/basic/ExportExcel'
 import KebapMenu from '@/components/basic/menu/KebapMenu.vue'

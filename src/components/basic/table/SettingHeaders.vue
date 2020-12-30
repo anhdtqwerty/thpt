@@ -11,7 +11,7 @@
     >
       <template v-slot:activator="{ on, attrs }">
         <v-btn
-          x-small
+
           icon
           class="hidden-xs-only"
           dark
