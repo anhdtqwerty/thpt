@@ -9,17 +9,44 @@
       <v-col>
         <Breadcrumbs
           headline="Khen thưởng kỷ luật"
-          :link="[{ text: 'Học sinh', href: '' },{ text: 'Khen thưởng kỷ luật', href: '/complimented' }]"
+          :link="[
+            { text: 'Học sinh', href: '' },
+            { text: 'Khen thưởng kỷ luật', href: '/complimented' },
+          ]"
         />
       </v-col>
       <v-col class="d-flex justify-end pt-4">
-        <v-btn color="primary">
-          <v-icon left>add</v-icon>Thêm
-        </v-btn>
+        <v-btn color="primary" @click="dialog = !dialog"> <v-icon left>add</v-icon> Thêm </v-btn>
       </v-col>
     </v-row>
 
     <v-card class="pa-4 ma-md-2 elevation-1">
+      <v-row>
+        <v-col cols="12" md="11">
+          <violation-filter
+            v-if="$vuetify.breakpoint.mdAndUp"
+            @onFilterChanged="refresh"
+          />
+        </v-col>
+        <v-col cols="12" md="1">
+          <span v-if="$vuetify.breakpoint.smAndDown">
+            <violation-dialog-filter @onFilterChanged="refresh" />
+          </span>
+          <setting-table-header
+            :default-headers="originHeaders"
+            @change="headers = $event"
+          />
+          <span v-if="$vuetify.breakpoint.mdAndUp">
+            <kebap-menu>
+              <v-list>
+                <v-list-item>
+                  <export-excel :custom-header="headers" api="/classes/" />
+                </v-list-item>
+              </v-list>
+            </kebap-menu>
+          </span>
+        </v-col>
+      </v-row>
       <v-data-table
         :loading="loading"
         :headers="originHeaders"
@@ -27,11 +54,15 @@
         item-key="id"
         dense
       >
-      <template v-slot:item.action="{ item }">
+        <template v-slot:item.action="{ item }">
           <violation-actions :selected="item"> </violation-actions>
-      </template>
+        </template>
+        <template v-slot:item.createdAt="{ item }">
+          {{ formatDate(item) }}
+        </template>
       </v-data-table>
     </v-card>
+    <violation-new-dialog :state="dialog"> </violation-new-dialog>
   </div>
 </template>
 
@@ -41,6 +72,14 @@ import DropMenu from '@/modules/student/menu/Menu.vue'
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import SettingTableHeader from '@/components/basic/table/SettingHeaders'
 import ViolationActions from '@/modules/violation/ViolationListActions.vue'
+import ViolationFilter from '@/modules/violation/ViolationFilter.vue'
+import ViolationDialogFilter from '@/modules/violation/ViolationDialogFilter.vue'
+import ExportExcel from '@/components/basic/ExportExcel'
+import KebapMenu from '@/components/basic/menu/KebapMenu'
+import ViolationNewDialog from '@/modules/violation/ViolationNewDialog.vue'
+
+import moment from 'moment'
+import { get } from 'lodash'
 
 const originHeaders = [
   {
@@ -66,7 +105,7 @@ const originHeaders = [
   },
   {
     text: 'Mục',
-    value: 'config.endDate',
+    value: 'status',
     align: 'left',
     sortable: false,
     show: true,
@@ -92,7 +131,12 @@ export default {
     Breadcrumbs,
     DropMenu,
     SettingTableHeader,
-    ViolationActions
+    ViolationActions,
+    ViolationFilter,
+    ViolationDialogFilter,
+    ExportExcel,
+    KebapMenu,
+    ViolationNewDialog
   },
   data() {
     return {
@@ -101,6 +145,7 @@ export default {
       originHeaders: originHeaders,
       createState: false,
       filterState: false,
+      dialog: false,
     }
   },
   computed: {
@@ -117,6 +162,11 @@ export default {
     },
     refresh() {
       this.fetchViolation()
+    },
+    formatDate(item) {
+      return get(item, 'createdAt', '')
+        ? moment(item.createdAt).format('DD/MM/YYYY')
+        : ''
     },
   },
 }
