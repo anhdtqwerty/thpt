@@ -3,10 +3,10 @@
     <div class="pa-2 d-none d-md-block">
       <h2>Giáo viên</h2>
       <Breadcrumbs
-          headline="Danh sách"
+          headline="Giáo viên"
           :link="[
             { text: 'Giáo viên', href: '../teachers' },
-          ]"
+            ]"
         />
     </div>
 

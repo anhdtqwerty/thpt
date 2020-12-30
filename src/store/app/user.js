@@ -177,62 +177,39 @@ export default {
       return errMsg === true ? '' : errMsg
     },
     // eslint-disable-next-line
-    async generateUserName({}, name = '') {
-      const nameArr = utils
-        .removeUnicode(
-          name
-            .trim()
-            .toLowerCase()
-            .replace(/ +(?= )/g, '')
-        )
-        .split('-')
-        .join(' ')
-        .split(' ')
-      console.log(nameArr)
-      // eslint-disable-next-line
-      let username_indexing = _.last(nameArr)
-      // eslint-disable-next-line
-      let username_no = 0
-      let username = ''
-
-      // core username
-      if (nameArr.length > 1) {
-        // eslint-disable-next-line
-        username_indexing = nameArr
-          .slice(0, nameArr.length - 1)
-          .reduce((pre, cur) => pre + cur[0], username_indexing)
-      }
-      // eslint-disable-next-line
-      username_indexing = utils.removeUnicode(username_indexing).toLowerCase()
-
-      // user no
+    async generateUserName({ dispatch }, name = '') {
+      let userNameIndex = utils.generateUserName(utils.clearUnicode(name))
+      let userNo = 0
+      userNameIndex = utils.removeUnicode(userNameIndex).toLowerCase()
       const users = await api.User.search({
-        username_indexing,
+        username_indexing: userNameIndex,
         _sort: 'username_no:DESC',
-        _limit: 1
+        _limit: 1,
+        type: 'staff'
       })
-      const user = _.last(users)
-      if (user) {
-        if (user.username_no !== undefined) {
-          // eslint-disable-next-line
-          username_no = user.username_no + 1
-        } else {
-          // eslint-disable-next-line
-          username_no = 1
-        }
-      } else {
-        // eslint-disable-next-line
-        username_no = 0
+      if (users.length) userNo = _.get(_.last(users), 'username_no', 0) + 1
+      return {
+        username: `${userNameIndex}${userNo || ''}`,
+        username_indexing: userNameIndex,
+        username_no: userNo
       }
-
-      // eslint-disable-next-line
-      if (username_indexing) {
-        // eslint-disable-next-line
-        username =
-          username_no > 0 ? username_indexing + username_no : username_indexing
+    },
+    async generateStudentCode({ dispatch }, name = '') {
+      let userNameIndex = utils.generateUserName(utils.clearUnicode(name))
+      userNameIndex = utils.removeUnicode(userNameIndex).toLowerCase()
+      const users = await api.User.search({
+        username_indexing: userNameIndex,
+        _sort: 'username_no:DESC',
+        _limit: 1,
+        type: 'student'
+      })
+      const userNo = _.get(_.last(users), 'username_no', 0) + 1
+      const code = `00000${userNo}`.substr(`00000${userNo}`.length - 5)
+      return {
+        username: `${userNameIndex}${code}`,
+        username_indexing: userNameIndex,
+        username_no: userNo
       }
-
-      return { username, username_indexing, username_no }
     }
   },
   mutations: {

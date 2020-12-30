@@ -6,14 +6,8 @@
       </v-btn>
     </template>
     <v-list>
-      <v-list-item to="/student-import">
-        <v-list-item-title>Nhập Từ File</v-list-item-title>
-      </v-list-item>
       <v-list-item @click="getXLSX()">
         <v-list-item-title>Xuất File</v-list-item-title>
-      </v-list-item>
-      <v-list-item target="_blank" to="/data.xlsx">
-        <v-list-item-title>Tải Mẫu</v-list-item-title>
       </v-list-item>
     </v-list>
   </v-menu>

@@ -94,4 +94,8 @@ input {
 .no-gutters > [class*='col-'] {
   padding: 0 !important;
 }
+.required label::after {
+    content: "*";
+    color: red;
+}
 </style>

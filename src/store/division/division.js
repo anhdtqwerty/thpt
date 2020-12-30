@@ -44,13 +44,13 @@ export default {
       state.divisions = payload
     },
     removeDivision(state, id) {
-      state.divisions = state.divisions.filter(division => division.id != id)
+      state.divisions = state.divisions.filter(division => division.id !== id)
     },
     createDivision(state, division) {
       state.divisions = [division, ...state.divisions]
     },
     updateDivision(state, id) {
-      state.divisions = state.divisions.map(division => division.id != id)
+      state.divisions = state.divisions.map(division => division.id !== id)
     }
   }
 }

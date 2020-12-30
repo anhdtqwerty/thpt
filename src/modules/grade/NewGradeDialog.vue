@@ -8,10 +8,10 @@
       <v-card-title class="blue darken-4 white--text"
         >Thêm mới khối mới
         <v-spacer />
-        <v-icon color="white" @click="cancel">close</v-icon>
+        <v-icon color="white" @click="dialog = false">close</v-icon>
       </v-card-title>
       <v-divider></v-divider>
-      <create-grade-form ref="form" :editCode ='true'  />
+      <create-grade-form ref="form" :editCode="true" />
       <v-row class="pr-6 pb-6 mt-n7" no-gutters>
         <v-spacer></v-spacer>
         <v-btn
@@ -51,17 +51,13 @@ export default {
   methods: {
     ...mapActions('grade', ['createGrade']),
     async save() {
+      if (!this.$refs.form.validate()) return
       this.loading = true
       const data = this.$refs.form.getData()
       await this.createGrade({ ...data })
       this.$alert.success('Tạo phân ban mới thành công')
-      this.$refs.form.resetDefault()
       this.loading = false
       this.dialog = false
-    },
-    cancel() {
-      this.dialog = false
-      this.$refs.form.resetDefault()
     }
   },
   watch: {
