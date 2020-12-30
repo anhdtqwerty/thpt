@@ -80,10 +80,9 @@
       <v-col md="3">
         <v-btn
           class="py-5"
-          depressed
           color="#0D47A1"
           @click="onFilterChanged"
-          dark
+          outlined
         >
           <v-icon left dark>mdi-filter-outline</v-icon>Lọc
         </v-btn>

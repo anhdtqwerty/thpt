@@ -27,6 +27,20 @@
         required
       ></v-text-field>
     </div>
+    <v-select
+      label="Học Kỳ"
+      v-model="semesterType"
+      :items="[
+        { id: 'semester-1', title: 'Học kỳ 1' },
+        { id: 'semester-2', title: 'Học kỳ 2' }
+      ]"
+      item-text="title"
+      item-value="id"
+      dense
+      type="number"
+      outlined
+      required
+    />
     <v-textarea
       ref="description"
       v-model="description"
@@ -46,6 +60,7 @@ export default {
       description: '',
       multiply: 1,
       quantity: 3,
+      semesterType: 'semester-1',
       type: ''
     }
   },
@@ -70,8 +85,8 @@ export default {
           title: this.title,
           type: this.type,
           description: this.description,
-          multiply: this.multiply,
-          quantity: this.quantity
+          semesterType: this.semesterType,
+          multiply: this.multiply
         }
       }
     },
@@ -80,6 +95,7 @@ export default {
         this.title = this.factor.title
         this.type = this.factor.type
         this.multiply = this.factor.multiply
+        this.semesterType = 'semester-1'
         this.description = this.factor.description
         this.quantity = this.factor.quantity
       }
