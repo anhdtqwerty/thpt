@@ -1,37 +1,56 @@
 <template>
-  <v-menu open-on-hover bottom offset-y>
-    <template v-slot:activator="{ on }">
-      <v-btn text v-on="on" icon>
-        <v-icon small>mdi-dots-horizontal</v-icon>
-      </v-btn>
-    </template>
-    <v-list>
-      <v-list-item @click="getXLSX()">
-        <v-list-item-title>Xuất File</v-list-item-title>
-      </v-list-item>
-    </v-list>
-  </v-menu>
+  <div>
+    <v-menu open-on-hover bottom offset-y>
+      <template v-slot:activator="{ on }">
+        <v-btn text v-on="on" icon>
+          <v-icon small>mdi-dots-horizontal</v-icon>
+        </v-btn>
+      </template>
+      <v-list>
+        <v-list-item @click="getXLSX()">
+          <v-list-item-title>Xuất File</v-list-item-title>
+        </v-list-item>
+        <v-list-item @click="settingState = !settingState">
+          <v-list-item-title>Cài đặt</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
+    <setting-headers @change="change" :default-headers="defaultHeaders" :state="settingState" />
+  </div>
 </template>
 <script>
 import { mapActions, mapState } from 'vuex'
+import SettingHeaders from '@/components/basic/table/SettingHeaders'
+
 export default {
+  components: { SettingHeaders },
   props: {
-    role: String
+    defaultHeaders: {
+      type: Array,
+      default() {
+        return []
+      },
+    },
+    role: String,
   },
-  data () {
+  data() {
     return {
-      studentTableOptions: {}
+      studentTableOptions: {},
+      settingState: false,
     }
   },
-  async created () {},
+  async created() {},
   computed: {
     ...mapState('app', ['department']),
-    ...mapState('students', ['totalItems', 'students'])
+    ...mapState('students', ['totalItems', 'students']),
   },
   methods: {
     ...mapActions('students', ['requestPageSettings']),
-    getXLSX () {}
+    getXLSX() {},
+    change(val) {
+      this.$emit('change', val)
+      this.dialog = false
+    },
   },
-  watch: {}
 }
 </script>
