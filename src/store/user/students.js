@@ -104,11 +104,16 @@ export default {
       }
     },
     async removeStudent({ commit }, student) {
-      if (student.user) {
-        await api.User.remove(student.user)
+      try {
+        if (student.user) {
+          await api.User.remove(student.user)
+        }
+        await api.Student.remove(student.id)
+        commit('removeStudent', student.id)
+        alert.success('Xóa học sinh thành công')
+      } catch (e) {
+        alert.error(e)
       }
-      await api.Student.remove(student.id)
-      commit('removeStudent', student.id)
     },
     async removeStudents({ dispatch }, items) {
       await Promise.all(items.map(item => dispatch('removeStudent', item)))
