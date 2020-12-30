@@ -6,7 +6,7 @@
   >
     <v-card>
       <v-card-title class="blue darken-4 white--text text-uppercase"
-        >Sửa {{grade.title}}
+        >Sửa {{ grade.title }}
         <v-spacer />
         <v-icon color="white" @click="cancel">close</v-icon>
       </v-card-title>
@@ -41,44 +41,43 @@ import { mapActions, mapState } from 'vuex'
 
 export default {
   components: {
-    GradeInfoForm,
+    GradeInfoForm
   },
   props: {
     state: Boolean,
-    grade: { type: Object, default: () => {} },
+    grade: { type: Object, default: () => {} }
   },
   data() {
     return {
       dialog: false,
-      loading: false,
+      loading: false
     }
   },
   computed: {
     ...mapState('app', ['roles', 'department']),
-    ...mapState('auth', ['user']),
+    ...mapState('auth', ['user'])
   },
 
   methods: {
-    ...mapActions('grade', ['updateGrade','fetchGrades']),
+    ...mapActions('grade', ['updateGrade', 'fetchGrades']),
     async save() {
       this.loading = true
       const data = this.$refs.form.getData()
-      await this.updateGrade({id: this.grade.id, ...data })
-      await this.fetchGrades()
+      await this.updateGrade({ id: this.grade.id, ...data })
       this.$alert.success('Cập nhật thành công')
-      this.$refs.form.resetDefault()
+      this.$refs.form.reset()
       this.loading = false
       this.dialog = false
     },
     cancel() {
       this.dialog = false
-      this.$refs.form.resetDefault()
-    },
+      this.$refs.form.reset()
+    }
   },
   watch: {
     state(state) {
       this.dialog = true
-    },
-  },
+    }
+  }
 }
 </script>

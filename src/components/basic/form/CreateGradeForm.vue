@@ -6,6 +6,7 @@
       dense
       outlined
       required
+      :rules="ruleRequired"
     ></v-text-field>
     <v-textarea
       ref="description"
@@ -17,51 +18,47 @@
   </v-form>
 </template>
 <script>
-import TextFieldCode from '@/components/basic/input/TextFieldCode'
 import { mapGetters } from 'vuex'
 export default {
-  components: {
-    TextFieldCode,
-  },
+  components: {},
   data: () => ({
     valid: true,
     description: '',
-    title: '',
+    ruleRequired: [v => !!v || 'Tên Khôi không được để trống'],
+    title: ''
   }),
   computed: {
-    ...mapGetters('app', ['department']),
+    ...mapGetters('app', ['department'])
   },
   props: {
     grade: { type: Object, default: () => {} },
-    editCode: { type: Boolean, default: false },
+    editCode: { type: Boolean, default: false }
   },
   methods: {
     reset() {
       this.$refs.form.reset()
     },
+    validate() {
+      return this.$refs.form.validate()
+    },
     resetValidation() {
       this.$refs.form.resetValidation()
     },
     getData() {
-      if (this.$refs.form.validate()) {
-        return {
-          title: this.title,
-          description: this.description,
-        }
+      return {
+        title: this.title,
+        description: this.description
       }
     },
-    resetDefault() {
+    refresh() {
       if (this.division) {
         this.description = this.division.description
         this.title = this.division.title
-      } else {
-        this.title = ''
-        this.description = ''
       }
-    },
+    }
   },
   created() {
-    this.resetDefault()
-  },
+    this.reset()
+  }
 }
 </script>

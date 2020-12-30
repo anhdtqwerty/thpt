@@ -40,8 +40,8 @@ export default {
     }
   },
   mutations: {
-    setGrades(state, payload) {
-      state.grades = payload
+    setGrades(state, grades) {
+      state.grades = grades
     },
     updateGrade(state, grade) {
       state.grades = state.grades.map(g => {

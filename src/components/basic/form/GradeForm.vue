@@ -38,6 +38,9 @@ export default {
     resetValidation() {
       this.$refs.form.resetValidation()
     },
+    validate() {
+      this.$refs.form.validate()
+    },
     getData() {
       if (this.$refs.form.validate()) {
         return {
