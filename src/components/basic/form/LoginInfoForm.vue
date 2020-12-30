@@ -3,25 +3,29 @@
     <v-row>
       <v-col cols="12">
         <v-text-field
-          v-model="currentLive"
-          label="Địa chỉ liên lạc"
+          v-model="phone"
+          label="Số điện thoại"
+          :rules="[rules.required]"
           outlined
           dense
-          :rules="[rules.required]"
         ></v-text-field>
         <v-text-field
-          v-model="province"
-          label="Tỉnh/Thành phố"
+          v-model="email"
+          label="Email Học Sinh"
           outlined
           dense
-          :rules="[rules.required]"
+          :rules="[rules.required, rules.email]"
         ></v-text-field>
         <v-text-field
-          v-model="district"
-          label="Quận/Huyện"
+          v-model="password"
+          label="Mật Khẩu"
           outlined
           dense
-          :rules="[rules.required]"
+          :append-icon="show ? 'visibility' : 'visibility_off'"
+          :rules="[rules.required, rules.min]"
+          :type="show ? 'text' : 'password'"
+          @click:append="show = !show"
+          hint="At least 6 characters"
         ></v-text-field>
       </v-col>
     </v-row>
@@ -29,7 +33,9 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 // import { get } from 'lodash'
+
 export default {
   props: {
     student: {
@@ -39,9 +45,10 @@ export default {
   },
   data: () => ({
     valid: true,
-    currentLive: '',
-    province: '',
-    district: '',
+    show: false,
+    phone: '',
+    email: '',
+    password: '',
     rules: {
       required: (value) => !!value || 'Required.',
       min: (v) => v.length >= 6 || 'Min 8 characters',
@@ -54,20 +61,21 @@ export default {
     }
   },
   methods: {
+    ...mapActions('user', ['generateUserName', 'validateEmail']),
+    getData() {
+      return {
+        phone: this.phone,
+        email: this.email,
+        password: this.password,
+      }
+    },
     validate() {
       this.$refs.form.validate()
     },
-    getData() {
-      return {
-        currentLive: this.currentLive,
-        province: this.province,
-        district: this.district,
-      }
-    },
     reset() {
-      this.currentLive = this.student.data.currentLive
-      this.province = this.student.data.province
-      this.district = this.student.data.district
+      this.phone = this.phone
+      this.email = this.email
+      this.password = this.password
     },
     resetValidation() {
       this.$refs.form.resetValidation()
@@ -80,6 +88,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-</style>

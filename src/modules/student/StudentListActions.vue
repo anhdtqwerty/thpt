@@ -1,74 +1,79 @@
 <template>
-  <div class="flex-center">
-    <v-btn v-if="multipleAction" color="error" class="mr-2" depressed @click.stop="onRemove" >
-      <v-icon left>delete</v-icon>Xóa
-    </v-btn>
+  <div class="d-flex">
+    <v-menu offset-y>
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn v-bind="attrs" v-on="on" icon>
+          <v-icon>mdi-dots-vertical</v-icon>
+        </v-btn>
+      </template>
+      <v-list>
+        <v-list-item @click.stop="changeState = !changeState">
+          <v-list-item-title>Chuyển lớp</v-list-item-title>
+        </v-list-item>
+        <v-list-item>
+          <v-list-item-title>Chuyển trạng thái</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
 
-    <v-btn v-if="multipleAction" class="mr-2" depressed @click.stop="onTuition" outlined>
-      <v-icon left>add</v-icon>Tạo Học Phí
-    </v-btn>
-    <StudentEditTags v-if="selected.length > 0" :students="selected" />
-    <v-btn v-if="multipleAction" class="mr-2" depressed @click.stop="onReserve" outlined>
-      <v-icon left>mdi-clock-fast</v-icon>Bảo Lưu
-    </v-btn>
-    <v-btn v-if="multipleAction" class="mr-2" depressed @click.stop="onActivate" outlined>
-      <v-icon left>check</v-icon>Kích Hoạt
-    </v-btn>
+    <change-class-dialog :item="item" :state="changeState"></change-class-dialog>
   </div>
 </template>
 
 <script>
 import { mapActions, mapState } from 'vuex'
-import StudentEditTags from '@/modules/student/StudentEditTags.vue'
+import ChangeClassDialog from '@/modules/student/ChangeClassDialog.vue'
 import _ from 'lodash'
+
 export default {
   components: {
-    StudentEditTags,
+    ChangeClassDialog
   },
   props: {
     disabled: Boolean,
     filter: Boolean,
-    selected: { type: Array, default: () => [] }
+    item: Object,
   },
-  data () {
+  data() {
     return {
       mailDialogState: false,
       smsDialogState: false,
       smsEditingState: false,
-      sending: null
+      sending: null,
+      changeState: false
     }
   },
   computed: {
     ...mapState('student', ['students']),
-    sendingName () {
+    sendingName() {
       const { name } = this.students.find(
-        student => student.phone === this.sending
+        (student) => student.phone === this.sending
       )
       return name
     },
-    multipleAction () {
+    multipleAction() {
       return !_.isEmpty(this.selected)
-    }
+    },
   },
   methods: {
     ...mapActions('students', ['removeStudents', 'updateStudents']),
     ...mapActions('noti', ['sendEmails', 'sendSMS']),
     ...mapActions('sale', ['setStudents']),
-    disableStudent () {
+    disableStudent() {
       this.updateStudents(
-        this.selected.map(item => {
+        this.selected.map((item) => {
           return { ...item, status: 'block' }
         })
       )
     },
-    enableStudent () {
+    enableStudent() {
       this.updateStudents(
-        this.selected.map(item => {
+        this.selected.map((item) => {
           return { ...item, status: 'active' }
         })
       )
     },
-    onRemove () {
+    onRemove() {
       this.$dialog.confirm({
         title: 'Xóa Học Sinh',
         text: 'Bạn Có chắc muốn xóa học sinh này.?',
@@ -77,10 +82,10 @@ export default {
         done: async () => {
           await this.removeStudents(this.selected)
           this.$emit('removed')
-        }
+        },
       })
     },
-    onReserve () {
+    onReserve() {
       this.$dialog.confirm({
         title: 'Bảo Lưu Học sinh',
         text: 'Bạn có muốn bảo lưu những học sinh này ?',
@@ -88,17 +93,17 @@ export default {
         cancelText: 'Không',
         done: async () => {
           await this.updateStudents(
-            this.selected.map(s => ({ id: s.id, status: 'reserved' }))
+            this.selected.map((s) => ({ id: s.id, status: 'reserved' }))
           )
           this.$emit('removed')
-        }
+        },
       })
     },
-    onTuition () {
+    onTuition() {
       this.setStudents(this.selected)
       this.$router.push('./sales')
     },
-    onActivate () {
+    onActivate() {
       this.$dialog.confirm({
         title: 'Bảo Lưu Học sinh',
         text: 'Bạn có muốn Chuyển trạng thái học viên này về đang hoạt động ?',
@@ -106,12 +111,12 @@ export default {
         cancelText: 'Không',
         done: async () => {
           await this.updateStudents(
-            this.selected.map(s => ({ id: s.id, status: 'active' }))
+            this.selected.map((s) => ({ id: s.id, status: 'active' }))
           )
           this.$emit('removed')
-        }
+        },
       })
-    }
-  }
+    },
+  },
 }
 </script>

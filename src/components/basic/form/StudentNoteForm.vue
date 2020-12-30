@@ -3,18 +3,14 @@
     <v-row>
       <v-col cols="12">
         <v-text-field
-          ref="notes"
           v-model="notes"
           label="Ghi chú"
-          placeholder="Nhập ghi chú về học sinh"
           outlined
           dense
         ></v-text-field>
         <v-text-field
-          ref="changeNotes"
           v-model="changeNotes"
           label="Những thay đổi cần ghi chú"
-          placeholder="Nhập thay đổi"
           dense
           outlined
         ></v-text-field>
@@ -32,7 +28,6 @@
               v-model="youngJoinedDate"
               label="Ngày vào Đội"
               outlined
-              placeholder="Ngày vào Đội"
               dense
             ></date-picker>
           </v-col>
@@ -50,7 +45,6 @@
               :disabled="!isCommunist"
               v-model="communistJoinedDate"
               label="Ngày vào Đoàn"
-              placeholder="Ngày vào Đoàn"
               dense
               outlined
             ></date-picker>
