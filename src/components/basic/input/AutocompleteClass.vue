@@ -2,7 +2,7 @@
   <v-autocomplete
     v-bind="this.$attrs"
     item-text="title"
-    :items="classList"
+    :items="classes"
     clearable
     item-value="id"
     @change="onChange"
@@ -26,10 +26,7 @@ export default {
     defaultClasses: Array
   },
   computed: {
-    ...mapGetters('app', ['department', 'roles', 'roleIdByName']),
-    classList() {
-      return this.classes.map(c => ({ ...c, title: `${c.code} - ${c.title}` }))
-    }
+    ...mapGetters('app', ['department', 'roles', 'roleIdByName'])
   },
   created() {
     this.classes = this.defaultClasses || []
