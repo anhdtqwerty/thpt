@@ -4,7 +4,10 @@
       <div>
         <Breadcrumbs
           headline="Quản lý khóa"
-          :link="[{ text: 'Quản lý nâng cao' }, { text: 'Quản lý khóa' }]"
+          :link="[
+            { text: 'Nâng cao' },
+            { text: 'Quản lý khóa', href: '/generations' }
+          ]"
         />
       </div>
       <div class="flex-center">
@@ -20,7 +23,9 @@
     <v-card class="pa-4 ma-md-2 elevation-1">
       <v-data-table item-key="id" :headers="headers" :items="generations">
         <div slot="top" class="d-flex mb-4">
-          <h3><span class="primary--text">DANH SÁCH CÁC KHÓA</span></h3>
+          <p class="text-uppercase text-h6" style="color: #0d47a1">
+            DANH SÁCH CÁC KHÓA
+          </p>
           <v-spacer></v-spacer>
           <div>
             <setting-table-header
@@ -70,36 +75,36 @@ const originHeaders = [
     value: 'code',
     align: 'left',
     sortable: false,
-    show: true,
+    show: true
   },
   {
     text: 'Ngày khai giảng',
     value: 'data.startDate',
     align: 'left',
     sortable: false,
-    show: true,
+    show: true
   },
   {
     text: 'Ngày kết thúc',
     value: 'data.endDate',
     align: 'left',
     sortable: false,
-    show: true,
+    show: true
   },
   {
     text: 'Ghi chú',
     value: 'data.notes',
     align: 'left',
     sortable: false,
-    show: true,
+    show: true
   },
   {
     text: 'Hành động',
     value: 'actions',
     align: 'left',
     sortable: false,
-    show: true,
-  },
+    show: true
+  }
 ]
 
 export default {
@@ -109,10 +114,10 @@ export default {
     GenerationUpdateDialog,
     Breadcrumbs,
     DropMenu,
-    SettingTableHeader,
+    SettingTableHeader
   },
   props: {
-    role: String,
+    role: String
   },
   data() {
     return {
@@ -121,7 +126,7 @@ export default {
       selected: {},
       draw: false,
       editGeneration: false,
-      createGeneration: false,
+      createGeneration: false
     }
   },
   async created() {
@@ -138,7 +143,7 @@ export default {
         default:
           return 'Thêm niên khóa'
       }
-    },
+    }
   },
   methods: {
     ...mapActions('generation', ['fetchGenerations']),
@@ -156,7 +161,7 @@ export default {
       return get(item, 'data.endDate', '')
         ? moment(item.data.endDate).format('D/MM/YYYY')
         : ''
-    },
-  },
+    }
+  }
 }
 </script>

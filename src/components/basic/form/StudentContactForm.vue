@@ -3,48 +3,25 @@
     <v-row>
       <v-col cols="12">
         <v-text-field
-          ref="currentLive"
           v-model="currentLive"
           label="Địa chỉ liên lạc"
-          placeholder="Nhập địa chỉ hiện tại"
-          required
           outlined
           dense
+          :rules="[rules.required]"
         ></v-text-field>
         <v-text-field
-          ref="province"
           v-model="province"
           label="Tỉnh/Thành phố"
-          placeholder="Nhập tỉnh/thành phố đang sống"
-          required
           outlined
           dense
+          :rules="[rules.required]"
         ></v-text-field>
         <v-text-field
-          ref="district"
           v-model="district"
           label="Quận/Huyện"
-          placeholder="Nhập quận/huyện đang sống"
-          required
           outlined
           dense
-        ></v-text-field>
-        <v-text-field
-          ref="phone"
-          v-model="phone"
-          label="Số điện thoại"
-          placeholder="Nhập số điện thoại"
-          required
-          outlined
-          dense
-        ></v-text-field>
-        <v-text-field
-          ref="email"
-          v-model="email"
-          label="Email Học Sinh"
-          placeholder="Nhập email học sinh"
-          outlined
-          dense
+          :rules="[rules.required]"
         ></v-text-field>
       </v-col>
     </v-row>
@@ -62,11 +39,14 @@ export default {
   },
   data: () => ({
     valid: true,
-    email: '',
-    phone: '',
     currentLive: '',
     province: '',
     district: '',
+    rules: {
+      required: (value) => !!value || 'Required.',
+      min: (v) => v.length >= 6 || 'Min 8 characters',
+      email: (v) => /.+@.+/.test(v) || 'E-mail must be valid',
+    },
   }),
   created() {
     if (this.student) {
@@ -79,16 +59,12 @@ export default {
     },
     getData() {
       return {
-        email: this.email,
-        phone: this.phone,
         currentLive: this.currentLive,
         province: this.province,
         district: this.district,
       }
     },
     reset() {
-      this.email = this.student.email
-      this.phone = this.student.phone
       this.currentLive = this.student.data.currentLive
       this.province = this.student.data.province
       this.district = this.student.data.district

@@ -35,7 +35,7 @@ export default {
       } catch (e) {
         alert.error(e)
       }
-    },
+    }
   },
   mutations: {
     setSemesters(state, semesters) {
@@ -56,7 +56,7 @@ export default {
     removeSemester(state, semesterId) {
       delete state.semesters[semesterId]
       state.semesters = { ...state.semesters }
-    },
+    }
   },
   getters: {
     semesters: state => {

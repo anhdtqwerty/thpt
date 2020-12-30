@@ -63,20 +63,8 @@
         </v-row>
       </v-col>
 
-      <v-col
-        cols="12"
-        class="d-flex"
-        :class="{ 'mt-1': $vuetify.breakpoint.smAndDown }"
-        md="2"
-      >
-        <v-btn
-          depressed
-          width="80px"
-          height="42px"
-          color="#0D47A1"
-          @click="onFilterChanged"
-          class="white--text ml-1"
-        >
+      <v-col cols="12" md="2">
+        <v-btn large dark @click="onFilterChanged" color="primary" outlined>
           <v-icon left dark>mdi-filter-outline</v-icon>Lọc
         </v-btn>
       </v-col>

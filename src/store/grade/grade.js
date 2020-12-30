@@ -6,7 +6,7 @@ export default {
     grades: []
   },
   actions: {
-    async fetchGrades ({ commit }, options) {
+    async fetchGrades({ commit }, options) {
       try {
         commit('setGrades', await Grade.fetch(options))
       } catch (error) {
@@ -37,17 +37,23 @@ export default {
       } catch (e) {
         alert.error(e)
       }
-    },
+    }
   },
   mutations: {
-    setGrades (state, payload) {
+    setGrades(state, payload) {
       state.grades = payload
+    },
+    updateGrade(state, grade) {
+      state.grades = state.grades.map(g => {
+        if (g.id === grade.id) return grade
+        else return g
+      })
     },
     createGrade(state, grade) {
       state.grades = [grade, ...state.grades]
     },
     removeGrade(state, id) {
-      state.grades = state.grades.filter(grade => grade.id != id)
-    },
+      state.grades = state.grades.filter(grade => grade.id !== id)
+    }
   }
 }

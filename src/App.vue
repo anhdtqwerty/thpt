@@ -90,7 +90,8 @@ input {
   width: 100%;
   padding: 8px !important;
 }
-thead.v-data-table-header-mobile{
-  display: none;
+.no-gutters > .col,
+.no-gutters > [class*='col-'] {
+  padding: 0 !important;
 }
 </style>

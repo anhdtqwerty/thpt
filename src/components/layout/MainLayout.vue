@@ -76,7 +76,7 @@ export default {
         this.fetchStudent({ user: this.user.id })
       }
 
-      this.fetchDepartment(this.department.id) // refresh department
+      this.fetchDepartment(this.department.id)
       this.setRole(this.user.role)
       this.setPolicies(_.get(this.department.policies, this.user.role.id))
     }

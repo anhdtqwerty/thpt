@@ -11,18 +11,21 @@
           <v-icon left>mdi-delete</v-icon>
           <v-list-item-title>Xóa</v-list-item-title>
         </v-list-item>
-        <v-list-item @click.stop="smsDialogState=!smsDialogState">
+        <v-list-item @click.stop="smsDialogState = !smsDialogState">
           <v-icon left>mdi-message-processing</v-icon>
           <v-list-item-title>SMS</v-list-item-title>
         </v-list-item>
-        <v-list-item @click.stop="mailDialogState=!mailDialogState">
+        <v-list-item @click.stop="mailDialogState = !mailDialogState">
           <v-icon left>mdi-email</v-icon>
           <v-list-item-title>Gửi email</v-list-item-title>
-        </v-list-item>                           
+        </v-list-item>
       </v-list>
     </v-menu>
 
-    <send-email-dialog :state="mailDialogState" :data="item"></send-email-dialog>
+    <send-email-dialog
+      :state="mailDialogState"
+      :data="item"
+    ></send-email-dialog>
     <send-s-m-s-dialog :state="smsDialogState" :data="item"></send-s-m-s-dialog>
   </div>
 </template>
@@ -43,19 +46,19 @@ export default {
     teacher: Object,
     item: Object,
   },
-  data () {
+  data() {
     return {
       mailDialogState: false,
       smsDialogState: false,
       smsEditingState: false,
-      sending: null
+      sending: null,
     }
   },
   computed: {
     ...mapState('teacher', ['teachers']),
-    sendingName () {
+    sendingName() {
       const { name } = this.teachers.find(
-        teacher => teacher.phone === this.sending
+        (teacher) => teacher.phone === this.sending
       )
       return name
     },
@@ -63,7 +66,7 @@ export default {
   methods: {
     ...mapActions('noti', ['sendEmails', 'sendSMS']),
     ...mapActions('teacher', ['updateTeacher', 'removeTeacher']),
-    remove () {
+    remove() {
       this.$dialog.confirm({
         title: 'Xóa Giáo Viên Này',
         text:
@@ -72,9 +75,9 @@ export default {
         cancelText: 'Hủy',
         done: async () => {
           await this.removeTeacher(this.item)
-        }
+        },
       })
-    }
-  }
+    },
+  },
 }
 </script>

@@ -9,16 +9,18 @@ export default {
     categories: []
   },
   actions: {
-    fetchCategories ({ commit, state }) {
+    fetchCategories({ commit, state }) {
       if (state.categories.length) return
-      return axios.get(CATEGORY_API)
+      return axios
+        .get(CATEGORY_API)
         .then(cats => {
           commit('setCategories', cats)
         })
         .catch(e => alert.error(e))
     },
-    createCategory ({ commit }, cat) {
-      return axios.post(CATEGORY_API, cat)
+    createCategory({ commit }, cat) {
+      return axios
+        .post(CATEGORY_API, cat)
         .then(newCat => {
           commit('receiveCategory', newCat)
           alert.success('New category added: ' + newCat.title)
@@ -26,8 +28,9 @@ export default {
         })
         .catch(e => alert.error(e))
     },
-    updateCategory ({ commit }, { id, ...cat }) {
-      return axios.put(CATEGORY_API + id, cat)
+    updateCategory({ commit }, { id, ...cat }) {
+      return axios
+        .put(CATEGORY_API + id, cat)
         .then(updatedCat => {
           commit('receiveCategory', updatedCat)
           alert.success('Category ' + updatedCat.title + ' updated!')
@@ -35,8 +38,9 @@ export default {
         })
         .catch(e => alert.error(e))
     },
-    removeCategory ({ commit }, catId) {
-      return axios.delete(CATEGORY_API + catId)
+    removeCategory({ commit }, catId) {
+      return axios
+        .delete(CATEGORY_API + catId)
         .then(delCat => {
           commit('removeCategory', delCat.id)
           alert.success('Category ' + delCat.title + ' deleted!')
@@ -45,10 +49,10 @@ export default {
     }
   },
   mutations: {
-    setCategories (state, cats = []) {
+    setCategories(state, cats = []) {
       state.categories = cats
     },
-    receiveCategory (state, cat) {
+    receiveCategory(state, cat) {
       const i = state.categories.findIndex(c => c.id === cat.id)
       if (i > -1) {
         state.categories.splice(i, 1, cat)
@@ -56,7 +60,7 @@ export default {
         state.categories.push(cat)
       }
     },
-    removeCategory (state, id) {
+    removeCategory(state, id) {
       const i = state.categories.findIndex(c => c.id === id)
       if (i > -1) state.categories.splice(i, 1)
     }
@@ -66,7 +70,7 @@ export default {
   }
 }
 
-function _makeCategoriesTree (categories = []) {
+function _makeCategoriesTree(categories = []) {
   const roots = []
   const descendants = []
   for (let i = categories.length - 1; i > -1; i--) {
@@ -79,7 +83,7 @@ function _makeCategoriesTree (categories = []) {
   }))
 }
 
-function _findCategoryChildren (categories, categoryId) {
+function _findCategoryChildren(categories, categoryId) {
   const children = []
   for (let i = categories.length - 1; i >= 0; i--) {
     if (categories[i].parentId === categoryId) {

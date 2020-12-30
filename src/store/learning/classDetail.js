@@ -21,7 +21,7 @@ export default {
       const [classData, slots, attendances, marks] = await Promise.all([
         Class.fetchOne(id),
         Slot.fetch({ class: id }),
-        Attendance.fetch({ class: id, _limit: 999 }),
+        Attendance.fetch({ class: id, _limit: -1 }),
         Mark.fetch({ class: id })
       ])
       commit('changeState', {
@@ -33,7 +33,7 @@ export default {
       })
     },
     async fetchSlots({ commit }, params) {
-      commit('setSlots', await Slot.fetch({ ...params, _limit: 999 }))
+      commit('setSlots', await Slot.fetch({ ...params, _limit: -1 }))
     },
     async fetchClass({ commit }, id) {
       commit('setClass', null)
@@ -45,7 +45,7 @@ export default {
     async fetchAttendances({ commit }, params) {
       commit(
         'setAttendances',
-        await Attendance.fetch({ ...params, _limit: 999 })
+        await Attendance.fetch({ ...params, _limit: -1 })
       )
     },
     async updateClass({ commit, state }, { id, ...classData }) {

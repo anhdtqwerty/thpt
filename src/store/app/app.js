@@ -40,7 +40,7 @@ export default {
       }
     },
     fetchStaffsCount({ commit }, filters = []) {
-      const params = { _limit: 9999 }
+      const params = { _limit: -19 }
       filters.forEach(f => {
         if (f.value === 0 || f.value) {
           params[f.key + (f.type ? '_' + f.type : '')] = f.value
@@ -126,10 +126,10 @@ export default {
     },
     setDepartment(state, department) {
       state.department = department
-      if (department.currentGeneration.id) {
+      if (department.currentGeneration && department.currentGeneration.id) {
         state.currentGeneration = department.currentGeneration
       }
-      if (department.currentGeneration.currentSemester) {
+      if (department.currentSemester && department.currentSemester.id) {
         state.currentSemester = department.currentSemester
       }
     },

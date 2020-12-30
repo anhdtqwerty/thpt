@@ -1,7 +1,6 @@
 <template>
   <div
-    class="d-flex flex-row align-center pa-1"
-    style="flex-wrap: wrap"
+    class="d-flex flex-row flex-nowrap align-center pa-1"
     :key="student.id"
     @click="$emit('change', student)"
   >

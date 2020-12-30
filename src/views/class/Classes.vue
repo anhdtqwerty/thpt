@@ -1,25 +1,19 @@
 <template>
-  <div :class="{ 'px-3': $vuetify.breakpoint.mdAndUp }">
-    <v-row
-      :class="{
-        'px-2 mt-2': $vuetify.breakpoint.smAndDown,
-        'mx-n2': $vuetify.breakpoint.mdAndUp
-      }"
-      no-gutters
-    >
-      <v-col>
+  <div>
+    <div class="pa-4 pa-md-2 d-flex justify-space-between align-center">
+      <div>
         <Breadcrumbs
-          headline="Dach sách lớp"
-          :link="[{ text: 'Danh sách lớp', href: '../classes' }]"
+          headline="Lớp học"
+          :link="[{ text: 'Lớp học', href: '../classes' }]"
         />
-      </v-col>
-      <v-col class="d-flex justify-end pt-4">
+      </div>
+      <div class="flex-center">
         <v-btn color="primary" @click="dialog = !dialog"
           ><v-icon left>add</v-icon>{{ addButtonText }}</v-btn
         >
-      </v-col>
-    </v-row>
-    <v-card class="px-4">
+      </div>
+    </div>
+    <v-card class="pa-2 pa-md-4 ma-md-2 elevation-1">
       <v-row>
         <v-col cols="12" md="11">
           <class-filter
@@ -82,8 +76,10 @@
                 {{ item.generation | getGeneration }}
               </p>
             </template>
-            <template v-slot:item.tags="{ item }">
-              <p style="margin: 0; white-space: nowrap">{{ item.tags }}</p>
+            <template v-slot:item.division="{ item }">
+              <p style="margin: 0; white-space: nowrap">
+                {{ item.division | getDivision }}
+              </p>
             </template>
             <template v-slot:item.teachers="{ item }">
               <p style="margin: 0; white-space: nowrap">
@@ -242,6 +238,9 @@ export default {
     },
     getTeacherNames: classData => {
       return classData.teachers.map(teacher => teacher.name).join(',')
+    },
+    getDivision: division => {
+      return division ? division.title : ''
     },
     displayDate: date => {
       if (date) return moment(date).format('DD/MM')

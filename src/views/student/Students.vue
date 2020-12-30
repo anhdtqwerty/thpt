@@ -5,8 +5,8 @@
         <Breadcrumbs
           headline="Danh sách"
           :link="[
-            { text: 'Học sinh', href: '../students' },
-            { text: 'Danh sách'}
+            { text: 'Học sinh'},
+            { text: 'Danh sách', href: '../students' }
           ]"
         />
       </div>
@@ -33,9 +33,7 @@
       >
         <div slot="top" class="d-flex mb-4" style="box-si">
           <div v-if="!$vuetify.breakpoint.mobile">
-            <student-filter
-              @onFilterChanged="refresh"
-            ></student-filter>
+            <student-filter @onFilterChanged="refresh"></student-filter>
           </div>
           <!-- <v-spacer></v-spacer> -->
           <div>
@@ -62,7 +60,7 @@
           </span>
         </template>
         <template v-slot:[`item.classes`]="{ item }">
-          <span v-if="item.classes">{{ item.classes[item.classes.length-1].title }}</span>
+          <span v-if="item.classes">{{ item.classes | getClasses }}</span>
         </template>
         <template v-slot:[`item.gender`]="{ item }">{{
           item.gender === 'male'
@@ -72,15 +70,16 @@
             : 'Khác'
         }}</template>
         <template v-slot:[`item.action`]="{ item }">
-          <v-btn text icon @click="onStudentSelected(item)">
-            <v-icon dense>mdi-dots-vertical</v-icon>
-          </v-btn>
+          <student-list-actions :item="item"></student-list-actions>
         </template>
       </v-data-table>
     </v-card>
 
     <student-new-dialog :state="createState" @done="requestPageSettings({})" />
-    <student-filter-dialog @onFilterDialogChanged="refresh" :state="filterState" />
+    <student-filter-dialog
+      @onFilterDialogChanged="refresh"
+      :state="filterState"
+    />
   </div>
 </template>
 <script>
@@ -92,6 +91,7 @@ import SettingTableHeader from '@/components/basic/table/SettingHeaders'
 import StudentNewDialog from '@/modules/student/StudentNewDialog'
 import StudentFilterDialog from '@/modules/student/StudentFilterDialog'
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
+import StudentListActions from '@/modules/student/StudentListActions'
 
 const originHeaders = [
   {
@@ -146,7 +146,8 @@ export default {
     StudentFilter,
     SettingTableHeader,
     StudentFilterDialog,
-    Breadcrumbs
+    Breadcrumbs,
+    StudentListActions,
   },
   props: {
     role: String,
@@ -235,11 +236,15 @@ export default {
   filters: {
     getStatus(status) {
       if (status === 'reserved') return 'Bảo Lưu'
-      if (status === 'active') return 'Hoạt Động'
+      if (status === 'active') return 'Đang học'
       return status
     },
     getClassCount(classes) {
       return classes ? classes.length : 0
+    },
+    getClasses(classes) {
+      if (classes && classes.length > 0) return classes[classes.length - 1].title
+      else return ''
     },
   },
 }

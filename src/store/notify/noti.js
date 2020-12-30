@@ -11,17 +11,22 @@ export default {
     count: 0
   },
   actions: {
-    sendSMS ({ commit, state }, sms) {
-      return axios.post(SMS_API, {
-        details: {
-          phones: [sms.phone]
-        },
-        content: sms.message,
-        ...sms
-      }, {
-        hideLoading: true
-      })
-        .then((data) => {
+    sendSMS({ commit, state }, sms) {
+      return axios
+        .post(
+          SMS_API,
+          {
+            details: {
+              phones: [sms.phone]
+            },
+            content: sms.message,
+            ...sms
+          },
+          {
+            hideLoading: true
+          }
+        )
+        .then(data => {
           console.log('failed')
           sms.status = 'sent'
           commit('receiveSMS', sms)
@@ -32,31 +37,32 @@ export default {
           commit('receiveSMS', sms)
         })
     },
-    async broadcastSMS ({ commit, dispatch }, data) {
+    async broadcastSMS({ commit, dispatch }, data) {
       commit('setSMS', data)
       for (let item of data) {
         await dispatch('sendSMS', item)
       }
     },
-    sendEmail (context, { to, subject, message }) {
-      return axios.post(EMAIL_API, {
-        to,
-        from: 'no-reply@qwerty.vn',
-        subject,
-        text: message
-      })
+    sendEmail(context, { to, subject, message }) {
+      return axios
+        .post(EMAIL_API, {
+          to,
+          from: 'no-reply@qwerty.vn',
+          subject,
+          text: message
+        })
         .then(() => true)
         .catch(e => alert.error(e))
     }
   },
   mutations: {
-    setSMS (state, sms) {
+    setSMS(state, sms) {
       state.sms = sms
     },
-    setCount (state, count) {
+    setCount(state, count) {
       state.count = count
     },
-    receiveSMS (state, sms) {
+    receiveSMS(state, sms) {
       const i = state.sms.findIndex(d => d.id === sms.id)
       if (i > -1) {
         state.sms.splice(i, 1, sms)

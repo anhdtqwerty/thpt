@@ -2,7 +2,12 @@
   <div>
     <div class="pa-2 d-none d-md-block">
       <h2>Giáo viên</h2>
-      <breadcrumbs />
+      <Breadcrumbs
+          headline="Danh sách"
+          :link="[
+            { text: 'Giáo viên', href: '../teachers' },
+          ]"
+        />
     </div>
 
     <teacher-profile :teacher="teacherInfo"></teacher-profile>
@@ -12,7 +17,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import TeacherProfile from '@/modules/teacher/profile/TeacherProfile'
-import Breadcrumbs from '@/components/basic/Breadcrumbs'
+import Breadcrumbs from '@/components/layout/Breadcrumbs.vue'
 import moment from 'moment'
 export default {
   components: {

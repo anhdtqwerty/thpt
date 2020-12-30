@@ -4,7 +4,10 @@
       <div>
         <Breadcrumbs
           headline="Quản lý học kỳ"
-          :link="[{ text: 'Quản lý nâng cao' }, { text: 'Quản lý học kỳ' }]"
+          :link="[
+            { text: 'Quản lý nâng cao' },
+            { text: 'Quản lý học kỳ', href: '/semesters' }
+          ]"
         />
       </div>
       <div class="flex-center">
@@ -61,7 +64,10 @@
     </v-card>
 
     <semester-new-dialog :state="createState"></semester-new-dialog>
-    <semester-filter-dialog @onFilterChanged="refresh" :state="filterState"></semester-filter-dialog>
+    <semester-filter-dialog
+      @onFilterChanged="refresh"
+      :state="filterState"
+    ></semester-filter-dialog>
   </div>
 </template>
 
@@ -83,50 +89,50 @@ const originHeaders = [
     value: 'title',
     align: 'left',
     sortable: false,
-    show: true,
+    show: true
   },
   {
     text: 'Năm học',
     value: 'generation.name',
     align: 'left',
     sortable: false,
-    show: true,
+    show: true
   },
   {
     text: 'Ngày bắt đầu',
     value: 'config.startDate',
     align: 'left',
     sortable: false,
-    show: true,
+    show: true
   },
   {
     text: 'Ngày kết thúc',
     value: 'config.endDate',
     align: 'left',
     sortable: false,
-    show: true,
+    show: true
   },
   {
     text: 'Trạng thái',
     value: 'status',
     align: 'left',
     sortable: false,
-    show: true,
+    show: true
   },
   {
     text: 'Ghi chú',
     value: 'config.notes',
     align: 'left',
     sortable: false,
-    show: true,
+    show: true
   },
   {
     text: 'Hành động',
     value: 'action',
     align: 'left',
     sortable: false,
-    show: true,
-  },
+    show: true
+  }
 ]
 
 export default {
@@ -145,11 +151,11 @@ export default {
       headers: [],
       originHeaders: originHeaders,
       createState: false,
-      filterState: false,
+      filterState: false
     }
   },
   computed: {
-    ...mapGetters('semester', ['semesters']),
+    ...mapGetters('semester', ['semesters'])
   },
   created() {
     this.loading = true
@@ -162,7 +168,7 @@ export default {
     refresh(query) {
       this.loading = true
       this.fetchSemesters({
-        ...query,
+        ...query
       }).then(() => {
         this.loading = false
       })
@@ -181,7 +187,7 @@ export default {
       return get(item, 'config.endDate', '')
         ? moment(item.config.endDate).format('D/MM/YYYY')
         : ''
-    },
-  },
+    }
+  }
 }
 </script>

@@ -22,6 +22,8 @@
         <student-note-form ref="studentNoteForm"></student-note-form>
         <h3>4. Thông tin gia đình</h3>
         <student-family-form ref="studentFamilyForm"></student-family-form>
+        <h3>5. Thông tin đăng nhập</h3>
+        <login-info-form ref="loginInfoForm"></login-info-form>
       </v-form>
       <v-card-actions class="px-4">
         <v-spacer></v-spacer>
@@ -36,11 +38,11 @@
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex'
 
-import { get } from 'lodash'
 import StudentGeneralForm from '@/components/basic/form/StudentGeneralForm.vue'
 import StudentContactForm from '@/components/basic/form/StudentContactForm.vue'
 import StudentNoteForm from '@/components/basic/form/StudentNoteForm.vue'
 import StudentFamilyForm from '@/components/basic/form/StudentFamilyForm.vue'
+import LoginInfoForm from '@/components/basic/form/LoginInfoForm'
 
 export default {
   components: {
@@ -48,6 +50,7 @@ export default {
     StudentContactForm,
     StudentNoteForm,
     StudentFamilyForm,
+    LoginInfoForm,
   },
   data() {
     return {
@@ -81,9 +84,10 @@ export default {
     defaultPhone: String,
     defaultEmail: String,
     defaultName: String,
+    defaultOveride: Object,
   },
   computed: {
-    ...mapState('app', ['roles', 'department']),
+    ...mapState('app', ['roles', 'department', 'currentGeneration']),
     ...mapGetters('app', ['roleIdByName', 'roles']),
     isLoading() {
       return this.loading > 0
@@ -93,47 +97,47 @@ export default {
     },
   },
   methods: {
-    ...mapActions('user', ['generateUserName', 'validateEmail']),
-    ...mapActions('student', ['createStudent']),
+    ...mapActions('students', ['createStudent']),
     async save() {
-      if (!this.$refs.form.validate()) return
+      if (
+        !this.$refs.studentGeneralForm.validate() ||
+        !this.$refs.studentContactForm.validate() ||
+        !this.$refs.loginInfoForm.validate()
+      ) {
+        return
+      }
       const studentGeneralForm = this.$refs.studentGeneralForm.getData()
       const studentContactForm = this.$refs.studentContactForm.getData()
       const studentNoteForm = this.$refs.studentNoteForm.getData()
       const studentFamilyForm = this.$refs.studentFamilyForm.getData()
-      this.createStudent({
+      const loginInfoForm = this.$refs.loginInfoForm.getData()
+      this.classes.push(studentGeneralForm.classes)
+      const overide = this.defaultOveride || {}
+      const student = await this.createStudent({
+        generation: this.currentGeneration.id,
+        department: this.department.id,
+        classes: this.classes,
+        name: studentGeneralForm.name,
+        username: studentGeneralForm.username,
+        password: loginInfoForm.password,
+        status: 'active',
+        phone: loginInfoForm.phone,
+        address: studentContactForm.currentLive,
+        notes: studentNoteForm.notes,
+        email: loginInfoForm.email,
+        gender: studentGeneralForm.gender,
+        dob: studentGeneralForm.dob,
         data: {
-          name: studentGeneralForm.name,
-          phone: studentContactForm.phone,
-          address: studentContactForm.currentLive,
-          notes: studentNoteForm.notes,
-          email: studentContactForm.email,
-          gender: studentGeneralForm.gender,
-          dob: studentGeneralForm.dob,
-          data: {
-            ...studentGeneralForm,
-            ...studentContactForm,
-            ...studentFamilyForm,
-            ...studentNoteForm,
-          },
+          ...studentGeneralForm,
+          ...studentContactForm,
+          ...studentFamilyForm,
+          ...studentNoteForm,
         },
+        ...overide,
       })
       this.dialog = false
       this.reset()
-    },
-    async nameLostFocus() {
-      const {
-        username,
-        // eslint-disable-next-line
-        username_indexing,
-        // eslint-disable-next-line
-        username_no,
-      } = await this.generateUserName(this.name)
-      this.username = username
-      // eslint-disable-next-line
-      this.username_indexing = username_indexing
-      // eslint-disable-next-line
-      this.username_no = username_no
+      this.$emit('done', student)
     },
     async emailLostFocus() {
       try {

@@ -10,149 +10,24 @@
       :headline="classData.title"
       :link="[
         { text: 'Danh sách lớp', href: '../classes' },
-        { text: classData.title, id: classData.id },
+        { text: classData.title, id: classData.id }
       ]"
     />
-    <v-row
-      class="mt-n2"
-      :class="{ 'px-3': $vuetify.breakpoint.smAndDown }"
-      no-gutters
-    >
-      <v-col class="xs-6 sm-6">
-        <v-card class="pl-5 pt-5">
-          <div class="d-flex justify-start">
-            <v-avatar size="82">
-              <v-img src="@/assets/diem_danh.svg" />
-            </v-avatar>
-            <div class="ml-2">
-              <v-card-title
-                class="text-h6 font-weight-regular grey--text pt-2"
-                style="white-space: nowrap"
-              >
-                Điểm danh
-              </v-card-title>
-              <v-card-subtitle class="text-h4 font-weight-bold pt-2 black--text"
-                >{{getPercentageAttendance}}%</v-card-subtitle
-              >
-            </div>
-          </div>
-          <v-card-actions class="mt-n2">
-            <v-spacer />
-            <v-btn
-              color="white"
-              elevation="0"
-              :to="`/class/attendances/${classData.id}`"
-              class="blue--text"
-            >
-              Chi tiết<v-icon>mdi-arrow-right</v-icon></v-btn
-            >
-          </v-card-actions>
-        </v-card>
-      </v-col>
-      <v-col class="xs-6 sm-6">
-        <v-card elevation="3" class="pl-5 pt-5">
-          <div class="d-flex justify-start">
-            <v-avatar size="82">
-              <v-img src="@/assets/lich_hoc.svg" />
-            </v-avatar>
-            <div class="ml-2">
-              <v-card-title
-                class="text-h6 font-weight-regular grey--text pt-2"
-                style="white-space: nowrap"
-              >
-                Lịch học
-              </v-card-title>
-              <v-card-subtitle class="pt-2 text-h6 grey--text"
-                ><span class="text-h4 font-weight-bold black--text">{{
-                  getCurrentSlot
-                }}</span
-                >/{{ getTotalSlot }}</v-card-subtitle
-              >
-            </div>
-          </div>
-          <v-card-actions class="mt-n2">
-            <v-spacer />
-            <v-btn
-              color="white"
-              elevation="0"
-              :to="`/class/schedule/${classData.id}`"
-              class="blue--text"
-            >
-              Chi tiết<v-icon>mdi-arrow-right</v-icon></v-btn
-            >
-          </v-card-actions>
-        </v-card>
-      </v-col>
-      <v-col class="xs-6 sm-6">
-        <v-card elevation="3" class="pl-5 pt-5">
-          <div class="d-flex justify-start">
-            <v-avatar size="82">
-              <v-img src="@/assets/hoc_vien.svg" />
-            </v-avatar>
-            <div class="ml-2">
-              <v-card-title
-                class="text-h6 font-weight-regular grey--text pt-2"
-                style="white-space: nowrap"
-              >
-                Học viên
-              </v-card-title>
-              <v-card-subtitle class="pt-2 text-h6 grey--text"
-                ><span class="text-h4 font-weight-bold black--text">{{
-                  getStudentCount
-                }}</span></v-card-subtitle
-              >
-            </div>
-          </div>
-          <v-card-actions class="mt-n2">
-            <v-spacer />
-            <v-btn
-              color="white"
-              elevation="0"
-              :to="`/class/students/${classData.id}`"
-              class="blue--text"
-            >
-              Chi tiết<v-icon>mdi-arrow-right</v-icon></v-btn
-            >
-          </v-card-actions>
-        </v-card>
-      </v-col>
-      <v-col class="xs-6 sm-6">
-        <v-card elevation="3" class="pl-5 pt-5">
-          <div class="d-flex justify-start">
-            <v-avatar size="82">
-              <v-img src="@/assets/bang_diem.svg" />
-            </v-avatar>
-            <div class="ml-2 d-flex align-center">
-              <v-card-subtitle
-                class="pt-4 text-h6 grey--text"
-                style="white-space: nowrap; height: 104px"
-                ><span class="text-h4 black--text"
-                  >Bảng điểm</span
-                ></v-card-subtitle
-              >
-            </div>
-          </div>
-          <v-card-actions class="mt-n2">
-            <v-spacer />
-            <v-btn
-              color="white"
-              elevation="0"
-              :to="`/class/mark/${classData.id}`"
-              class="blue--text"
-            >
-              Chi tiết<v-icon>mdi-arrow-right</v-icon></v-btn
-            >
-          </v-card-actions>
-        </v-card>
-      </v-col>
-    </v-row>
+
     <v-card class="mt-6">
       <v-img
         src="../../assets/class-default-img.png"
-        class="pa-8"
-        :max-height="imageHeight"
+        class="pa-6"
+        max-height="178"
       >
         <v-row no-gutters>
+          <v-btn
+            icon
+            dark
+            style="position: absolute; top: 10px; right: 10px"
+            @click="updateClass"
+            ><v-icon medium>create</v-icon></v-btn
+          >
           <v-col
             class="white--text pa-6 sm-12 xs-12 md-12 lg-6"
             style="
@@ -161,84 +36,42 @@
               position: relative;
             "
           >
-            <v-btn
-              icon
-              dark
-              style="position: absolute; top: 10px; right: 10px"
-              @click="updateClass"
-              ><v-icon medium>create</v-icon></v-btn
-            >
-            <div>Môn học:</div>
-            <div
-              class="text-h3 mt-2"
-              :class="{ 'text-truncate': $vuetify.breakpoint.lgAndUp }"
-            >
-              {{ classData.title }}
+            <div class="d-flex justify-space-between">
+              <div class="">
+                <p>Lớp học:</p>
+                <h3>{{ classData.title }}</h3>
+              </div>
+              <div class="">
+                <p>Giáo viên chủ nhiệm:</p>
+                <p
+                  style="border: 1px solid #fff; border-radius: 4px"
+                  class="pa-1"
+                >
+                  {{ classData.teachers | getTeacher }}
+                </p>
+              </div>
+              <div class="">
+                <p>Niên khóa:</p>
+                <p>{{ classData.generation | getGeneration }}</p>
+              </div>
+              <div class="">
+                <p class="">Phân Ban:</p>
+                <p>{{ classData.dvision | getDivision }}</p>
+              </div>
             </div>
-            <table class="mt-8">
-              <tr>
-                <td>Chuyên ngành:</td>
-                <td class="font-weight-medium">
-                  {{ classData.major | getMajorName }}
-                </td>
-              </tr>
-              <tr>
-                <td>Mã lớp:</td>
-                <td class="font-weight-medium">{{ classData.code }}</td>
-              </tr>
-              <tr>
-                <td>Nhóm lớp:</td>
-                <td class="font-weight-medium">{{ classData.tags }}</td>
-              </tr>
-              <tr>
-                <td class="mt-2">Phòng học:</td>
-                <td class="font-weight-medium mt-2">
-                  {{ classData.room | getRoomName }}
-                </td>
-              </tr>
-              <tr>
-                <td v-if="classData.teachers" class="mt-2">Giảng viên:</td>
-                <td v-if="classData.teachers" class="font-weight-medium mt-2">
-                  {{ teacherNames }}
-                </td>
-              </tr>
-              <tr>
-                <td v-if="classData.mentors" class="mt-2">Trợ giảng:</td>
-                <td v-if="classData.mentors" class="font-weight-medium mt-2">
-                  {{ mentorNames }}
-                </td>
-              </tr>
-              <tr>
-                <td class="mt-2">Mô tả:</td>
-                <td class="font-weight-medium mt-2 text-truncate">
-                  {{ classData.description }}
-                </td>
-              </tr>
-            </table>
-          </v-col>
-          <v-col class="d-none d-lg-flex xs-0 sm-0 md-0 lg-6">
-            <v-btn
-              elevation="2"
-              style="position: absolute; bottom: 32px; right: 32px"
-            >
-              <v-icon>mdi-camera</v-icon>
-              Chỉnh sửa ảnh</v-btn
-            >
           </v-col>
         </v-row>
       </v-img>
     </v-card>
-    <v-row :class="{ 'mt-6 pb-4': $vuetify.breakpoint.mdAndUp }" no-gutters>
+    <v-row no-gutters class="mt-4">
       <v-col cols="12" :class="{ 'pa-0': $vuetify.breakpoint.smAndDown }">
         <v-card>
-          <v-card-title class="text-h4 amber--text text--darken-1"
-            >Lịch học
-          </v-card-title>
-          <slots-table
-            :class="{ 'mt-n1 px-4': $vuetify.breakpoint.smAndDown }"
-            :slots="classSlots"
-            :classData="classInfo"
-            :headers="headers"
+          <div class="d-flex align-center">
+            <v-card-title>Danh sách học sinh </v-card-title>
+            <v-spacer />
+            <drop-menu class="mr-2" @add-new-student="dialog = !dialog" />
+          </div>
+          <student-table
             @onCheckAttendance="checkAttendance"
             disableSort
             mobile-breakpoint="0"
@@ -246,12 +79,6 @@
         </v-card>
       </v-col>
     </v-row>
-    <class-attendance-dialog
-      :state="attendanceDialogState"
-      :slotData="selectedSlot"
-      :classData="classData"
-      :attendances="attendances"
-    ></class-attendance-dialog>
     <class-update-dialog
       :state="updateDialogState"
       :classData="classInfo"
@@ -263,17 +90,16 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import { get } from 'lodash'
-import SlotsTable from '@/modules/slot/SlotsTable'
 import Breadcrumbs from '@/components/layout/Breadcrumbs.vue'
-import ClassAttendanceDialog from '@/modules/class/attendance/ClassAttendanceDialog.vue'
 import ClassUpdateDialog from '@/modules/class/ClassUpdateDialog.vue'
-
+import StudentTable from '@/modules/class/student/StudentTable.vue'
+import DropMenu from '@/modules/class/student/Menu.vue'
 export default {
   components: {
-    SlotsTable,
     Breadcrumbs,
-    ClassAttendanceDialog,
-    ClassUpdateDialog
+    ClassUpdateDialog,
+    StudentTable,
+    DropMenu
   },
   data() {
     return {
@@ -281,28 +107,7 @@ export default {
       attendanceDialogState: false,
       updateDialogState: false,
       tab: null,
-      headers: [
-        {
-          text: 'Thời gian',
-          value: 'startTime',
-          align: 'left',
-          sortable: false
-        },
-        {
-          text: 'Ngày',
-          value: 'startTimeDate',
-          align: 'left',
-          sortable: false
-        },
-        { text: 'Phòng học', value: 'room', align: 'left', sortable: true },
-        { text: 'Giáo viên', value: 'teachers', align: 'left', sortable: true },
-        {
-          text: 'Điểm danh',
-          value: 'attendances',
-          align: 'left',
-          sortable: true
-        }
-      ]
+      dialog: false
     }
   },
   computed: {
@@ -364,7 +169,7 @@ export default {
       return get(this.classData.students, 'length', 0)
     },
     getCurrentSlot() {
-      const currentSlot = this.slots.filter((slot) => {
+      const currentSlot = this.slots.filter(slot => {
         return new Date(slot.endTime).getTime() < new Date().getTime()
       })
       return currentSlot.length
@@ -375,10 +180,10 @@ export default {
     getPercentageAttendance() {
       const attendanceValues = Object.values(this.attendances)
       const attendanceNum = attendanceValues.filter(
-        (attendance) =>
+        attendance =>
           attendance.status === 'attendance' || attendance.status === 'late'
       )
-      return Math.floor(attendanceNum.length / attendanceValues.length * 100)
+      return Math.floor((attendanceNum.length / attendanceValues.length) * 100)
     }
   },
   methods: {
@@ -394,6 +199,7 @@ export default {
   async created() {
     const classId = this.$route.params.id
     await this.initClass({ id: classId })
+    console.log(this.classData)
   },
   filters: {
     getMajorName(data) {
@@ -401,6 +207,18 @@ export default {
     },
     getRoomName(data) {
       return data ? data.title : ''
+    },
+    getTeacher(data) {
+      if (!data || !data.length) return 'không có'
+      else return data[0].name
+    },
+    getGeneration(generation) {
+      if (!generation) return 'không có'
+      else return generation.name
+    },
+    getDivision(division) {
+      if (!division) return 'không có'
+      else return division.title
     }
   }
 }

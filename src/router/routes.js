@@ -14,7 +14,6 @@ import Teacher from '@/views/teacher/Teacher'
 // ---------------- CLASSES -------------------------------
 
 import ClassDetail from '@/views/class/ClassDetail'
-import ClassStudents from '@/views/class/ClassStudents'
 import ClassMark from '@/views/class/ClassMark'
 import ClassSlots from '@/views/class/ClassSlots'
 
@@ -26,8 +25,13 @@ import StudentDashboard from '@/views/student/Dashboard'
 import Student from '@/views/student/Student'
 import StudentClasses from '@/views/student/Classes'
 import StudentImporter from '@/views/student/StudentImporter.vue'
+import Violation from '@/views/violation/Violations.vue'
+
+// ---------------- DEPARTMENT -------------------------------
+import Department from '@/views/department/Department'
 // ---------------- Score -------------------------------
 import InputScore from '@/views/score/InputScore.vue'
+import ViewScore from '@/views/score/ViewScore.vue'
 
 import DashBoard from '@/views/dashboard/Dashboard.vue'
 // ---------------- LEARNING -----------------------------
@@ -41,6 +45,9 @@ import Page404 from '@/views/Page404'
 import Divisions from '@/views/division/Divisions.vue'
 import Semesters from '@/views/semester/Semesters.vue'
 import Grades from '@/views/grade/Grades.vue'
+import Subjects from '@/views/subject/Subjects.vue'
+import Subject from '@/views/subject/Subject.vue'
+import Classes from '@/views/class/Classes'
 const routes = [
   {
     path: '/',
@@ -137,11 +144,47 @@ const routes = [
         }
       },
       {
-        path: 'Grades',
+        path: 'classes',
+        component: Classes,
+        name: 'Lớp Học',
+        meta: {
+          title: 'Quản lý lớp',
+          auth: true
+        }
+      },
+      {
+        path: 'grades',
         component: Grades,
         name: 'Grade',
         meta: {
           title: 'Quản lý khối',
+          auth: true
+        }
+      },
+      {
+        path: 'subjects',
+        component: Subjects,
+        name: 'Subjects',
+        meta: {
+          title: 'Quản Môn Học',
+          auth: true
+        }
+      },
+      {
+        path: 'subject/:id',
+        component: Subject,
+        name: 'Subject',
+        meta: {
+          title: 'Môn Học',
+          auth: true
+        }
+      },
+      {
+        path: 'complimented',
+        component: Violation,
+        name: 'Violation',
+        meta: {
+          title: 'Khen thưởng kỷ luật',
           auth: true
         }
       },
@@ -287,15 +330,6 @@ const routes = [
         }
       },
       {
-        path: 'class/students/:id',
-        name: 'class-student',
-        component: ClassStudents,
-        meta: {
-          title: 'Học viên',
-          auth: true
-        }
-      },
-      {
         path: 'class/mark/:id',
         name: 'class-mark',
         component: ClassMark,
@@ -323,6 +357,15 @@ const routes = [
         }
       },
       {
+        path: 'marks',
+        name: 'Sổ điểm',
+        component: ViewScore,
+        meta: {
+          title: 'Sổ điểm',
+          auth: true
+        }
+      },
+      {
         path: '*',
         name: 'page404',
         component: Page404,
@@ -333,5 +376,4 @@ const routes = [
     ]
   }
 ]
-
 export default routes
