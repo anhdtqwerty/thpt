@@ -63,12 +63,13 @@
         </v-row>
       </v-img>
     </v-card>
-    <v-row no-gutters>
+    <v-row no-gutters class="mt-4">
       <v-col cols="12" :class="{ 'pa-0': $vuetify.breakpoint.smAndDown }">
         <v-card>
-          <div class="d-flex">
+          <div class="d-flex align-center">
             <v-card-title>Danh sách học sinh </v-card-title>
-            <drop-menu @add-new-student="dialog = !dialog" />
+            <v-spacer />
+            <drop-menu class="mr-2" @add-new-student="dialog = !dialog" />
           </div>
           <student-table
             @onCheckAttendance="checkAttendance"

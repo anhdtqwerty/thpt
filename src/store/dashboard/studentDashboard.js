@@ -19,7 +19,7 @@ export default {
     },
     async fetchSlots({ commit }, options) {
       try {
-        commit('setSlots', await Slot.fetch({ ...options, _limit: 999 }))
+        commit('setSlots', await Slot.fetch({ ...options, _limit: -1 }))
       } catch (e) {
         alert.error(e)
       }

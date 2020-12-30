@@ -10,7 +10,7 @@
         <v-list-item @click="getXLSX()">
           <v-list-item-title>Xuất File</v-list-item-title>
         </v-list-item>
-        <v-list-item @click="newDialogState = !newDialogState">
+        <v-list-item @click="addState = !addState">
           <v-list-item-title>Thêm Học Sinh</v-list-item-title>
         </v-list-item>
         <v-list-item @click="newDialogState = !newDialogState">
@@ -18,10 +18,14 @@
         </v-list-item>
       </v-list>
     </v-menu>
-    <student-new-dialog
+    <StudentNewDialog
       :state="newDialogState"
       :data="{ class: classData.id }"
       @done="addStudentToClass"
+    />
+    <StudentAddDialog
+      :state="addState"
+      :lastSelectedStudents="classData.students"
     />
   </div>
 </template>
@@ -30,15 +34,17 @@ import { mapGetters, mapActions } from 'vuex'
 import { parse } from 'json2csv'
 import { saveAs } from 'file-saver'
 import StudentNewDialog from '@/modules/student/StudentNewDialog'
+import StudentAddDialog from '@/modules/class/student/StudentAddDialog'
 export default {
   props: {
     role: String
   },
-  components: { StudentNewDialog },
+  components: { StudentNewDialog, StudentAddDialog },
   data() {
     return {
       studentTableOptions: {},
-      newDialogState: false
+      newDialogState: false,
+      addState: false
     }
   },
   async created() {},

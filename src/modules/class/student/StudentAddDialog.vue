@@ -1,6 +1,9 @@
 <template>
   <v-dialog v-model="dialog" scrollable width="800">
-    <v-card class="pt-4">
+    <v-card>
+      <v-card-title class="primary white--text mb-4">
+        Thêm học viên</v-card-title
+      >
       <v-layout>
         <v-flex xs12 sm3 md3>
           <student-filter @onFilterChanged="searchStudent"></student-filter>
@@ -22,7 +25,7 @@
                     class="mr-2"
                     depressed
                     @click="addStudentToClass"
-                    :disabled="selected.length===0"
+                    :disabled="selected.length === 0"
                     :loading="loading"
                   >
                     <v-icon left>add</v-icon>Thêm Vào Lớp
@@ -53,7 +56,7 @@ export default {
     lastSelectedStudents: Array,
     state: Boolean
   },
-  data () {
+  data() {
     return {
       loading: false,
       dialog: false,
@@ -79,14 +82,14 @@ export default {
   },
   methods: {
     ...mapActions('classDetail', ['updateClass']),
-    async searchStudent (filter) {
+    async searchStudent(filter) {
       this.selected = []
       this.students = await Student.fetch({
         ...filter,
         id_nin: this.lastSelectedStudents.map(s => s.id)
       })
     },
-    async addStudentToClass () {
+    async addStudentToClass() {
       this.loading = true
       await this.updateClass({
         id: this.classData.id,
@@ -102,7 +105,7 @@ export default {
     }
   },
   watch: {
-    state (state) {
+    state(state) {
       this.selectedStudents = []
       this.dialog = true
     }

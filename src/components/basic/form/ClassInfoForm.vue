@@ -15,6 +15,7 @@
       item-text="title"
       item-value="id"
       label="Khối"
+      return-object
       required
       dense
       outlined
@@ -25,6 +26,7 @@
       item-text="title"
       item-value="id"
       label="Ban"
+      return-object
       required
       dense
       outlined
@@ -101,6 +103,7 @@ export default {
         this.title = this.classData.title
         this.course = this.courseData || this.classData.course
         this.grade = this.gradeData || this.classData.grade
+        this.division = this.classData.division
         this.startTime = this.classData.startTime
         this.description = this.classData.description
         this.endTime = this.classData.endTime
@@ -112,6 +115,7 @@ export default {
         this.title = ''
         this.course = null
         this.grade = null
+        this.division = null
         this.startTime = ''
         this.description = ''
         this.endTime = ''
@@ -123,8 +127,8 @@ export default {
         return {
           teachers: this.teachers,
           description: this.description,
-          division: this.division,
           grade: get(this.grade, 'id'),
+          division: get(this.division, 'id'),
           code: this.code,
           title: this.title,
           mentors: this.mentors
