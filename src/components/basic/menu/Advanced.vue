@@ -58,10 +58,9 @@ export default {
   },
   computed: {
     ...mapGetters('app', ['department', 'policies']),
-    ...mapGetters('auth', ['user', 'role']),
-  },
+    ...mapGetters('auth', ['user', 'role'])
+  }
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
