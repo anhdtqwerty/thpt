@@ -11,7 +11,7 @@
     />
     <autocomplete-grade
       v-model="grade"
-      :defaultGrades="grade"
+      :defaultGrades="[grade]"
       item-text="title"
       item-value="id"
       label="Khối"
@@ -19,11 +19,10 @@
       required
       dense
       outlined
-      disabled
     ></autocomplete-grade>
     <autocomplete-division
       v-model="division"
-      :defaultDivision="division"
+      :defaultDivision="[division]"
       item-text="title"
       item-value="id"
       label="Ban"
@@ -31,7 +30,6 @@
       required
       dense
       outlined
-      disabled
     />
     <autocomplete-teacher
       v-model="teachers"
@@ -105,6 +103,7 @@ export default {
         this.title = this.classData.title
         this.course = this.courseData || this.classData.course
         this.grade = this.gradeData || this.classData.grade
+        this.division = this.classData.division
         this.startTime = this.classData.startTime
         this.description = this.classData.description
         this.endTime = this.classData.endTime
@@ -116,6 +115,7 @@ export default {
         this.title = ''
         this.course = null
         this.grade = null
+        this.division = null
         this.startTime = ''
         this.description = ''
         this.endTime = ''
@@ -127,6 +127,8 @@ export default {
         return {
           teachers: this.teachers,
           description: this.description,
+          grade: get(this.grade, 'id'),
+          division: get(this.division, 'id'),
           code: this.code,
           title: this.title,
           mentors: this.mentors

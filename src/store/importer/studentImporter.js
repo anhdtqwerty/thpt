@@ -17,19 +17,19 @@ export default {
     }
   },
   actions: {
-    async fetchMajors ({ commit }, options) {
+    async fetchMajors({ commit }, options) {
       const majorList = await api.Major.fetch(options)
       commit('changeState', { majors: _.keyBy(majorList, 'code') })
     },
-    async fetchGenerations ({ commit }, options) {
+    async fetchGenerations({ commit }, options) {
       const generationList = await api.Generation.fetch(options)
       commit('changeState', { generations: _.keyBy(generationList, 'code') })
     },
-    async createStudent ({ state, dispatch, commit }, userData) {
+    async createStudent({ state, dispatch, commit }, userData) {
       delete userData.major
       let user = {}
       try {
-        user = await api.User.create({ ...userData })
+        user = await api.User.create({ ...userData, type: 'student' })
       } catch (e) {
         commit('receiveStudent', { ...userData, uploadStatus: 'failed' })
         return
@@ -49,7 +49,7 @@ export default {
         commit('receiveStudent', { ...userData, uploadStatus: 'failed' })
       }
     },
-    async validateStudents ({ commit, state, dispatch }) {
+    async validateStudents({ commit, state, dispatch }) {
       commit('setLoading', true)
       for (let student of state.students) {
         student.uploadStatus = 'validate'
@@ -73,7 +73,9 @@ export default {
           const { username, username_indexing, username_no } = await dispatch(
             'user/generateUserName',
             student.name,
-            { root: true }
+            {
+              root: true
+            }
           )
           student = {
             ...student,
@@ -89,7 +91,7 @@ export default {
       commit('setLoading', false)
       alert.success('Students Validated')
     },
-    async migrateStudents ({ commit, state, rootState, dispatch }) {
+    async migrateStudents({ commit, state, rootState, dispatch }) {
       commit('setLoading', true)
       for (const student of state.students) {
         if (student.uploadStatus === 'duplicated') continue
@@ -107,7 +109,7 @@ export default {
       commit('setLoading', false)
       alert.success('Student updated')
     },
-    removeStudent ({ commit }, id) {
+    removeStudent({ commit }, id) {
       return axios
         .delete(PRODUCT_API + id)
         .then(student => {
@@ -115,32 +117,32 @@ export default {
         })
         .catch(e => console.log(e))
     },
-    async removeStudents ({ dispatch }, ids) {
+    async removeStudents({ dispatch }, ids) {
       for (let id of ids) {
         await dispatch('removeStudent', id)
       }
     },
-    setCurrentStudent ({ commit }, student) {
+    setCurrentStudent({ commit }, student) {
       commit('setStudent', student)
     },
-    setStudents ({ commit }, students) {
+    setStudents({ commit }, students) {
       commit('setStudents', students)
     },
-    clearStudents ({ commit }) {
+    clearStudents({ commit }) {
       commit('setStudents', [])
     }
   },
   mutations: {
-    setStudents (state, deps) {
+    setStudents(state, deps) {
       state.students = deps
     },
-    setLoading (state, loading) {
+    setLoading(state, loading) {
       state.loading = loading
     },
-    setStudent (state, dep) {
+    setStudent(state, dep) {
       state.student = dep
     },
-    receiveStudent (state, dep) {
+    receiveStudent(state, dep) {
       const i = state.students.findIndex(d => d.key === dep.key)
       if (i > -1) {
         state.students.splice(i, 1, dep)
@@ -148,7 +150,7 @@ export default {
         state.students.unshift(dep)
       }
     },
-    removeStudent (state, id) {
+    removeStudent(state, id) {
       const i = state.students.findIndex(d => d.id === id)
       if (i > -1) {
         state.students.splice(i, 1)
@@ -156,16 +158,16 @@ export default {
     }
   },
   getters: {
-    students (state) {
+    students(state) {
       return state.students
     },
-    loading (state) {
+    loading(state) {
       return state.loading
     },
-    majors (state) {
+    majors(state) {
       return state.majors
     },
-    generations (state) {
+    generations(state) {
       return state.generations
     },
     student: state => key =>

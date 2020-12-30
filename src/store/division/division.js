@@ -37,7 +37,7 @@ export default {
       } catch (e) {
         alert.error(e)
       }
-    },
+    }
   },
   mutations: {
     setDivision(state, payload) {
@@ -49,7 +49,7 @@ export default {
     createDivision(state, division) {
       state.divisions = [division, ...state.divisions]
     },
-    updateDivision(state,id) {
+    updateDivision(state, id) {
       state.divisions = state.divisions.map(division => division.id != id)
     }
   }

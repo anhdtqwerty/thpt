@@ -40,7 +40,7 @@ export default {
       }
     },
     fetchStaffsCount({ commit }, filters = []) {
-      const params = { _limit: 9999 }
+      const params = { _limit: -19 }
       filters.forEach(f => {
         if (f.value === 0 || f.value) {
           params[f.key + (f.type ? '_' + f.type : '')] = f.value

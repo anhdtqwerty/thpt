@@ -43,6 +43,12 @@ export default {
     setGrades(state, payload) {
       state.grades = payload
     },
+    updateGrade(state, grade) {
+      state.grades = state.grades.map(g => {
+        if (g.id === grade.id) return grade
+        else return g
+      })
+    },
     createGrade(state, grade) {
       state.grades = [grade, ...state.grades]
     },

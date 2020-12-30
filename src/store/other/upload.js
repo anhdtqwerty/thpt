@@ -10,13 +10,14 @@ export default {
     response: false
   },
   actions: {
-    upload ({ commit }, formData) {
+    upload({ commit }, formData) {
       commit('setLoading', true)
-      return axios.post(UPLOAD_API, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      })
+      return axios
+        .post(UPLOAD_API, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
         .then(response => {
           console.log(response)
           commit('setURL', response[0].url)
@@ -25,9 +26,10 @@ export default {
         })
         .catch(e => alert.error(e))
     },
-    destroy ({ commit }, id) {
+    destroy({ commit }, id) {
       commit('setLoading', true)
-      return axios.delete(DESTROY_API + id)
+      return axios
+        .delete(DESTROY_API + id)
         .then(staff => {
           console.log('Remove success')
         })
@@ -35,18 +37,18 @@ export default {
     }
   },
   mutations: {
-    setURL (state, staffs) {
+    setURL(state, staffs) {
       state.staffs = staffs
     },
-    setLoading (state, bool) {
+    setLoading(state, bool) {
       state.isLoading = bool
     }
   },
   getters: {
-    url: (state) => {
+    url: state => {
       return state.url
     },
-    isLoading: (state) => {
+    isLoading: state => {
       return state.isLoading
     }
   }

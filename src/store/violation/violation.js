@@ -6,7 +6,7 @@ export default {
     violations: []
   },
   actions: {
-    async fetchViolation ({ commit }, options) {
+    async fetchViolation({ commit }, options) {
       try {
         commit('setViolation', await Violation.fetch(options))
       } catch (e) {
@@ -21,14 +21,16 @@ export default {
       } catch (e) {
         alert.error(e)
       }
-    },
+    }
   },
   mutations: {
     setViolation(state, payload) {
       state.violations = payload
     },
     removeViolation(state, id) {
-      state.violations = state.violations.filter(violation => violation.id != id)
-    },
+      state.violations = state.violations.filter(
+        violation => violation.id != id
+      )
+    }
   }
 }

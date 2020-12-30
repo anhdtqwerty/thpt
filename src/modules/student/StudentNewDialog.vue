@@ -137,7 +137,7 @@ export default {
       })
       this.dialog = false
       this.reset()
-      // this.$router.push(`/student/${student.id}`)
+      this.$router.push(`/student/${student.id}`)
       this.$emit('done', student)
     },
     async emailLostFocus() {

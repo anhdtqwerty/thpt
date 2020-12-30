@@ -14,33 +14,42 @@ export default {
     event: null
   },
   actions: {
-    createSlots ({ commit, state, dispatch }, slots = []) {
+    createSlots({ commit, state, dispatch }, slots = []) {
       if (!state.event || !slots.length) return
-      return axios.post(CREATE_SLOTS_API, slots.map(slot => ({ ...slot, event: state.event.id })))
+      return axios
+        .post(
+          CREATE_SLOTS_API,
+          slots.map(slot => ({ ...slot, event: state.event.id }))
+        )
         .then(newSlots => {
           commit('receive_slots', newSlots)
           dispatch('checkEventPeriod')
         })
         .catch(e => alert.error(e))
     },
-    updateSlot ({ commit, dispatch }, { id, ...slot }) {
-      return axios.put(SLOT_API + id, slot)
+    updateSlot({ commit, dispatch }, { id, ...slot }) {
+      return axios
+        .put(SLOT_API + id, slot)
         .then(newSlot => {
           commit('receive_slots', [slot])
           dispatch('checkEventPeriod')
         })
         .catch(e => alert.error(e))
     },
-    removeSlots ({ commit, dispatch }, slots = []) {
+    removeSlots({ commit, dispatch }, slots = []) {
       if (!slots.length) return
-      return axios.post(DELETE_SLOTS_API, slots.map(slot => ({ id: slot.id || slot })))
+      return axios
+        .post(
+          DELETE_SLOTS_API,
+          slots.map(slot => ({ id: slot.id || slot }))
+        )
         .then(slots => {
           commit('remove_slots', slots)
           dispatch('checkEventPeriod')
         })
         .catch(e => alert.error(e))
     },
-    checkEventPeriod ({ state, dispatch }) {
+    checkEventPeriod({ state, dispatch }) {
       if (!state.event) return
       const { startDate, endDate, slots = [], id } = state.event
       if (!slots.length) return
@@ -57,60 +66,65 @@ export default {
         return dispatch('updateEvent', { id, ...payload })
       }
     },
-    fetchEvents ({ commit }) {
-      return axios.get(EVENT_API)
+    fetchEvents({ commit }) {
+      return axios
+        .get(EVENT_API)
         .then(events => commit('setEvents', events))
         .catch(e => alert.error(e))
     },
-    fetchEvent ({ commit }, id) {
-      return axios.get(EVENT_API + id)
+    fetchEvent({ commit }, id) {
+      return axios
+        .get(EVENT_API + id)
         .then(event => commit('setEvent', event))
         .catch(e => alert.error(e))
     },
-    createEvent ({ commit }, event) {
-      return axios.post(EVENT_API, event)
+    createEvent({ commit }, event) {
+      return axios
+        .post(EVENT_API, event)
         .then(event => {
           commit('setEvent', event)
           router.push(event.slug)
         })
         .catch(e => alert.error(e))
     },
-    updateEvent ({ commit }, { id, ...event }) {
-      return axios.put(EVENT_API + id, event)
+    updateEvent({ commit }, { id, ...event }) {
+      return axios
+        .put(EVENT_API + id, event)
         .then(event => {
           commit('setEvent', event)
           alert.success('Event updated')
         })
         .catch(e => alert.error(e))
     },
-    removeEvent ({ commit }, id) {
-      return axios.delete(EVENT_API + id)
+    removeEvent({ commit }, id) {
+      return axios
+        .delete(EVENT_API + id)
         .then(event => {
           commit('removeEvent', event.id)
           alert.success('Event deleted')
         })
         .catch(e => alert.error(e))
     },
-    async removeEvents ({ dispatch }, items) {
+    async removeEvents({ dispatch }, items) {
       for (let item of items) {
         await dispatch('removeEvent', item.id)
       }
     }
   },
   mutations: {
-    setEvents (state, events) {
+    setEvents(state, events) {
       state.events = events
     },
-    setEvent (state, event) {
+    setEvent(state, event) {
       state.event = event
     },
-    removeEvent (state, eventId) {
+    removeEvent(state, eventId) {
       const i = state.events.findIndex(({ id }) => id === eventId)
       if (i > -1) {
         state.events.splice(i, 1)
       }
     },
-    receive_slots (state, slots) {
+    receive_slots(state, slots) {
       if (!state.event) return
       if (!state.event.slots) Object.assign(state.event, { slots: [] })
       slots.forEach(slot => {
@@ -122,7 +136,7 @@ export default {
         }
       })
     },
-    remove_slots (state, slots) {
+    remove_slots(state, slots) {
       if (!state.event || !state.event.slots) return
       const ids = slots.map(slot => slot.id || slot)
       const oldSlots = state.event.slots

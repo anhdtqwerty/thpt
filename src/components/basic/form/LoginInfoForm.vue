@@ -73,7 +73,7 @@ export default {
       }
     },
     validate() {
-      this.$refs.form.validate()
+      return this.$refs.form.validate()
     },
     reset() {
       this.phone = this.phone

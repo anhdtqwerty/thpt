@@ -58,7 +58,7 @@ export default {
   },
   methods: {
     validate() {
-      this.$refs.form.validate()
+      return this.$refs.form.validate()
     },
     getData() {
       return {

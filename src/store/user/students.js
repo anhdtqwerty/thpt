@@ -90,7 +90,7 @@ export default {
     },
     async createStudent({ state, dispatch }, userData) {
       try {
-        const user = await api.User.create({ ...userData })
+        const user = await api.User.create({ ...userData, type: 'student' })
         userData.user = user.id
         const student = await api.Student.create({
           ...userData,

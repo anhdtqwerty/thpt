@@ -18,6 +18,7 @@
           label="Mã học sinh"
           disabled
           class="required"
+          :rules="[rules.required]"
         ></v-text-field>
         <autocomplete-class
           :rules="[rules.required]"
@@ -76,23 +77,25 @@ export default {
   props: {
     student: {
       type: [Object],
-      default: () => {},
-    },
+      default: () => {}
+    }
   },
   data: () => ({
     valid: true,
     name: '',
     username: '',
+    username_indexing: '',
+    username_no: '',
     gender: '',
     dob: '',
     ethnic: '',
     frequentlyAddress: '',
     classes: {},
     rules: {
-      required: (value) => !!value || 'Required.',
-      min: (v) => v.length >= 6 || 'Min 8 characters',
-      email: (v) => /.+@.+/.test(v) || 'E-mail must be valid',
-    },
+      required: value => !!value || 'Required.',
+      min: v => v.length >= 6 || 'Min 8 characters',
+      email: v => /.+@.+/.test(v) || 'E-mail must be valid'
+    }
   }),
   created() {
     if (this.student) {
@@ -100,15 +103,15 @@ export default {
     }
   },
   methods: {
-    ...mapActions('user', ['generateUserName', 'validateEmail']),
+    ...mapActions('user', ['generateStudentCode', 'validateEmail']),
     async nameLostFocus() {
       const {
         username,
         // eslint-disable-next-line
         username_indexing,
         // eslint-disable-next-line
-        username_no,
-      } = await this.generateUserName(this.name)
+        username_no
+      } = await this.generateStudentCode(this.name)
       this.username = username
       // eslint-disable-next-line
       this.username_indexing = username_indexing
@@ -119,15 +122,17 @@ export default {
       return {
         name: this.name,
         username: this.username,
+        user_indexing: this.username_indexing,
+        username_no: this.username_no,
         gender: this.gender,
         dob: this.dob,
         ethnic: this.ethnic,
         frequentlyAddress: this.frequentlyAddress,
-        classes: this.classes,
+        classes: this.classes
       }
     },
     validate() {
-      this.$refs.form.validate()
+      return this.$refs.form.validate()
     },
     reset() {
       this.name = this.student.name
@@ -140,12 +145,12 @@ export default {
     },
     resetValidation() {
       this.$refs.form.resetValidation()
-    },
+    }
   },
   watch: {
     student(student) {
       this.reset()
-    },
-  },
+    }
+  }
 }
 </script>
