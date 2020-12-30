@@ -9,24 +9,24 @@ export default {
     students: [],
     student: null,
     loading: false,
-    majors: {
-      // code: major
+    grade: {
+      // code: grade
     },
     generations: {
-      // code: major
+      // code: grade
     }
   },
   actions: {
-    async fetchMajors({ commit }, options) {
-      const majorList = await api.Major.fetch(options)
-      commit('changeState', { majors: _.keyBy(majorList, 'code') })
+    async fetchGrades({ commit }, options) {
+      const gradeList = await api.Grade.fetch(options)
+      commit('changeState', { grade: _.keyBy(gradeList, 'code') })
     },
     async fetchGenerations({ commit }, options) {
       const generationList = await api.Generation.fetch(options)
       commit('changeState', { generations: _.keyBy(generationList, 'code') })
     },
     async createStudent({ state, dispatch, commit }, userData) {
-      delete userData.major
+      delete userData.grade
       let user = {}
       try {
         user = await api.User.create({ ...userData, type: 'student' })
@@ -69,20 +69,8 @@ export default {
           student.duplicated = duplicate
         } else {
           student.uploadStatus = 'ready'
-          // eslint-disable-next-line
-          const { username, username_indexing, username_no } = await dispatch(
-            'user/generateUserName',
-            student.name,
-            {
-              root: true
-            }
-          )
           student = {
-            ...student,
-            email: student.email ? student.email : `${username}@quanlylop.com`,
-            username,
-            username_indexing,
-            username_no
+            ...student
           }
         }
 
@@ -97,13 +85,23 @@ export default {
         if (student.uploadStatus === 'duplicated') continue
         student.uploadStatus = 'loading'
         commit('receiveStudent', student)
+        const { username, username_indexing, username_no } = await dispatch(
+          'user/generateStudentCode',
+          student.name,
+          {
+            root: true
+          }
+        )
         await dispatch('createStudent', {
           ...student,
           name: student.name.trim(),
           phone: student.phone + '',
-          rootMajor: _.get(student, '.major.root.id'),
-          generation: _.get(student, 'generation.id'),
-          majors: [_.get(student, 'major.id')].filter(i => !!i)
+          email: student.email
+            ? student.email
+            : `random${Date.now()}@quanlylop.com`,
+          username,
+          username_indexing,
+          username_no
         })
       }
       commit('setLoading', false)
@@ -164,8 +162,8 @@ export default {
     loading(state) {
       return state.loading
     },
-    majors(state) {
-      return state.majors
+    grade(state) {
+      return state.grade
     },
     generations(state) {
       return state.generations

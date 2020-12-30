@@ -182,7 +182,6 @@ export default {
       let userNo = 0
       userNameIndex = utils.removeUnicode(userNameIndex).toLowerCase()
       const users = await api.User.search({
-        username_indexing: userNameIndex,
         _sort: 'username_no:DESC',
         _limit: 1,
         type: 'staff'
