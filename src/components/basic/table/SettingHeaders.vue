@@ -1,30 +1,18 @@
 <template>
-  <div class="setting-table-header-wrapper">
-    <v-menu
-      class="setting-table-header"
-      left
-      bottom
-      nudge-right="36"
-      nudge-bottom="36"
-      absolute
-      attach
-    >
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn
-          x-small
-          icon
-          class="hidden-xs-only"
-          dark
-          v-bind="attrs"
-          v-on="on"
-        >
-          <v-icon small color="grey">mdi-settings</v-icon>
-        </v-btn>
-      </template>
-      <div class="setting__board px-4 py-3">
-        <div class="setting__cols" v-for="i in colNumber" :key="i">
+  <v-dialog
+    v-model="dialog"
+    :fullscreen="$vuetify.breakpoint.smAndDown"
+    :overlay="false"
+    transition="dialog-transition"
+  >
+    <v-card>
+      <v-card-title class="white--text font-weight-regular"
+        >CÀI ĐẶT CỘT HIỂN THỊ</v-card-title
+      >
+      <v-row no-gutters>
+        <v-col cols="6" class="py-0" v-for="i in colNumber" :key="i">
           <v-checkbox
-            class="ma-0 pa-0"
+            class="nowrap py-2"
             color="amber dark-1"
             hide-details
             v-for="header in originHeaders.slice(
@@ -36,65 +24,17 @@
             :label="header.text"
           >
           </v-checkbox>
-        </div>
+        </v-col>
+      </v-row>
+      <div class="d-flex justify-end">
+        <v-card-actions>
+          <v-btn class="my-16" large dark color="amber dark-1" @click="change">
+            OK
+          </v-btn>
+        </v-card-actions>
       </div>
-    </v-menu>
-    <v-dialog
-      v-model="dialog"
-      fullscreen
-      persistent
-      :overlay="false"
-      transition="dialog-transition"
-    >
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn
-          icon
-          color="grey"
-          class="hidden-sm-and-up"
-          dark
-          v-bind="attrs"
-          v-on="on"
-        >
-          <v-icon>mdi-settings</v-icon>
-        </v-btn>
-      </template>
-      <v-card>
-        <v-card-title class="white--text font-weight-regular"
-          >CÀI ĐẶT CỘT HIỂN THỊ</v-card-title
-        >
-        <v-row no-gutters>
-          <v-col cols="6" class="py-0" v-for="i in colNumber" :key="i">
-            <v-checkbox
-              class="nowrap py-2"
-              color="amber dark-1"
-              hide-details
-              v-for="header in originHeaders.slice(
-                (i - 1) * itemPerCol,
-                (i - 1) * itemPerCol + itemPerCol
-              )"
-              :key="header.text"
-              v-model="header.show"
-              :label="header.text"
-            >
-            </v-checkbox>
-          </v-col>
-        </v-row>
-        <div class="d-flex justify-end">
-          <v-card-actions>
-            <v-btn
-              class="my-16"
-              large
-              dark
-              color="amber dark-1"
-              @click="dialog = false"
-            >
-              OK
-            </v-btn>
-          </v-card-actions>
-        </div>
-      </v-card>
-    </v-dialog>
-  </div>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script>
@@ -104,20 +44,21 @@ export default {
       type: Array,
       default() {
         return []
-      }
+      },
     },
     value: {
       type: Array,
       default() {
         return []
-      }
-    }
+      },
+    },
+    state: Boolean,
   },
   data() {
     return {
       itemPerCol: 4,
       originHeaders: [],
-      dialog: false
+      dialog: false,
     }
   },
   created() {
@@ -126,20 +67,23 @@ export default {
   computed: {
     colNumber() {
       return Math.ceil(this.originHeaders.length / this.itemPerCol)
-    }
+    },
+  },
+  methods: {
+    change() {
+      console.log(this.originHeaders)
+      this.$emit(
+        'change',
+        this.originHeaders.filter((item) => item.show)
+      )
+      this.dialog = false
+    },
   },
   watch: {
-    originHeaders: {
-      handler(val) {
-        this.$emit(
-          'change',
-          val.filter(item => item.show)
-        )
-      },
-      deep: true,
-      immediate: true
-    }
-  }
+    state(state) {
+      this.dialog = true
+    },
+  },
 }
 </script>
 

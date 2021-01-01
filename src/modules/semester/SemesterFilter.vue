@@ -11,7 +11,6 @@
       ></autocomplete-generation>
       <v-btn
         class="py-5"
-        depressed
         color="primary"
         outlined
         @click="onFilterChanged"

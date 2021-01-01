@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import FactorEditDialog from '@/modules/factor/FactorEditDialog'
 const defaultHeaders = [
   { text: 'Tên đầu điểm', value: 'title' },
@@ -41,6 +41,7 @@ const defaultHeaders = [
 ]
 export default {
   components: { FactorEditDialog },
+  props: { subject: Object },
   data() {
     return {
       headers: defaultHeaders,
@@ -63,6 +64,7 @@ export default {
     ...mapActions('factor', ['removeFactor']),
     updateFactor(factor) {
       this.factor = factor
+      this.dialog = !this.dialog
     },
     onRemove(id) {
       this.$dialog.confirm({

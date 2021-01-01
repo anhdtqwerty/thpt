@@ -80,7 +80,7 @@
           ><v-icon>mdi-plus</v-icon> Thêm</v-btn
         >
       </div>
-      <FactorTable no-data-text="Chưa có cấu hình điểm"> </FactorTable>
+      <FactorTable no-data-text="Chưa có cấu hình điểm" :subject="subject" />
     </v-card>
     <SubjectEditDialog :subject="subject" :state="state" />
     <FactorNewDialog :subject="subject" :state="factorStateNewDialog" />

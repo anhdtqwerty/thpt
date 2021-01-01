@@ -15,20 +15,21 @@
     </div>
     <v-card class="pa-2 pa-md-4 ma-md-2 elevation-1">
       <v-row>
-        <v-col cols="12" md="11">
+        <v-col class="pa-0" cols="12" md="11">
           <class-filter
             v-if="$vuetify.breakpoint.mdAndUp"
             @onFilterChanged="refresh"
           />
         </v-col>
-        <v-col cols="12" md="1">
+        <v-col class="d-flex justify-end pa-0" cols="12" md="1">
           <span v-if="$vuetify.breakpoint.smAndDown">
             <class-filter-dialog @onFilterChanged="refresh" />
           </span>
-          <setting-table-header
+          <drop-menu
             :default-headers="originHeaders"
             @change="headers = $event"
-          />
+            v-if="$vuetify.breakpoint.mdAndUp"
+          ></drop-menu>
           <span v-if="$vuetify.breakpoint.mdAndUp">
             <kebap-menu>
               <v-list>
@@ -107,7 +108,7 @@ import ClassListActions from '@/modules/class/ClassListActions'
 import ClassFilterDialog from '@/modules/class/ClassFilterDialog'
 import ExportExcel from '@/components/basic/ExportExcel'
 import KebapMenu from '@/components/basic/menu/KebapMenu'
-import SettingTableHeader from '@/components/basic/table/SettingHeaders'
+import DropMenu from '@/modules/student/menu/Menu.vue'
 import moment from 'moment'
 import _ from 'lodash'
 
@@ -117,69 +118,74 @@ const originHeaders = [
     value: 'title',
     align: 'left',
     sortable: false,
-    show: true
+    show: true,
   },
   {
     text: 'Phân ban',
     value: 'division',
     align: 'left',
     sortable: false,
-    show: true
+    show: true,
   },
   {
     text: 'Giáo viên chủ nhiệm',
     value: 'teachers',
     align: 'left',
     sortable: false,
-    show: true
+    show: true,
   },
   {
     text: 'Trạng thái',
     value: 'status',
     align: 'left',
     sortable: false,
-    show: true
+    show: true,
   },
-  { text: 'Ghi chú', value: 'note', align: 'left', sortable: false, show: true }
+  {
+    text: 'Ghi chú',
+    value: 'note',
+    align: 'left',
+    sortable: false,
+    show: true,
+  },
 ]
 export default {
   components: {
     ClassFilter,
-    SettingTableHeader,
+    DropMenu,
     NewClassDialog,
     ClassFilterDialog,
     ClassListActions,
     Breadcrumbs,
     ExportExcel,
-    KebapMenu
+    KebapMenu,
   },
   props: {
-    role: String
+    role: String,
   },
   data() {
     return {
-      headers: [],
+      headers: originHeaders,
       originHeaders: originHeaders,
       draw: false,
       search: '',
       status: null,
       statuses: [
         { text: 'Active', value: 'false' },
-        { text: 'Blocked', value: 'true' }
+        { text: 'Blocked', value: 'true' },
       ],
       range: { from: null, to: null },
       previewUserId: null,
       ready: false,
       editClassId: '',
-      dialog: false
+      dialog: false,
     }
   },
   async created() {
-    console.log(this.currentGeneration.id)
     await this.refresh({
       department: this.department.id,
       generation: this.currentGeneration.id,
-      _sort: 'createdAt:desc'
+      _sort: 'createdAt:desc',
     })
   },
   computed: {
@@ -194,7 +200,7 @@ export default {
         default:
           return 'Thêm lớp học'
       }
-    }
+    },
   },
   methods: {
     ...mapActions('class', ['fetchClasses', 'setClass', 'setClasses']),
@@ -205,7 +211,7 @@ export default {
       else if (status === 'done') return 'gray'
       else return 'red'
     },
-    getCourse: course => {
+    getCourse: (course) => {
       return course || {}
     },
     refresh(query) {
@@ -213,39 +219,39 @@ export default {
       this.fetchClasses({
         department: this.department.id,
         generation: this.currentGeneration.id,
-        ...query
+        ...query,
       })
-    }
+    },
   },
   filters: {
-    studentCounter: students => {
+    studentCounter: (students) => {
       if (!students) {
         return 0
       }
       return students.length
     },
-    classStatus: status => {
+    classStatus: (status) => {
       if (status === 'opened') return 'Đang chờ'
       else if (status === 'running') return 'Đang Học'
       else if (status === 'done') return 'Kết Thúc'
       else return ''
     },
-    getGeneration: item => {
+    getGeneration: (item) => {
       return _.get(item, 'name', '')
     },
-    getRoom: item => {
+    getRoom: (item) => {
       return _.get(item, 'title', '')
     },
-    getTeacherNames: classData => {
-      return classData.teachers.map(teacher => teacher.name).join(',')
+    getTeacherNames: (classData) => {
+      return classData.teachers.map((teacher) => teacher.name).join(',')
     },
-    getDivision: division => {
+    getDivision: (division) => {
       return division ? division.title : ''
     },
-    displayDate: date => {
+    displayDate: (date) => {
       if (date) return moment(date).format('DD/MM')
-    }
-  }
+    },
+  },
 }
 </script>
 

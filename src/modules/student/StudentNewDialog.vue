@@ -3,28 +3,31 @@
     :fullscreen="$vuetify.breakpoint.smAndDown"
     v-model="dialog"
     width="661"
+    scrollable
   >
     <v-card>
-      <v-toolbar dense class="elevation-0" color="#0D47A1" dark>
-        <v-toolbar-title>Thêm Mới Học Sinh</v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-btn icon>
-          <v-icon @click="cancel">close</v-icon>
-        </v-btn>
-      </v-toolbar>
+      <v-card-title class="primary white--text">
+         Thêm Mới Học Sinh
+          <v-spacer></v-spacer>
+          <v-btn dark icon>
+            <v-icon @click="cancel">close</v-icon>
+          </v-btn>
+       </v-card-title>
       <v-divider />
-      <v-form ref="form" class="pa-6">
-        <h3>1. Thông tin cơ bản</h3>
-        <student-general-form ref="studentGeneralForm"></student-general-form>
-        <h3>2. Thông tin liên lạc</h3>
-        <student-contact-form ref="studentContactForm"></student-contact-form>
-        <h3>3. Ghi chú về học sinh</h3>
-        <student-note-form ref="studentNoteForm"></student-note-form>
-        <h3>4. Thông tin gia đình</h3>
-        <student-family-form ref="studentFamilyForm"></student-family-form>
-        <h3>5. Thông tin đăng nhập</h3>
-        <login-info-form ref="loginInfoForm"></login-info-form>
-      </v-form>
+      <v-card-text>
+        <v-form ref="form" class="pa-6">
+          <h3>1. Thông tin cơ bản</h3>
+          <student-general-form ref="studentGeneralForm"></student-general-form>
+          <h3>2. Thông tin liên lạc</h3>
+          <student-contact-form ref="studentContactForm"></student-contact-form>
+          <h3>3. Ghi chú về học sinh</h3>
+          <student-note-form ref="studentNoteForm"></student-note-form>
+          <h3>4. Thông tin gia đình</h3>
+          <student-family-form ref="studentFamilyForm"></student-family-form>
+          <h3>5. Thông tin đăng nhập</h3>
+          <login-info-form ref="loginInfoForm"></login-info-form>
+        </v-form>
+      </v-card-text>
       <v-card-actions class="px-4">
         <v-spacer></v-spacer>
         <v-btn dark color="#0D47A1" @click="save()" :disabled="isLoading" dense

@@ -2,9 +2,9 @@
   <v-form>
     <v-row :class="{ 'mt-7': $vuetify.breakpoint.smAndDown }" no-gutters>
       <v-col cols="12" md="10">
-        <v-row>
+        <v-row no-gutters>
           <v-col
-            :class="{ 'py-0': $vuetify.breakpoint.mdAndUp }"
+            :class="{ 'pa-2': $vuetify.breakpoint.mdAndUp }"
             cols="12"
             md="4"
           >
@@ -23,7 +23,7 @@
             />
           </v-col>
           <v-col
-            :class="{ 'py-0': $vuetify.breakpoint.mdAndUp }"
+            :class="{ 'pa-2': $vuetify.breakpoint.mdAndUp }"
             cols="12"
             md="4"
           >
@@ -42,7 +42,7 @@
             />
           </v-col>
           <v-col
-            :class="{ 'py-0': $vuetify.breakpoint.mdAndUp }"
+            :class="{ 'pa-2': $vuetify.breakpoint.mdAndUp }"
             cols="12"
             md="4"
           >
@@ -63,7 +63,7 @@
         </v-row>
       </v-col>
 
-      <v-col cols="12" md="2">
+      <v-col class="pa-2" cols="12" md="2">
         <v-btn large dark @click="onFilterChanged" color="primary" outlined>
           <v-icon left dark>mdi-filter-outline</v-icon>Lọc
         </v-btn>

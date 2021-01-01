@@ -7,7 +7,7 @@
     fullscreen
   >
     <template v-slot:activator="{ on }">
-      <v-icon depressed v-on="on">filter_alt</v-icon>
+      <v-icon depressed v-on="on">mdi-filter-outline</v-icon>
     </template>
     <v-card>
       <v-toolbar dense class="elevation-0 #0D47A1 white--text py-auto">
