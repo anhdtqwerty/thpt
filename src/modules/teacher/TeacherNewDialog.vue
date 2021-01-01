@@ -125,11 +125,10 @@ export default {
         const teacherContactForm = this.$refs.teacherContactForm.getData()
         const teacherSpecializeForm = this.$refs.teacherSpecializeForm.getData()
         const loginInfoForm = this.$refs.loginInfoForm.getData()
-        console.log(loginInfoForm)
         await this.createTeacher({
           username: teacherGeneralForm.username,
-          username_indexing: loginInfoForm.username_indexing,
-          username_no: loginInfoForm.username_no,
+          username_indexing: teacherGeneralForm.username_indexing,
+          username_no: teacherGeneralForm.username_no,
           password: loginInfoForm.password,
           email: loginInfoForm.email,
           name: teacherGeneralForm.name,
