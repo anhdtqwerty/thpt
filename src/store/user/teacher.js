@@ -44,12 +44,13 @@ export default {
     async fetchTeacher({ commit }, teacherId) {
       commit('setTeacher', await Teacher.fetchOne(teacherId))
     },
-    async createTeacher({ commit }, { data }) {
+    async createTeacher({ commit }, data) {
       try {
         const user = await User.create({
-          username: 'testtttt',
+          username: data.username,
           password: data.password,
-          email: data.email
+          email: data.email,
+          ...data
         })
         if (user) {
           data.user = user.id
@@ -105,8 +106,8 @@ export default {
     },
     setTeacher(state, teacher) {
       state.teachers = {
-        ...state.teachers,
-        [teacher.id]: teacher
+        [teacher.id]: teacher,
+        ...state.teachers
       }
     },
     removeTeacher(state, teacherId) {

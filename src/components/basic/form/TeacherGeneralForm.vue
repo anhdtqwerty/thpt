@@ -24,8 +24,6 @@
         <date-picker
           :date.sync="dob"
           label="Ngày Sinh"
-          class="required"
-          :rules="[rules.required]"
           outlined
           dense
         ></date-picker>
@@ -34,8 +32,6 @@
           v-model="gender"
           :items="['male', 'female']"
           label="Giới tính"
-          class="required"
-          :rules="[rules.required]"
           outlined
           dense
         ></v-select>
@@ -43,8 +39,6 @@
           ref="frequentlyAddress"
           v-model="frequentlyAddress"
           label="Địa chỉ thường trú"
-          :rules="[rules.required]"
-          class="required"
           outlined
           dense
         ></v-text-field>
@@ -52,8 +46,6 @@
           ref="ethinic"
           v-model="ethnic"
           label="Dân tộc"
-          :rules="[rules.required]"
-          class="required"
           outlined
           dense
         ></v-text-field>
@@ -71,8 +63,8 @@ export default {
   props: {
     teacher: {
       type: [Object],
-      default: () => {},
-    },
+      default: () => {}
+    }
   },
   data: () => ({
     username: '',
@@ -85,10 +77,10 @@ export default {
     ethnic: '',
     frequentlyAddress: '',
     rules: {
-      required: (value) => !!value || 'Required.',
-      min: (v) => v.length >= 6 || 'Min 8 characters',
-      email: (v) => /.+@.+/.test(v) || 'E-mail must be valid',
-    },
+      required: value => !!value || 'Required.',
+      min: v => v.length >= 6 || 'Min 8 characters',
+      email: v => /.+@.+/.test(v) || 'E-mail must be valid'
+    }
   }),
   created() {
     if (this.teacher) {
@@ -102,7 +94,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('user', ['generateStudentCode', 'validateEmail']),
+    ...mapActions('user', ['generateUserName', 'validateEmail']),
     async nameLostFocus() {
       const {
         username,
@@ -110,7 +102,7 @@ export default {
         username_indexing,
         // eslint-disable-next-line
         username_no
-      } = await this.generateStudentCode(this.name)
+      } = await this.generateUserName(this.name)
       this.username = username
       // eslint-disable-next-line
       this.username_indexing = username_indexing
@@ -126,7 +118,7 @@ export default {
         frequentlyAddress: this.frequentlyAddress,
         username: this.username,
         username_indexing: this.username_indexing,
-        username_no: this.username_no,
+        username_no: this.username_no
       }
     },
     validate() {
@@ -137,12 +129,12 @@ export default {
     },
     resetValidation() {
       this.$refs.form.resetValidation()
-    },
+    }
   },
   watch: {
     teacher(teacher) {
       this.reset()
-    },
-  },
+    }
+  }
 }
 </script>
