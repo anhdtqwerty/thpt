@@ -74,9 +74,10 @@ export default {
       this.$refs.form.validate()
     },
     reset() {
-      this.phone = this.phone
-      this.email = this.email
-      this.password = this.password
+      this.$refs.form.reset()
+      this.phone = `${Date.now()}`
+      this.email = `random${Date.now()}@gmail.com`
+      this.password = '123123'
     },
     resetValidation() {
       this.$refs.form.resetValidation()
