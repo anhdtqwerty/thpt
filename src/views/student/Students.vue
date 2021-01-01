@@ -66,9 +66,9 @@
           <card-student-name :student="item" link />
         </template>
         <template v-slot:[`item.status`]="{ item }">
-          <span v-if="item.status" :class="getColor(item.status)"
-            >{{ item.status | getStatus }}
-          </span>
+          <p v-if="item.status" :class="getColor(item.status)">
+            {{ item.status | getStatus }}
+          </p>
         </template>
         <template v-slot:[`item.classes`]="{ item }">
           <span v-if="item.classes">{{ item.classes | getClasses }}</span>
