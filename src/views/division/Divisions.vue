@@ -8,7 +8,7 @@
         />
       </div>
       <div class="flex-center">
-        <v-btn @click="createState = !createState" dark color="#0D47A1">
+        <v-btn @click="createDivision = !createDivision" dark color="#0D47A1">
           <v-icon left>add</v-icon>{{ addButtonText }}
         </v-btn>
       </div>
