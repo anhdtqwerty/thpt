@@ -10,8 +10,6 @@
     ></v-text-field>
     <autocomplete-grade
       v-model="grade"
-      item-text="title"
-      item-value="id"
       clear-icon="mdi-close"
       clearable
       label="Khối"
@@ -24,12 +22,10 @@
     <autocomplete-subject
       v-model="subjects"
       outlined
-      item-value="id"
       clear-icon="mdi-close"
       clearable
       label="Môn học"
       multiple
-      outlined
       dense
       small-chips
       :hide-details="$vuetify.breakpoint.smAndDown"
@@ -56,7 +52,6 @@ export default {
     AutocompleteSubject,
   },
   data: () => ({
-    valid: true,
     subjects: '',
     description: '',
     title: '',
@@ -64,10 +59,6 @@ export default {
   }),
   computed: {
     ...mapGetters('app', ['department']),
-  },
-  props: {
-    division: { type: Object, default: () => {} },
-    editCode: { type: Boolean, default: false },
   },
   methods: {
     reset() {
