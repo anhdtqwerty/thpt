@@ -128,6 +128,8 @@ export default {
         console.log(loginInfoForm)
         await this.createTeacher({
           username: teacherGeneralForm.username,
+          username_indexing: loginInfoForm.username_indexing,
+          username_no: loginInfoForm.username_no,
           password: loginInfoForm.password,
           email: loginInfoForm.email,
           name: teacherGeneralForm.name,
