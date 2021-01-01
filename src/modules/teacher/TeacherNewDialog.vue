@@ -184,6 +184,7 @@ export default {
       this.$refs.teacherSchoolForm.reset()
       this.$refs.teacherContactForm.reset()
       this.$refs.teacherSpecializeForm.reset()
+      this.$refs.loginInfoForm.reset()
     },
     onResize() {
       if (window.innerWidth < 600) {
