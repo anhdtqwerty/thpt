@@ -6,20 +6,10 @@
           ref="name"
           v-model="name"
           label="Tên giáo viên"
-          @blur="nameLostFocus()"
           class="required"
           :rules="[rules.required]"
           outlined
           dense
-        ></v-text-field>
-        <v-text-field
-          v-model="username"
-          outlined
-          dense
-          label="Mã giáo viên"
-          disabled
-          class="required"
-          :rules="[rules.required]"
         ></v-text-field>
         <date-picker
           :date.sync="dob"
@@ -75,9 +65,6 @@ export default {
     },
   },
   data: () => ({
-    username: '',
-    username_indexing: '',
-    username_no: '',
     valid: true,
     name: '',
     gender: '',
@@ -97,20 +84,6 @@ export default {
   },
   methods: {
     ...mapActions('user', ['generateStudentCode', 'validateEmail']),
-    async nameLostFocus() {
-      const {
-        username,
-        // eslint-disable-next-line
-        username_indexing,
-        // eslint-disable-next-line
-        username_no
-      } = await this.generateStudentCode(this.name)
-      this.username = username
-      // eslint-disable-next-line
-      this.username_indexing = username_indexing
-      // eslint-disable-next-line
-      this.username_no = username_no
-    },
     getData() {
       return {
         name: this.name,
@@ -118,13 +91,10 @@ export default {
         dob: this.dob,
         ethnic: this.ethnic,
         frequentlyAddress: this.frequentlyAddress,
-        username: this.username,
-        username_indexing: this.username_indexing,
-        username_no: this.username_no,
       }
     },
     validate() {
-      return this.$refs.form.validate()
+      this.$refs.form.validate()
     },
     reset() {
       this.name = this.teacher.name

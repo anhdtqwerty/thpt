@@ -17,17 +17,15 @@
         outlined
         height="41"
         color="#0D47A1"
-        depressed
         @click="onFilterChanged"
       >
-        <v-icon class="" left>mdi-filter-outline</v-icon>Lọc
+        <v-icon left>mdi-filter-outline</v-icon>Lọc
       </v-btn>
     </v-row>
   </div>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
 import AutocompleteTeacher from '@/components/basic/input/AutocompleteTeacher'
 
 export default {

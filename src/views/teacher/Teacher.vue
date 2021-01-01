@@ -1,7 +1,6 @@
 <template>
   <div>
     <div class="pa-2 d-none d-md-block">
-      <h2>Giáo viên</h2>
       <Breadcrumbs
           headline="Giáo viên"
           :link="[
@@ -18,7 +17,6 @@
 import { mapActions, mapGetters } from 'vuex'
 import TeacherProfile from '@/modules/teacher/profile/TeacherProfile'
 import Breadcrumbs from '@/components/layout/Breadcrumbs.vue'
-import moment from 'moment'
 export default {
   components: {
     TeacherProfile,

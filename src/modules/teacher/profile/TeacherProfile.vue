@@ -1,6 +1,6 @@
 <template>
-  <v-row class="px-md-3" v-if="teacher">
-    <div v-if="$vuetify.breakpoint.smAndDown">
+  <v-row :no-gutters="$vuetify.breakpoint.smAndDown" class="px-md-3" v-if="teacher">
+    <div class="d-flex justify-end" v-if="$vuetify.breakpoint.smAndDown">
       <v-btn class="ma-2" depressed color="primary" @click="save()">Lưu</v-btn>
     </div>
     <v-col class="text-center" cols="12" md="4">
@@ -28,17 +28,17 @@
         <v-row no-gutters>
           <v-col cols="12" class="pa-4" md="9">
             <h3>1. Thông tin cơ bản</h3>
-            <teacher-general-form
-              ref="teacherGeneralForm"
+            <teacher-general-form-edit
+              ref="teacherGeneralFormEdit"
               :teacher="teacher"
-            ></teacher-general-form>
+            ></teacher-general-form-edit>
           </v-col>
           <v-col
             class="text-right"
             v-if="!$vuetify.breakpoint.smAndDown"
             md="3"
           >
-            <v-btn depressed color="primary">Lưu</v-btn>
+            <v-btn depressed color="primary" @click="save()">Lưu</v-btn>
           </v-col>
           <v-col cols="12" class="pa-4" md="9">
             <h3>2. Thông tin tại trường</h3>
@@ -69,7 +69,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import TeacherGeneralForm from '@/components/basic/form/TeacherGeneralForm'
+import TeacherGeneralFormEdit from '@/components/basic/form/TeacherGeneralFormEdit'
 import TeacherSchoolForm from '@/components/basic/form/TeacherSchoolForm'
 import TeacherContactForm from '@/components/basic/form/TeacherContactForm'
 import TeacherSpecializeForm from '@/components/basic/form/TeacherSpecializeForm'
@@ -78,7 +78,7 @@ import UserAvatarPicker from '@/components/basic/picker/UserAvatarPicker'
 export default {
   components: {
     TeacherSpecializeForm,
-    TeacherGeneralForm,
+    TeacherGeneralFormEdit,
     TeacherContactForm,
     TeacherSchoolForm,
     UserAvatarPicker,
@@ -102,24 +102,32 @@ export default {
     resetValidation() {
       this.$refs.form.resetValidation()
     },
-    save() {
-      const teacherInfo = this.$refs.teacherInfoForm.getData()
-      const teacherAddress = this.$refs.teacherAddressForm.getData()
-      const teacherUniversity = this.$refs.teacherUniversityForm.getData()
-      const teacherCompany = this.$refs.teacherCompanyForm.getData()
-
-      this.updateTeacher({
-        id: this.teacher.id,
-        ...teacherInfo,
-        address: teacherAddress.frequentlyAddress,
-        data: {
-          ...this.teacher.data,
-          facebook: teacherInfo.facebook,
-          ...teacherAddress,
-          ...teacherUniversity,
-          ...teacherCompany,
-        },
-      })
+    async save() {
+      try {
+        const teacherGeneralFormEdit = this.$refs.teacherGeneralFormEdit.getData()
+        const teacherSchoolForm = this.$refs.teacherSchoolForm.getData()
+        const teacherContactForm = this.$refs.teacherContactForm.getData()
+        const teacherSpecializeForm = this.$refs.teacherSpecializeForm.getData()
+        await this.updateTeacher({
+          id: this.teacher.id,
+          name: teacherGeneralFormEdit.name,
+          address: teacherContactForm.currentLive,
+          gender: teacherGeneralFormEdit.gender,
+          status: teacherSchoolForm.status,
+          type: teacherSchoolForm.type,
+          subject: teacherSpecializeForm.subject,
+          metadata: {
+            ...teacherGeneralFormEdit,
+            ...teacherContactForm,
+            ...teacherSchoolForm,
+            ...teacherSpecializeForm,
+          },
+        })
+        this.dialog = false
+        this.reset()
+      } catch (e) {
+        console.log(e)
+      }
     },
     cancel() {
       this.state = false

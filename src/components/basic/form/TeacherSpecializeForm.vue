@@ -5,32 +5,36 @@
         <v-text-field
           ref="level"
           v-model="level"
-          placeholder="Trình độ"
-          required
+          label="Trình độ"
+          :rules="[rules.required]"
+          class="required"
           outlined
           dense
         ></v-text-field>
         <v-text-field
           ref="subject"
           v-model="subject"
-          placeholder="Lĩnh vực"
-          required
+          label="Lĩnh vực"
+          :rules="[rules.required]"
+          class="required"
           outlined
           dense
         ></v-text-field>
         <v-text-field
           ref="trainingPlace"
           v-model="trainingPlace"
-          placeholder="Nơi đào tạo"
-          required
+          label="Nơi đào tạo"
+          :rules="[rules.required]"
+          class="required"
           outlined
           dense
         ></v-text-field>
         <v-text-field
           ref="majorDate"
           v-model="majorDate"
-          placeholder="Năm vào ngành"
-          required
+          label="Năm vào ngành"
+          :rules="[rules.required]"
+          class="required"
           outlined
           dense
         ></v-text-field>
@@ -54,6 +58,11 @@ export default {
     subject: '',
     trainingPlace: '',
     majorDate: '',
+    rules: {
+      required: value => !!value || 'Required.',
+      min: v => v.length >= 6 || 'Min 8 characters',
+      email: v => /.+@.+/.test(v) || 'E-mail must be valid'
+    }
   }),
   created() {
     if (this.teacher) {
@@ -70,12 +79,12 @@ export default {
       }
     },
     validate() {
-      this.$refs.form.validate()
+      return this.$refs.form.validate()
     },
     reset() {
       this.level = this.teacher.metadata.level
       this.subject = this.teacher.subject
-      this.trainingPlace = this.teacher.meatdata.trainingPlace
+      this.trainingPlace = this.teacher.metadata.trainingPlace
       this.majorDate = this.teacher.metadata.majorDate
     },
     resetValidation() {

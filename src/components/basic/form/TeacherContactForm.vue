@@ -5,39 +5,34 @@
         <v-text-field
           ref="currentLive"
           v-model="currentLive"
-          placeholder="Nhập địa chỉ hiện tại"
-          required
+          label="Địa chỉ hiện tại"
+          :rules="[rules.required]"
+          class="required"
           outlined
           dense
         ></v-text-field>
         <v-text-field
           ref="province"
           v-model="province"
-          placeholder="Nhập tỉnh/thành phố đang sống"
-          required
-          outlined
-          dense
-        ></v-text-field>
-        <v-text-field
-          ref="email"
-          v-model="email"
-          placeholder="Nhập địa chỉ email"
+          label="Tỉnh/thành phố đang sống"
+          :rules="[rules.required]"
+          class="required"
           outlined
           dense
         ></v-text-field>
         <v-text-field
           ref="mobilePhone"
           v-model="mobilePhone"
-          placeholder="Điện thoại di động"
-          required
+          label="Điện thoại di động"
+          :rules="[rules.required]"
+          class="required"
           outlined
           dense
         ></v-text-field>
         <v-text-field
           ref="landlinePhone"
           v-model="landlinePhone"
-          placeholder="Điện thoại nhà riêng"
-          required
+          label="Điện thoại nhà riêng"
           outlined
           dense
         ></v-text-field>
@@ -59,9 +54,13 @@ export default {
     valid: true,
     currentLive: '',
     province: '',
-    email: '',
     mobilePhone: '',
     landlinePhone: '',
+    rules: {
+      required: value => !!value || 'Required.',
+      min: v => v.length >= 6 || 'Min 8 characters',
+      email: v => /.+@.+/.test(v) || 'E-mail must be valid'
+    }
   }),
   created() {
     if (this.teacher) {
@@ -70,21 +69,19 @@ export default {
   },
   methods: {
     validate() {
-      this.$refs.form.validate()
+      return this.$refs.form.validate()
     },
     getData() {
       return {
         currentLive: this.currentLive,
         province: this.province,
-        email: this.email,
         mobilePhone: this.mobilePhone,
         landlinePhone: this.landlinePhone,
       }
     },
     reset() {
-      this.currentLive = this.teacer.metadata.currentLive
+      this.currentLive = this.teacher.metadata.currentLive
       this.province = this.teacher.metadata.province
-      this.email = this.teacher.email
       this.mobilePhone = this.teacher.metadata.mobilePhone
       this.landlinePhone = this.teacher.metadata.landlinePhone
     },

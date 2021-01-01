@@ -1,37 +1,31 @@
 <template>
-  <v-dialog :fullscreen="isMobile" width="604" v-model="dialog">
+  <v-dialog :fullscreen="isMobile" width="661" v-model="dialog" scrollable>
     <v-card>
-      <v-toolbar color="#0D47A1" dark dense class="elevation-0 px-2">
-        <v-toolbar-title>THÊM MỚI GIÁO VIÊN</v-toolbar-title>
+      <v-card-title class="primary white--text">
+        Thêm Mới Giáo viên
         <v-spacer></v-spacer>
-        <v-btn icon>
-          <v-icon @click="cancel" class="white--text">close</v-icon>
+        <v-btn dark icon>
+          <v-icon @click="cancel">close</v-icon>
         </v-btn>
-      </v-toolbar>
+      </v-card-title>
+      <v-divider />
 
-      <div class="pa-6">
-        <h3>1. Thông tin cơ bản</h3>
-        <teacher-general-form ref="teacherGeneralForm"></teacher-general-form>
-        <v-text-field
-          v-model="password"
-          label="Mật Khẩu"
-          outlined
-          dense
-          :append-icon="show ? 'visibility' : 'visibility_off'"
-          :rules="[rules.required, rules.min]"
-          :type="show ? 'text' : 'password'"
-          @click:append="show = !show"
-          hint="At least 6 characters"
-        ></v-text-field>
-        <h3>2. Thông tin tại trường</h3>
-        <teacher-school-form ref="teacherSchoolForm"></teacher-school-form>
-        <h3>3. Thông tin liên lạc</h3>
-        <teacher-contact-form ref="teacherContactForm"></teacher-contact-form>
-        <h3>4. Thông tin chuyên môn</h3>
-        <teacher-specialize-form
-          ref="teacherSpecializeForm"
-        ></teacher-specialize-form>
-      </div>
+      <v-card-text>
+        <v-form ref="form" class="pa-2">
+          <h3 class="mb-2">1. Thông tin cơ bản</h3>
+          <teacher-general-form ref="teacherGeneralForm"></teacher-general-form>
+          <h3 class="mb-2">2. Thông tin tại trường</h3>
+          <teacher-school-form ref="teacherSchoolForm"></teacher-school-form>
+          <h3 class="mb-2">3. Thông tin liên lạc</h3>
+          <teacher-contact-form ref="teacherContactForm"></teacher-contact-form>
+          <h3 class="mb-2">4. Thông tin chuyên môn</h3>
+          <teacher-specialize-form
+            ref="teacherSpecializeForm"
+          ></teacher-specialize-form>
+          <h3 class="mb-2">5. Thông tin đăng nhập</h3>
+          <login-info-form ref="loginInfoForm"></login-info-form>
+        </v-form>
+      </v-card-text>
 
       <v-card-actions>
         <v-spacer></v-spacer>
@@ -57,6 +51,7 @@ import TeacherGeneralForm from '@/components/basic/form/TeacherGeneralForm'
 import TeacherContactForm from '@/components/basic/form/TeacherContactForm'
 import TeacherSchoolForm from '@/components/basic/form/TeacherSchoolForm'
 import TeacherSpecializeForm from '@/components/basic/form/TeacherSpecializeForm'
+import LoginInfoForm from '@/components/basic/form/LoginInfoForm'
 
 export default {
   components: {
@@ -64,6 +59,7 @@ export default {
     TeacherContactForm,
     TeacherSchoolForm,
     TeacherSpecializeForm,
+    LoginInfoForm,
   },
   data() {
     return {
@@ -115,21 +111,30 @@ export default {
     ...mapActions('user', ['generateUserName', 'validateEmail']),
     ...mapActions('teacher', ['createTeacher']),
     async save() {
+      if (
+        !this.$refs.teacherGeneralForm.validate() ||
+        !this.$refs.teacherSchoolForm.validate() ||
+        !this.$refs.teacherContactForm.validate() ||
+        !this.$refs.teacherSpecializeForm.validate()
+      ) {
+        return
+      }
       try {
         const teacherGeneralForm = this.$refs.teacherGeneralForm.getData()
         const teacherSchoolForm = this.$refs.teacherSchoolForm.getData()
         const teacherContactForm = this.$refs.teacherContactForm.getData()
         const teacherSpecializeForm = this.$refs.teacherSpecializeForm.getData()
+        const loginInfoForm = this.$refs.loginInfoForm.getData()
         await this.createTeacher({
           data: {
-            username: await this.generateUserName(this.name),
-            password: this.password,
+            username: teacherGeneralForm.username,
+            password: loginInfoForm.password,
+            email: loginInfoForm.email,
             name: teacherGeneralForm.name,
             address: teacherContactForm.currentLive,
             gender: teacherGeneralForm.gender,
-            phone: teacherContactForm.mobilePhone,
+            phone: loginInfoForm.phone,
             status: teacherSchoolForm.status,
-            email: teacherContactForm.email,
             type: teacherSchoolForm.type,
             subject: teacherSpecializeForm.subject,
             metadata: {
@@ -200,7 +205,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .v-data-footer {
   flex-wrap: nowrap;
 }

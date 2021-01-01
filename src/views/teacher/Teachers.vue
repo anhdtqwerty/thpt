@@ -67,7 +67,7 @@
             item.subject[item.subject.length - 1]
           }}</span>
         </template>
-        <template v-slot:[`item.actions`]="{ item }">
+        <template v-slot:[`item.action`]="{ item }">
           <teacher-list-actions :item="item"></teacher-list-actions>
         </template>
       </v-data-table>
@@ -87,7 +87,6 @@ import TeacherFilterDialog from '@/modules/teacher/TeacherFilterDialog'
 import TeacherListActions from '@/modules/teacher/TeacherListActions'
 import NewTeacherDialog from '@/modules/teacher/TeacherNewDialog'
 import Breadcrumbs from '@/components/layout/Breadcrumbs.vue'
-import SettingTableHeader from '@/components/basic/table/SettingHeaders'
 import DropMenu from '@/modules/student/menu/Menu.vue'
 import Vuetify from 'vuetify'
 import Vue from 'vue'
@@ -141,6 +140,13 @@ const originHeaders = [
     sortable: false,
     show: true,
   },
+  {
+    text: 'Hành động',
+    value: 'action',
+    align: 'left',
+    sortable: false,
+    show: true,
+  }
 ]
 Vue.use(Vuetify)
 

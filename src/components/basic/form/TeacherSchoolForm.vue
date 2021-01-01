@@ -5,16 +5,18 @@
         <v-text-field
           ref="type"
           v-model="type"
-          placeholder="Loại cán bộ"
-          required
+          label="Loại cán bộ"
+          :rules="[rules.required]"
+          class="required"
           outlined
           dense
         ></v-text-field>
         <v-text-field
           ref="schoolDate"
           v-model="schoolDate"
-          placeholder="Năm vào trường"
-          required
+          label="Năm vào trường"
+          :rules="[rules.required]"
+          class="required"
           outlined
           dense
         ></v-text-field>
@@ -24,8 +26,9 @@
           item-value="value"
           ref="status"
           v-model="status"
-          placeholder="Trạng thái hiện tại"
-          required
+          label="Trạng thái hiện tại"
+          :rules="[rules.required]"
+          class="required"
           outlined
           dense
         ></v-autocomplete>
@@ -52,6 +55,11 @@ export default {
       { title: 'Đang dạy', value: 'active' },
       { title: 'Không dạy', value: 'block' },
     ],
+    rules: {
+      required: value => !!value || 'Required.',
+      min: v => v.length >= 6 || 'Min 8 characters',
+      email: v => /.+@.+/.test(v) || 'E-mail must be valid'
+    }
   }),
   created() {
     if (this.teacher) {
@@ -67,7 +75,7 @@ export default {
       }
     },
     validate() {
-      this.$refs.form.validate()
+      return this.$refs.form.validate()
     },
     reset() {
       this.type = this.teacher.type
