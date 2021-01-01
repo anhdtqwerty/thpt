@@ -66,6 +66,11 @@ export default {
   }),
   created() {
     if (this.teacher) {
+      this.level = this.teacher.metadata.level
+      this.subject = this.teacher.subject
+      this.trainingPlace = this.teacher.metadata.trainingPlace
+      this.majorDate = this.teacher.metadata.majorDate
+    } else {
       this.reset()
     }
   },
@@ -82,10 +87,7 @@ export default {
       return this.$refs.form.validate()
     },
     reset() {
-      this.level = this.teacher.metadata.level
-      this.subject = this.teacher.subject
-      this.trainingPlace = this.teacher.metadata.trainingPlace
-      this.majorDate = this.teacher.metadata.majorDate
+      this.$refs.form.reset()
     },
     resetValidation() {
       this.$refs.form.resetValidation()

@@ -92,6 +92,12 @@ export default {
   }),
   created() {
     if (this.teacher) {
+      this.name = this.teacher.name
+      this.gender = this.teacher.gender
+      this.dob = this.teacher.metadata.dob
+      this.ethnic = this.teacher.metadata.ethnic
+      this.frequentlyAddress = this.teacher.metadata.frequentlyAddress
+    } else {
       this.reset()
     }
   },
@@ -127,11 +133,7 @@ export default {
       return this.$refs.form.validate()
     },
     reset() {
-      this.name = this.teacher.name
-      this.gender = this.teacher.gender
-      this.dob = this.teacher.metadata.dob
-      this.ethnic = this.teacher.metadata.ethnic
-      this.frequentlyAddress = this.teacher.metadata.frequentlyAddress
+      this.$refs.form.reset()
     },
     resetValidation() {
       this.$refs.form.resetValidation()

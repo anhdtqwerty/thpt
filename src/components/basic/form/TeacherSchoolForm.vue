@@ -2,7 +2,10 @@
   <v-form v-model="valid" ref="form" v-bind="this.$attrs">
     <v-row>
       <v-col cols="12">
-        <v-text-field
+        <v-autocomplete
+          :items="typeList"
+          item-text="title"
+          item-value="value"
           ref="type"
           v-model="type"
           label="Loại cán bộ"
@@ -10,7 +13,7 @@
           class="required"
           outlined
           dense
-        ></v-text-field>
+        ></v-autocomplete>
         <v-text-field
           ref="schoolDate"
           v-model="schoolDate"
@@ -55,14 +58,22 @@ export default {
       { title: 'Đang dạy', value: 'active' },
       { title: 'Không dạy', value: 'block' },
     ],
+    typeList: [
+      { title: 'Ngắn hạn', value: 'short-tern' },
+      { title: 'Dài hạn', value: 'long-tern' },
+    ],
     rules: {
-      required: value => !!value || 'Required.',
-      min: v => v.length >= 6 || 'Min 8 characters',
-      email: v => /.+@.+/.test(v) || 'E-mail must be valid'
-    }
+      required: (value) => !!value || 'Required.',
+      min: (v) => v.length >= 6 || 'Min 8 characters',
+      email: (v) => /.+@.+/.test(v) || 'E-mail must be valid',
+    },
   }),
   created() {
     if (this.teacher) {
+      this.type = this.teacher.type
+      this.schoolDate = this.teacher.metadata.schoolDate
+      this.status = this.teacher.status
+    } else {
       this.reset()
     }
   },
@@ -78,9 +89,7 @@ export default {
       return this.$refs.form.validate()
     },
     reset() {
-      this.type = this.teacher.type
-      this.schoolDate = this.teacher.metadata.schoolDate
-      this.status = this.teacher.status
+      this.$refs.form.reset()
     },
     resetValidation() {
       this.$refs.form.resetValidation()

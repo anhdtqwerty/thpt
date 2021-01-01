@@ -59,9 +59,7 @@ export default {
     },
   }),
   created() {
-    if (this.student) {
-      this.reset()
-    }
+    this.reset()
   },
   methods: {
     ...mapActions('user', ['generateUserName', 'validateEmail']),
@@ -76,9 +74,7 @@ export default {
       return this.$refs.form.validate()
     },
     reset() {
-      this.phone = this.phone
-      this.email = this.email
-      this.password = this.password
+      this.$refs.form.reset()
     },
     resetValidation() {
       this.$refs.form.resetValidation()
