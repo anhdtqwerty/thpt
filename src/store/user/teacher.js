@@ -46,7 +46,11 @@ export default {
     },
     async createTeacher({ commit }, { data }) {
       try {
-        const user = await User.create({ ...data })
+        const user = await User.create({
+          username: 'testtttt',
+          password: data.password,
+          email: data.email
+        })
         if (user) {
           data.user = user.id
           data.code = user.username

@@ -62,18 +62,28 @@
             }}
           </span>
         </template>
-        <template v-slot:[`item.actions`]="{ item }">
+        <template v-slot:[`item.subject`]="{ item }">
+          <span v-if="item.subject">{{
+            item.subject[item.subject.length - 1]
+          }}</span>
+        </template>
+        <template v-slot:[`item.action`]="{ item }">
           <teacher-list-actions :item="item"></teacher-list-actions>
         </template>
       </v-data-table>
     </v-card>
     <new-teacher-dialog :state="createState" />
+    <teacher-filter-dialog
+      @onFilterChanged="refresh"
+      :state="filterState"
+    ></teacher-filter-dialog>
   </div>
 </template>
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex'
 import UserItem from '@/components/basic/card/CardTeacherName.vue'
 import TeacherFilter from '@/modules/teacher/TeacherFilter.vue'
+import TeacherFilterDialog from '@/modules/teacher/TeacherFilterDialog'
 import TeacherListActions from '@/modules/teacher/TeacherListActions'
 import NewTeacherDialog from '@/modules/teacher/TeacherNewDialog'
 import Breadcrumbs from '@/components/layout/Breadcrumbs.vue'
@@ -90,7 +100,7 @@ const originHeaders = [
   },
   {
     text: 'Ngày sinh',
-    value: 'data.dob',
+    value: 'metadata.dob',
     align: 'left',
     sortable: false,
     show: true,
@@ -110,13 +120,33 @@ const originHeaders = [
     show: true,
   },
   {
+    text: 'Lĩnh vực',
+    value: 'subject',
+    align: 'left',
+    sortable: false,
+    show: true,
+  },
+  {
     text: 'Trạng thái',
     value: 'status',
     align: 'left',
     sortable: false,
     show: true,
   },
-  { text: 'Hành động', value: 'actions', show: true },
+  {
+    text: 'Ghi chú',
+    value: 'metadata.notes',
+    align: 'left',
+    sortable: false,
+    show: true,
+  },
+  {
+    text: 'Hành động',
+    value: 'action',
+    align: 'left',
+    sortable: false,
+    show: true,
+  }
 ]
 Vue.use(Vuetify)
 
@@ -126,6 +156,7 @@ export default {
     UserItem,
     TeacherFilter,
     TeacherListActions,
+    TeacherFilterDialog,
     NewTeacherDialog,
     DropMenu
   },
@@ -137,6 +168,7 @@ export default {
       isLoading: false,
       originHeaders: originHeaders,
       createState: false,
+      filterState: false,
     }
   },
   created() {
