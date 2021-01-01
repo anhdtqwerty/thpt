@@ -125,6 +125,7 @@ export default {
         const teacherContactForm = this.$refs.teacherContactForm.getData()
         const teacherSpecializeForm = this.$refs.teacherSpecializeForm.getData()
         const loginInfoForm = this.$refs.loginInfoForm.getData()
+        console.log(loginInfoForm)
         await this.createTeacher({
           username: teacherGeneralForm.username,
           password: loginInfoForm.password,
@@ -133,14 +134,14 @@ export default {
           address: teacherContactForm.currentLive,
           gender: teacherGeneralForm.gender,
           phone: loginInfoForm.phone,
-          status: teacherSchoolForm.status,
+          status: 'active',
           type: teacherSchoolForm.type,
           subject: teacherSpecializeForm.subject,
           metadata: {
-            ...teacherGeneralForm,
             ...teacherContactForm,
             ...teacherSchoolForm,
-            ...teacherSpecializeForm
+            ...teacherSpecializeForm,
+            ...teacherGeneralForm,
           },
           department: this.department.id
         })
