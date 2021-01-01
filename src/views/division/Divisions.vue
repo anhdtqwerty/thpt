@@ -8,12 +8,12 @@
         />
       </div>
       <div class="flex-center">
-        <v-btn @click="createState = !createState" dark color="#0D47A1">
+        <v-btn @click="createStateDialog = !createStateDialog" dark color="#0D47A1">
           <v-icon left>add</v-icon>{{ addButtonText }}
         </v-btn>
       </div>
     </div>
-    <new-division-dialog :state="createDivision" />
+    <new-division-dialog :state="createStateDialog" />
     <v-card class="pa-2 pa-md-4 ma-md-2 elevation-1">
       <p class="text-uppercase text-h6" style="color: #0d47a1">
         Danh sách các ban chuyên
@@ -57,7 +57,7 @@ export default {
         },
         { text: 'Hành động', value: 'actions', align: 'left', sortable: false },
       ],
-      createDivision: false,
+      createStateDialog: false,
       selected: {},
     }
   },
