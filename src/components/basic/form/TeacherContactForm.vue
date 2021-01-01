@@ -6,8 +6,6 @@
           ref="currentLive"
           v-model="currentLive"
           label="Địa chỉ hiện tại"
-          :rules="[rules.required]"
-          class="required"
           outlined
           dense
         ></v-text-field>
@@ -15,17 +13,6 @@
           ref="province"
           v-model="province"
           label="Tỉnh/thành phố đang sống"
-          :rules="[rules.required]"
-          class="required"
-          outlined
-          dense
-        ></v-text-field>
-        <v-text-field
-          ref="mobilePhone"
-          v-model="mobilePhone"
-          label="Điện thoại di động"
-          :rules="[rules.required]"
-          class="required"
           outlined
           dense
         ></v-text-field>
@@ -47,8 +34,8 @@ export default {
   props: {
     teacher: {
       type: [Object],
-      default: () => {},
-    },
+      default: () => {}
+    }
   },
   data: () => ({
     valid: true,
@@ -76,7 +63,7 @@ export default {
         currentLive: this.currentLive,
         province: this.province,
         mobilePhone: this.mobilePhone,
-        landlinePhone: this.landlinePhone,
+        landlinePhone: this.landlinePhone
       }
     },
     reset() {
@@ -87,15 +74,14 @@ export default {
     },
     resetValidation() {
       this.$refs.form.resetValidation()
-    },
+    }
   },
   watch: {
     teacher(teacher) {
       this.reset()
-    },
-  },
+    }
+  }
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

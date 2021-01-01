@@ -105,6 +105,9 @@ export default {
     getCourseFilter() {
       return { grade: get(this.grade, 'id', null) }
     },
+    reset() {
+      this.$refs.form.reset()
+    },
     resetDefault() {
       if (this.classData) {
         this.teachers = this.classData.teachers

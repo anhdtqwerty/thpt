@@ -6,8 +6,6 @@
           ref="type"
           v-model="type"
           label="Loại cán bộ"
-          :rules="[rules.required]"
-          class="required"
           outlined
           dense
         ></v-text-field>
@@ -15,8 +13,6 @@
           ref="schoolDate"
           v-model="schoolDate"
           label="Năm vào trường"
-          :rules="[rules.required]"
-          class="required"
           outlined
           dense
         ></v-text-field>
@@ -27,8 +23,6 @@
           ref="status"
           v-model="status"
           label="Trạng thái hiện tại"
-          :rules="[rules.required]"
-          class="required"
           outlined
           dense
         ></v-autocomplete>
@@ -43,8 +37,8 @@ export default {
   props: {
     teacher: {
       type: [Object],
-      default: () => {},
-    },
+      default: () => {}
+    }
   },
   data: () => ({
     valid: true,
@@ -53,7 +47,7 @@ export default {
     status: '',
     teacherStatus: [
       { title: 'Đang dạy', value: 'active' },
-      { title: 'Không dạy', value: 'block' },
+      { title: 'Không dạy', value: 'block' }
     ],
     rules: {
       required: value => !!value || 'Required.',
@@ -71,7 +65,7 @@ export default {
       return {
         type: this.type,
         schoolDate: this.schoolDate,
-        status: this.status,
+        status: this.status
       }
     },
     validate() {
@@ -84,12 +78,12 @@ export default {
     },
     resetValidation() {
       this.$refs.form.resetValidation()
-    },
+    }
   },
   watch: {
     teacher(teacher) {
       this.reset()
-    },
-  },
+    }
+  }
 }
 </script>

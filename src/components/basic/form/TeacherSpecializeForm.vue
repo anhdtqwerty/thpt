@@ -6,8 +6,6 @@
           ref="level"
           v-model="level"
           label="Trình độ"
-          :rules="[rules.required]"
-          class="required"
           outlined
           dense
         ></v-text-field>
@@ -15,8 +13,6 @@
           ref="subject"
           v-model="subject"
           label="Lĩnh vực"
-          :rules="[rules.required]"
-          class="required"
           outlined
           dense
         ></v-text-field>
@@ -24,8 +20,6 @@
           ref="trainingPlace"
           v-model="trainingPlace"
           label="Nơi đào tạo"
-          :rules="[rules.required]"
-          class="required"
           outlined
           dense
         ></v-text-field>
@@ -33,8 +27,6 @@
           ref="majorDate"
           v-model="majorDate"
           label="Năm vào ngành"
-          :rules="[rules.required]"
-          class="required"
           outlined
           dense
         ></v-text-field>
@@ -49,8 +41,8 @@ export default {
   props: {
     teacher: {
       type: [Object],
-      default: () => {},
-    },
+      default: () => {}
+    }
   },
   data: () => ({
     valid: true,
@@ -75,7 +67,7 @@ export default {
         level: this.level,
         subject: this.subject,
         trainingPlace: this.trainingPlace,
-        majorDate: this.majorDate,
+        majorDate: this.majorDate
       }
     },
     validate() {
@@ -89,12 +81,12 @@ export default {
     },
     resetValidation() {
       this.$refs.form.resetValidation()
-    },
+    }
   },
   watch: {
     teacher(teacher) {
       this.reset()
-    },
-  },
+    }
+  }
 }
 </script>

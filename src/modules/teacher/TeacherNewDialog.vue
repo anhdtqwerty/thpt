@@ -59,7 +59,7 @@ export default {
     TeacherContactForm,
     TeacherSchoolForm,
     TeacherSpecializeForm,
-    LoginInfoForm,
+    LoginInfoForm
   },
   data() {
     return {
@@ -141,9 +141,9 @@ export default {
               ...teacherGeneralForm,
               ...teacherContactForm,
               ...teacherSchoolForm,
-              ...teacherSpecializeForm,
-            },
-          },
+              ...teacherSpecializeForm
+            }
+          }
         })
         this.dialog = false
         this.reset()
