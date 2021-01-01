@@ -136,15 +136,16 @@ export default {
           gender: teacherGeneralForm.gender,
           phone: loginInfoForm.phone,
           status: 'active',
-          type: teacherSchoolForm.type,
           subject: teacherSpecializeForm.subject,
           metadata: {
+            type: teacherSchoolForm.type,
             ...teacherContactForm,
             ...teacherSchoolForm,
             ...teacherSpecializeForm,
             ...teacherGeneralForm,
           },
-          department: this.department.id
+          department: this.department.id,
+          type: 'staff'
         })
         this.dialog = false
         this.reset()

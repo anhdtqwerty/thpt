@@ -62,12 +62,12 @@
             }}
           </span>
         </template>
-        <template v-slot:[`item.type`]="{ item }">
-          <span v-if="item.type">
+        <template v-slot:[`item.metadata.type`]="{ item }">
+          <span v-if="item.metadata.type">
             {{
-              item.type === 'long-tern'
+              item.metadata.type === 'long-tern'
                 ? 'Dài hạn'
-                : item.type === 'short-tern'
+                : item.metadata.type === 'short-tern'
                 ? 'Ngắn hạn'
                 : ''
             }}
@@ -125,7 +125,7 @@ const originHeaders = [
   },
   {
     text: 'Loại cán bộ',
-    value: 'type',
+    value: 'metadata.type',
     align: 'left',
     sortable: false,
     show: true,

@@ -65,7 +65,7 @@ export default {
   }),
   created() {
     if (this.teacher) {
-      this.type = this.teacher.type
+      this.type = this.teacher.metadata.type
       this.schoolDate = this.teacher.metadata.schoolDate
       this.status = this.teacher.status
     } else {
