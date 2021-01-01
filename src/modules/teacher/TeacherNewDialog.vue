@@ -180,13 +180,11 @@ export default {
       this.reset()
     },
     reset() {
-      this.name = ''
-      this.username = ''
-      this.majors = ''
-      this.phone = ''
-      this.password = ''
-      this.email = ''
-      this.emailError = ''
+      this.$refs.teacherGeneralForm.reset()
+      this.$refs.teacherSchoolForm.reset()
+      this.$refs.teacherContactForm.reset()
+      this.$refs.teacherSpecializeForm.reset()
+      this.$refs.loginInfoForm.reset()
     },
     onResize() {
       if (window.innerWidth < 600) {
