@@ -51,6 +51,11 @@ export default {
   }),
   created() {
     if (this.teacher) {
+      this.currentLive = this.teacher.metadata.currentLive
+      this.province = this.teacher.metadata.province
+      this.mobilePhone = this.teacher.metadata.mobilePhone
+      this.landlinePhone = this.teacher.metadata.landlinePhone
+    } else {
       this.reset()
     }
   },
@@ -67,10 +72,7 @@ export default {
       }
     },
     reset() {
-      this.currentLive = this.teacher.metadata.currentLive
-      this.province = this.teacher.metadata.province
-      this.mobilePhone = this.teacher.metadata.mobilePhone
-      this.landlinePhone = this.teacher.metadata.landlinePhone
+      this.$refs.form.reset()
     },
     resetValidation() {
       this.$refs.form.resetValidation()

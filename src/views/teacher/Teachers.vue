@@ -62,6 +62,17 @@
             }}
           </span>
         </template>
+        <template v-slot:[`item.type`]="{ item }">
+          <span v-if="item.type">
+            {{
+              item.type === 'long-tern'
+                ? 'Dài hạn'
+                : item.type === 'short-tern'
+                ? 'Ngắn hạn'
+                : ''
+            }}
+          </span>
+        </template>
         <template v-slot:[`item.subject`]="{ item }">
           <span v-if="item.subject">{{
             item.subject[item.subject.length - 1]

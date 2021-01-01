@@ -43,8 +43,8 @@ export default {
   props: {
     student: {
       type: [Object],
-      default: () => {}
-    }
+      default: () => {},
+    },
   },
   data: () => ({
     valid: true,
@@ -53,15 +53,13 @@ export default {
     email: `random${Date.now()}@gmail.com`,
     password: '123123',
     rules: {
-      required: value => !!value || 'Required.',
-      min: v => v.length >= 6 || 'Min 8 characters',
-      email: v => /.+@.+/.test(v) || 'E-mail must be valid'
-    }
+      required: (value) => !!value || 'Required.',
+      min: (v) => v.length >= 6 || 'Min 8 characters',
+      email: (v) => /.+@.+/.test(v) || 'E-mail must be valid',
+    },
   }),
   created() {
-    if (this.student) {
-      this.reset()
-    }
+    this.reset()
   },
   methods: {
     ...mapActions('user', ['generateUserName', 'validateEmail']),
@@ -69,11 +67,11 @@ export default {
       return {
         phone: this.phone,
         email: this.email,
-        password: this.password
+        password: this.password,
       }
     },
     validate() {
-      return this.$refs.form.validate()
+      this.$refs.form.validate()
     },
     reset() {
       this.phone = this.phone
@@ -82,12 +80,12 @@ export default {
     },
     resetValidation() {
       this.$refs.form.resetValidation()
-    }
+    },
   },
   watch: {
     student(student) {
       this.reset()
-    }
-  }
+    },
+  },
 }
 </script>
