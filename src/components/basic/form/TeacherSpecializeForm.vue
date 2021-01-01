@@ -3,32 +3,32 @@
     <v-row>
       <v-col cols="12">
         <v-text-field
-          v-model="phone"
-          label="Số điện thoại"
-          :rules="[rules.required]"
-          class="required"
+          ref="level"
+          v-model="level"
+          label="Trình độ"
           outlined
           dense
         ></v-text-field>
         <v-text-field
-          v-model="email"
-          label="Email Học Sinh"
+          ref="subject"
+          v-model="subject"
+          label="Lĩnh vực"
           outlined
           dense
-          class="required"
-          :rules="[rules.required, rules.email]"
         ></v-text-field>
         <v-text-field
-          v-model="password"
-          label="Mật Khẩu"
+          ref="trainingPlace"
+          v-model="trainingPlace"
+          label="Nơi đào tạo"
           outlined
           dense
-          :append-icon="show ? 'visibility' : 'visibility_off'"
-          :rules="[rules.required, rules.min]"
-          :type="show ? 'text' : 'password'"
-          @click:append="show = !show"
-          hint="At least 6 characters"
-          class="required"
+        ></v-text-field>
+        <v-text-field
+          ref="majorDate"
+          v-model="majorDate"
+          label="Năm vào ngành"
+          outlined
+          dense
         ></v-text-field>
       </v-col>
     </v-row>
@@ -36,22 +36,20 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 // import { get } from 'lodash'
-
 export default {
   props: {
-    student: {
+    teacher: {
       type: [Object],
       default: () => {}
     }
   },
   data: () => ({
     valid: true,
-    show: false,
-    phone: `${Date.now()}`,
-    email: `random${Date.now()}@gmail.com`,
-    password: '123123',
+    level: '',
+    subject: '',
+    trainingPlace: '',
+    majorDate: '',
     rules: {
       required: value => !!value || 'Required.',
       min: v => v.length >= 6 || 'Min 8 characters',
@@ -59,33 +57,34 @@ export default {
     }
   }),
   created() {
-    if (this.student) {
+    if (this.teacher) {
       this.reset()
     }
   },
   methods: {
-    ...mapActions('user', ['generateUserName', 'validateEmail']),
     getData() {
       return {
-        phone: this.phone,
-        email: this.email,
-        password: this.password
+        level: this.level,
+        subject: this.subject,
+        trainingPlace: this.trainingPlace,
+        majorDate: this.majorDate
       }
     },
     validate() {
       return this.$refs.form.validate()
     },
     reset() {
-      this.phone = this.phone
-      this.email = this.email
-      this.password = this.password
+      this.level = this.teacher.metadata.level
+      this.subject = this.teacher.subject
+      this.trainingPlace = this.teacher.metadata.trainingPlace
+      this.majorDate = this.teacher.metadata.majorDate
     },
     resetValidation() {
       this.$refs.form.resetValidation()
     }
   },
   watch: {
-    student(student) {
+    teacher(teacher) {
       this.reset()
     }
   }

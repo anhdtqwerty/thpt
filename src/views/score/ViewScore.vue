@@ -90,17 +90,11 @@
         </div>
         <template v-if="filterInputs.subjectObj">
           <div class="text-right">
-            <setting-table-header
+            <drop-menu
               :default-headers="originHeaders"
               @change="headers = $event"
-            />
-            <KebapMenu v-if="!$vuetify.breakpoint.xs">
-              <v-list>
-                <v-list-item>
-                  <export-excel :custom-header="[]" api="/classes/" />
-                </v-list-item>
-              </v-list>
-            </KebapMenu>
+              v-if="$vuetify.breakpoint.mdAndUp"
+            ></drop-menu>
           </div>
           <table class="mark-table">
           <thead>
@@ -137,9 +131,7 @@
 
 <script>
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
-import SettingTableHeader from '@/components/basic/table/SettingHeaders'
-import ExportExcel from '@/components/basic/ExportExcel'
-import KebapMenu from '@/components/basic/menu/KebapMenu.vue'
+import DropMenu from '@/modules/student/menu/Menu.vue'
 import _ from 'lodash'
 import AutocompleteClass from '@/components/basic/input/AutocompleteClass'
 import AutocompleteSubject from '@/components/basic/input/AutocompleteSubject'
@@ -149,9 +141,7 @@ import { Semester, Factor } from '@/plugins/api'
 export default {
   components: {
     Breadcrumbs,
-    SettingTableHeader,
-    KebapMenu,
-    ExportExcel,
+    DropMenu,
     AutocompleteClass,
     AutocompleteSubject,
     AutocompleteGrade
@@ -207,7 +197,7 @@ export default {
       return `Bảng điểm ${[subjectTitle, classTitle].filter(Boolean).join(' - ')}`
     },
     semestersColSpan () {
-      const markNumber = this.refrencesInfo.factors.reduce((acc, item) => acc + item.quantity, 0)
+      const markNumber = this.refrencesInfo.factors.reduce((acc, item) => acc + Number(item.quantity), 0)
       return markNumber
     },
     originHeaders () {

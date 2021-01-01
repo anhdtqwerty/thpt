@@ -8,8 +8,32 @@
         />
       </div>
       <div class="flex-center">
-        <v-btn color="primary" @click="dialog = !dialog"
+        <v-btn color="primary" @click="dialog = !dialog" class="mr-2"
           ><v-icon left>add</v-icon>{{ addButtonText }}</v-btn
+        >
+        <v-btn
+          v-if="selected.length"
+          color="green"
+          @click="onUpdate('running')"
+          dark
+          class="mr-2"
+          ><v-icon left>mdi-lock-open</v-icon>Mở</v-btn
+        >
+        <v-btn
+          v-if="selected.length"
+          color="gray"
+          @click="onUpdate('done')"
+          dark
+          class="mr-2"
+          ><v-icon left>mdi-lock</v-icon>Đóng</v-btn
+        >
+        <v-btn
+          v-if="selected.length"
+          color="red"
+          @click="onRemove"
+          dark
+          class="mr-2"
+          ><v-icon left>mdi-delete</v-icon>Xóa</v-btn
         >
       </div>
     </div>
@@ -49,10 +73,14 @@
             :headers="headers"
             :items="classes"
             :search="search"
+            v-model="selected"
+            show-select
             :disable-sort="$vuetify.breakpoint.smAndDown"
           >
             <template v-slot:item.status="{ item }">
-              {{ item.status | classStatus }}
+              <span v-if="item.status" :class="getColor(item.status)"
+                >{{ item.status | classStatus }}
+              </span>
             </template>
             <template v-slot:item.title="{ item }">
               <v-tooltip top>
@@ -118,36 +146,36 @@ const originHeaders = [
     value: 'title',
     align: 'left',
     sortable: false,
-    show: true,
+    show: true
   },
   {
     text: 'Phân ban',
     value: 'division',
     align: 'left',
     sortable: false,
-    show: true,
+    show: true
   },
   {
     text: 'Giáo viên chủ nhiệm',
     value: 'teachers',
     align: 'left',
     sortable: false,
-    show: true,
+    show: true
   },
   {
     text: 'Trạng thái',
     value: 'status',
     align: 'left',
     sortable: false,
-    show: true,
+    show: true
   },
   {
     text: 'Ghi chú',
     value: 'note',
     align: 'left',
     sortable: false,
-    show: true,
-  },
+    show: true
+  }
 ]
 export default {
   components: {
@@ -158,10 +186,10 @@ export default {
     ClassListActions,
     Breadcrumbs,
     ExportExcel,
-    KebapMenu,
+    KebapMenu
   },
   props: {
-    role: String,
+    role: String
   },
   data() {
     return {
@@ -172,20 +200,21 @@ export default {
       status: null,
       statuses: [
         { text: 'Active', value: 'false' },
-        { text: 'Blocked', value: 'true' },
+        { text: 'Blocked', value: 'true' }
       ],
       range: { from: null, to: null },
       previewUserId: null,
       ready: false,
       editClassId: '',
       dialog: false,
+      selected: []
     }
   },
   async created() {
     await this.refresh({
       department: this.department.id,
       generation: this.currentGeneration.id,
-      _sort: 'createdAt:desc',
+      _sort: 'createdAt:desc'
     })
   },
   computed: {
@@ -200,18 +229,24 @@ export default {
         default:
           return 'Thêm lớp học'
       }
-    },
+    }
   },
   methods: {
-    ...mapActions('class', ['fetchClasses', 'setClass', 'setClasses']),
+    ...mapActions('class', [
+      'fetchClasses',
+      'setClass',
+      'setClasses',
+      'updateClasses',
+      'removeClasses'
+    ]),
     getColor(status) {
-      if (status === 'opened') return 'primary'
-      if (status === 'running') return 'green'
-      else if (status === 'pending' || status === 'rejected') return 'red'
-      else if (status === 'done') return 'gray'
+      if (status === 'opened') return 'primary--text'
+      if (status === 'running') return 'green--text'
+      else if (status === 'pending' || status === 'rejected') return 'red--text'
+      else if (status === 'done') return 'gray--text'
       else return 'red'
     },
-    getCourse: (course) => {
+    getCourse: course => {
       return course || {}
     },
     refresh(query) {
@@ -219,39 +254,66 @@ export default {
       this.fetchClasses({
         department: this.department.id,
         generation: this.currentGeneration.id,
-        ...query,
+        ...query
       })
     },
+    onRemove() {
+      this.$dialog.confirm({
+        title: 'Xóa Lớp Học',
+        text: `Bạn Có chắc muốn xóa những Lớp học này.? ${this.selected.length} lớp học đã chọn`,
+        okText: 'Có',
+        cancelText: 'Không',
+        done: async () => {
+          await this.removeClasses(this.selected)
+          this.selected = []
+          this.$emit('removed')
+        }
+      })
+    },
+    onUpdate(status) {
+      this.$dialog.confirm({
+        title: 'Cập Nhật Lớp Học',
+        text: `${this.selected.length} lớp học đã chọn`,
+        okText: 'Có',
+        cancelText: 'Không',
+        done: async () => {
+          await this.updateClasses(
+            this.selected.map(c => ({ id: c.id, status }))
+          )
+          this.selected = []
+        }
+      })
+    }
   },
   filters: {
-    studentCounter: (students) => {
+    studentCounter: students => {
       if (!students) {
         return 0
       }
       return students.length
     },
-    classStatus: (status) => {
+    classStatus: status => {
       if (status === 'opened') return 'Đang chờ'
       else if (status === 'running') return 'Đang Học'
       else if (status === 'done') return 'Kết Thúc'
       else return ''
     },
-    getGeneration: (item) => {
+    getGeneration: item => {
       return _.get(item, 'name', '')
     },
-    getRoom: (item) => {
+    getRoom: item => {
       return _.get(item, 'title', '')
     },
-    getTeacherNames: (classData) => {
-      return classData.teachers.map((teacher) => teacher.name).join(',')
+    getTeacherNames: classData => {
+      return classData.teachers.map(teacher => teacher.name).join(',')
     },
-    getDivision: (division) => {
+    getDivision: division => {
       return division ? division.title : ''
     },
-    displayDate: (date) => {
+    displayDate: date => {
       if (date) return moment(date).format('DD/MM')
-    },
-  },
+    }
+  }
 }
 </script>
 

@@ -2,12 +2,11 @@
   <div class="text-center">
     <v-dialog fullscreen v-model="dialog">
       <v-card>
-        <!-- toolbar -->
-        <v-toolbar color="rgba(255, 179, 0, 1)"  dense class="elevation-0 white--text">
+        <v-toolbar dense class="elevation-0" color="#0D47A1" dark>
           <v-toolbar-title>LỌC TÌM KIẾM</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-btn icon>
-            <v-icon @click="cancel" class="white--text">close</v-icon>
+            <v-icon @click="cancel">close</v-icon>
           </v-btn>
         </v-toolbar>
         <v-divider />
@@ -29,9 +28,8 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn class="mr-2" medium depressed color="amber dark-1 white--text" @click.prevent="onFilterChanged" :disabled="isLoading">
-            <v-icon left>filter_alt</v-icon>
-            <span>Lọc</span>
+          <v-btn outlined color="#0D47A1" @click="onFilterChanged">
+            <v-icon left dark>mdi-filter-outline</v-icon>Lọc
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -46,52 +44,50 @@ import AutocompleteTeacher from '@/components/basic/input/AutocompleteTeacher'
 
 export default {
   components: {
-    AutocompleteTeacher
+    AutocompleteTeacher,
   },
-  data () {
+  data() {
     return {
       query: '',
       loading: 0,
       name: '',
-      dialog: false
+      dialog: false,
     }
   },
   props: {
-    state: Boolean
+    state: Boolean,
   },
   computed: {
-    isLoading () {
+    isLoading() {
       return this.loading > 0
-    }
+    },
   },
   methods: {
-    cancel () {
+    cancel() {
       this.dialog = false
       this.reset()
       this.$refs.form.reset()
     },
-    reset () {
+    reset() {
       this.name = ''
     },
     ...mapActions('staff', ['updateStudent']),
     onFilterChanged() {
       this.$emit('onFilterChanged', {
-        id: this.name
+        id: this.name,
       })
       this.dialog = false
       this.reset()
       this.$refs.form.reset()
     },
-
   },
   watch: {
-    state (state) {
+    state(state) {
       this.dialog = true
-    }
-  }
+    },
+  },
 }
 </script>
 
 <style>
-
 </style>
