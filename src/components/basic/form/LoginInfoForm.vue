@@ -43,8 +43,8 @@ export default {
   props: {
     student: {
       type: [Object],
-      default: () => {}
-    }
+      default: () => {},
+    },
   },
   data: () => ({
     valid: true,
@@ -53,10 +53,10 @@ export default {
     email: `random${Date.now()}@gmail.com`,
     password: '123123',
     rules: {
-      required: value => !!value || 'Required.',
-      min: v => v.length >= 6 || 'Min 8 characters',
-      email: v => /.+@.+/.test(v) || 'E-mail must be valid'
-    }
+      required: (value) => !!value || 'Required.',
+      min: (v) => v.length >= 6 || 'Min 8 characters',
+      email: (v) => /.+@.+/.test(v) || 'E-mail must be valid',
+    },
   }),
   created() {
     this.reset()
@@ -67,23 +67,25 @@ export default {
       return {
         phone: this.phone,
         email: this.email,
-        password: this.password
+        password: this.password,
       }
     },
     validate() {
-      return this.$refs.form.validate()
+      this.$refs.form.validate()
     },
     reset() {
-      this.$refs.form.reset()
+      this.phone = this.phone
+      this.email = this.email
+      this.password = this.password
     },
     resetValidation() {
       this.$refs.form.resetValidation()
-    }
+    },
   },
   watch: {
     student(student) {
       this.reset()
-    }
-  }
+    },
+  },
 }
 </script>
