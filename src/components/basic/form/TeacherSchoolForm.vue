@@ -19,7 +19,8 @@
           outlined
           dense
         ></v-text-field>
-        <v-autocomplete
+        <v-select
+          auto-select-first
           :items="teacherStatus"
           item-text="title"
           item-value="value"
@@ -28,7 +29,7 @@
           label="Trạng thái hiện tại"
           outlined
           dense
-        ></v-autocomplete>
+        ></v-select>
       </v-col>
     </v-row>
   </v-form>
@@ -40,8 +41,8 @@ export default {
   props: {
     teacher: {
       type: [Object],
-      default: () => {}
-    }
+      default: () => {},
+    },
   },
   data: () => ({
     valid: true,
@@ -50,7 +51,7 @@ export default {
     status: 'active',
     teacherStatus: [
       { title: 'Đang dạy', value: 'active' },
-      { title: 'Không dạy', value: 'block' }
+      { title: 'Không dạy', value: 'block' },
     ],
     typeList: [
       { title: 'Ngắn hạn', value: 'short-tern' },
@@ -64,7 +65,7 @@ export default {
   }),
   created() {
     if (this.teacher) {
-      this.type = this.teacher.type
+      this.type = this.teacher.metadata.type
       this.schoolDate = this.teacher.metadata.schoolDate
       this.status = this.teacher.status
     } else {
@@ -76,23 +77,24 @@ export default {
       return {
         type: this.type,
         schoolDate: this.schoolDate,
-        status: this.status
+        status: this.status,
       }
     },
     validate() {
       return this.$refs.form.validate()
     },
     reset() {
-      this.$refs.form.reset()
+      // this.$refs.form.reset()
+      this.status = 'active'
     },
     resetValidation() {
       this.$refs.form.resetValidation()
-    }
+    },
   },
   watch: {
     teacher(teacher) {
       this.reset()
-    }
-  }
+    },
+  },
 }
 </script>

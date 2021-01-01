@@ -72,7 +72,7 @@ export default {
       }
     },
     reset() {
-      this.$refs.form.reset()
+      // this.$refs.form.reset()
     },
     resetValidation() {
       this.$refs.form.resetValidation()

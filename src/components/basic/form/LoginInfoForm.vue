@@ -45,6 +45,10 @@ export default {
       type: [Object],
       default: () => {},
     },
+    teacher: {
+      type: [Object],
+      default: () => {},
+    },
   },
   data: () => ({
     valid: true,
@@ -64,6 +68,7 @@ export default {
   methods: {
     ...mapActions('user', ['generateUserName', 'validateEmail']),
     getData() {
+      console.log(this.password)
       return {
         phone: this.phone,
         email: this.email,
@@ -74,7 +79,6 @@ export default {
       this.$refs.form.validate()
     },
     reset() {
-      this.$refs.form.reset()
       this.phone = `${Date.now()}`
       this.email = `random${Date.now()}@gmail.com`
       this.password = '123123'
@@ -85,6 +89,9 @@ export default {
   },
   watch: {
     student(student) {
+      this.reset()
+    },
+    teacher(teacher) {
       this.reset()
     },
   },
