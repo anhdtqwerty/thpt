@@ -46,7 +46,7 @@
           <div class="ma-1" v-if="$vuetify.breakpoint.mdAndUp">
             <student-filter @onFilterChanged="refresh"></student-filter>
           </div>
-          <v-spacer></v-spacer>
+          <!-- <v-spacer></v-spacer> -->
           <div>
             <v-btn
               v-if="$vuetify.breakpoint.smAndDown"

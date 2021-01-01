@@ -143,21 +143,9 @@
             :items="items"
             :loading="loading"
           >
-            <template v-slot:item.mark="{ item }">
-              <!-- <input
-                v-for="mark in item.marks"
-                :key="mark.id"
-                class="custom-input"
-                type="text"
-                :value="mark.value"
-                @input="
-                  (event) =>
-                    onInputMark(item.studentId, mark.id, event.target.value)
-                "
-              /> -->
-
+            <template v-if="filterInputs.subjectObj.markType === 'evaluate'" v-slot:item.mark="{ item }">
               <v-select
-                class="mark-selector"
+                class="mark-input"
                 v-for="mark in item.marks"
                 :key="mark.id"
                 :items="[
@@ -170,6 +158,21 @@
                 outlined
                 dense
               ></v-select>
+            </template>
+            <template v-else v-slot:item.mark="{ item }">
+              <v-text-field
+              class="mark-input"
+                v-for="mark in item.marks"
+                :key="mark.id"
+                :value="mark.value"
+                hide-details
+                outlined
+                dense
+                @input="
+                  (event) =>
+                    onInputMark(item.studentId, mark.id, event)
+                "
+              />
             </template>
           </v-data-table>
         </template>
@@ -395,13 +398,9 @@ export default {
   justify-content: space-between;
   text-transform: uppercase;
 }
-.mark-selector {
+.mark-input {
   display: inline-block;
   max-width: 150px;
   margin-right: 10px;
-  // text-align: right;
-  // padding: 8px;
-  // border: 1px solid #E0E0E0;
-  // border-radius: 4px;
 }
 </style>
