@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import DivisionInfoForm from '@/components/basic/form/DivisionFrom.vue'
+import DivisionInfoForm from '@/components/basic/form/DivisionNewForm.vue'
 import { mapActions, mapState } from 'vuex'
 
 export default {
