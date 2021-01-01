@@ -74,9 +74,7 @@ export default {
       this.$refs.form.validate()
     },
     reset() {
-      this.phone = this.phone
-      this.email = this.email
-      this.password = this.password
+      this.$refs.form.reset()
     },
     resetValidation() {
       this.$refs.form.resetValidation()
