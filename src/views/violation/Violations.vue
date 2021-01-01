@@ -91,7 +91,7 @@ const originHeaders = [
   },
   {
     text: 'Họ tên',
-    value: 'title',
+    value: 'student.name',
     align: 'left',
     sortable: false,
     show: true,

@@ -6,12 +6,12 @@
   >
     <v-card>
       <v-card-title class="primary white--text "
-        >Thêm lớp học
+        >Thêm Khen thưởng kỉ luật
         <v-spacer />
-        <v-icon color="white" @click="cancel">close</v-icon>
+        <v-icon color="white" @click="dialog = false">close</v-icon>
       </v-card-title>
       <v-divider></v-divider>
-      <class-new-form
+      <violation-new-form
         ref="form"
         :classData="{}"
         :major="major"
@@ -24,7 +24,7 @@
           color="primary"
           class="mr-4 mt-n4 mb-2 white--text"
           @click="save"
-          ><v-icon color="white" left> mdi-plus </v-icon>Lưu</v-btn
+          >Lưu</v-btn
         >
       </v-card-actions>
     </v-card>
@@ -32,21 +32,20 @@
 </template>
 
 <script>
-import ClassNewForm from '@/components/basic/form/ClassNewForm.vue'
+import ViolationNewForm from '@/components/basic/form/ViolationNewForm.vue'
 import { mapActions, mapState } from 'vuex'
 
 export default {
   components: {
-    ClassNewForm
+    ViolationNewForm
   },
-  props: {
-    state: Boolean,
-    major: Object,
-    course: Object
+   props: {
+    state: Boolean
   },
   data() {
     return {
-      dialog: false
+      dialog: false,
+      loading: false
     }
   },
   computed: {
@@ -54,21 +53,17 @@ export default {
     ...mapState('auth', ['user'])
   },
   methods: {
-    ...mapActions('class', ['createClass']),
+    ...mapActions('violation', ['createViolation']),
     async save() {
+      if (!this.$refs.form.validate()) return
+      this.loading = true
       const data = this.$refs.form.getData()
-      await this.createClass({
-        ...data,
-        department: this.department.id,
-        status: 'opened'
-      })
-      this.dialog = false
-    },
-    cancel() {
+      await this.createViolation({ ...data })
+      this.$alert.success('Tạo mới thành công')
+      this.loading = false
       this.dialog = false
     }
   },
-
   watch: {
     state(state) {
       this.dialog = true

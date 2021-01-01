@@ -54,6 +54,7 @@ export default {
     async save() {
       this.loading = true
       const data = this.$refs.form.getData()
+      console.log(data)
       await this.createDivision({ ...data })
       this.$alert.success('Tạo phân ban mới thành công')
       this.$refs.form.resetDefault()

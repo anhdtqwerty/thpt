@@ -38,6 +38,7 @@
             md="4"
           >
             <autocomplete-student
+              v-model="student"
               item-text="name"
               clearable
               clear-icon="mdi-close"

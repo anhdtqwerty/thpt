@@ -21,16 +21,26 @@ export default {
       } catch (e) {
         alert.error(e)
       }
-    }
+    },
+    async createViolation({ commit }, data) {
+      try {
+        commit('createViolation', await Violation.create(data))
+      } catch (e) {
+        alert.error(e)
+      }
+    },
   },
   mutations: {
-    setViolation(state, payload) {
-      state.violations = payload
+    setViolation(state, violation) {
+      state.violations = violation
     },
     removeViolation(state, id) {
       state.violations = state.violations.filter(
         violation => violation.id != id
       )
-    }
+    },
+    createViolation(state, violation) {
+      state.violations = [violation, ...state.violations]
+    },
   }
 }
