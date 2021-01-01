@@ -44,7 +44,7 @@ export default {
     valid: true,
     type: '',
     schoolDate: '',
-    status: '',
+    status: 'active',
     teacherStatus: [
       { title: 'Đang dạy', value: 'active' },
       { title: 'Không dạy', value: 'block' }

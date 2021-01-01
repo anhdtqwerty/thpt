@@ -78,11 +78,11 @@ export default {
       password: '',
       emailError: '',
       rules: {
-        required: (value) => !!value || 'Required.',
-        min: (v) => v.length >= 6 || 'Min 8 characters',
-        email: (v) => /.+@.+/.test(v) || 'E-mail must be valid',
+        required: value => !!value || 'Required.',
+        min: v => v.length >= 6 || 'Min 8 characters',
+        email: v => /.+@.+/.test(v) || 'E-mail must be valid'
       },
-      isMobile: false,
+      isMobile: false
     }
   },
 
@@ -98,14 +98,14 @@ export default {
     window.addEventListener('resize', this.onResize, { passive: true })
   },
   props: {
-    state: Boolean,
+    state: Boolean
   },
   computed: {
     ...mapState('app', ['roles', 'department']),
     ...mapGetters('app', ['roleIdByName']),
     isLoading() {
       return this.loading > 0
-    },
+    }
   },
   methods: {
     ...mapActions('user', ['generateUserName', 'validateEmail']),
@@ -126,24 +126,23 @@ export default {
         const teacherSpecializeForm = this.$refs.teacherSpecializeForm.getData()
         const loginInfoForm = this.$refs.loginInfoForm.getData()
         await this.createTeacher({
-          data: {
-            username: teacherGeneralForm.username,
-            password: loginInfoForm.password,
-            email: loginInfoForm.email,
-            name: teacherGeneralForm.name,
-            address: teacherContactForm.currentLive,
-            gender: teacherGeneralForm.gender,
-            phone: loginInfoForm.phone,
-            status: teacherSchoolForm.status,
-            type: teacherSchoolForm.type,
-            subject: teacherSpecializeForm.subject,
-            metadata: {
-              ...teacherGeneralForm,
-              ...teacherContactForm,
-              ...teacherSchoolForm,
-              ...teacherSpecializeForm
-            }
-          }
+          username: teacherGeneralForm.username,
+          password: loginInfoForm.password,
+          email: loginInfoForm.email,
+          name: teacherGeneralForm.name,
+          address: teacherContactForm.currentLive,
+          gender: teacherGeneralForm.gender,
+          phone: loginInfoForm.phone,
+          status: teacherSchoolForm.status,
+          type: teacherSchoolForm.type,
+          subject: teacherSpecializeForm.subject,
+          metadata: {
+            ...teacherGeneralForm,
+            ...teacherContactForm,
+            ...teacherSchoolForm,
+            ...teacherSpecializeForm
+          },
+          department: this.department.id
         })
         this.dialog = false
         this.reset()
@@ -157,7 +156,7 @@ export default {
         // eslint-disable-next-line
         username_indexing,
         // eslint-disable-next-line
-        username_no,
+        username_no
       } = await this.generateUserName(this.name)
       this.username = username
       // eslint-disable-next-line
@@ -195,13 +194,13 @@ export default {
       } else {
         this.isMobile = false
       }
-    },
+    }
   },
   watch: {
     state(state) {
       this.dialog = true
-    },
-  },
+    }
+  }
 }
 </script>
 
