@@ -16,7 +16,9 @@
         />
       </v-col>
       <v-col class="d-flex justify-end pt-4">
-        <v-btn color="primary" @click="dialog = !dialog"> <v-icon left>add</v-icon> Thêm </v-btn>
+        <v-btn color="primary" @click="dialog = !dialog">
+          <v-icon left>add</v-icon> Thêm
+        </v-btn>
       </v-col>
     </v-row>
 
@@ -60,6 +62,17 @@
         <template v-slot:item.createdAt="{ item }">
           {{ formatDate(item) }}
         </template>
+        <template v-slot:item.type="{ item }">
+          <span v-if="item.type">
+            {{
+              item.type === 'violation'
+                ? 'Kỷ luật'
+                : item.type === 'commendation'
+                ? 'Khen thưởng'
+                : ''
+            }}
+          </span>
+        </template>
       </v-data-table>
     </v-card>
     <violation-new-dialog :state="dialog"> </violation-new-dialog>
@@ -77,6 +90,7 @@ import ViolationDialogFilter from '@/modules/violation/ViolationDialogFilter.vue
 import ExportExcel from '@/components/basic/ExportExcel'
 import KebapMenu from '@/components/basic/menu/KebapMenu'
 import ViolationNewDialog from '@/modules/violation/ViolationNewDialog.vue'
+import ViolationUpdateDialog from '@/modules/violation/ViolationUpdateDialog.vue'
 
 import moment from 'moment'
 import { get } from 'lodash'
@@ -105,7 +119,7 @@ const originHeaders = [
   },
   {
     text: 'Mục',
-    value: 'status',
+    value: 'type',
     align: 'left',
     sortable: false,
     show: true,
@@ -136,7 +150,8 @@ export default {
     ViolationDialogFilter,
     ExportExcel,
     KebapMenu,
-    ViolationNewDialog
+    ViolationNewDialog,
+    ViolationUpdateDialog
   },
   data() {
     return {
@@ -167,7 +182,7 @@ export default {
       return get(item, 'createdAt', '')
         ? moment(item.createdAt).format('DD/MM/YYYY')
         : ''
-    },
+    }
   },
 }
 </script>

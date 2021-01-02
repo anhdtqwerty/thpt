@@ -13,9 +13,6 @@
       <v-divider></v-divider>
       <violation-new-form
         ref="form"
-        :classData="{}"
-        :major="major"
-        :course="course"
       />
       <v-card-actions>
         <v-spacer />
@@ -58,7 +55,7 @@ export default {
       if (!this.$refs.form.validate()) return
       this.loading = true
       const data = this.$refs.form.getData()
-      await this.createViolation({ ...data })
+      await this.createViolation({ ...data, class: data.classData })
       this.$alert.success('Tạo mới thành công')
       this.loading = false
       this.dialog = false

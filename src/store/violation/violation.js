@@ -29,6 +29,15 @@ export default {
         alert.error(e)
       }
     },
+    async updateViolation({ commit }, { id, ...violation }) {
+      try {
+        const vil = await Violation.update(id, violation)
+        commit('updateViolation', {id,vil})
+        alert.success('Cập nhật thành công!')
+      } catch (e) {
+        alert.error(e)
+      }
+    }
   },
   mutations: {
     setViolation(state, violation) {
@@ -42,5 +51,9 @@ export default {
     createViolation(state, violation) {
       state.violations = [violation, ...state.violations]
     },
+    updateViolation(state, violation) {
+      state.violations = state.violations.map(v =>  {if (violation.id === v.id) return violation.vil
+      else return v})
+    }
   }
 }

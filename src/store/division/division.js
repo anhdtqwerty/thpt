@@ -50,7 +50,8 @@ export default {
       state.divisions = [division, ...state.divisions]
     },
     updateDivision(state, id) {
-      state.divisions = state.divisions.map(division => division.id !== id)
+      state.divisions = state.divisions.map(d =>  {if (id === d.id) return division
+      else return d})
     }
   }
 }

@@ -32,7 +32,7 @@ export default {
     async updateGrade({ commit }, { id, ...grade }) {
       try {
         await Grade.update(id, grade)
-        commit('updateGrade', id, grade)
+        commit('updateGrade',id)
         alert.success('Cập nhật thành công!')
       } catch (e) {
         alert.error(e)
@@ -43,7 +43,8 @@ export default {
     setGrades(state, grades) {
       state.grades = grades
     },
-    updateGrade(state, grade) {
+    updateGrade(state, id) {
+      console.log(id)
       state.grades = state.grades.map(g => {
         if (g.id === grade.id) return grade
         else return g

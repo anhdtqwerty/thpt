@@ -3,6 +3,7 @@
     <p class="h6 font-weight-bold">Năm học ....(từ ngày....)</p>
     <autocomplete-grade
       v-model="grade"
+      item-text="title"
       item-value="id"
       clear-icon="mdi-close"
       clearable
@@ -15,7 +16,8 @@
       :class="{ 'mb-4': $vuetify.breakpoint.smAndDown }"
     />
     <autocomplete-class
-      v-model="class_data"
+      v-model="classData"
+      item-text="title"
       item-value="id"
       clear-icon="mdi-close"
       clearable
@@ -34,14 +36,13 @@
       clear-icon="mdi-close"
       outlined
       label="Tên học sinh"
-      item-value="id"
       dense
       deletable-chips
       :hide-details="$vuetify.breakpoint.smAndDown"
       :class="{ 'mb-4': $vuetify.breakpoint.smAndDown }"
     />
-    <v-autocomplete
-      v-model="status"
+    <v-select
+      v-model="type"
       outlined
       label="Mục"
       :items="options"
@@ -51,9 +52,8 @@
       deletable-chips
       :class="{ 'mb-4': $vuetify.breakpoint.smAndDown }"
       :hide-details="$vuetify.breakpoint.smAndDown"
-    >
-    </v-autocomplete>
-    <v-radio-group v-model="type" row class="shrink ml-4 mt-0">
+    />
+    <v-radio-group row class="shrink ml-4 mt-0">
       <p class="mx-2 my-0">Loại nội dung:</p>
       <v-radio label="Điểm" hide-details></v-radio>
       <v-radio label="Nề nếp" hide-details></v-radio>
@@ -82,23 +82,23 @@ export default {
     AutocompleteStudent,
   },
   data: () => ({
-    options: ['Kỷ luật', 'Khen thưởng'],
+    options: [
+      { text: 'Kỷ luật', value: 'violation' },
+      { text: 'Khen thưởng', value: 'commendation' },
+    ],
     ruleRequired: [(v) => !!v || 'Phần này không được trống'],
     grade: '',
-    class_data: '',
-    student:'',
-    status:'',
+    classData: '',
+    student: '',
     description: '',
-    type:''
+    type: '',
   }),
   computed: {
     ...mapGetters('app', ['department']),
   },
   props: {},
   methods: {
-    reset() {
-      this.$refs.form.reset()
-    },
+    reset() {},
     validate() {
       return this.$refs.form.validate()
     },
@@ -106,28 +106,34 @@ export default {
       this.$refs.form.resetValidation()
     },
     getData() {
-      return {
-        grade: this.grade,
-        description: this.class_data,
-        student: this.student,
-        status: this.status,
-        class_data: this.class_data,
-        type : this.type
+      if (this.$refs.form.validate()) {
+        return {
+          grade: this.grade,
+          description: this.description,
+          student: this.student,
+          classData: this.classData,
+          type: this.type,
+        }
       }
     },
-    refresh() {
+    resetDefault() {
       if (this.violation) {
         this.grade = this.violation.grade
-        this.description=this.violation.description
-        this.student=this.violation.student
-        this.status=this.violation.status
-        this.class_data=this.violation.class_data
+        this.description = this.violation.description
+        this.student = this.violation.student
+        this.classData = this.violation.classData
         this.type = this.violation.type
+      } else {
+        this.grade = ''
+        this.description = ''
+        this.student = ''
+        this.classData = ''
+        this.type = ''
       }
     },
   },
   created() {
-    this.reset()
+    this.resetDefault()
   },
 }
 </script>
