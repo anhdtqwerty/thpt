@@ -37,6 +37,9 @@
           </v-tooltip>
         </router-link>
       </template>
+      <template v-slot:item.classes="{ item }">
+        <span>{{ item.classes | getClasses }}</span>
+      </template>
       <template v-slot:item.generation="{ item }">
         <router-link
           v-if="item.generation"
@@ -64,6 +67,8 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import { get } from 'lodash'
+import utils from '@/plugins/utils'
 import XLSX from 'xlsx'
 import moment from 'moment'
 export default {
@@ -85,6 +90,7 @@ export default {
         },
         { text: 'Tên Học Sinh', value: 'name' },
         { text: 'Code', value: 'username' },
+        { text: 'Lớp', value: 'classes' },
         { text: 'Email', value: 'email' },
         { text: 'phone', value: 'phone' },
         { text: 'Giới Tính', value: 'gender' },
@@ -92,7 +98,7 @@ export default {
         { text: 'Facebook', value: 'facebook' },
         { text: 'Năm Sinh', value: 'dob' },
         { text: 'Mật Khẩu', value: 'password' },
-        { text: 'Chuyên Ngành', value: 'grade' },
+        { text: 'Khối', value: 'grade' },
         { text: 'Khóa', value: 'generation' }
       ]
     }
@@ -103,6 +109,7 @@ export default {
       'students',
       'loading',
       'grade',
+      'classes',
       'generations'
     ]),
     ...mapGetters('app', ['roleIdByName', 'roles']),
@@ -113,11 +120,13 @@ export default {
   async created() {
     this.isLoading = true
     await this.fetchGenerations({ department: this.department.id })
+    await this.fetchClasses({ department: this.department.id })
     this.isLoading = false
   },
   methods: {
     ...mapActions('studentImporter', [
       'fetchGenerations',
+      'fetchClasses',
       'fetchMajors',
       'setStudents',
       'setStudent',
@@ -137,14 +146,22 @@ export default {
 
         self.setStudents(
           students.map((student, index) => {
+            const code = parseInt(student.code)
+            const indexName = utils.generateUserName(student.name)
+            const studentClass = self.classes[student.classes]
             return {
               ...self.$utils.filterObject(student),
               dob: moment(student.dob, 'DD/MM/YYYY').toISOString(),
+              username: `${indexName}${student.code}`,
+              username_indexing: indexName,
+              username_no: code,
               key: index,
               phone: student.phone | '',
               department: self.department.id,
-              grade: student.grade,
-              generation: student.generation,
+              classes: [studentClass],
+              grade: get(studentClass, 'grade.id'),
+              generation: get(studentClass, 'generation.id'),
+              // generation: student.generation.id,
               uploadStatus: 'validate',
               address: student.frequentlyAddress,
               status: 'active',
@@ -201,7 +218,7 @@ export default {
       if (!time) {
         return 'None'
       }
-      return moment(time).format('DD/MM/MM')
+      return moment(time).format('DD/MM/YYYY')
     },
     currencyTuition: tuition => {
       if (!tuition) {
@@ -217,6 +234,12 @@ export default {
         return 'không có'
       }
       return moment(time).format('DD/MM')
+    },
+    getClasses(classes) {
+      if (!classes || !classes.length) return ''
+      if (classes[0]) {
+        return classes.map(c => c.title).join(', ')
+      }
     }
   }
 }

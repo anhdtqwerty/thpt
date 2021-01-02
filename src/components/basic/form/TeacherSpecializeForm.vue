@@ -62,8 +62,6 @@ export default {
       this.subject = this.teacher.subject
       this.trainingPlace = this.teacher.metadata.trainingPlace
       this.majorDate = this.teacher.metadata.majorDate
-    } else {
-      this.reset()
     }
   },
   methods: {

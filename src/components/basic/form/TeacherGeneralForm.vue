@@ -89,8 +89,6 @@ export default {
       this.dob = this.teacher.metadata.dob
       this.ethnic = this.teacher.metadata.ethnic
       this.frequentlyAddress = this.teacher.metadata.frequentlyAddress
-    } else {
-      this.reset()
     }
   },
   methods: {

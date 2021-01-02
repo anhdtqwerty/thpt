@@ -187,6 +187,7 @@ export default {
         _limit: 1,
         type: 'staff'
       })
+      console.log(users)
       if (users.length) userNo = _.get(_.last(users), 'username_no', 0) + 1
       return {
         username: `${userNameIndex}${userNo || ''}`,

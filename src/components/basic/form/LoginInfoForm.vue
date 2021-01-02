@@ -45,6 +45,10 @@ export default {
       type: [Object],
       default: () => {},
     },
+    teacher: {
+      type: [Object],
+      default: () => {},
+    },
   },
   data: () => ({
     valid: true,
@@ -74,7 +78,6 @@ export default {
       this.$refs.form.validate()
     },
     reset() {
-      this.$refs.form.reset()
       this.phone = `${Date.now()}`
       this.email = `random${Date.now()}@gmail.com`
       this.password = '123123'
@@ -85,6 +88,9 @@ export default {
   },
   watch: {
     student(student) {
+      this.reset()
+    },
+    teacher(teacher) {
       this.reset()
     },
   },

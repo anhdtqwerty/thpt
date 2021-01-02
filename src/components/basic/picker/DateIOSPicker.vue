@@ -26,6 +26,7 @@ export default {
   }),
 
   methods: {
+
     updated(value) {
       if (value) {
         this.$emit('update:date', moment(this.data, 'DD/MM/YYYY').toISOString())
@@ -36,24 +37,16 @@ export default {
     },
     reset() {
       if (this.date) {
-        this.data = moment(this.date).format('YYYY-MM-DD')
+        this.data = moment(this.date).format('DD/MM/YYYY')
       }
-    }
-  },
-  computed: {
-    display() {
-      if (this.date) {
-        return moment(this.date).format('DD/MM/YYYY')
-      }
-      return ''
     }
   },
   created() {
     this.reset()
   },
   watch: {
-    date() {
-      this.reset()
+    data(value) {
+      this.updated(this.data)
     }
   }
 }

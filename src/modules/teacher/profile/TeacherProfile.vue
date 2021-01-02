@@ -96,12 +96,6 @@ export default {
   },
   methods: {
     ...mapActions('teacher', ['updateTeacher']),
-    reset() {
-      this.$refs.teacherGeneralFormEdit.reset()
-      this.$refs.teacherSchoolForm.reset()
-      this.$refs.teacherContactForm.reset()
-      this.$refs.teacherSpecializeForm.reset()
-    },
     resetValidation() {
       this.$refs.teacherGeneralFormEdit.resetValidation()
       this.$refs.teacherSchoolForm.resetValidation()
@@ -130,7 +124,6 @@ export default {
           },
         })
         this.dialog = false
-        this.reset()
       } catch (e) {
         console.log(e)
       }
@@ -142,10 +135,6 @@ export default {
 }
 </script>
 <style scoped>
-.border {
-  border: solod 1px lightgray;
-  border-radius: 4px;
-}
 .info-student-general {
   width: 100%;
   text-align: left;

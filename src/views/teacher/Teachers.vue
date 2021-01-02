@@ -24,7 +24,6 @@
         :items="teachers"
         :loading="isLoading"
         loading-text="Đang Tải"
-        :search="search"
         dense
       >
         <div slot="top" class="d-flex mb-4">
@@ -62,12 +61,12 @@
             }}
           </span>
         </template>
-        <template v-slot:[`item.type`]="{ item }">
-          <span v-if="item.type">
+        <template v-slot:[`item.metadata.type`]="{ item }">
+          <span v-if="item.metadata.type">
             {{
-              item.type === 'long-tern'
+              item.metadata.type === 'long-tern'
                 ? 'Dài hạn'
-                : item.type === 'short-tern'
+                : item.metadata.type === 'short-tern'
                 ? 'Ngắn hạn'
                 : ''
             }}
@@ -77,6 +76,9 @@
           <span v-if="item.subject">{{
             item.subject[item.subject.length - 1]
           }}</span>
+        </template>
+        <template v-slot:[`item.metadata.dob`]="{ item }">
+          {{formatDate(item.metadata.dob)}}
         </template>
         <template v-slot:[`item.action`]="{ item }">
           <teacher-list-actions :item="item"></teacher-list-actions>
@@ -92,6 +94,7 @@
 </template>
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex'
+import moment from 'moment'
 import UserItem from '@/components/basic/card/CardTeacherName.vue'
 import TeacherFilter from '@/modules/teacher/TeacherFilter.vue'
 import TeacherFilterDialog from '@/modules/teacher/TeacherFilterDialog'
@@ -125,7 +128,7 @@ const originHeaders = [
   },
   {
     text: 'Loại cán bộ',
-    value: 'type',
+    value: 'metadata.type',
     align: 'left',
     sortable: false,
     show: true,
@@ -174,8 +177,6 @@ export default {
   data() {
     return {
       headers: originHeaders,
-      search: '',
-      teacherId: '',
       isLoading: false,
       originHeaders: originHeaders,
       createState: false,
@@ -207,6 +208,9 @@ export default {
       if (status === 'active') return 'green--text'
       if (status === 'block') return 'red--text'
       else return 'gray--text'
+    },
+    formatDate(date) {
+      return moment(date).format('DD/MM/YYYY')
     },
     refresh(query) {
       this.isLoading = true
