@@ -135,10 +135,6 @@ export default {
 }
 </script>
 <style scoped>
-.border {
-  border: solod 1px lightgray;
-  border-radius: 4px;
-}
 .info-student-general {
   width: 100%;
   text-align: left;

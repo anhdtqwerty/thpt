@@ -24,7 +24,6 @@
         :items="teachers"
         :loading="isLoading"
         loading-text="Đang Tải"
-        :search="search"
         dense
       >
         <div slot="top" class="d-flex mb-4">
@@ -178,8 +177,6 @@ export default {
   data() {
     return {
       headers: originHeaders,
-      search: '',
-      teacherId: '',
       isLoading: false,
       originHeaders: originHeaders,
       createState: false,
