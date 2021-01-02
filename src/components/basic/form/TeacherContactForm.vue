@@ -55,8 +55,6 @@ export default {
       this.province = this.teacher.metadata.province
       this.mobilePhone = this.teacher.metadata.mobilePhone
       this.landlinePhone = this.teacher.metadata.landlinePhone
-    } else {
-      this.reset()
     }
   },
   methods: {

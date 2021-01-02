@@ -127,22 +127,25 @@ export default {
         const loginInfoForm = this.$refs.loginInfoForm.getData()
         await this.createTeacher({
           username: teacherGeneralForm.username,
+          username_indexing: teacherGeneralForm.username_indexing,
+          username_no: teacherGeneralForm.username_no,
           password: loginInfoForm.password,
           email: loginInfoForm.email,
           name: teacherGeneralForm.name,
           address: teacherContactForm.currentLive,
           gender: teacherGeneralForm.gender,
           phone: loginInfoForm.phone,
-          status: teacherSchoolForm.status,
-          type: teacherSchoolForm.type,
+          status: 'active',
           subject: teacherSpecializeForm.subject,
           metadata: {
-            ...teacherGeneralForm,
+            type: teacherSchoolForm.type,
             ...teacherContactForm,
             ...teacherSchoolForm,
-            ...teacherSpecializeForm
+            ...teacherSpecializeForm,
+            ...teacherGeneralForm,
           },
-          department: this.department.id
+          department: this.department.id,
+          type: 'staff'
         })
         this.dialog = false
         this.reset()
