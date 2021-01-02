@@ -29,7 +29,6 @@
       clearable
       label="Môn học"
       multiple
-      outlined
       dense
       small-chips
       :hide-details="$vuetify.breakpoint.smAndDown"

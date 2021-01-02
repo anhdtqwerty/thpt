@@ -59,13 +59,12 @@ export default {
   },
 
   methods: {
-    ...mapActions('grade', ['updateGrade', 'fetchGrades']),
+    ...mapActions('grade', ['updateGrade']),
     async save() {
       this.loading = true
       const data = this.$refs.form.getData()
       await this.updateGrade({ id: this.grade.id, ...data })
       this.$alert.success('Cập nhật thành công')
-      this.$refs.form.reset()
       this.loading = false
       this.dialog = false
     },
