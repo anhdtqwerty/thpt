@@ -96,12 +96,6 @@ export default {
   },
   methods: {
     ...mapActions('teacher', ['updateTeacher']),
-    reset() {
-      this.$refs.teacherGeneralFormEdit.reset()
-      this.$refs.teacherSchoolForm.reset()
-      this.$refs.teacherContactForm.reset()
-      this.$refs.teacherSpecializeForm.reset()
-    },
     resetValidation() {
       this.$refs.teacherGeneralFormEdit.resetValidation()
       this.$refs.teacherSchoolForm.resetValidation()
@@ -130,7 +124,6 @@ export default {
           },
         })
         this.dialog = false
-        this.reset()
       } catch (e) {
         console.log(e)
       }

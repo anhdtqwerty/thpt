@@ -68,8 +68,6 @@ export default {
       this.type = this.teacher.metadata.type
       this.schoolDate = this.teacher.metadata.schoolDate
       this.status = this.teacher.status
-    } else {
-      this.reset()
     }
   },
   methods: {
@@ -83,8 +81,8 @@ export default {
     validate() {
       return this.$refs.form.validate()
     },
-    reset() {
-      // this.$refs.form.reset()
+    async reset() {
+      await this.$refs.form.reset()
       this.status = 'active'
     },
     resetValidation() {

@@ -6,16 +6,12 @@
           ref="name"
           v-model="name"
           label="Tên giáo viên"
-          class="required"
-          :rules="[rules.required]"
           outlined
           dense
         ></v-text-field>
         <date-picker
           :date.sync="dob"
           label="Ngày Sinh"
-          class="required"
-          :rules="[rules.required]"
           outlined
           dense
         ></date-picker>
@@ -24,8 +20,6 @@
           v-model="gender"
           :items="['male', 'female']"
           label="Giới tính"
-          class="required"
-          :rules="[rules.required]"
           outlined
           dense
         ></v-select>
@@ -33,8 +27,6 @@
           ref="frequentlyAddress"
           v-model="frequentlyAddress"
           label="Địa chỉ thường trú"
-          :rules="[rules.required]"
-          class="required"
           outlined
           dense
         ></v-text-field>
@@ -42,8 +34,6 @@
           ref="ethinic"
           v-model="ethnic"
           label="Dân tộc"
-          :rules="[rules.required]"
-          class="required"
           outlined
           dense
         ></v-text-field>
@@ -53,7 +43,6 @@
 </template>
 
 <script>
-// import { get } from 'lodash'
 import { mapActions } from 'vuex'
 import DatePicker from '@/components/basic/picker/DateIOSPicker.vue'
 export default {
@@ -79,7 +68,11 @@ export default {
   }),
   created() {
     if (this.teacher) {
-      this.reset()
+      this.name = this.teacher.name
+      this.gender = this.teacher.gender
+      this.dob = this.teacher.metadata.dob
+      this.ethinic = this.teacher.metadata.ethinic
+      this.frequentlyAddress = this.teacher.metadata.frequentAddress
     }
   },
   methods: {
@@ -97,11 +90,7 @@ export default {
       this.$refs.form.validate()
     },
     reset() {
-      this.name = this.teacher.name
-      this.gender = this.teacher.gender
-      this.dob = this.teacher.metadata.dob
-      this.ethnic = this.teacher.metadata.ethnic
-      this.frequentlyAddress = this.teacher.metadata.frequentlyAddress
+      this.$refs.form.reset()
     },
     resetValidation() {
       this.$refs.form.resetValidation()

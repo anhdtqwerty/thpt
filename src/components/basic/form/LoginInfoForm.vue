@@ -68,7 +68,6 @@ export default {
   methods: {
     ...mapActions('user', ['generateUserName', 'validateEmail']),
     getData() {
-      console.log(this.password)
       return {
         phone: this.phone,
         email: this.email,
