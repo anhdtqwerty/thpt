@@ -62,8 +62,6 @@ export default {
       this.subject = this.teacher.subject
       this.trainingPlace = this.teacher.metadata.trainingPlace
       this.majorDate = this.teacher.metadata.majorDate
-    } else {
-      this.reset()
     }
   },
   methods: {
@@ -79,7 +77,7 @@ export default {
       return this.$refs.form.validate()
     },
     reset() {
-      // this.$refs.form.reset()
+      this.$refs.form.reset()
     },
     resetValidation() {
       this.$refs.form.resetValidation()

@@ -2,11 +2,9 @@
   <div>
     <div class="pa-2 d-none d-md-block">
       <Breadcrumbs
-          headline="Giáo viên"
-          :link="[
-            { text: 'Giáo viên', href: '../teachers' },
-            ]"
-        />
+        headline="Giáo viên"
+        :link="[{ text: 'Giáo viên', href: '../teachers' }]"
+      />
     </div>
 
     <teacher-profile :teacher="teacherInfo"></teacher-profile>
@@ -38,20 +36,7 @@ export default {
     await this.fetchTeacher(this.$route.params.id)
   },
   methods: {
-    ...mapActions('teacher', [
-      'updateTeacher',
-      'fetchTeacher',
-      'removeTeacher',
-    ]),
-    reset() {
-      this.$refs.form.reset()
-    },
-    resetValidation() {
-      this.$refs.form.resetValidation()
-    },
-    cancel() {
-      this.state = false
-    },
+    ...mapActions('teacher', ['fetchTeacher']),
   },
 }
 </script>

@@ -89,8 +89,6 @@ export default {
       this.dob = this.teacher.metadata.dob
       this.ethnic = this.teacher.metadata.ethnic
       this.frequentlyAddress = this.teacher.metadata.frequentlyAddress
-    } else {
-      this.reset()
     }
   },
   methods: {
@@ -125,7 +123,7 @@ export default {
       return this.$refs.form.validate()
     },
     reset() {
-      // this.$refs.form.reset()
+      this.$refs.form.reset()
     },
     resetValidation() {
       this.$refs.form.resetValidation()

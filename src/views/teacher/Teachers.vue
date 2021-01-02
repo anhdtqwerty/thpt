@@ -24,7 +24,6 @@
         :items="teachers"
         :loading="isLoading"
         loading-text="Đang Tải"
-        :search="search"
         dense
       >
         <div slot="top" class="d-flex mb-4">
@@ -78,6 +77,9 @@
             item.subject[item.subject.length - 1]
           }}</span>
         </template>
+        <template v-slot:[`item.metadata.dob`]="{ item }">
+          {{formatDate(item.metadata.dob)}}
+        </template>
         <template v-slot:[`item.action`]="{ item }">
           <teacher-list-actions :item="item"></teacher-list-actions>
         </template>
@@ -92,6 +94,7 @@
 </template>
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex'
+import moment from 'moment'
 import UserItem from '@/components/basic/card/CardTeacherName.vue'
 import TeacherFilter from '@/modules/teacher/TeacherFilter.vue'
 import TeacherFilterDialog from '@/modules/teacher/TeacherFilterDialog'
@@ -174,8 +177,6 @@ export default {
   data() {
     return {
       headers: originHeaders,
-      search: '',
-      teacherId: '',
       isLoading: false,
       originHeaders: originHeaders,
       createState: false,
@@ -207,6 +208,9 @@ export default {
       if (status === 'active') return 'green--text'
       if (status === 'block') return 'red--text'
       else return 'gray--text'
+    },
+    formatDate(date) {
+      return moment(date).format('DD/MM/YYYY')
     },
     refresh(query) {
       this.isLoading = true
