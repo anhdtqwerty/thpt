@@ -14,19 +14,24 @@ export default {
     },
     generations: {
       // code: grade
-    }
+    },
+    classes: {}
   },
   actions: {
     async fetchGrades({ commit }, options) {
       const gradeList = await api.Grade.fetch(options)
       commit('changeState', { grade: _.keyBy(gradeList, 'code') })
     },
+    async fetchClasses({ commit }, options) {
+      const classes = await api.Class.fetch(options)
+      console.log(classes)
+      commit('changeState', { classes: _.keyBy(classes, 'title') })
+    },
     async fetchGenerations({ commit }, options) {
       const generationList = await api.Generation.fetch(options)
       commit('changeState', { generations: _.keyBy(generationList, 'code') })
     },
     async createStudent({ state, dispatch, commit }, userData) {
-      delete userData.grade
       let user = {}
       try {
         user = await api.User.create({ ...userData, type: 'student' })
@@ -85,24 +90,36 @@ export default {
         if (student.uploadStatus === 'duplicated') continue
         student.uploadStatus = 'loading'
         commit('receiveStudent', student)
-        const { username, username_indexing, username_no } = await dispatch(
-          'user/generateStudentCode',
-          student.name,
-          {
-            root: true
-          }
-        )
-        await dispatch('createStudent', {
-          ...student,
-          name: student.name.trim(),
-          phone: student.phone + '',
-          email: student.email
-            ? student.email
-            : `random${Date.now()}@quanlylop.com`,
-          username,
-          username_indexing,
-          username_no
-        })
+
+        if (student.username) {
+          await dispatch('createStudent', {
+            ...student,
+            name: student.name.trim(),
+            phone: student.phone + '',
+            email: student.email
+              ? student.email
+              : `random${Date.now()}@quanlylop.com`
+          })
+        } else {
+          const { username, username_indexing, username_no } = await dispatch(
+            'user/generateStudentCode',
+            student.name,
+            {
+              root: true
+            }
+          )
+          await dispatch('createStudent', {
+            ...student,
+            name: student.name.trim(),
+            phone: student.phone + '',
+            email: student.email
+              ? student.email
+              : `random${Date.now()}@quanlylop.com`,
+            username,
+            username_indexing,
+            username_no
+          })
+        }
       }
       commit('setLoading', false)
       alert.success('Student updated')
@@ -158,6 +175,9 @@ export default {
   getters: {
     students(state) {
       return state.students
+    },
+    classes(state) {
+      return state.classes
     },
     loading(state) {
       return state.loading
