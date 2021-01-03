@@ -5,7 +5,7 @@
       <breadcrumbs />
     </div>
 
-    <student-profile :student="studentInfo" />
+    <student-profile v-if="student.id" :student="student" />
   </div>
 </template>
 
@@ -21,12 +21,6 @@ export default {
   },
   computed: {
     ...mapGetters('student', ['student']),
-    studentInfo() {
-      return {
-        ...this.student,
-        data: this.student.data || {},
-      }
-    },
   },
   data() {
     return {
@@ -38,9 +32,6 @@ export default {
   },
   methods: {
     ...mapActions('student', ['updateStudent', 'fetchStudent', 'setTuitions']),
-    reset() {
-      this.$refs.form.reset()
-    },
     async refresh() {
       this.setTuitions([])
       await this.fetchStudent(this.$route.params.id)
@@ -51,10 +42,7 @@ export default {
     save(data) {
       data.handledDate = moment().toISOString()
       this.updateStudent({ ...this.student, ...data })
-    },
-    cancel() {
-      this.state = false
-    },
+    }
   },
 }
 </script>

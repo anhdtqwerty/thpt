@@ -8,24 +8,16 @@
           outlined
           class="required"
           dense
-          @blur="nameLostFocus()"
-          :rules="[rules.required]"
-        ></v-text-field>
-        <v-text-field
-          v-model="username"
-          outlined
-          dense
-          label="Mã học sinh"
-          disabled
-          class="required"
           :rules="[rules.required]"
         ></v-text-field>
         <autocomplete-class
           :rules="[rules.required]"
           v-model="classes"
+          :defaultClasses="classes"
           return-object
           label="Chọn lớp"
           outlined
+          multiple
           dense
           class="required"
         ></autocomplete-class>
@@ -39,7 +31,9 @@
         ></date-picker>
         <v-select
           v-model="gender"
-          :items="['male', 'female']"
+          :items="genderList"
+          item-text="title"
+          item-value="value"
           label="Giới Tính"
           dense
           outlined
@@ -83,53 +77,36 @@ export default {
   data: () => ({
     valid: true,
     name: '',
-    username: '',
-    username_indexing: '',
-    username_no: '',
     gender: '',
     dob: '',
     ethnic: '',
     frequentlyAddress: '',
-    classes: {},
+    classes: [],
     rules: {
       required: (value) => !!value || 'Required.',
       min: (v) => v.length >= 6 || 'Min 8 characters',
       email: (v) => /.+@.+/.test(v) || 'E-mail must be valid',
     },
+    genderList: [
+      { value: 'male', title: 'Nam' },
+      { value: 'female', title: 'Nữ' },
+    ],
   }),
   created() {
     if (this.student) {
       this.name = this.student.name
-      this.username = this.student.username
       this.gender = this.student.gender
       this.dob = this.student.dob
       this.ethnic = this.student.data.ethnic
       this.frequentlyAddress = this.student.data.frequentlyAddress
-      this.classes = this.student.classes[0].title
+      this.classes = this.student.classes
     }
   },
   methods: {
     ...mapActions('user', ['generateStudentCode', 'validateEmail']),
-    async nameLostFocus() {
-      const {
-        username,
-        // eslint-disable-next-line
-        username_indexing,
-        // eslint-disable-next-line
-        username_no,
-      } = await this.generateStudentCode(this.name)
-      this.username = username
-      // eslint-disable-next-line
-      this.username_indexing = username_indexing
-      // eslint-disable-next-line
-      this.username_no = username_no
-    },
     getData() {
       return {
         name: this.name,
-        username: this.username,
-        user_indexing: this.username_indexing,
-        username_no: this.username_no,
         gender: this.gender,
         dob: this.dob,
         ethnic: this.ethnic,
@@ -146,11 +123,6 @@ export default {
     resetValidation() {
       this.$refs.form.resetValidation()
     },
-  },
-  watch: {
-    student(student) {
-      this.reset()
-    },
-  },
+  }
 }
 </script>

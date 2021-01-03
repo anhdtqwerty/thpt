@@ -63,9 +63,7 @@ export default {
       this.loading = true
       const data = this.$refs.form.getData()
       await this.updateDivision({id:this.division.id, ...data })
-      await this.fetchDivision()
       this.$alert.success('Cập nhật thành công')
-      this.$refs.form.resetDefault()
       this.loading = false
       this.dialog = false
     },

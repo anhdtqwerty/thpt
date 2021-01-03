@@ -73,16 +73,10 @@ export default {
     async setTuitions({ commit }, tuitions) {
       commit('setTuitions', tuitions)
     },
-    updateStudent({ commit, state }, { id, ...student }) {
-      return axios
-        .put(STUDENT_API + id, student)
-        .then(student => {
-          commit('setStudent', student)
-          commit('receiveStudent', student)
-
-          alert.success('Update student successfully!')
-        })
-        .catch(e => alert.error(e))
+    async updateStudent({ commit, state }, { id, ...student }) {
+      student = await Student.update(id, student)
+      commit('setStudent', student)
+      return student
     },
     async removeStudent({ commit }, student) {
       if (student.user) {

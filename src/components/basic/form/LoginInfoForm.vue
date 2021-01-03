@@ -12,7 +12,7 @@
         ></v-text-field>
         <v-text-field
           v-model="email"
-          label="Email Học Sinh"
+          label="Email"
           outlined
           dense
           class="required"

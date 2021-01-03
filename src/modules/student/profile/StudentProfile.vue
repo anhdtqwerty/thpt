@@ -1,7 +1,11 @@
 <template>
-  <v-row class="px-md-3" v-if="student">
+  <v-row
+    :no-gutters="$vuetify.breakpoint.smAndDown"
+    class="px-md-3"
+    v-if="student"
+  >
     <div v-if="$vuetify.breakpoint.smAndDown">
-      <v-btn class="ma-2" depressed color="primary" @click="save()">Lưu</v-btn>
+      <v-btn class="ma-2" depressed color="primary" @click="save">Lưu</v-btn>
     </div>
     <v-col class="text-center" cols="12" md="4">
       <v-card class="pa-6" :flat="$vuetify.breakpoint.smAndDown">
@@ -14,7 +18,7 @@
           </tr>
           <tr>
             <td>Lớp</td>
-            <td>10A</td>
+            <td>{{ student.classes[0].title }}</td>
           </tr>
           <tr>
             <td>Trạng thái</td>
@@ -28,17 +32,17 @@
         <v-row no-gutters>
           <v-col cols="12" class="pa-4" md="9">
             <h3>1. Thông tin cơ bản</h3>
-            <student-general-form
-              ref="studentGeneralForm"
+            <student-general-form-edit
+              ref="studentGeneralFormEdit"
               :student="student"
-            ></student-general-form>
+            ></student-general-form-edit>
           </v-col>
           <v-col
             class="text-right"
             v-if="!$vuetify.breakpoint.smAndDown"
             md="3"
           >
-            <v-btn depressed color="primary">Lưu</v-btn>
+            <v-btn depressed color="primary" @click="save">Lưu</v-btn>
           </v-col>
           <v-col cols="12" class="pa-4" md="9">
             <h3>2. Thông tin liên lạc</h3>
@@ -68,7 +72,7 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import StudentGeneralForm from '@/components/basic/form/StudentGeneralForm.vue'
+import StudentGeneralFormEdit from '@/components/basic/form/StudentGeneralFormEdit.vue'
 import StudentContactForm from '@/components/basic/form/StudentContactForm.vue'
 import StudentNoteForm from '@/components/basic/form/StudentNoteForm.vue'
 import UserAvatarPicker from '@/components/basic/picker/UserAvatarPicker'
@@ -76,7 +80,7 @@ import StudentFamilyForm from '@/components/basic/form/StudentFamilyForm.vue'
 
 export default {
   components: {
-    StudentGeneralForm,
+    StudentGeneralFormEdit,
     UserAvatarPicker,
     StudentContactForm,
     StudentNoteForm,
@@ -91,44 +95,31 @@ export default {
       dialog: true,
     }
   },
-  computed: {
-    ...mapGetters('student', ['logs']),
-  },
-  created() {},
   methods: {
-    ...mapActions('student', ['updateStudent', 'fetchLogs']),
-    reset() {
-      this.$refs.form.reset()
-    },
-    resetValidation() {
-      this.$refs.form.resetValidation()
-    },
+    ...mapActions('student', ['updateStudent']),
     save() {
-      const studentGeneralForm = this.$refs.studentGeneralForm.getData()
+      const studentGeneralFormEdit = this.$refs.studentGeneralFormEdit.getData()
       const studentContactForm = this.$refs.studentContactForm.getData()
       const studentNoteForm = this.$refs.studentNoteForm.getData()
       const studentFamilyForm = this.$refs.studentFamilyForm.getData()
 
       this.updateStudent({
         id: this.student.id,
-        name: studentGeneralForm.name,
+        name: studentGeneralFormEdit.name,
         phone: studentContactForm.phone,
         address: studentContactForm.currentLive,
         notes: studentNoteForm.notes,
         email: studentContactForm.email,
-        gender: studentGeneralForm.gender,
-        dob: studentGeneralForm.dob,
+        gender: studentGeneralFormEdit.gender,
+        dob: studentGeneralFormEdit.dob,
         data: {
           ...this.student.data,
-          ...studentGeneralForm,
+          ...studentGeneralFormEdit,
           ...studentContactForm,
           ...studentFamilyForm,
           ...studentNoteForm,
         },
       })
-    },
-    cancel() {
-      this.state = false
     },
   },
 }
