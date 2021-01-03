@@ -96,33 +96,39 @@
               v-if="$vuetify.breakpoint.mdAndUp"
             ></drop-menu>
           </div>
-          <table class="mark-table">
-          <thead>
-            <tr>
-              <th rowspan="2">STT</th>
-              <th rowspan="2">Học sinh</th>
-              <th class="semseter-header" :colspan="semestersColSpan" v-for="semester in headers" :key="semester.id">{{ semester.text }}</th>
-            </tr>
-            <tr>
-              <template v-for="semester in headers">
-                <th v-for="factor in refrencesInfo.factors" :key="factor.id + semester.id" :colspan="factor.quantity">{{ factor.title }}</th>
-              </template>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(item, order) in items" :key="item.studentId">
-              <td>{{ order + 1 }}</td>
-              <td>{{ item.fullName }}</td>
-              <template v-for="semester in headers">
-                <template  v-for="factor in refrencesInfo.factors" >
-                  <td class="mark-td" v-for="index in factor.quantity" :key="factor.id + semester.id + index">
-                    {{ getValues(filterMarkByFactorAndSemeter(semester.id)(factor.id)(item.marks)[index - 1]) }}
-                  </td>
-                </template>
-              </template>
-            </tr>
-          </tbody>
-        </table>
+          <div class="table-container">
+            <table class="mark-table">
+              <thead>
+                <tr>
+                  <th rowspan="2">STT</th>
+                  <th rowspan="2">Học sinh</th>
+                  <th class="semseter-header" :colspan="semestersColSpan" v-for="semester in headers" :key="semester.id">{{ semester.text }}</th>
+                </tr>
+                <tr>
+                  <template v-for="semester in headers">
+                    <th v-for="factor in refrencesInfo.factors" :key="factor.id + semester.id" :colspan="factor.quantity">{{ factor.title }}</th>
+                  </template>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item, order) in items" :key="item.studentId">
+                  <td>{{ order + 1 }}</td>
+                  <td>{{ item.fullName }}</td>
+                  <template v-for="semester in headers">
+                    <template  v-for="factor in refrencesInfo.factors" >
+                      <td class="mark-td" v-for="index in factor.quantity" :key="factor.id + semester.id + index">
+                        {{
+                          filterInputs.subjectObj.markType === 'evaluate' 
+                          ? getEvaluateMark(filterMarkByFactorAndSemeter(semester.id)(factor.id)(item.marks)[index - 1])
+                          : getMark(filterMarkByFactorAndSemeter(semester.id)(factor.id)(item.marks)[index - 1])
+                        }}
+                      </td>
+                    </template>
+                  </template>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </template>
       </v-card-text>
     </v-card>
@@ -138,6 +144,30 @@ import AutocompleteSubject from '@/components/basic/input/AutocompleteSubject'
 import AutocompleteGrade from '@/components/basic/input/AutocompleteGrade'
 import { mapState, mapActions } from 'vuex'
 import { Semester, Factor } from '@/plugins/api'
+import {
+  mapPropObj,
+  accumulateMark
+} from './helpers'
+import scoreMixin from './mixins'
+
+const transformSemestersToHeader = item => ({
+  text: _.get(item, 'title'),
+  id: _.get(item, 'id'),
+  show: true,
+})
+
+const transformMarksToTableRecord = item => ({
+  studentId: _.get(item, 'student.id'),
+  fullName: _.get(item, 'student.name'),
+  mark: {
+    id: _.get(item, 'id'),
+    semesterId: _.get(item, 'semester.id'),
+    factorId: _.get(item, 'factor.id'),
+    multiply: _.get(item, 'factor.multiply', 1),
+    value: _.get(item, 'value'),
+  }
+})
+
 export default {
   components: {
     Breadcrumbs,
@@ -146,19 +176,9 @@ export default {
     AutocompleteSubject,
     AutocompleteGrade
   },
+  mixins: [ scoreMixin ],
   data() {
     return {
-      filterMode: 'normal',
-      filterOptions: {
-        normal: {
-          label: 'Tìm kiếm nâng cao',
-          icon: 'mdi-chevron-down',
-        },
-        advanced: {
-          label: 'Ẩn tìm kiếm nâng cao',
-          icon: 'mdi-chevron-up',
-        },
-      },
       filterInputs: {
         classObj: '',
         subjectObj: '',
@@ -169,6 +189,7 @@ export default {
       filterQuery: {},
       items: [],
       headers: [],
+      originHeaders: [],
       refrencesInfo: {
         semesters: [],
         factors: []
@@ -184,10 +205,17 @@ export default {
       }
     },
     marks(data) {
-      this.items = this.groupBy('studentId')(
-        this.generateDataTable(Object.values(data))
-      )
+      const groupedMark = _.groupBy(this.generateDataTable(Object.values(data)), 'studentId')
+      const accumulatedMark = mapPropObj(groupedMark)(accumulateMark)
+      this.items = Object.values(accumulatedMark)
     },
+    'refrencesInfo.semesters': {
+      handler (val) {
+        this.originHeaders = val.map(transformSemestersToHeader)
+        this.headers = val.map(transformSemestersToHeader)
+      },
+      immediate: true
+    }
   },
   computed: {
     ...mapState('mark', ['marks']),
@@ -199,20 +227,16 @@ export default {
     semestersColSpan () {
       const markNumber = this.refrencesInfo.factors.reduce((acc, item) => acc + Number(item.quantity), 0)
       return markNumber
-    },
-    originHeaders () {
-      return this.refrencesInfo.semesters.map(item => ({
-        text: item.title,
-        id: item.id,
-        show: true,
-      }))
     }
   },
   methods: {
     ...mapActions('mark', ['fetchMarks', 'updateMarks']),
-    getValues (obj) {
+    getEvaluateMark (obj) {
       if (!obj) return 'Không Đạt'
       return _.get(obj, 'value') ? 'Đạt' : 'Không Đạt'
+    },
+    getMark (obj) {
+      return _.get(obj, 'value', 0)
     },
     filterMarkByFactorAndSemeter: (semesterId) => (factorId) => (marks) => {
       return marks.filter(item => item.factorId === factorId && item.semesterId === semesterId)
@@ -220,35 +244,8 @@ export default {
     setOrderForMark(marks) {
       return marks.map((item, index) => ({ ...item, order: index + 1 }))
     },
-    groupBy: (field) => (marks) => {
-      let accumulatedFactor = []
-      if (marks.length > 0) {
-        const groupResult = marks.reduce((acc, item) => {
-          const compareField = item[field]
-          if (!acc[compareField]) {
-            acc[compareField] = { ...item }
-          } else {
-            acc[compareField].marks.push({ ...item.marks[0] })
-          }
-          return acc
-        }, {})
-        accumulatedFactor = Object.values(groupResult)
-      }
-      return accumulatedFactor
-    },
     generateDataTable(marks) {
-      return marks.map((item) => ({
-        studentId: item.student.id,
-        fullName: item.student.name,
-        marks: [
-          {
-            id: item.id,
-            semesterId: item.semester ? item.semester.id : undefined,
-            factorId: item.factor ? item.factor.id : undefined,
-            value: item.value,
-          },
-        ]
-      }))
+      return marks.map(transformMarksToTableRecord)
     },
     onChangeFilterMode() {
       if (this.filterMode === 'normal') {
@@ -259,7 +256,6 @@ export default {
     },
     onClickSearchButton () {
       const data = this.filterInputs
-      console.log(data)
       const classId = _.get(data, 'classObj.id')
       const subjectId = _.get(data, 'subjectObj.id')
       const studentId = _.get(data, 'studentObj.id')
@@ -295,7 +291,6 @@ export default {
     text-transform: uppercase;
   }
   .mark-table {
-    width: 100%;
     td, tr, th {
       border: 1px solid #E0E0E0;
     }
@@ -309,5 +304,9 @@ export default {
     }
     color: #212121;
     border-collapse: collapse;
+  }
+  .table-container {
+    overflow: auto;
+    max-width: 100%;
   }
 </style>
