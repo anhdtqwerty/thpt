@@ -53,7 +53,9 @@ export default {
   }),
   created() {
     if (this.student) {
-      this.reset()
+      this.currentLive = this.student.data.currentLive
+      this.province = this.student.data.province
+      this.district = this.student.data.district
     }
   },
   methods: {
@@ -68,17 +70,10 @@ export default {
       }
     },
     reset() {
-      this.currentLive = this.student.data.currentLive
-      this.province = this.student.data.province
-      this.district = this.student.data.district
+      this.$refs.form.reset()
     },
     resetValidation() {
       this.$refs.form.resetValidation()
-    },
-  },
-  watch: {
-    student(student) {
-      this.reset()
     },
   },
 }
