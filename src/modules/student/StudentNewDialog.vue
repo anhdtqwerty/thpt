@@ -15,16 +15,16 @@
        </v-card-title>
       <v-divider />
       <v-card-text>
-        <v-form ref="form" class="pa-6">
-          <h3>1. Thông tin cơ bản</h3>
+        <v-form ref="form" class="pa-2">
+          <h3 class="mb-2">1. Thông tin cơ bản</h3>
           <student-general-form ref="studentGeneralForm"></student-general-form>
-          <h3>2. Thông tin liên lạc</h3>
+          <h3 class="mb-2">2. Thông tin liên lạc</h3>
           <student-contact-form ref="studentContactForm"></student-contact-form>
-          <h3>3. Ghi chú về học sinh</h3>
+          <h3 class="mb-2">3. Ghi chú về học sinh</h3>
           <student-note-form ref="studentNoteForm"></student-note-form>
-          <h3>4. Thông tin gia đình</h3>
+          <h3 class="mb-2">4. Thông tin gia đình</h3>
           <student-family-form ref="studentFamilyForm"></student-family-form>
-          <h3>5. Thông tin đăng nhập</h3>
+          <h3 class="mb-2">5. Thông tin đăng nhập</h3>
           <login-info-form ref="loginInfoForm"></login-info-form>
         </v-form>
       </v-card-text>
@@ -122,6 +122,8 @@ export default {
         classes: this.classes,
         name: studentGeneralForm.name,
         username: studentGeneralForm.username,
+        username_indexing: studentGeneralForm.username_indexing,
+        username_no: studentGeneralForm.username_no,
         password: loginInfoForm.password,
         status: 'active',
         phone: loginInfoForm.phone,
@@ -137,22 +139,12 @@ export default {
           ...studentNoteForm,
         },
         ...overide,
+        type: 'student'
       })
       this.dialog = false
       this.reset()
       this.$router.push(`/student/${student.id}`)
       this.$emit('done', student)
-    },
-    async emailLostFocus() {
-      try {
-        this.loading += 1
-        if (this.email !== this.lastemail) {
-          this.emailError = await this.validateEmail(this.email)
-        }
-        this.lastemail = this.email
-      } finally {
-        this.loading -= 1
-      }
     },
     cancel() {
       this.dialog = false
@@ -160,12 +152,11 @@ export default {
       this.$emit('cancel')
     },
     reset() {
-      this.name = ''
-      this.username = ''
-      this.phone = ''
-      this.status = 'active'
-      this.password = ''
-      this.email = ''
+      this.$refs.studentGeneralForm.reset()
+      this.$refs.studentContactForm.reset()
+      this.$refs.studentNoteForm.reset()
+      this.$refs.studentFamilyForm.reset()
+      this.$refs.loginInfoForm.reset()
     },
   },
   watch: {
