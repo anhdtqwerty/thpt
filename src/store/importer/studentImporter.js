@@ -117,7 +117,9 @@ export default {
               : `random${Date.now()}@quanlylop.com`,
             username,
             username_indexing,
-            username_no
+            username_no,
+            gender: student.gender === 'Nữ' ? 'female' : 'male',
+            data: { ...student }
           })
         }
       }
