@@ -8,7 +8,6 @@
     @change="onChange"
     return-object
     v-on:input="$emit('input', $event)"
-    :rules="[v => !!v || 'Item is required']"
     @input="onChange"
   ></v-autocomplete>
 </template>
