@@ -6,12 +6,12 @@
   >
     <v-card>
       <v-card-title class="blue darken-4 white--text text-uppercase"
-        >Sửa {{violation.title}}
+        >Sửa Khen thưởng kỉ luật
         <v-spacer />
         <v-icon color="white" @click="cancel">close</v-icon>
       </v-card-title>
       <v-divider></v-divider>
-      <violation-edit-form v-bind:violation=violation ref="form" />
+      <violation-edit-form v-bind:violation="violation" ref="form" />
       <v-row class="pr-6 pb-6 mt-n7" no-gutters>
         <v-spacer></v-spacer>
         <v-btn
@@ -28,7 +28,7 @@
           depressed
           color="#0D47A1"
           :loading="loading"
-          @click="save"
+          @click="save()"
           >Lưu</v-btn
         >
       </v-row>
@@ -62,10 +62,13 @@ export default {
     async save() {
       this.loading = true
       const data = this.$refs.form.getData()
-      await this.updateViolation({id:this.violation.id, ...data })
-      await this.fetchViolation()
+      console.log(data)
+      await this.updateViolation({
+        id: this.violation.id,
+        class: this.classData,
+        ...data,
+      })
       this.$alert.success('Cập nhật thành công')
-      this.$refs.form.resetDefault()
       this.loading = false
       this.dialog = false
     },

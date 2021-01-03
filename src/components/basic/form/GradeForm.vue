@@ -2,14 +2,14 @@
   <v-form ref="form" flat class="pa-6">
     <v-text-field
       label="Tên khối mới"
-      v-model="grade.title"
+      v-model="title"
       dense
       outlined
       required
     ></v-text-field>
     <v-textarea
       ref="description"
-      v-model="grade.description"
+      v-model="description"
       label="Ghi chú"
       outlined
       dense
@@ -22,7 +22,8 @@ export default {
   components: {},
   data: () => ({
     valid: true,
-    description: ''
+    description: '',
+    title: ''
   }),
   computed: {
     ...mapGetters('app', ['department'])
@@ -50,9 +51,9 @@ export default {
       }
     },
     resetDefault() {
-      if (this.division) {
-        this.description = this.division.description
-        this.title = this.division.title
+      if (this.grade) {
+        this.description = this.grade.description
+        this.title = this.grade.title
       } else {
         this.title = ''
         this.description = ''
@@ -61,6 +62,11 @@ export default {
   },
   created() {
     this.resetDefault()
-  }
+  },
+   watch: {
+    grade() {
+      this.resetDefault()
+    },
+  },
 }
 </script>

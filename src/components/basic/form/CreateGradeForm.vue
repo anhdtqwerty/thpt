@@ -24,15 +24,13 @@ export default {
   data: () => ({
     valid: true,
     description: '',
-    ruleRequired: [v => !!v || 'Tên Khôi không được để trống'],
+    ruleRequired: [v => !!v || 'Tên Khối không được để trống'],
     title: ''
   }),
   computed: {
     ...mapGetters('app', ['department'])
   },
   props: {
-    grade: { type: Object, default: () => {} },
-    editCode: { type: Boolean, default: false }
   },
   methods: {
     reset() {

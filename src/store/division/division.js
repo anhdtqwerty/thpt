@@ -16,7 +16,7 @@ export default {
     async updateDivision({ commit }, { id, ...division }) {
       try {
         await Division.update(id, division)
-        commit('updateDivision', id)
+        commit('updateDivision', {id, division})
         alert.success('Cập nhật thành công!')
       } catch (e) {
         alert.error(e)
@@ -49,8 +49,9 @@ export default {
     createDivision(state, division) {
       state.divisions = [division, ...state.divisions]
     },
-    updateDivision(state, id) {
-      state.divisions = state.divisions.map(division => division.id !== id)
+    updateDivision(state, division) {
+      state.divisions = state.divisions.map(d =>  {if (division.id === d.id) return division.division
+      else return d})
     }
   }
 }

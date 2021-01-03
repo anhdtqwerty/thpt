@@ -45,6 +45,6 @@ export default {
     onEdit() {
       this.$emit('onEdit', this.selected)
     }
-  }
+  },
 }
 </script>
