@@ -13,7 +13,7 @@
           ]"
         />
       </v-col>
-      <v-col class="d-flex justify-end pt-4">
+      <v-col class="d-flex justify-end">
         <v-btn color="primary" @click="dialog = !dialog">
           <v-icon left>add</v-icon> Thêm
         </v-btn>
