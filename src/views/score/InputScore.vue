@@ -193,6 +193,11 @@ import AutocompleteFactor from '@/components/basic/input/AutocompleteFactor'
 import AutocompleteSemeter from '@/components/basic/input/AutocompleteSemester'
 import AutocompleteStudent from '@/components/basic/input/AutocompleteStudent'
 import { mapState, mapActions } from 'vuex'
+import {
+  mapPropObj,
+  accumulateMark
+} from './helpers'
+import scoreMixin from './mixins'
 export default {
   components: {
     Breadcrumbs,
@@ -202,19 +207,9 @@ export default {
     AutocompleteSemeter,
     AutocompleteStudent,
   },
+  mixins: [ scoreMixin ],
   data() {
     return {
-      filterMode: 'normal',
-      filterOptions: {
-        normal: {
-          label: 'Tìm kiếm nâng cao',
-          icon: 'mdi-chevron-down',
-        },
-        advanced: {
-          label: 'Ẩn tìm kiếm nâng cao',
-          icon: 'mdi-chevron-up',
-        },
-      },
       filterInputs: {
         classObj: '',
         subjectObj: '',
@@ -270,9 +265,9 @@ export default {
       }
     },
     marks(data) {
-      this.items = this.groupBy('studentId')(
-        this.generateDataTable(this.setOrderForMark(Object.values(data)))
-      )
+      const groupedMark = _.groupBy(this.generateDataTable(Object.values(data)), 'studentId')
+      const accumulatedMark = mapPropObj(groupedMark)(accumulateMark)
+      this.items = Object.values(accumulatedMark)
     },
   },
   computed: {
@@ -299,29 +294,11 @@ export default {
         studentId: item.student.id,
         fullName: item.student.name,
         dateOfBirth: item.student.dob,
-        marks: [
-          {
-            id: item.id,
-            value: item.value,
-          },
-        ],
+        mark: {
+          id: item.id,
+          value: item.value,
+        },
       }))
-    },
-    groupBy: (field) => (marks) => {
-      let accumulatedFactor = []
-      if (marks.length > 0) {
-        const groupResult = marks.reduce((acc, item) => {
-          const compareField = item[field]
-          if (!acc[compareField]) {
-            acc[compareField] = { ...item }
-          } else {
-            acc[compareField].marks.push({ ...item.marks[0] })
-          }
-          return acc
-        }, {})
-        accumulatedFactor = Object.values(groupResult)
-      }
-      return accumulatedFactor
     },
     findAndUpdate: (arr) => (key) => (value) => (fn) => {
       return arr.map((item) => (item[key] === value ? fn(item) : item))

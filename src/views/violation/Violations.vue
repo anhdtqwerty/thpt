@@ -1,9 +1,7 @@
 <template>
-  <div>
+  <div class=" pa-2">
     <v-row
-      :class="{
-        'px-2 mt-2': $vuetify.breakpoint.smAndDown,
-      }"
+      class="pa-4 pa-md-2 d-flex justify-space-between align-center"
       no-gutters
     >
       <v-col>
@@ -15,15 +13,15 @@
           ]"
         />
       </v-col>
-      <v-col class="d-flex justify-end pt-4">
+      <v-col class="d-flex justify-end">
         <v-btn color="primary" @click="dialog = !dialog">
           <v-icon left>add</v-icon> Thêm
         </v-btn>
       </v-col>
     </v-row>
 
-    <v-card class="pa-4 ma-md-2 elevation-1">
-      <v-row>
+    <v-card class="pa-2 elevation-1">
+      <v-row no-gutters class="mx-4">
         <v-col cols="12" md="11">
           <violation-filter
             v-if="$vuetify.breakpoint.mdAndUp"
@@ -168,21 +166,31 @@ export default {
   },
   async created() {
     await this.refresh({})
-    console.log(this.violations)
   },
   methods: {
     ...mapActions('violation', ['fetchViolation']),
     updateDraw(draw) {
       this.draw = draw
     },
-    refresh() {
-      this.fetchViolation()
-    },
     formatDate(item) {
       return get(item, 'createdAt', '')
         ? moment(item.createdAt).format('DD/MM/YYYY')
         : ''
-    }
+    },
+    async refresh(query) {
+      this.loading = true
+      try {
+        await this.fetchViolation({
+          ...query,
+          _limit: 9999,
+          _sort: 'createdAt:desc'
+        })
+      } catch (err) {
+        console.log(err)
+      } finally {
+        this.loading = false
+      }
+    },
   },
 }
 </script>

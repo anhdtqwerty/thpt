@@ -25,7 +25,7 @@
           <v-col class="pa-0" cols="6">
             <date-picker
               :disabled="!isYoung"
-              v-model="youngJoinedDate"
+              :date.sync="youngJoinedDate"
               label="Ngày vào Đội"
               outlined
               dense
@@ -43,7 +43,7 @@
           <v-col class="pa-0" cols="6">
             <date-picker
               :disabled="!isCommunist"
-              v-model="communistJoinedDate"
+              :date.sync="communistJoinedDate"
               label="Ngày vào Đoàn"
               dense
               outlined
@@ -79,7 +79,10 @@ export default {
   }),
   created() {
     if (this.student) {
-      this.reset()
+      this.notes = this.student.notes
+      this.changeNotes = this.student.data.changeNotes
+      this.youngJoinedDate = this.student.data.youngJoinedDate
+      this.communistJoinedDate = this.student.data.communistJoinedDate
     }
   },
   methods: {
@@ -95,18 +98,10 @@ export default {
       }
     },
     reset() {
-      this.notes = this.student.notes
-      this.changeNotes = this.student.data.changeNotes
-      this.youngJoinedDate = this.student.data.youngJoinedDate
-      this.communistJoinedDate = this.student.data.communistJoinedDate
+      this.$refs.form.reset()
     },
     resetValidation() {
       this.$refs.form.resetValidation()
-    },
-  },
-  watch: {
-    student(student) {
-      this.reset()
     },
   },
 }

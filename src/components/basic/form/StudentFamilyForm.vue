@@ -77,7 +77,12 @@ export default {
   }),
   created() {
     if (this.student) {
-      this.reset()
+      this.dadName = this.student.data.dadName
+      this.dadEmail = this.student.data.dadEmail
+      this.dadPhone = this.student.data.dadPhone
+      this.momName = this.student.data.momName
+      this.momEmail = this.student.data.momEmail
+      this.momPhone = this.student.data.momPhone
     }
   },
   methods: {
@@ -95,20 +100,10 @@ export default {
       }
     },
     reset() {
-      this.dadName = this.student.data.dadName
-      this.dadEmail = this.student.data.dadEmail
-      this.dadPhone = this.student.data.dadPhone
-      this.momName = this.student.data.momName
-      this.momEmail = this.student.data.momEmail
-      this.momPhone = this.student.data.momPhone
+      this.$refs.form.reset()
     },
     resetValidation() {
       this.$refs.form.resetValidation()
-    },
-  },
-  watch: {
-    student(student) {
-      this.reset()
     },
   },
 }
