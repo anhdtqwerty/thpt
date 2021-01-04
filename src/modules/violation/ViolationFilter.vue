@@ -1,6 +1,6 @@
 <template>
   <v-form>
-    <v-row :class="{ 'mt-7': $vuetify.breakpoint.smAndDown }" no-gutters>
+    <v-row :class="{ 'mt-7': $vuetify.breakpoint.smAndDown }">
       <v-col cols="12" md="10">
         <v-row>
           <v-col
@@ -9,8 +9,7 @@
             md="4"
           >
             <autocomplete-class
-              item-text="name"
-              item-value="id"
+              v-model="classData"
               clear-icon="mdi-close"
               clearable
               placeholder="Lớp"
@@ -27,6 +26,7 @@
             md="4"
           >
             <DateRangeIOSPicker
+              :date-range.sync="dateRange"
               placeholder="Ngày"
               filled
               outline
@@ -65,6 +65,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import moment from 'moment'
 import AutocompleteStudent from '@/components/basic/input/AutocompleteStudent.vue'
 import AutocompleteClass from '@/components/basic/input/AutocompleteClass.vue'
 import DateRangeIOSPicker from '@/components/basic/picker/DateRangeIOSPicker.vue'
@@ -77,27 +78,53 @@ export default {
   },
   data: () => ({
     student: {},
-    class: '',
+    classData: '',
     tags: '',
-    student:'',
+    student: '',
+    query: '',
+    time: null,
+    createdAt_gt: '',
+    createdAt_lt: '',
+    dateRange: [],
   }),
   computed: {
     ...mapState('constant', ['classStatus']),
   },
   methods: {
     onFilterChanged() {
-      this.$emit('onFilterChanged', {
-        dialog: false,
-        class: this.class,
+       console.log({
+        class: this.classData,
         student: this.student,
+        dateRange: this.dateRange,
+        _sort: 'createdAt:desc'
+      })
+      this.createdAt_gt = ''
+      this.createdAt_lt = ''
+      if (this.dateRange.length > 1) {
+        this.createdAt_gt = moment(this.dateRange[0], 'DD/MM/YYYY').toISOString()
+        this.createdAt_lt = moment(this.dateRange[1], 'DD/MM/YYYY')
+          .add(1, 'd')
+          .toISOString()
+      } else if (this.dateRange.length > 0) {
+        this.createdAt_gt = moment(this.dateRange[0], 'DD/MM/YYYY').toISOString()
+        this.createdAt_lt = moment(this.dateRange[0], 'DD/MM/YYYY')
+          .add(1, 'd')
+          .toISOString()
+      }
+      this.$emit('onFilterChanged', {
+        class: this.classData.id,
+        student: this.student.id,
+        createdAt_gt: this.createdAt_gt,
+        createdAt_lt: this.createdAt_lt,
         _sort: 'createdAt:desc',
       })
+      this.reset()
     },
     reset() {
-      this.how = false
-      this.query = ''
-      this.class = ''
-    },
+      this.classData = ''
+      this.student = ''
+      this.dateRange = []
+    }
   },
 }
 </script>
