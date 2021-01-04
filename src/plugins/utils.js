@@ -253,7 +253,10 @@ export default {
     return str.trim().toLocaleLowerCase()
   },
   generateUserName(name = '') {
-    const nameArr = name.split(' ')
+    let nameArr = name.split(' ')
+    if (nameArr[nameArr.length - 1].length === 1) {
+      nameArr = nameArr.splice(-1, 1)
+    }
     return nameArr
       .slice(0, nameArr.length - 1)
       .reduce((pre, cur) => pre + cur[0], nameArr[nameArr.length - 1])

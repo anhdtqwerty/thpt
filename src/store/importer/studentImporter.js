@@ -55,7 +55,6 @@ export default {
       }
     },
     async validateStudents({ commit, state, dispatch }) {
-      commit('setLoading', true)
       for (let student of state.students) {
         student.uploadStatus = 'validate'
         commit('receiveStudent', student)
@@ -81,7 +80,6 @@ export default {
 
         commit('receiveStudent', student)
       }
-      commit('setLoading', false)
       alert.success('Students Validated')
     },
     async migrateStudents({ commit, state, rootState, dispatch }) {
@@ -117,7 +115,9 @@ export default {
               : `random${Date.now()}@quanlylop.com`,
             username,
             username_indexing,
-            username_no
+            username_no,
+            gender: student.gender === 'Nữ' ? 'female' : 'male',
+            data: { ...student }
           })
         }
       }

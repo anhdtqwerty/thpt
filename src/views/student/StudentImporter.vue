@@ -10,7 +10,6 @@
         append-icon="file"
         style="max-width:300px"
       ></v-file-input>
-      <v-spacer />
       <v-btn
         depressed
         color="primary"
