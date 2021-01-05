@@ -9,17 +9,18 @@
         ]"
       />
     </div>
-    <v-card class="pa-2 pa-md-4 ma-md-2 elevation-1 mb-5">
-      <v-card-text class="px-5">
-        <v-row>
+    <v-card class="px-2 px-md-4 mx-md-2 elevation-1 mb-2">
+      <v-card-text class="px-2">
+        <v-row no-gutters>
           <v-col cols="12">
             <v-row class="basic-filter" v-if="filterMode === 'normal'">
-              <v-col cols="12" md="4">
+              <v-col cols="12" md="3">
                 <autocomplete-class
                   placeholder="Chọn lớp"
                   filled
                   dense
                   @change="filterInputs.classObj = $event"
+                  hide-details
                 />
               </v-col>
               <v-col cols="12" md="3">
@@ -28,6 +29,7 @@
                   placeholder="Chọn môn học"
                   filled
                   dense
+                  hide-details
                   @change="filterInputs.subjectObj = $event"
                 />
               </v-col>
@@ -36,9 +38,11 @@
                   placeholder="Chọn đầu điểm"
                   filled
                   dense
+                  hide-details
                   @change="filterInputs.factorObj = $event"
                 />
               </v-col>
+              <v-col cols="0" md="1" class="pa-0 ma-0"></v-col>
               <v-col cols="12" md="2">
                 <v-btn
                   color="primary"
@@ -69,6 +73,7 @@
                   placeholder="Chọn học kỳ"
                   filled
                   dense
+                  hide-details
                   @change="filterInputs.semesterObj = $event"
                 />
               </v-col>
@@ -77,6 +82,7 @@
                   placeholder="Chọn lớp"
                   filled
                   dense
+                  hide-details
                   @change="filterInputs.classObj = $event"
                 />
               </v-col>
@@ -86,6 +92,7 @@
                   placeholder="Chọn môn học"
                   filled
                   dense
+                  hide-details
                   @change="filterInputs.subjectObj = $event"
                 />
               </v-col>
@@ -94,6 +101,7 @@
                   placeholder="Chọn đầu điểm"
                   filled
                   dense
+                  hide-details
                   @change="filterInputs.factorObj = $event"
                 />
               </v-col>
