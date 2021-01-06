@@ -102,11 +102,13 @@
                 <tr>
                   <th rowspan="2">STT</th>
                   <th rowspan="2">Học sinh</th>
-                  <th class="semseter-header" :colspan="semestersColSpan" v-for="semester in headers" :key="semester.id">{{ semester.text }}</th>
+                  <th class="semseter-header" :rowspan="semester.rowspan" :colspan="semester.expand" v-for="semester in headers" :key="semester.id">{{ semester.text }}</th>
                 </tr>
                 <tr>
                   <template v-for="semester in headers">
-                    <th v-for="factor in refrencesInfo.factors" :key="factor.id + semester.id" :colspan="factor.quantity">{{ factor.title }}</th>
+                    <template v-if="semester.type !== 'year'">
+                      <th v-for="factor in refrencesInfo.factors" :key="factor.id + semester.id" :colspan="factor.quantity">{{ factor.title }}</th>
+                    </template>
                   </template>
                 </tr>
               </thead>
@@ -114,16 +116,26 @@
                 <tr v-for="(item, order) in items" :key="item.studentId">
                   <td>{{ order + 1 }}</td>
                   <td>{{ item.fullName }}</td>
-                  <template v-for="semester in headers">
-                    <template  v-for="factor in refrencesInfo.factors" >
-                      <td class="mark-td" v-for="index in factor.quantity" :key="factor.id + semester.id + index">
-                        {{
-                          filterInputs.subjectObj.markType === 'evaluate' 
-                          ? getEvaluateMark(filterMarkByFactorAndSemeter(semester.id)(factor.id)(item.marks)[index - 1])
-                          : getMark(filterMarkByFactorAndSemeter(semester.id)(factor.id)(item.marks)[index - 1])
-                        }}
-                      </td>
+                  <template v-for="(semester, indexSemester) in headers">
+                    <template v-if="semester.type !== 'year'">
+                      <template v-for="(factor, indexFactor) in refrencesInfo.factors" >
+                        <td class="mark-td" v-for="index in factor.quantity" :key="`${indexFactor}-${indexSemester}-${index}`">
+                          {{
+                            filterInputs.subjectObj.markType === 'evaluate'
+                            ? getEvaluateMark(filterMarkByFactorAndSemeter(semester.type)(factor.id)(item.marks)[index - 1])
+                            : getMark(filterMarkByFactorAndSemeter(semester.type)(factor.id)(item.marks)[index - 1])
+                          }}
+                        </td>
+                      </template>
                     </template>
+                    <template v-else>
+                      <td class="mark-td" :key="`${indexSemester}`">
+                          {{
+                            getMark(filterMarkByFactorAndSemeter('year')('avgYear')(item.marks))
+                          }}
+                        </td>
+                    </template>
+                    
                   </template>
                 </tr>
               </tbody>
@@ -146,13 +158,15 @@ import { mapState, mapActions } from 'vuex'
 import { Semester, Factor } from '@/plugins/api'
 import {
   mapPropObj,
-  accumulateMark
+  accumulateMark,
+  evaluateAvgMark
 } from './helpers'
 import scoreMixin from './mixins'
 
 const transformSemestersToHeader = item => ({
   text: _.get(item, 'title'),
   id: _.get(item, 'id'),
+  type: _.get(item, 'type'),
   show: true,
 })
 
@@ -162,12 +176,16 @@ const transformMarksToTableRecord = item => ({
   mark: {
     id: _.get(item, 'id'),
     semesterId: _.get(item, 'semester.id'),
+    semesterType: _.get(item, 'semester.type'),
     factorId: _.get(item, 'factor.id'),
     multiply: _.get(item, 'factor.multiply', 1),
     value: _.get(item, 'value'),
   }
 })
 
+const filterMarkSemester = marks => semesterType => {
+  return marks.filter(mark => mark.semesterType === semesterType)
+}
 export default {
   components: {
     Breadcrumbs,
@@ -206,15 +224,34 @@ export default {
     },
     marks(data) {
       const groupedMark = _.groupBy(this.generateDataTable(Object.values(data)), 'studentId')
-      const accumulatedMark = mapPropObj(groupedMark)(accumulateMark)
-      this.items = Object.values(accumulatedMark)
+      const markGroupByStudent = mapPropObj(groupedMark)(accumulateMark)
+      const computedAvgMark = mapPropObj(markGroupByStudent)(student => {
+        const avgSemester1 = evaluateAvgMark(filterMarkSemester(student.marks)('semester-1'))
+        const avgSemester2 = evaluateAvgMark(filterMarkSemester(student.marks)('semester-2'))
+        const avgYear = avgSemester1 + 2 * avgSemester2
+        return {
+          ...student,
+          marks: [ ...student.marks, { semesterType: 'year', factorId: 'avgYear', value: avgYear } ]
+        }
+      })
+      this.items = Object.values(computedAvgMark)
     },
-    'refrencesInfo.semesters': {
+    refrencesInfo: {
       handler (val) {
-        this.originHeaders = val.map(transformSemestersToHeader)
-        this.headers = val.map(transformSemestersToHeader)
+        const markNumber = val.factors.reduce((acc, item) => acc + Number(item.quantity), 0)
+        this.originHeaders = val.semesters.map(transformSemestersToHeader).map(item => ({ ...item, expand: markNumber }))
+        this.originHeaders.push({
+          text: 'Cả năm',
+          id: Date.now(),
+          expand: 1,
+          show: true,
+          type: 'year',
+          rowspan: 2
+        })
+        this.headers = this.originHeaders.map(x => x)
       },
-      immediate: true
+      immediate: true,
+      deep: true
     }
   },
   computed: {
@@ -223,10 +260,6 @@ export default {
       const subjectTitle = _.get(this.filterInputs, 'subjectObj.title')
       const classTitle = _.get(this.filterInputs, 'classObj.title')
       return `Bảng điểm ${[subjectTitle, classTitle].filter(Boolean).join(' - ')}`
-    },
-    semestersColSpan () {
-      const markNumber = this.refrencesInfo.factors.reduce((acc, item) => acc + Number(item.quantity), 0)
-      return markNumber
     }
   },
   methods: {
@@ -238,8 +271,8 @@ export default {
     getMark (obj) {
       return _.get(obj, 'value', 0)
     },
-    filterMarkByFactorAndSemeter: (semesterId) => (factorId) => (marks) => {
-      return marks.filter(item => item.factorId === factorId && item.semesterId === semesterId)
+    filterMarkByFactorAndSemeter: (semesterType) => (factorId) => (marks) => {
+      return marks.filter(item => item.factorId === factorId && item.semesterType === semesterType)
     },
     setOrderForMark(marks) {
       return marks.map((item, index) => ({ ...item, order: index + 1 }))

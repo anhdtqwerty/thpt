@@ -11,3 +11,13 @@ export const accumulateMark = marks => {
     return { ...info, marks: [...acc.marks, mark] }
   }, { marks: [] })
 }
+export const evaluateAvgMark = marks => {
+  let markNumber = 0
+  let sumMark = 0
+  marks.forEach(mark => {
+    markNumber += mark.multiply
+    sumMark += mark.multiply * mark.value
+  })
+  const avg = sumMark / markNumber
+  return Math.floor(avg * 100) / 100
+}
