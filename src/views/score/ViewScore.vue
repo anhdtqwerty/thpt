@@ -9,9 +9,9 @@
         ]"
       />
     </div>
-    <v-card class="pa-2 pa-md-4 ma-md-2 elevation-1 mb-5">
-      <v-card-text class="px-5">
-        <v-row>
+    <v-card  class="px-2 px-md-4 mx-md-2 elevation-1 mb-2">
+      <v-card-text class="px-2">
+        <v-row no-gutters>
           <v-col cols="12">
             <v-row class="basic-filter" v-if="filterMode === 'normal'">
               <v-col cols="12" md="4">
@@ -19,18 +19,21 @@
                   placeholder="Chọn lớp"
                   filled
                   dense
+                  hide-details
                   @change="filterInputs.classObj = $event"
                 />
               </v-col>
-              <v-col cols="12" md="3">
+              <v-col cols="12" md="4">
                 <autocomplete-subject
                   return-object
                   placeholder="Chọn môn học"
                   filled
                   dense
+                  hide-details
                   @change="filterInputs.subjectObj = $event"
                 />
               </v-col>
+              <v-col cols="0" md="2" class="pa-0 ma-0"></v-col>
               <v-col cols="12" md="2">
                 <v-btn color="primary" style="width: 100%" @click="onClickSearchButton">Tìm kiếm</v-btn>
               </v-col>
@@ -55,6 +58,7 @@
                   placeholder="Chọn khối"
                   filled
                   dense
+                  hide-details
                   @change="filterInputs.gradeObj = $event"
                 />
               </v-col>
@@ -63,6 +67,7 @@
                   placeholder="Chọn lớp"
                   filled
                   dense
+                  hide-details
                   @change="filterInputs.classObj = $event"
                 />
               </v-col>
@@ -72,6 +77,7 @@
                   placeholder="Chọn môn học"
                   filled
                   dense
+                  hide-details
                   @change="filterInputs.subjectObj = $event"
                 />
               </v-col>
