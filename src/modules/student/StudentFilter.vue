@@ -30,6 +30,7 @@
         <date-picker
           placeholder="Ngày sinh"
           filled
+          dense
           hide-details
           outline
           :date.sync="dob"

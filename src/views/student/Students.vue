@@ -1,12 +1,12 @@
 <template>
   <div>
-    <div class="pa-4 pa-md-2 d-flex justify-space-between align-center">
+    <div class="pa-4 d-flex justify-space-between align-center">
       <div>
         <Breadcrumbs
           headline="Danh sách"
           :link="[
             { text: 'Học sinh' },
-            { text: 'Danh sách', href: '../students' }
+            { text: 'Danh sách', href: '../students' },
           ]"
         />
       </div>
@@ -26,7 +26,7 @@
       </div>
     </div>
 
-    <v-card class="pa-2 pa-md-4 ma-md-2 elevation-1">
+    <v-card class="px-6 ma-md-4 elevation-1">
       <v-data-table
         item-key="id"
         :options.sync="studentTableOptions"
@@ -36,13 +36,18 @@
         :loading="loading"
         :items-per-page="10"
         :footer-props="{
-          itemsPerPageOptions: [5, 10, 15, 20, 30]
+          itemsPerPageOptions: [5, 10, 15, 20, 30],
         }"
         v-model="selected"
         show-select
         dense
       >
-        <div slot="top" class="d-flex mb-4">
+        <div slot="top" class="mb-10">
+          <drop-menu
+            :default-headers="originHeaders"
+            @change="headers = $event"
+            v-if="$vuetify.breakpoint.mdAndUp"
+          ></drop-menu>
           <div class="ma-1" v-if="$vuetify.breakpoint.mdAndUp">
             <student-filter @onFilterChanged="refresh"></student-filter>
           </div>
@@ -55,11 +60,6 @@
             >
               <v-icon right>mdi-filter-outline</v-icon>
             </v-btn>
-            <drop-menu
-              :default-headers="originHeaders"
-              @change="headers = $event"
-              v-if="$vuetify.breakpoint.mdAndUp"
-            ></drop-menu>
           </div>
         </div>
         <template v-slot:[`item.name`]="{ item }">
@@ -109,7 +109,7 @@ const originHeaders = [
     value: 'name',
     align: 'left',
     sortable: false,
-    show: true
+    show: true,
   },
   { text: 'Lớp', value: 'classes', align: 'left', sortable: false, show: true },
   {
@@ -117,36 +117,36 @@ const originHeaders = [
     value: 'dob',
     align: 'left',
     sortable: false,
-    show: true
+    show: true,
   },
   {
     text: 'Giới tính',
     value: 'gender',
     align: 'left',
     sortable: false,
-    show: true
+    show: true,
   },
   {
     text: 'Trạng thái',
     value: 'status',
     align: 'left',
     sortable: false,
-    show: true
+    show: true,
   },
   {
     text: 'Ghi chú',
     value: 'notes',
     align: 'left',
     sortable: false,
-    show: true
+    show: true,
   },
   {
     text: 'Hành động',
     value: 'action',
     align: 'left',
     sortable: false,
-    show: true
-  }
+    show: true,
+  },
 ]
 export default {
   components: {
@@ -156,10 +156,10 @@ export default {
     StudentFilter,
     StudentFilterDialog,
     Breadcrumbs,
-    StudentListActions
+    StudentListActions,
   },
   props: {
-    role: String
+    role: String,
   },
   data() {
     return {
@@ -171,7 +171,7 @@ export default {
       loading: true,
       statuses: [
         { text: 'Active', value: 'false' },
-        { text: 'Blocked', value: 'true' }
+        { text: 'Blocked', value: 'true' },
       ],
       range: { from: null, to: null },
       previewUserId: null,
@@ -179,7 +179,7 @@ export default {
       studentTableOptions: {},
       createState: false,
       filterState: false,
-      selected: []
+      selected: [],
     }
   },
   async created() {
@@ -194,7 +194,7 @@ export default {
       } else {
         return 'Thêm học sinh'
       }
-    }
+    },
   },
   methods: {
     ...mapActions('students', [
@@ -202,7 +202,7 @@ export default {
       'searchStudents',
       'updateStudent',
       'removeStudents',
-      'fetchStudents'
+      'fetchStudents',
     ]),
     updateDraw(draw) {
       this.draw = draw
@@ -222,7 +222,7 @@ export default {
           await this.removeStudents(this.selected)
           this.selected = []
           this.$emit('removed')
-        }
+        },
       })
     },
     async refresh(query) {
@@ -233,13 +233,13 @@ export default {
     getTuitionStatus(leads) {
       if (!leads) return ''
       return leads
-        .map(lead => {
+        .map((lead) => {
           return lead.liabilities
         })
         .reduce((a, b) => a + b, 0) >= 0
         ? ''
         : 'Nợ'
-    }
+    },
   },
   watch: {
     studentTableOptions: {
@@ -250,12 +250,12 @@ export default {
         if (pageChanged || itemPerPageChanged) {
           this.requestPageSettings({
             page: newOptions.page,
-            itemsPerPage: newOptions.itemsPerPage
+            itemsPerPage: newOptions.itemsPerPage,
           })
         }
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
   filters: {
     getStatus(status) {
@@ -268,10 +268,10 @@ export default {
     },
     getClasses(classes) {
       if (classes && classes.length > 0) {
-        return classes.map(c => c.title).join(' ,')
+        return classes.map((c) => c.title).join(' ,')
       } else return ''
-    }
-  }
+    },
+  },
 }
 </script>
 <style scoped>
