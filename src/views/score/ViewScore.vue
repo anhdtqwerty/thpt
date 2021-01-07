@@ -141,7 +141,6 @@
                           }}
                         </td>
                     </template>
-                    
                   </template>
                 </tr>
               </tbody>
@@ -164,11 +163,26 @@ import { mapState, mapActions } from 'vuex'
 import { Semester, Factor } from '@/plugins/api'
 import {
   mapPropObj,
-  accumulateMark,
-  evaluateAvgMark
+  evaluateAvgMark,
+  toggle,
+  getMultiplePath,
+  pipe,
+  trace
 } from './helpers'
 import scoreMixin from './mixins'
 
+const CONSTANTS = {
+  MARK_PASS: 'Đạt',
+  MARK_FAIL: 'Không Đạt',
+  FILTER_MODE_NORMAL: 'normal',
+  FILTER_MODE_ADVANCED: 'advanced',
+  SEMESTER_1: 'semester-1',
+  SEMESTER_2: 'semester-2',
+  SEMESTER_YEAR: 'year',
+  FACTOR_YEAR_ID: 'avgYear',
+  MULTIPLIER_1: 1,
+  MULTIPLIER_2: 2
+}
 const transformSemestersToHeader = item => ({
   text: _.get(item, 'title'),
   id: _.get(item, 'id'),
@@ -189,9 +203,51 @@ const transformMarksToTableRecord = item => ({
   }
 })
 
-const filterMarkSemester = marks => semesterType => {
+const accumulateMark = marks => {
+  return marks.reduce((acc, item) => {
+    const { mark, ...info } = item
+    return { ...info, marks: [...acc.marks, mark] }
+  }, { marks: [] })
+}
+
+const filterMarkSemester = semesterType => marks => {
   return marks.filter(mark => mark.semesterType === semesterType)
 }
+
+const computeAvgMarkSemester = semesterType => pipe(
+  filterMarkSemester(semesterType),
+  evaluateAvgMark
+)
+const computeAvgMarkSemester1 = computeAvgMarkSemester(CONSTANTS.SEMESTER_1)
+const computeAvgMarkSemester2 = computeAvgMarkSemester(CONSTANTS.SEMESTER_2)
+
+const computedAvgMarkForEachStudent = ({ marks, ...info }) => {
+  const avgSemester1 = computeAvgMarkSemester1(marks)
+  const avgSemester2 = computeAvgMarkSemester2(marks)
+  const avgYear = CONSTANTS.MULTIPLIER_1 * avgSemester1 + CONSTANTS.MULTIPLIER_2 * avgSemester2
+  const yearMarkObj = {
+    semesterType: CONSTANTS.SEMESTER_YEAR,
+    factorId: CONSTANTS.FACTOR_YEAR_ID,
+    value: avgYear
+  }
+  return {
+    ...info,
+    marks: [ ...marks, yearMarkObj ]
+  }
+}
+
+const formatMarks = marks => marks.map(transformMarksToTableRecord)
+const groupMarkByStudentId = marks => _.groupBy(marks, 'studentId')
+const reduceMarkByStudent = marksByStudentObj => mapPropObj(marksByStudentObj)(accumulateMark)
+const computeAvgMark = marksByStudentObj => mapPropObj(marksByStudentObj)(computedAvgMarkForEachStudent)
+
+const handleMarkFlow = pipe(
+  formatMarks,
+  groupMarkByStudentId,
+  reduceMarkByStudent,
+  computeAvgMark
+)
+
 export default {
   components: {
     Breadcrumbs,
@@ -229,23 +285,13 @@ export default {
       }
     },
     marks(data) {
-      const groupedMark = _.groupBy(this.generateDataTable(Object.values(data)), 'studentId')
-      const markGroupByStudent = mapPropObj(groupedMark)(accumulateMark)
-      const computedAvgMark = mapPropObj(markGroupByStudent)(student => {
-        const avgSemester1 = evaluateAvgMark(filterMarkSemester(student.marks)('semester-1'))
-        const avgSemester2 = evaluateAvgMark(filterMarkSemester(student.marks)('semester-2'))
-        const avgYear = avgSemester1 + 2 * avgSemester2
-        return {
-          ...student,
-          marks: [ ...student.marks, { semesterType: 'year', factorId: 'avgYear', value: avgYear } ]
-        }
-      })
-      this.items = Object.values(computedAvgMark)
+      const marks = Object.values(data)
+      this.items = Object.values(handleMarkFlow(marks))
     },
     refrencesInfo: {
-      handler (val) {
-        const markNumber = val.factors.reduce((acc, item) => acc + Number(item.quantity), 0)
-        this.originHeaders = val.semesters.map(transformSemestersToHeader).map(item => ({ ...item, expand: markNumber }))
+      handler ({ factors, semesters }) {
+        const markNumber = factors.reduce((acc, item) => acc + Number(item.quantity), 0)
+        this.originHeaders = semesters.map(transformSemestersToHeader).map(item => ({ ...item, expand: markNumber }))
         this.originHeaders.push({
           text: 'Cả năm',
           id: Date.now(),
@@ -271,8 +317,8 @@ export default {
   methods: {
     ...mapActions('mark', ['fetchMarks', 'updateMarks']),
     getEvaluateMark (obj) {
-      if (!obj) return 'Không Đạt'
-      return _.get(obj, 'value') ? 'Đạt' : 'Không Đạt'
+      if (!obj) return CONSTANTS.MARK_FAIL
+      return _.get(obj, 'value') ? CONSTANTS.MARK_PASS : CONSTANTS.MARK_FAIL
     },
     getMark (obj) {
       return _.get(obj, 'value', 0)
@@ -280,25 +326,22 @@ export default {
     filterMarkByFactorAndSemeter: (semesterType) => (factorId) => (marks) => {
       return marks.filter(item => item.factorId === factorId && item.semesterType === semesterType)
     },
-    setOrderForMark(marks) {
-      return marks.map((item, index) => ({ ...item, order: index + 1 }))
-    },
-    generateDataTable(marks) {
-      return marks.map(transformMarksToTableRecord)
-    },
     onChangeFilterMode() {
-      if (this.filterMode === 'normal') {
-        this.filterMode = 'advanced'
-      } else {
-        this.filterMode = 'normal'
-      }
+      this.filterMode = toggle(CONSTANTS.FILTER_MODE_NORMAL, CONSTANTS.FILTER_MODE_ADVANCED)(this.filterMode)
     },
     onClickSearchButton () {
-      const data = this.filterInputs
-      const classId = _.get(data, 'classObj.id')
-      const subjectId = _.get(data, 'subjectObj.id')
-      const studentId = _.get(data, 'studentObj.id')
-      const gradeId = _.get(data, 'gradeObj.id')
+      const [
+        classId,
+        subjectId,
+        studentId,
+        gradeId
+      ] = getMultiplePath([
+        'classObj.id',
+        'subjectObj.id',
+        'studentObj.id',
+        'gradeObj.id'
+      ])(this.filterInputs)
+
       if (subjectId && classId) {
         this.fetchMarks({
           class: classId,
@@ -310,12 +353,14 @@ export default {
     }
   },
   created () {
-    Semester.fetch({}).then(data => {
-      this.refrencesInfo.semesters = data
-    })
-    Factor.fetch({}).then(data => {
-      this.refrencesInfo.factors = data
-    })
+    Promise.all([
+      Semester.fetch({}),
+      Factor.fetch({})
+    ])
+      .then(([semesters, factors]) => {
+        this.refrencesInfo.semesters = semesters
+        this.refrencesInfo.factors = factors
+      })
   }
 }
 </script>
