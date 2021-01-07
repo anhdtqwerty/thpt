@@ -33,6 +33,7 @@
           dense
           hide-details
           outline
+          dense
           :date.sync="dob"
         ></date-picker>
       </v-col>
