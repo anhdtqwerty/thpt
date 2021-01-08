@@ -1,51 +1,39 @@
 <template>
-  <v-form>
-    <v-row :class="{ 'mt-7': $vuetify.breakpoint.smAndDown }">
+  <v-form ref="form">
+    <v-row no-gutters>
       <v-col cols="12" md="10">
-        <v-row>
-          <v-col
-            :class="{ 'py-0': $vuetify.breakpoint.mdAndUp }"
-            cols="12"
-            md="4"
-          >
-            <autocomplete-class
-              v-model="classData"
-              clear-icon="mdi-close"
+        <v-row no-gutters>
+          <v-col cols="12" md="4">
+            <autocomplete-student
+              v-model="student"
+              item-text="name"
               clearable
-              placeholder="Lớp"
-              filled
+              clear-icon="mdi-close"
+              outlined
+              placeholder="Tên học sinh"
+              item-value="id"
               dense
               deletable-chips
               :hide-details="$vuetify.breakpoint.smAndDown"
               :class="{ 'mb-4': $vuetify.breakpoint.smAndDown }"
             />
           </v-col>
-          <v-col
-            :class="{ 'py-0': $vuetify.breakpoint.mdAndUp }"
-            cols="12"
-            md="4"
-          >
+          <v-col cols="12" md="4">
             <DateRangeIOSPicker
               :date-range.sync="dateRange"
               placeholder="Ngày"
-              filled
-              outline
+              outlined
             />
           </v-col>
-          <v-col
-            :class="{ 'py-0': $vuetify.breakpoint.mdAndUp }"
-            cols="12"
-            md="4"
-          >
-            <autocomplete-student
-              v-model="student"
-              item-text="name"
-              clearable
+          <v-col cols="12" md="4">
+            <autocomplete-class
+              v-model="classData"
               clear-icon="mdi-close"
-              filled
-              placeholder="Tên học sinh"
-              item-value="id"
+              clearable
+              placeholder="Lớp"
+              outlined
               dense
+              large
               deletable-chips
               :hide-details="$vuetify.breakpoint.smAndDown"
               :class="{ 'mb-4': $vuetify.breakpoint.smAndDown }"
@@ -55,7 +43,13 @@
       </v-col>
 
       <v-col cols="12" md="2">
-        <v-btn large dark @click="onFilterChanged" color="primary" outlined>
+        <v-btn
+          class="py-4"
+          dark
+          @click="onFilterChanged"
+          color="primary"
+          outlined
+        >
           <v-icon left dark>mdi-filter-outline</v-icon>Lọc
         </v-btn>
       </v-col>
@@ -92,21 +86,27 @@ export default {
   },
   methods: {
     onFilterChanged() {
-       console.log({
+      console.log({
         class: this.classData,
         student: this.student,
         dateRange: this.dateRange,
-        _sort: 'createdAt:desc'
+        _sort: 'createdAt:desc',
       })
       this.createdAt_gt = ''
       this.createdAt_lt = ''
       if (this.dateRange.length > 1) {
-        this.createdAt_gt = moment(this.dateRange[0], 'DD/MM/YYYY').toISOString()
+        this.createdAt_gt = moment(
+          this.dateRange[0],
+          'DD/MM/YYYY'
+        ).toISOString()
         this.createdAt_lt = moment(this.dateRange[1], 'DD/MM/YYYY')
           .add(1, 'd')
           .toISOString()
       } else if (this.dateRange.length > 0) {
-        this.createdAt_gt = moment(this.dateRange[0], 'DD/MM/YYYY').toISOString()
+        this.createdAt_gt = moment(
+          this.dateRange[0],
+          'DD/MM/YYYY'
+        ).toISOString()
         this.createdAt_lt = moment(this.dateRange[0], 'DD/MM/YYYY')
           .add(1, 'd')
           .toISOString()
@@ -124,7 +124,7 @@ export default {
       this.classData = ''
       this.student = ''
       this.dateRange = []
-    }
+    },
   },
 }
 </script>

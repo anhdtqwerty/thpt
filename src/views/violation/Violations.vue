@@ -1,7 +1,7 @@
 <template>
   <div class=" pa-2">
     <v-row
-      class="pa-4 pa-md-2 d-flex justify-space-between align-center"
+      class="pa-4 pa-md-2 d-flex justify-space-between"
       no-gutters
     >
       <v-col>
@@ -21,14 +21,14 @@
     </v-row>
 
     <v-card class="pa-2 elevation-1">
-      <v-row no-gutters class="mx-4">
-        <v-col cols="12" md="11">
+      <v-row >
+        <v-col cols="12" md="10">
           <violation-filter
             v-if="$vuetify.breakpoint.mdAndUp"
             @onFilterChanged="refresh"
           />
         </v-col>
-        <v-col cols="12" md="1">
+        <v-col cols="12" md="2">
           <span v-if="$vuetify.breakpoint.smAndDown">
             <violation-dialog-filter @onFilterChanged="refresh" />
           </span>
@@ -52,7 +52,6 @@
         :headers="originHeaders"
         :items="violations"
         item-key="id"
-        dense
       >
         <template v-slot:item.action="{ item }">
           <violation-actions :selected="item"> </violation-actions>
@@ -95,13 +94,6 @@ import { get } from 'lodash'
 
 const originHeaders = [
   {
-    text: 'Ngày',
-    value: 'createdAt',
-    align: 'left',
-    sortable: false,
-    show: true,
-  },
-  {
     text: 'Họ tên',
     value: 'student.name',
     align: 'left',
@@ -109,8 +101,8 @@ const originHeaders = [
     show: true,
   },
   {
-    text: 'Lớp',
-    value: 'class.title',
+    text: 'Ngày',
+    value: 'createdAt',
     align: 'left',
     sortable: false,
     show: true,
@@ -118,6 +110,13 @@ const originHeaders = [
   {
     text: 'Mục',
     value: 'type',
+    align: 'left',
+    sortable: false,
+    show: true,
+  },
+  {
+    text: 'Lớp',
+    value: 'class.title',
     align: 'left',
     sortable: false,
     show: true,

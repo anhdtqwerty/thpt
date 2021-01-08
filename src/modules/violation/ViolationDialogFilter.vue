@@ -10,7 +10,10 @@
       <v-icon depressed v-on="on">filter_alt</v-icon>
     </template>
     <v-card>
-      <v-toolbar dense class="elevation-0 #0D47A1 white--text py-auto">
+      <v-toolbar
+              color="primary"
+              dark
+            >
         <v-toolbar-title class="ml-3">Lọc Tìm Kiếm</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-btn dark icon>
