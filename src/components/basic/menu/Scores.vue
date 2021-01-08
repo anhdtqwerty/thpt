@@ -1,19 +1,29 @@
 <template>
-  <v-list-group :value="false" active-class="left-amber-border black--text">
+  <v-list-group :value="false" active-class="black-text">
     <template v-slot:activator>
-      <v-list-item-icon class="pl-2">
+      <v-list-item-icon class="mr-2">
         <v-icon>mdi-spellcheck</v-icon>
       </v-list-item-icon>
-      <v-list-item-title >Điểm số</v-list-item-title>
+      <v-list-item-title class="font-weight-black">Điểm số</v-list-item-title>
     </template>
     <v-list class="left-amber-border py-0">
-      <v-list-item link to="/marks">
+      <v-list-item
+        active-class="left-amber-border"
+        class="px-0"
+        link
+        to="/marks"
+      >
         <v-list-item-action></v-list-item-action>
-        <v-list-item-title class="ml-3">Số điểm</v-list-item-title>
+        <v-list-item-title>Số điểm</v-list-item-title>
       </v-list-item>
-      <v-list-item link to="/marks-input">
+      <v-list-item
+        active-class="left-amber-border"
+        class="px-0"
+        link
+        to="/marks-input"
+      >
         <v-list-item-action></v-list-item-action>
-        <v-list-item-title class="ml-3">Nhập điểm</v-list-item-title>
+        <v-list-item-title>Nhập điểm</v-list-item-title>
       </v-list-item>
     </v-list>
   </v-list-group>

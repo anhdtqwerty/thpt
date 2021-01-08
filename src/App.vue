@@ -94,6 +94,9 @@ input {
 .no-gutters > [class*='col-'] {
   padding: 0 !important;
 }
+.left-amber-border {
+  border-left: 4px solid #0D47A1;
+}
 .required label::after {
     content: "*";
     color: red;
