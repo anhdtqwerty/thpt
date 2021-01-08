@@ -40,18 +40,6 @@
       :hide-details="$vuetify.breakpoint.smAndDown"
       :class="{ 'mb-4': $vuetify.breakpoint.smAndDown }"
     />
-    <!-- <v-select
-      v-model="type"
-      outlined
-      label="Mục"
-      :items="options"
-      :rules="ruleRequired"
-      clearable
-      dense
-      deletable-chips
-      :class="{ 'mb-4': $vuetify.breakpoint.smAndDown }"
-      :hide-details="$vuetify.breakpoint.smAndDown"
-    /> -->
      <v-radio-group v-model="type" row class="shrink mt-0">
       <p class="mr-2 my-0">Mục: </p>
       <v-radio label="Kỷ luật" hide-details value="violation"></v-radio>
@@ -87,10 +75,6 @@ export default {
     AutocompleteStudent,
   },
   data: () => ({
-    // options: [
-    //   { text: 'Kỷ luật', value: 'violation' },
-    //   { text: 'Khen thưởng', value: 'commendation' },
-    // ],
     ruleRequired: [(v) => !!v || 'Phần này không được trống'],
     grade: '',
     classData: '',
