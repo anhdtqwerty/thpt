@@ -2,7 +2,7 @@
   <v-autocomplete
     v-bind="this.$attrs"
     item-text="title"
-    :items="divisions"
+    :items="divisionList"
     item-value="id"
     @change="onChange"
     v-on:input="$emit('input', $event)"
@@ -21,16 +21,20 @@ export default {
   props: {
     filters: Object,
     defaultDivisions: Object,
-    options: Object
+    options: Object,
+    grade: String
   },
   computed: {
-    ...mapGetters('app', ['department'])
+    ...mapGetters('app', ['department']),
+    divisionList() {
+      if (!this.grade) return this.divisions
+      return this.divisions.filter(d => d.grade.id === this.grade)
+    }
   },
   created() {
     if (this.defaultDivisions) {
       this.divisions = this.defaultDivisions
     }
-
     this.fetchAllDivisions()
   },
   methods: {
@@ -42,6 +46,11 @@ export default {
     async update(data) {},
     onChange(data) {
       this.$emit('change', data)
+    }
+  },
+  watch: {
+    grade() {
+      console.log(this.grade)
     }
   }
 }

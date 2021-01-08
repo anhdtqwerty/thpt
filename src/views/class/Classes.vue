@@ -38,22 +38,12 @@
       </div>
     </div>
     <v-card class="pa-2 pa-md-4 ma-md-2 elevation-1">
-      <v-row>
-        <v-col class="pa-0" cols="12" md="11">
-          <class-filter
-            v-if="$vuetify.breakpoint.mdAndUp"
-            @onFilterChanged="refresh"
-          />
-        </v-col>
-        <v-col class="d-flex justify-end pa-0" cols="12" md="1">
-          <span v-if="$vuetify.breakpoint.smAndDown">
-            <class-filter-dialog @onFilterChanged="refresh" />
-          </span>
-          <drop-menu
+      <v-row no-gutters>
+        <v-col class="text-right pa-0">
+          <setting-table-header
             :default-headers="originHeaders"
             @change="headers = $event"
-            v-if="$vuetify.breakpoint.mdAndUp"
-          ></drop-menu>
+          />
           <span v-if="$vuetify.breakpoint.mdAndUp">
             <kebap-menu>
               <v-list>
@@ -65,7 +55,10 @@
           </span>
         </v-col>
       </v-row>
-
+      <class-filter
+        v-if="$vuetify.breakpoint.mdAndUp"
+        @onFilterChanged="refresh"
+      />
       <v-row :class="{ 'mt-n5': $vuetify.breakpoint.smAndDown }">
         <v-col>
           <v-data-table
@@ -134,10 +127,8 @@ import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import NewClassDialog from '@/modules/class/ClassNewDialog'
 import ClassFilter from '@/modules/class/ClassFilter'
 import ClassListActions from '@/modules/class/ClassListActions'
-import ClassFilterDialog from '@/modules/class/ClassFilterDialog'
-import ExportExcel from '@/components/basic/ExportExcel'
+import SettingTableHeader from '@/components/basic/table/SettingHeaders'
 import KebapMenu from '@/components/basic/menu/KebapMenu'
-import DropMenu from '@/modules/student/menu/Menu.vue'
 import moment from 'moment'
 import _ from 'lodash'
 
@@ -181,13 +172,11 @@ const originHeaders = [
 export default {
   components: {
     ClassFilter,
-    DropMenu,
+    KebapMenu,
     NewClassDialog,
-    ClassFilterDialog,
+    SettingTableHeader,
     ClassListActions,
-    Breadcrumbs,
-    ExportExcel,
-    KebapMenu
+    Breadcrumbs
   },
   props: {
     role: String
