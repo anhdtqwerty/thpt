@@ -1,17 +1,26 @@
 <template>
   <v-edit-dialog @save="save" @cancel="cancel" @open="open" @close="close">
-    <div>
-      <span v-if="subject" class="primary--text subtitle-1">
-        {{ subject.title }}</span
+    <div style="display: block">
+      <span v-if="data" class="primary--text subtitle-1">
+        {{ data | getSubject }}</span
       >
       <br />
-      <span class="primary--text caption"> {{ teacher.name }}</span>
+      <span v-if="data" class="primary--text caption">
+        {{ data | getTeacher }}</span
+      >
+      <span v-if="!data" class="primary--text ">sửa</span>
     </div>
     <template v-slot:input>
       <v-autocomplete
+        class="mt-4"
         :items="subjects"
         v-model="subject"
-        label="Edit"
+        item-text="title"
+        item-value="id"
+        label="Môn"
+        outlined
+        return-object
+        dense
         single-line
       />
       <v-autocomplete
@@ -19,7 +28,10 @@
         v-model="teacher"
         item-text="name"
         item-value="id"
-        label="Edit"
+        return-object
+        label="Giáo viến"
+        outlined
+        dense
         single-line
       />
     </template>
@@ -27,34 +39,33 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import { get } from 'lodash'
 export default {
   data() {
     return {
       subject: {},
-      teacher: {}
+      teacher: {},
+      dialog: false
     }
   },
   props: {
-    slots: Object,
-    day: String
+    data: Object
   },
   computed: {
     ...mapGetters('search', ['teachers', 'subjects'])
   },
   created() {
-    this.searchTeachers()
-    if (!this.slots || !this.slots[this.day]) {
-      return
-    }
-    this.subject = this.slots[this.day].subject
-    this.teacher = this.slots[this.day].teacher
+    if (!this.data) return
+    this.subject = this.data.subject
+    this.teacher = this.data.teacher
   },
   methods: {
-    ...mapActions('search', ['searchTeachers']),
     save() {
-      this.snack = true
-      this.snackColor = 'success'
-      this.snackText = 'Data saved'
+      console.log(123)
+      this.$emit('update:data', {
+        subject: { title: this.subject.title, id: this.subject.id },
+        teacher: { name: this.teacher.name, id: this.teacher.id }
+      })
     },
     cancel() {
       this.snack = true
@@ -67,6 +78,14 @@ export default {
       this.snackText = 'Dialog opened'
     },
     close() {}
+  },
+  filters: {
+    getTeacher(data) {
+      return get(data, 'teacher.name')
+    },
+    getSubject(data) {
+      return get(data, 'subject.title')
+    }
   }
 }
 </script>
