@@ -74,6 +74,7 @@
             :items="classes"
             :search="search"
             v-model="selected"
+            :loading="loading"
             show-select
             :disable-sort="$vuetify.breakpoint.smAndDown"
           >
@@ -198,6 +199,7 @@ export default {
       draw: false,
       search: '',
       status: null,
+      loading: false,
       statuses: [
         { text: 'Active', value: 'false' },
         { text: 'Blocked', value: 'true' }
@@ -250,12 +252,14 @@ export default {
       return course || {}
     },
     refresh(query) {
+      this.loading = true
       this.setClasses([])
       this.fetchClasses({
         department: this.department.id,
         generation: this.currentGeneration.id,
         ...query
       })
+      this.loading = false
     },
     onRemove() {
       this.$dialog.confirm({
