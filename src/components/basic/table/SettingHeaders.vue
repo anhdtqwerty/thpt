@@ -11,7 +11,7 @@
     >
       <template v-slot:activator="{ on, attrs }">
         <v-btn icon class="hidden-xs-only" dark v-bind="attrs" v-on="on">
-          <v-icon small color="grey">mdi-settings</v-icon>
+          <v-icon color="grey">mdi-settings</v-icon>
         </v-btn>
       </template>
       <div class="setting__board px-4 py-3">

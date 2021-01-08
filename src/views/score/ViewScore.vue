@@ -3,13 +3,10 @@
     <div class="pa-4 pa-md-2 d-flex justify-space-between align-center">
       <Breadcrumbs
         headline="Sổ điểm"
-        :link="[
-          { text: 'Điểm số' },
-          { text: 'Sổ điểm', href: '/marks' },
-        ]"
+        :link="[{ text: 'Điểm số' }, { text: 'Sổ điểm', href: '/marks' }]"
       />
     </div>
-    <v-card  class="px-2 px-md-4 mx-md-2 elevation-1 mb-2">
+    <v-card class="px-2 px-md-4 mx-md-2 elevation-1 mb-2">
       <v-card-text class="px-2">
         <v-row no-gutters>
           <v-col cols="12">
@@ -17,7 +14,7 @@
               <v-col cols="12" md="4">
                 <autocomplete-class
                   placeholder="Chọn lớp"
-                  filled
+                  outlined
                   dense
                   hide-details
                   @change="filterInputs.classObj = $event"
@@ -27,7 +24,7 @@
                 <autocomplete-subject
                   return-object
                   placeholder="Chọn môn học"
-                  filled
+                  outlined
                   dense
                   hide-details
                   @change="filterInputs.subjectObj = $event"
@@ -35,7 +32,12 @@
               </v-col>
               <v-col cols="0" md="2" class="pa-0 ma-0"></v-col>
               <v-col cols="12" md="2">
-                <v-btn color="primary" style="width: 100%" @click="onClickSearchButton">Tìm kiếm</v-btn>
+                <v-btn
+                  color="primary"
+                  style="width: 100%"
+                  @click="onClickSearchButton"
+                  >Tìm kiếm</v-btn
+                >
               </v-col>
             </v-row>
 
@@ -56,7 +58,7 @@
               <v-col cols="12" md="4">
                 <autocomplete-grade
                   placeholder="Chọn khối"
-                  filled
+                  outlined
                   dense
                   hide-details
                   @change="filterInputs.gradeObj = $event"
@@ -65,7 +67,7 @@
               <v-col cols="12" md="4">
                 <autocomplete-class
                   placeholder="Chọn lớp"
-                  filled
+                  outlined
                   dense
                   hide-details
                   @change="filterInputs.classObj = $event"
@@ -75,14 +77,19 @@
                 <autocomplete-subject
                   return-object
                   placeholder="Chọn môn học"
-                  filled
+                  outlined
                   dense
                   hide-details
                   @change="filterInputs.subjectObj = $event"
                 />
               </v-col>
               <v-col cols="12" md="4">
-                <v-btn color="primary" style="width: 100%" @click="onClickSearchButton">Tìm kiếm</v-btn>
+                <v-btn
+                  color="primary"
+                  style="width: 100%"
+                  @click="onClickSearchButton"
+                  >Tìm kiếm</v-btn
+                >
               </v-col>
             </v-row>
           </v-col>
@@ -108,12 +115,26 @@
                 <tr>
                   <th rowspan="2">STT</th>
                   <th rowspan="2">Học sinh</th>
-                  <th class="semseter-header" :rowspan="semester.rowspan" :colspan="semester.expand" v-for="semester in headers" :key="semester.id">{{ semester.text }}</th>
+                  <th
+                    class="semseter-header"
+                    :rowspan="semester.rowspan"
+                    :colspan="semester.expand"
+                    v-for="semester in headers"
+                    :key="semester.id"
+                  >
+                    {{ semester.text }}
+                  </th>
                 </tr>
                 <tr>
                   <template v-for="semester in headers">
                     <template v-if="semester.type !== 'year'">
-                      <th v-for="factor in refrencesInfo.factors" :key="factor.id + semester.id" :colspan="factor.quantity">{{ factor.title }}</th>
+                      <th
+                        v-for="factor in refrencesInfo.factors"
+                        :key="factor.id + semester.id"
+                        :colspan="factor.quantity"
+                      >
+                        {{ factor.title }}
+                      </th>
                     </template>
                   </template>
                 </tr>
@@ -124,22 +145,40 @@
                   <td>{{ item.fullName }}</td>
                   <template v-for="(semester, indexSemester) in headers">
                     <template v-if="semester.type !== 'year'">
-                      <template v-for="(factor, indexFactor) in refrencesInfo.factors" >
-                        <td class="mark-td" v-for="index in factor.quantity" :key="`${indexFactor}-${indexSemester}-${index}`">
+                      <template
+                        v-for="(factor, indexFactor) in refrencesInfo.factors"
+                      >
+                        <td
+                          class="mark-td"
+                          v-for="index in factor.quantity"
+                          :key="`${indexFactor}-${indexSemester}-${index}`"
+                        >
                           {{
                             filterInputs.subjectObj.markType === 'evaluate'
-                            ? getEvaluateMark(filterMarkByFactorAndSemeter(semester.type)(factor.id)(item.marks)[index - 1])
-                            : getMark(filterMarkByFactorAndSemeter(semester.type)(factor.id)(item.marks)[index - 1])
+                              ? getEvaluateMark(
+                                  filterMarkByFactorAndSemeter(semester.type)(
+                                    factor.id
+                                  )(item.marks)[index - 1]
+                                )
+                              : getMark(
+                                  filterMarkByFactorAndSemeter(semester.type)(
+                                    factor.id
+                                  )(item.marks)[index - 1]
+                                )
                           }}
                         </td>
                       </template>
                     </template>
                     <template v-else>
                       <td class="mark-td" :key="`${indexSemester}`">
-                          {{
-                            getMark(filterMarkByFactorAndSemeter('year')('avgYear')(item.marks))
-                          }}
-                        </td>
+                        {{
+                          getMark(
+                            filterMarkByFactorAndSemeter('year')('avgYear')(
+                              item.marks
+                            )
+                          )
+                        }}
+                      </td>
                     </template>
                   </template>
                 </tr>
@@ -187,7 +226,7 @@ const transformSemestersToHeader = item => ({
   text: _.get(item, 'title'),
   id: _.get(item, 'id'),
   type: _.get(item, 'type'),
-  show: true,
+  show: true
 })
 
 const transformMarksToTableRecord = item => ({
@@ -199,32 +238,35 @@ const transformMarksToTableRecord = item => ({
     semesterType: _.get(item, 'semester.type'),
     factorId: _.get(item, 'factor.id'),
     multiply: _.get(item, 'factor.multiply', 1),
-    value: _.get(item, 'value'),
+    value: _.get(item, 'value')
   }
 })
 
 const accumulateMark = marks => {
-  return marks.reduce((acc, item) => {
-    const { mark, ...info } = item
-    return { ...info, marks: [...acc.marks, mark] }
-  }, { marks: [] })
+  return marks.reduce(
+    (acc, item) => {
+      const { mark, ...info } = item
+      return { ...info, marks: [...acc.marks, mark] }
+    },
+    { marks: [] }
+  )
 }
 
 const filterMarkSemester = semesterType => marks => {
   return marks.filter(mark => mark.semesterType === semesterType)
 }
 
-const computeAvgMarkSemester = semesterType => pipe(
-  filterMarkSemester(semesterType),
-  evaluateAvgMark
-)
+const computeAvgMarkSemester = semesterType =>
+  pipe(filterMarkSemester(semesterType), evaluateAvgMark)
 const computeAvgMarkSemester1 = computeAvgMarkSemester(CONSTANTS.SEMESTER_1)
 const computeAvgMarkSemester2 = computeAvgMarkSemester(CONSTANTS.SEMESTER_2)
 
 const computedAvgMarkForEachStudent = ({ marks, ...info }) => {
   const avgSemester1 = computeAvgMarkSemester1(marks)
   const avgSemester2 = computeAvgMarkSemester2(marks)
-  const avgYear = CONSTANTS.MULTIPLIER_1 * avgSemester1 + CONSTANTS.MULTIPLIER_2 * avgSemester2
+  const avgYear =
+    CONSTANTS.MULTIPLIER_1 * avgSemester1 +
+    CONSTANTS.MULTIPLIER_2 * avgSemester2
   const yearMarkObj = {
     semesterType: CONSTANTS.SEMESTER_YEAR,
     factorId: CONSTANTS.FACTOR_YEAR_ID,
@@ -232,14 +274,16 @@ const computedAvgMarkForEachStudent = ({ marks, ...info }) => {
   }
   return {
     ...info,
-    marks: [ ...marks, yearMarkObj ]
+    marks: [...marks, yearMarkObj]
   }
 }
 
 const formatMarks = marks => marks.map(transformMarksToTableRecord)
 const groupMarkByStudentId = marks => _.groupBy(marks, 'studentId')
-const reduceMarkByStudent = marksByStudentObj => mapPropObj(marksByStudentObj)(accumulateMark)
-const computeAvgMark = marksByStudentObj => mapPropObj(marksByStudentObj)(computedAvgMarkForEachStudent)
+const reduceMarkByStudent = marksByStudentObj =>
+  mapPropObj(marksByStudentObj)(accumulateMark)
+const computeAvgMark = marksByStudentObj =>
+  mapPropObj(marksByStudentObj)(computedAvgMarkForEachStudent)
 
 const handleMarkFlow = pipe(
   formatMarks,
@@ -256,7 +300,7 @@ export default {
     AutocompleteSubject,
     AutocompleteGrade
   },
-  mixins: [ scoreMixin ],
+  mixins: [scoreMixin],
   data() {
     return {
       filterInputs: {
@@ -281,7 +325,7 @@ export default {
       this.filterInputs = {
         classObj: '',
         subjectObj: '',
-        studentObj: '',
+        studentObj: ''
       }
     },
     marks(data) {
@@ -289,9 +333,14 @@ export default {
       this.items = Object.values(handleMarkFlow(marks))
     },
     refrencesInfo: {
-      handler ({ factors, semesters }) {
-        const markNumber = factors.reduce((acc, item) => acc + Number(item.quantity), 0)
-        this.originHeaders = semesters.map(transformSemestersToHeader).map(item => ({ ...item, expand: markNumber }))
+      handler({ factors, semesters }) {
+        const markNumber = factors.reduce(
+          (acc, item) => acc + Number(item.quantity),
+          0
+        )
+        this.originHeaders = semesters
+          .map(transformSemestersToHeader)
+          .map(item => ({ ...item, expand: markNumber }))
         this.originHeaders.push({
           text: 'Cả năm',
           id: Date.now(),
@@ -308,34 +357,36 @@ export default {
   },
   computed: {
     ...mapState('mark', ['marks']),
-    titleTable () {
+    titleTable() {
       const subjectTitle = _.get(this.filterInputs, 'subjectObj.title')
       const classTitle = _.get(this.filterInputs, 'classObj.title')
-      return `Bảng điểm ${[subjectTitle, classTitle].filter(Boolean).join(' - ')}`
+      return `Bảng điểm ${[subjectTitle, classTitle]
+        .filter(Boolean)
+        .join(' - ')}`
     }
   },
   methods: {
     ...mapActions('mark', ['fetchMarks', 'updateMarks']),
-    getEvaluateMark (obj) {
+    getEvaluateMark(obj) {
       if (!obj) return CONSTANTS.MARK_FAIL
       return _.get(obj, 'value') ? CONSTANTS.MARK_PASS : CONSTANTS.MARK_FAIL
     },
-    getMark (obj) {
+    getMark(obj) {
       return _.get(obj, 'value', 0)
     },
-    filterMarkByFactorAndSemeter: (semesterType) => (factorId) => (marks) => {
-      return marks.filter(item => item.factorId === factorId && item.semesterType === semesterType)
+    filterMarkByFactorAndSemeter: semesterType => factorId => marks => {
+      return marks.filter(
+        item => item.factorId === factorId && item.semesterType === semesterType
+      )
     },
     onChangeFilterMode() {
-      this.filterMode = toggle(CONSTANTS.FILTER_MODE_NORMAL, CONSTANTS.FILTER_MODE_ADVANCED)(this.filterMode)
+      this.filterMode = toggle(
+        CONSTANTS.FILTER_MODE_NORMAL,
+        CONSTANTS.FILTER_MODE_ADVANCED
+      )(this.filterMode)
     },
-    onClickSearchButton () {
-      const [
-        classId,
-        subjectId,
-        studentId,
-        gradeId
-      ] = getMultiplePath([
+    onClickSearchButton() {
+      const [classId, subjectId, studentId, gradeId] = getMultiplePath([
         'classObj.id',
         'subjectObj.id',
         'studentObj.id',
@@ -352,45 +403,46 @@ export default {
       }
     }
   },
-  created () {
-    Promise.all([
-      Semester.fetch({}),
-      Factor.fetch({})
-    ])
-      .then(([semesters, factors]) => {
+  created() {
+    Promise.all([Semester.fetch({}), Factor.fetch({})]).then(
+      ([semesters, factors]) => {
         this.refrencesInfo.semesters = semesters
         this.refrencesInfo.factors = factors
-      })
+      }
+    )
   }
 }
 </script>
 
 <style lang="scss" scoped>
-  .table-label {
-    font-weight: 500;
-    font-size: 18px;
-    line-height: 21px;
-    display: flex;
-    justify-content: space-between;
+.table-label {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 21px;
+  display: flex;
+  justify-content: space-between;
+  text-transform: uppercase;
+}
+.mark-table {
+  td,
+  tr,
+  th {
+    border: 1px solid #e0e0e0;
+  }
+  td,
+  th {
+    padding: 14px 20px;
+  }
+  .semseter-header {
+    font-size: 20px;
+    color: #0d47a1;
     text-transform: uppercase;
   }
-  .mark-table {
-    td, tr, th {
-      border: 1px solid #E0E0E0;
-    }
-    td, th {
-      padding: 14px 20px;
-    }
-    .semseter-header {
-      font-size: 20px;
-      color: #0D47A1;
-      text-transform: uppercase;
-    }
-    color: #212121;
-    border-collapse: collapse;
-  }
-  .table-container {
-    overflow: auto;
-    max-width: 100%;
-  }
+  color: #212121;
+  border-collapse: collapse;
+}
+.table-container {
+  overflow: auto;
+  max-width: 100%;
+}
 </style>

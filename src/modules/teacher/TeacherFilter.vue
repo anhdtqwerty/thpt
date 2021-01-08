@@ -7,7 +7,7 @@
         item-value=""
         label="Họ tên"
         class="mr-4"
-        filled
+        outlined
         clearable
         single-line
         dense
@@ -30,23 +30,23 @@ import AutocompleteTeacher from '@/components/basic/input/AutocompleteTeacher'
 
 export default {
   components: {
-    AutocompleteTeacher,
+    AutocompleteTeacher
   },
   data: () => ({
     query: '',
     dialog: false,
     name: '',
-    filterState: false,
+    filterState: false
   }),
   methods: {
     onFilterChanged() {
       this.$emit('onFilterChanged', {
-        id: this.name,
+        id: this.name
       })
     },
     onFilterDialogChange(id) {
       this.$emit('onFilterChanged', id)
-    },
-  },
+    }
+  }
 }
 </script>

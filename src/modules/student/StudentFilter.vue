@@ -8,7 +8,7 @@
           return-object
           clearable
           flat
-          filled
+          outlined
           dense
           hide-details
         />
@@ -20,7 +20,7 @@
           placeholder="Lớp"
           clearable
           flat
-          filled
+          outlined
           dense
           return-object
           hide-details
@@ -29,7 +29,7 @@
       <v-col md="3">
         <date-picker
           placeholder="Ngày sinh"
-          filled
+          outlined
           hide-details
           outline
           dense
@@ -37,12 +37,7 @@
         ></date-picker>
       </v-col>
       <v-col md="3">
-        <v-btn
-          class="py-5"
-          color="#0D47A1"
-          @click="onFilterChanged"
-          outlined
-        >
+        <v-btn class="py-5" color="#0D47A1" @click="onFilterChanged" outlined>
           <v-icon left dark>mdi-filter-outline</v-icon>Lọc
         </v-btn>
       </v-col>
@@ -54,7 +49,7 @@
           clear-icon="mdi-close"
           placeholder="Mã học viên"
           flat
-          filled
+          outlined
           dense
           clearable
           hide-details
@@ -69,7 +64,7 @@
           item-value="status"
           placeholder="Chọn trạng thái"
           flat
-          filled
+          outlined
           dense
           clearable
           hide-details
@@ -83,7 +78,7 @@
           v-model="gender"
           placeholder="Giới tính"
           flat
-          filled
+          outlined
           dense
           clearable
           hide-details
@@ -100,7 +95,7 @@ import moment from 'moment'
 
 export default {
   components: {
-    DatePicker,
+    DatePicker
   },
   data: () => ({
     show: false,
@@ -114,25 +109,29 @@ export default {
     genders: [
       { title: 'Nam', value: 'male' },
       { title: 'Nữ', value: 'female' },
-      { title: 'Khác', value: 'other' },
-    ],
+      { title: 'Khác', value: 'other' }
+    ]
   }),
   computed: {
-    ...mapState('constant', ['studentStatus']),
+    ...mapState('constant', ['studentStatus'])
   },
   methods: {
     onFilterChanged() {
       this.$emit('onFilterChanged', {
         name_contains: this.name,
         classes: this.classes,
-        dob_gt: moment(this.dob).startOf('month').toISOString(),
-        dob_lt: moment(this.dob).endOf('month').toISOString(),
+        dob_gt: moment(this.dob)
+          .startOf('month')
+          .toISOString(),
+        dob_lt: moment(this.dob)
+          .endOf('month')
+          .toISOString(),
         code_contains: this.code,
         status: this.status,
         gender: this.gender,
-        _sort: 'createdAt:desc',
+        _sort: 'createdAt:desc'
       })
-    },
-  },
+    }
+  }
 }
 </script>

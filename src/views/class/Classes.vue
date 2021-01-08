@@ -240,10 +240,10 @@ export default {
     getCourse: course => {
       return course || {}
     },
-    refresh(query) {
+    async refresh(query) {
       this.loading = true
-      this.setClasses([])
-      this.fetchClasses({
+      await this.setClasses([])
+      await this.fetchClasses({
         department: this.department.id,
         generation: this.currentGeneration.id,
         ...query

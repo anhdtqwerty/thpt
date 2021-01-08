@@ -13,7 +13,7 @@
               clear-icon="mdi-close"
               clearable
               placeholder="Lớp"
-              filled
+              outlined
               dense
               deletable-chips
               :hide-details="$vuetify.breakpoint.smAndDown"
@@ -28,7 +28,7 @@
             <DateRangeIOSPicker
               :date-range.sync="dateRange"
               placeholder="Ngày"
-              filled
+              outlined
               outline
             />
           </v-col>
@@ -42,7 +42,7 @@
               item-text="name"
               clearable
               clear-icon="mdi-close"
-              filled
+              outlined
               placeholder="Tên học sinh"
               item-value="id"
               dense
@@ -74,7 +74,7 @@ export default {
   components: {
     AutocompleteClass,
     AutocompleteStudent,
-    DateRangeIOSPicker,
+    DateRangeIOSPicker
   },
   data: () => ({
     student: {},
@@ -85,14 +85,14 @@ export default {
     time: null,
     createdAt_gt: '',
     createdAt_lt: '',
-    dateRange: [],
+    dateRange: []
   }),
   computed: {
-    ...mapState('constant', ['classStatus']),
+    ...mapState('constant', ['classStatus'])
   },
   methods: {
     onFilterChanged() {
-       console.log({
+      console.log({
         class: this.classData,
         student: this.student,
         dateRange: this.dateRange,
@@ -101,12 +101,18 @@ export default {
       this.createdAt_gt = ''
       this.createdAt_lt = ''
       if (this.dateRange.length > 1) {
-        this.createdAt_gt = moment(this.dateRange[0], 'DD/MM/YYYY').toISOString()
+        this.createdAt_gt = moment(
+          this.dateRange[0],
+          'DD/MM/YYYY'
+        ).toISOString()
         this.createdAt_lt = moment(this.dateRange[1], 'DD/MM/YYYY')
           .add(1, 'd')
           .toISOString()
       } else if (this.dateRange.length > 0) {
-        this.createdAt_gt = moment(this.dateRange[0], 'DD/MM/YYYY').toISOString()
+        this.createdAt_gt = moment(
+          this.dateRange[0],
+          'DD/MM/YYYY'
+        ).toISOString()
         this.createdAt_lt = moment(this.dateRange[0], 'DD/MM/YYYY')
           .add(1, 'd')
           .toISOString()
@@ -116,7 +122,7 @@ export default {
         student: this.student.id,
         createdAt_gt: this.createdAt_gt,
         createdAt_lt: this.createdAt_lt,
-        _sort: 'createdAt:desc',
+        _sort: 'createdAt:desc'
       })
       this.reset()
     },
@@ -125,7 +131,7 @@ export default {
       this.student = ''
       this.dateRange = []
     }
-  },
+  }
 }
 </script>
 

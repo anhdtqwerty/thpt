@@ -1,10 +1,10 @@
 <template>
   <v-list-group :value="false" active-class="black-text">
     <template v-slot:activator>
-      <v-list-item-icon class="mr-2">
+      <v-list-item-icon class="mr-4">
         <v-icon>mdi-spellcheck</v-icon>
       </v-list-item-icon>
-      <v-list-item-title class="font-weight-black">Điểm số</v-list-item-title>
+      <v-list-item-title>ĐIỂM SỐ</v-list-item-title>
     </template>
     <v-list class="left-amber-border py-0">
       <v-list-item
@@ -36,10 +36,9 @@ export default {
     return { menu: null }
   },
   computed: {
-    ...mapGetters('auth', ['user', 'role']),
-  },
+    ...mapGetters('auth', ['user', 'role'])
+  }
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

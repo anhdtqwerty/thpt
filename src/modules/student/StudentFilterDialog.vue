@@ -18,7 +18,7 @@
               return-object
               clearable
               flat
-              filled
+              outlined
               dense
               hide-details
             />
@@ -30,7 +30,7 @@
               placeholder="Lớp"
               clearable
               flat
-              filled
+              outlined
               dense
               return-object
               hide-details
@@ -39,7 +39,7 @@
           <v-col class="mt-4" cols="12">
             <date-iso-picker
               placeholder="Ngày sinh"
-              filled
+              outlined
               outline
               :date.sync="dob"
             ></date-iso-picker>
@@ -50,7 +50,7 @@
               clear-icon="mdi-close"
               placeholder="Mã học viên"
               flat
-              filled
+              outlined
               dense
               clearable
               hide-details
@@ -65,7 +65,7 @@
               item-value="status"
               placeholder="Chọn trạng thái"
               flat
-              filled
+              outlined
               dense
               clearable
               hide-details
@@ -79,7 +79,7 @@
               v-model="gender"
               placeholder="Giới tính"
               flat
-              filled
+              outlined
               dense
               clearable
               hide-details
@@ -104,10 +104,10 @@ import moment from 'moment'
 
 export default {
   components: {
-    DateIsoPicker,
+    DateIsoPicker
   },
   props: {
-    state: Boolean,
+    state: Boolean
   },
   data: () => ({
     dialog: false,
@@ -122,23 +122,27 @@ export default {
     genders: [
       { title: 'Nam', value: 'male' },
       { title: 'Nữ', value: 'female' },
-      { title: 'Khác', value: 'other' },
-    ],
+      { title: 'Khác', value: 'other' }
+    ]
   }),
   computed: {
-    ...mapState('constant', ['studentStatus']),
+    ...mapState('constant', ['studentStatus'])
   },
   methods: {
     onFilterChanged() {
       this.$emit('onFilterDialogChanged', {
         name_contains: this.name,
         classes: this.classes,
-        dob_gt: moment(this.dob).startOf('month').toISOString(),
-        dob_lt: moment(this.dob).endOf('month').toISOString(),
+        dob_gt: moment(this.dob)
+          .startOf('month')
+          .toISOString(),
+        dob_lt: moment(this.dob)
+          .endOf('month')
+          .toISOString(),
         code_contains: this.code,
         status: this.status,
         gender: this.gender,
-        _sort: 'createdAt:desc',
+        _sort: 'createdAt:desc'
       })
       this.cancel()
     },
@@ -153,12 +157,12 @@ export default {
       this.code = ''
       this.status = ''
       this.major = ''
-    },
+    }
   },
   watch: {
     state(state) {
       this.dialog = true
-    },
-  },
+    }
+  }
 }
 </script>

@@ -5,16 +5,11 @@
         v-model="generation"
         class="mr-4"
         placeholder="Năm học"
-        filled
+        outlined
         dense
         clearable
       ></autocomplete-generation>
-      <v-btn
-        class="py-5"
-        color="primary"
-        outlined
-        @click="onFilterChanged"
-      >
+      <v-btn class="py-5" color="primary" outlined @click="onFilterChanged">
         <v-icon left>mdi-filter-outline</v-icon>Lọc
       </v-btn>
     </div>
@@ -26,18 +21,18 @@ import AutocompleteGeneration from '@/components/basic/input/AutocompleteGenerat
 
 export default {
   components: {
-    AutocompleteGeneration,
+    AutocompleteGeneration
   },
   data: () => ({
-    generation: '',
+    generation: ''
   }),
   computed: {},
   methods: {
     onFilterChanged() {
       this.$emit('onFilterChanged', {
-        generation: this.generation,
+        generation: this.generation
       })
-    },
-  },
+    }
+  }
 }
 </script>
