@@ -5,7 +5,7 @@
     v-model="dialog"
   >
     <v-card>
-      <v-toolbar color="#0D47A1" dark dense class="elevation-0 px-2 mb-6">
+      <v-toolbar color="#0D47A1" dark dense class="elevation-0 mb-6">
         <v-toolbar-title>THÊM HỌC KỲ MỚI</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-btn icon>
@@ -13,7 +13,7 @@
         </v-btn>
       </v-toolbar>
 
-      <v-form class="pa-4" ref="form">
+      <v-form class="px-4" ref="form">
         <v-text-field
           v-model="title"
           placeholder="Tên học kỳ"

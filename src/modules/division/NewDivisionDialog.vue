@@ -6,7 +6,7 @@
   >
     <v-card>
       <v-card-title class="blue darken-4 white--text"
-        >Thêm mới ban mới
+        ><v-toolbar-title>THÊM BAN MỚI</v-toolbar-title>
         <v-spacer />
         <v-icon color="white" @click="dialog=false">close</v-icon>
       </v-card-title>

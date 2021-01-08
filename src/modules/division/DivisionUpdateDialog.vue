@@ -6,7 +6,7 @@
   >
     <v-card>
       <v-card-title class="blue darken-4 white--text text-uppercase"
-        >Sửa {{division.title}}
+        > <v-toolbar-title>Sửa {{division.title}}</v-toolbar-title>
         <v-spacer />
         <v-icon color="white" @click="cancel">close</v-icon>
       </v-card-title>

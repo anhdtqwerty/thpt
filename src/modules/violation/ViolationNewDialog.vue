@@ -6,8 +6,8 @@
     :fullscreen="$vuetify.breakpoint.smAndDown"
   >
     <v-card>
-      <v-card-title class="primary white--text text-uppercase"
-        >Thêm Khen Thưởng Kỷ Luật
+      <v-card-title class="primary white--text"
+        ><v-toolbar-title>Thêm KTKL</v-toolbar-title>
         <v-spacer />
         <v-icon color="white" @click="dialog = false">close</v-icon>
       </v-card-title>

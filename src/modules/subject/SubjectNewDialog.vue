@@ -6,7 +6,7 @@
   >
     <v-card>
       <v-card-title class="blue darken-4 white--text"
-        >Thêm mới khối mới
+        ><v-toolbar-title>THÊM MÔN HỌC MỚI</v-toolbar-title>
         <v-spacer />
         <v-icon color="white" @click="cancel">close</v-icon>
       </v-card-title>

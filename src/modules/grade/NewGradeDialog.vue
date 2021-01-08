@@ -6,7 +6,7 @@
   >
     <v-card>
       <v-card-title class="blue darken-4 white--text"
-        >Thêm mới khối mới
+        ><v-toolbar-title>THÊM KHỐI MỚI</v-toolbar-title>
         <v-spacer />
         <v-icon color="white" @click="dialog = false">close</v-icon>
       </v-card-title>
