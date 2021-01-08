@@ -1,8 +1,12 @@
 <template>
   <div>
     <div class="pa-2 d-none d-md-block">
-      <h2>Học viên</h2>
-      <breadcrumbs />
+      <Breadcrumbs
+        headline="Danh sách"
+          :link="[
+            { text: 'Học sinh', href: '../students' }
+          ]"
+        />
     </div>
 
     <student-profile v-if="student.id" :student="student" />
@@ -13,7 +17,7 @@
 import { mapActions, mapGetters } from 'vuex'
 import moment from 'moment'
 import StudentProfile from '@/modules/student/profile/StudentProfile'
-import Breadcrumbs from '@/components/basic/Breadcrumbs'
+import Breadcrumbs from '@/components/layout/Breadcrumbs'
 export default {
   components: {
     StudentProfile,

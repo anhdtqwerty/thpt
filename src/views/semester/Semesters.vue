@@ -5,8 +5,8 @@
         <Breadcrumbs
           headline="Quản lý học kỳ"
           :link="[
-            { text: 'Quản lý nâng cao' },
-            { text: 'Quản lý học kỳ', href: '/semesters' }
+            { text: 'Nâng cao', href: '../divisions' },
+             { text: 'QL Học Kỳ', href: '/semesters' }
           ]"
         />
       </div>
