@@ -35,16 +35,14 @@
         </v-list-item-icon>
         <v-list-item-title class="ml-3">Niên khóa</v-list-item-title>
       </v-list-item>
-      <v-list-item
-        to="/showcases"
-        link
-        v-if="policies['view-staff-attendance']"
-      >
+      <v-list-item to="/time-table-config" link>
         <v-list-item-action></v-list-item-action>
         <v-list-item-icon>
           <v-icon>emoji_events</v-icon>
         </v-list-item-icon>
-        <v-list-item-title class="ml-3">Trang Sản Phẩm</v-list-item-title>
+        <v-list-item-title class="ml-3"
+          >Cấu hình thời khóa biểu</v-list-item-title
+        >
       </v-list-item>
     </v-list>
   </v-list-group>

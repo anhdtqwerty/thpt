@@ -86,16 +86,16 @@ const originHeaders = [
     value: 'phone',
     align: 'left',
     sortable: false,
-    show: true,
+    show: true
   },
   {
     text: 'Trạng Thái',
     value: 'status',
     align: 'left',
     sortable: false,
-    show: true,
+    show: true
   },
-  { text: 'Hành động', value: 'actions', show: true },
+  { text: 'Hành động', value: 'actions', show: true }
 ]
 
 export default {
@@ -107,10 +107,10 @@ export default {
     NewStaffDialog,
     KebapMenu,
     SettingTableHeader,
-    ExportExcel,
+    ExportExcel
   },
   props: {
-    role: String,
+    role: String
   },
   data() {
     return {
@@ -123,7 +123,7 @@ export default {
       previewUserId: null,
       ready: false,
       isLoading: false,
-      createState: false,
+      createState: false
     }
   },
   created() {
@@ -150,7 +150,7 @@ export default {
     },
     filters() {
       return [{ key: 'block', value: this.status }]
-    },
+    }
   },
   methods: {
     ...mapActions('staff', [
@@ -158,7 +158,7 @@ export default {
       'fetchStaffsCount',
       'setStaff',
       'setStaffs',
-      'updateStaffs',
+      'updateStaffs'
     ]),
     updateDraw(draw) {
       this.draw = draw
@@ -184,9 +184,9 @@ export default {
           this.isLoading = false
         }
       )
-    },
+    }
     // }
-  },
+  }
 }
 </script>
 

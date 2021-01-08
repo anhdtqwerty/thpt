@@ -52,6 +52,15 @@
         <v-list-item-action></v-list-item-action>
         <v-list-item-title>Môn học</v-list-item-title>
       </v-list-item>
+      <v-list-item
+        active-class="left-amber-border"
+        class="px-0"
+        link
+        to="/title-table/config"
+      >
+        <v-list-item-action></v-list-item-action>
+        <v-list-item-title>Cấu hình thời khóa biểu</v-list-item-title>
+      </v-list-item>
     </v-list>
   </v-list-group>
 </template>
