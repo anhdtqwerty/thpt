@@ -1,5 +1,5 @@
 <template>
-  <v-form ref="form" flat class="pa-6">
+  <v-form ref="form" flat class="pt-5">
     <autocomplete-grade
       v-model="grade"
       item-text="title"

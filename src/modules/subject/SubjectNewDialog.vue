@@ -3,6 +3,7 @@
     v-model="dialog"
     width="600px"
     :fullscreen="$vuetify.breakpoint.smAndDown"
+    scrollable
   >
     <v-card>
       <v-card-title class="blue darken-4 white--text"
@@ -10,20 +11,20 @@
         <v-spacer />
         <v-icon color="white" @click="cancel">close</v-icon>
       </v-card-title>
-      <v-divider></v-divider>
-      <SubjectForm ref="form" :editCode="true" />
-      <v-row class="pr-6 pb-6 mt-n7" no-gutters>
-        <v-spacer></v-spacer>
-        <v-btn
-          class="px-6"
-          dark
-          depressed
-          color="#0D47A1"
-          :loading="loading"
-          @click="save"
-          ><v-icon left>add</v-icon>Thêm</v-btn
-        >
-      </v-row>
+      <v-card-text>
+        <v-divider></v-divider>
+        <SubjectForm ref="form" :editCode="true" />
+      </v-card-text>
+      <v-card-actions class="d-flex justify-end pa-6">
+          <v-btn
+            dark
+            depressed
+            color="#0D47A1"
+            :loading="loading"
+            @click="save"
+            ><v-icon left>add</v-icon>Thêm</v-btn
+          >
+      </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
@@ -33,20 +34,20 @@ import SubjectForm from '@/components/basic/form/SubjectForm'
 import { mapActions, mapState } from 'vuex'
 export default {
   components: {
-    SubjectForm
+    SubjectForm,
   },
   props: {
-    state: Boolean
+    state: Boolean,
   },
   data() {
     return {
       dialog: false,
-      loading: false
+      loading: false,
     }
   },
   computed: {
     ...mapState('app', ['roles', 'department']),
-    ...mapState('auth', ['user'])
+    ...mapState('auth', ['user']),
   },
   methods: {
     ...mapActions('subjects', ['createSubject']),
@@ -62,12 +63,12 @@ export default {
     cancel() {
       this.dialog = false
       this.$refs.form.resetDefault()
-    }
+    },
   },
   watch: {
     state(state) {
       this.dialog = true
-    }
-  }
+    },
+  },
 }
 </script>

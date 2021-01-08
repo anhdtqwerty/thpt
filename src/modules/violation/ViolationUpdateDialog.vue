@@ -3,6 +3,7 @@
     v-model="dialog"
     width="600px"
     :fullscreen="$vuetify.breakpoint.smAndDown"
+    scrollable
   >
     <v-card>
       <v-card-title class="blue darken-4 white--text"
@@ -10,12 +11,12 @@
         <v-spacer />
         <v-icon color="white" @click="cancel">close</v-icon>
       </v-card-title>
-      <v-divider></v-divider>
-      <violation-edit-form v-bind:violation="violation" ref="form" />
-      <v-row class="pr-6 pb-6 mt-n7" no-gutters>
-        <v-spacer></v-spacer>
+      <v-card-text>
+        <violation-edit-form v-bind:violation="violation" ref="form" />
+      </v-card-text>
+      <v-card-actions class="d-flex justify-end">
         <v-btn
-          class="px-6 mx-4 blue--text"
+          class="blue--text"
           color="#E3F2FD"
           dark
           depressed
@@ -23,7 +24,7 @@
           >Hủy</v-btn
         >
         <v-btn
-          class="px-6"
+          class="mx-2"
           dark
           depressed
           color="#0D47A1"
@@ -31,7 +32,7 @@
           @click="save()"
           >Lưu</v-btn
         >
-      </v-row>
+      </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
@@ -58,7 +59,7 @@ export default {
     ...mapState('auth', ['user']),
   },
   methods: {
-    ...mapActions('violation', ['updateViolation','fetchViolation']),
+    ...mapActions('violation', ['updateViolation', 'fetchViolation']),
     async save() {
       this.loading = true
       const data = this.$refs.form.getData()

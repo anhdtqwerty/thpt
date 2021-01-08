@@ -3,23 +3,25 @@
     v-model="dialog"
     width="600px"
     :fullscreen="$vuetify.breakpoint.smAndDown"
+    scrollable
   >
     <v-card>
-      <v-toolbar dense class="elevation-0 px-2" color="#0D47A1" dark>
-        <v-toolbar-title>THÊM KHÓA MỚI</v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-btn icon>
-          <v-icon @click="cancel">close</v-icon>
-        </v-btn>
-      </v-toolbar>
-      <v-divider></v-divider>
-      <generation-info-form ref="form" :editCode="true" />
-      <div class="d-flex pa-6">
-        <v-spacer></v-spacer>
-        <v-btn depressed color="primary" :loading="loading" @click="save"
+      <v-card-title class="primary white--text ">
+          <v-toolbar-title>THÊM KHÓA MỚI</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-btn dark icon>
+            <v-icon @click="cancel">close</v-icon>
+          </v-btn>
+      </v-card-title>
+      <v-card-text>
+        <v-divider></v-divider>
+        <generation-info-form ref="form" :editCode="true" />
+      </v-card-text>
+      <v-card-actions class="d-flex justify-end">
+        <v-btn class="px-4" depressed color="primary" :loading="loading" @click="save"
           >Lưu</v-btn
         >
-      </div>
+      </v-card-actions>
     </v-card>
   </v-dialog>
 </template>

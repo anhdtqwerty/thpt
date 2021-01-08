@@ -2,6 +2,7 @@
   <v-dialog
     v-model="dialog"
     width="600px"
+    scrollable
     :fullscreen="$vuetify.breakpoint.smAndDown"
   >
     <v-card>
@@ -10,9 +11,12 @@
         <v-spacer />
         <v-icon color="white" @click="cancel">close</v-icon>
       </v-card-title>
-      <v-divider></v-divider>
+      <v-card-text>
+        <v-divider></v-divider>
       <division-info-form v-bind:division=division ref="form" />
-      <v-row class="pr-6 pb-6 mt-n7" no-gutters>
+      </v-card-text>
+      <v-card-actions>
+         <v-row class="pa-2" no-gutters>
         <v-spacer></v-spacer>
         <v-btn
           class="px-6 mx-4 blue--text"
@@ -32,6 +36,8 @@
           >Lưu</v-btn
         >
       </v-row>
+      </v-card-actions>
+     
     </v-card>
   </v-dialog>
 </template>

@@ -5,45 +5,51 @@
     v-model="dialog"
   >
     <v-card>
-      <v-toolbar color="#0D47A1" dark dense class="elevation-0 mb-6">
-        <v-toolbar-title>THÊM HỌC KỲ MỚI</v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-btn icon>
-          <v-icon @click="cancel" dark>close</v-icon>
-        </v-btn>
-      </v-toolbar>
-
-      <v-form class="px-4" ref="form">
-        <v-text-field
-          v-model="title"
-          placeholder="Tên học kỳ"
-          outlined
-          clearable
-          dense
-          :rules="[rules.required]"
-        ></v-text-field>
-        <autocomplete-generation
-          v-model="generation"
-          placeholder="Năm học"
-          dense
-          outlined
-          clearable
-          :rules="[rules.required]"
-        ></autocomplete-generation>
-        <date-iso-picker
-          :rules="[rules.required]"
-          :date.sync="startDate"
-          outlined
-          placeholder="Ngày bắt đầu"
-        ></date-iso-picker>
-        <date-iso-picker
-          :rules="[rules.required]"
-          :date.sync="endDate"
-          outlined
-          placeholder="Ngày kết thúc"
-        ></date-iso-picker>
-        <v-textarea v-model="notes" outlined placeholder="Ghi chú"></v-textarea>
-      </v-form>
+      <v-card-title>
+        <v-toolbar color="#0D47A1" dark dense class="elevation-0 mb-6">
+          <v-toolbar-title>THÊM HỌC KỲ MỚI</v-toolbar-title>
+          <v-btn icon>
+            <v-icon @click="cancel" dark>close</v-icon>
+          </v-btn>
+        </v-toolbar>
+      </v-card-title>
+      <v-card-text>
+        <v-form ref="form">
+          <v-text-field
+            v-model="title"
+            placeholder="Tên học kỳ"
+            outlined
+            clearable
+            dense
+            :rules="[rules.required]"
+          ></v-text-field>
+          <autocomplete-generation
+            v-model="generation"
+            placeholder="Năm học"
+            dense
+            outlined
+            clearable
+            :rules="[rules.required]"
+          ></autocomplete-generation>
+          <date-iso-picker
+            :rules="[rules.required]"
+            :date.sync="startDate"
+            outlined
+            placeholder="Ngày bắt đầu"
+          ></date-iso-picker>
+          <date-iso-picker
+            :rules="[rules.required]"
+            :date.sync="endDate"
+            outlined
+            placeholder="Ngày kết thúc"
+          ></date-iso-picker>
+          <v-textarea
+            v-model="notes"
+            outlined
+            placeholder="Ghi chú"
+          ></v-textarea>
+        </v-form>
+      </v-card-text>
 
       <v-card-actions>
         <v-spacer></v-spacer>
@@ -83,7 +89,7 @@ export default {
       startDate: '',
       endDate: '',
       notes: '',
-      title: ''
+      title: '',
     }
   },
   props: {
@@ -99,13 +105,13 @@ export default {
     async save() {
       this.loading = true
       const data = {
-        'title': this.title,
-        'generation': this.generation,
-        'config': {
-          'startDate': this.startDate,
-          'endDate': this.endDate,
-          'notes': this.notes,
-        }
+        title: this.title,
+        generation: this.generation,
+        config: {
+          startDate: this.startDate,
+          endDate: this.endDate,
+          notes: this.notes,
+        },
       }
       await this.createSemester({ ...data })
       this.$alert.success('Tạo học kỳ mới thành công')
