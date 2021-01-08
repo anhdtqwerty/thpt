@@ -1,12 +1,30 @@
 <template>
   <div>
-    <violation-update-dialog v-bind:violation=selected :state="EditViolation"/>
-    <v-btn class="elevation-0" icon  @click="EditViolation=!EditViolation">
-      <v-icon >mdi-pencil</v-icon>
-    </v-btn>
-    <v-btn class="elevation-0" icon @click="onRemove()">
-      <v-icon>mdi-delete</v-icon>
-    </v-btn>
+    <violation-update-dialog
+      v-bind:violation="selected"
+      :state="EditViolation"
+    />
+    <v-menu offset-y>
+      <template v-slot:activator="{ on, attrs }">
+          <v-icon
+          v-bind="attrs"
+          v-on="on">mdi-dots-vertical</v-icon>
+      </template>
+      <v-list>
+        <v-list-item>
+          <v-btn
+            class="elevation-0"
+            icon
+            @click="EditViolation = !EditViolation"
+          >
+            <v-icon>mdi-pencil</v-icon>
+          </v-btn>
+          <v-btn class="elevation-0" icon @click="onRemove()">
+            <v-icon>mdi-delete</v-icon>
+          </v-btn>
+        </v-list-item>
+      </v-list>
+    </v-menu>
   </div>
 </template>
 <script>
@@ -15,19 +33,19 @@ import ViolationUpdateDialog from '@/modules/violation/ViolationUpdateDialog.vue
 
 export default {
   components: {
-    ViolationUpdateDialog
+    ViolationUpdateDialog,
   },
   props: {
-    selected: { type: Object, default: () => [] }
+    selected: { type: Object, default: () => [] },
   },
   data() {
     return {
       sending: null,
-      EditViolation: false
+      EditViolation: false,
     }
   },
   computed: {
-    ...mapState('violation', ['violations'])
+    ...mapState('violation', ['violations']),
   },
   methods: {
     ...mapActions('violation', ['removeViolation', 'updateDivision']),
@@ -39,12 +57,12 @@ export default {
         cancelText: 'Không',
         done: async () => {
           await this.removeViolation(this.selected.id)
-        }
+        },
       })
     },
     onEdit() {
       this.$emit('onEdit', this.selected)
-    }
+    },
   },
 }
 </script>
