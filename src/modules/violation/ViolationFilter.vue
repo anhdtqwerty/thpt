@@ -42,7 +42,7 @@
         </v-row>
       </v-col>
 
-      <v-col class="px-2 py-1" cols="12" md="2">
+      <v-col cols="12" md="2">
         <v-btn
           height="40"
           dark
