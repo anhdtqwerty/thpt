@@ -78,7 +78,7 @@
         />
       </v-col>
       <v-col md="3">
-        <v-btn class="py-4" color="#0D47A1" @click="onFilterChanged" outlined>
+        <v-btn height="40" color="#0D47A1" @click="onFilterChanged" outlined>
           <v-icon left dark>mdi-filter-outline</v-icon>Lọc
         </v-btn>
       </v-col>

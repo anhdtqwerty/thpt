@@ -3,10 +3,7 @@
     <v-row :class="{ 'mt-7': $vuetify.breakpoint.smAndDown }">
       <v-col cols="12" md="10">
         <v-row>
-          <v-col
-            cols="12"
-            md="4"
-          >
+          <v-col cols="12" md="4">
             <autocomplete-grade
               v-model="grade"
               item-text="name"
@@ -21,11 +18,7 @@
               :class="{ 'mb-4': $vuetify.breakpoint.smAndDown }"
             />
           </v-col>
-          <v-col
-            :class="{ 'pa-2': $vuetify.breakpoint.mdAndUp }"
-            cols="12"
-            md="4"
-          >
+          <v-col cols="12" md="4">
             <autocomplete-division
               v-model="division"
               item-text="name"
@@ -40,11 +33,7 @@
               :class="{ 'mb-4': $vuetify.breakpoint.smAndDown }"
             />
           </v-col>
-          <v-col
-            :class="{ 'pa-2': $vuetify.breakpoint.mdAndUp }"
-            cols="12"
-            md="4"
-          >
+          <v-col cols="12" md="4">
             <autocomplete-teacher
               v-model="teacher"
               item-text="name"
@@ -62,8 +51,9 @@
         </v-row>
       </v-col>
 
-      <v-col class="pa-2" cols="12" md="2">
+      <v-col class="py-1 px-2" cols="12" md="2">
         <v-btn
+          height="40"
           dark
           @click="onFilterChanged"
           color="primary"

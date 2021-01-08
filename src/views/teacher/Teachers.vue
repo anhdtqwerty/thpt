@@ -22,9 +22,8 @@
         :items="teachers"
         :loading="isLoading"
         loading-text="Đang Tải"
-        dense
       >
-        <div slot="top" class="mb-md-4">
+        <div slot="top">
           <div class="d-flex justify-end">
             <drop-menu
               :default-headers="originHeaders"

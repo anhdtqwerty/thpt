@@ -41,7 +41,7 @@
         v-model="selected"
         show-select
       >
-        <div slot="top" class="mb-md-10">
+        <div slot="top" class="mb-md-6">
           <div class="d-flex justify-end">
             <drop-menu
               :default-headers="originHeaders"

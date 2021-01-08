@@ -14,9 +14,8 @@
       </v-col>
       <v-col>
         <v-btn
-          class="py-4"
+          height="40"
           outlined
-          height="41"
           color="#0D47A1"
           @click="onFilterChanged"
         >

@@ -69,7 +69,7 @@
               @onFilterChanged="refresh"
             />
           </div>
-          <div class="d-flex justify-end pa-0" cols="12">
+          <div class="d-flex justify-end pa-0">
             <span v-if="$vuetify.breakpoint.smAndDown">
               <class-filter-dialog @onFilterChanged="refresh" />
             </span>

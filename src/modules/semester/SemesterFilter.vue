@@ -13,7 +13,13 @@
       </v-col>
 
       <v-col cols="6">
-        <v-btn class="py-5" color="primary" outlined @click="onFilterChanged">
+        <v-btn
+          class="py-1 px-2"
+          color="primary"
+          height="40"
+          outlined
+          @click="onFilterChanged"
+        >
           <v-icon left>mdi-filter-outline</v-icon>Lọc
         </v-btn>
       </v-col>

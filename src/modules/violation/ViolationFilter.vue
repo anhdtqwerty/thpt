@@ -1,8 +1,8 @@
 <template>
   <v-form ref="form">
-    <v-row no-gutters>
+    <v-row>
       <v-col cols="12" md="10">
-        <v-row no-gutters>
+        <v-row>
           <v-col cols="12" md="4">
             <autocomplete-student
               v-model="student"
@@ -42,9 +42,9 @@
         </v-row>
       </v-col>
 
-      <v-col cols="12" md="2">
+      <v-col class="px-2 py-1" cols="12" md="2">
         <v-btn
-          class="py-4"
+          height="40"
           dark
           @click="onFilterChanged"
           color="primary"
@@ -74,7 +74,6 @@ export default {
     student: {},
     classData: '',
     tags: '',
-    student: '',
     query: '',
     time: null,
     createdAt_gt: '',
