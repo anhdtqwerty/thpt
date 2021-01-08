@@ -1,8 +1,8 @@
 <template>
   <div>
-    <p class="font-weight-bold text-h5 ma-0">{{ headline }}</p>
-    <v-breadcrumbs :items="links" style="pa-0 ma-0" icon=""><template v-slot:divider>
-       <v-icon>mdi-chevron-right</v-icon>
+    <p class="font-weight-bold text-h5 ma-0"><v-icon class="pa-0 ma-0" >mdi-arrow-left</v-icon>{{ headline }}</p>
+    <v-breadcrumbs :items="links" icon=""><template v-slot:divider>
+       <v-icon class="pa-0 ma-0">mdi-chevron-right</v-icon>
       </template></v-breadcrumbs>
   </div>
 </template>
@@ -19,7 +19,7 @@ export default {
       {
         text: 'Trang chủ',
         disabled: false,
-        href: ''
+        href: '/dashboard'
       }
     ]
   }),
@@ -35,4 +35,7 @@ export default {
   padding: 0;
   margin: 0;
 }
+.v-breadcrumbs__divider{
+    padding: 0;
+} 
 </style>
