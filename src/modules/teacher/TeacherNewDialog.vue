@@ -32,7 +32,7 @@
         <v-btn
           :loading="isLoading"
           depressed
-          class="mr-2"
+          class="mx-8"
           color="primary"
           medium
           @click="save"

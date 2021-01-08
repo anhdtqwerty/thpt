@@ -1,12 +1,13 @@
 <template>
   <v-dialog
     v-model="dialog"
-    width="800px"
+    width="600"
+    scrollable
     :fullscreen="$vuetify.breakpoint.smAndDown"
   >
     <v-card>
-      <v-card-title class="primary white--text "
-        >Thêm Khen thưởng kỉ luật
+      <v-card-title class="primary white--text text-uppercase"
+        >Thêm Khen Thưởng Kỷ Luật
         <v-spacer />
         <v-icon color="white" @click="dialog = false">close</v-icon>
       </v-card-title>

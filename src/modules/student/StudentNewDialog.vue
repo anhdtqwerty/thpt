@@ -2,7 +2,7 @@
   <v-dialog
     :fullscreen="$vuetify.breakpoint.smAndDown"
     v-model="dialog"
-    width="661"
+    width="600"
     scrollable
   >
     <v-card>
@@ -26,11 +26,11 @@
           <student-family-form ref="studentFamilyForm"></student-family-form>
           <h3 class="mb-2">5. Thông tin đăng nhập</h3>
           <login-info-form ref="loginInfoForm"></login-info-form>
-        </v-form>
+        </v-form>0
       </v-card-text>
-      <v-card-actions class="px-4">
+      <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn dark color="#0D47A1" @click="save()" :disabled="isLoading" dense
+        <v-btn class="mx-8" dark color="#0D47A1" @click="save()" :disabled="isLoading" dense
           >Lưu</v-btn
         >
       </v-card-actions>

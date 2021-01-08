@@ -1,7 +1,7 @@
 <template>
   <v-dialog
     v-model="dialog"
-    width="661px"
+    width="600px"
     :fullscreen="$vuetify.breakpoint.smAndDown"
   >
     <v-card>

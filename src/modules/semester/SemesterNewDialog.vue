@@ -48,7 +48,6 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn
-          class="mr-2"
           :loading="isLoading"
           depressed
           color="#0D47A1"

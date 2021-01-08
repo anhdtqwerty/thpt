@@ -25,7 +25,6 @@
       label="Môn học"
       multiple
       dense
-      small-chips
       :hide-details="$vuetify.breakpoint.smAndDown"
       :class="{ 'mb-4': $vuetify.breakpoint.smAndDown }"
     />
