@@ -1,12 +1,10 @@
 <template>
   <div>
-    <div class="pa-4 pa-md-2 d-flex justify-space-between align-center">
+    <div class="pa-4 d-flex justify-space-between align-center">
       <div>
         <Breadcrumbs
           headline="Giáo viên"
-          :link="[
-            { text: 'Giáo viên', href: '../teachers' },
-            ]"
+          :link="[{ text: 'Giáo viên', href: '../teachers' }]"
         />
       </div>
       <div class="flex-center">
@@ -16,21 +14,26 @@
       </div>
     </div>
 
-    <v-card class="pa-2 pa-md-4 ma-md-2 elevation-1">
+    <v-card class="px-md-6 mx-md-4 elevation-1">
       <v-data-table
-        :items-per-page="5"
+        :items-per-page="10"
         item-key="id"
         :headers="headers"
         :items="teachers"
         :loading="isLoading"
         loading-text="Đang Tải"
-        dense
       >
-        <div slot="top" class="d-flex mb-4">
-          <div v-if="!$vuetify.breakpoint.mobile">
+        <div slot="top">
+          <div class="d-flex justify-end">
+            <drop-menu
+              :default-headers="originHeaders"
+              @change="headers = $event"
+              v-if="$vuetify.breakpoint.mdAndUp"
+            ></drop-menu>
+          </div>
+          <div v-if="$vuetify.breakpoint.mdAndUp">
             <teacher-filter @onFilterChanged="refresh"></teacher-filter>
           </div>
-          <v-spacer></v-spacer>
           <div>
             <v-btn
               v-if="$vuetify.breakpoint.mobile"
@@ -39,11 +42,6 @@
             >
               <v-icon right>mdi-filter-outline</v-icon>
             </v-btn>
-             <drop-menu
-              :default-headers="originHeaders"
-              @change="headers = $event"
-              v-if="$vuetify.breakpoint.mdAndUp"
-            ></drop-menu>
           </div>
         </div>
 
@@ -78,7 +76,7 @@
           }}</span>
         </template>
         <template v-slot:[`item.metadata.dob`]="{ item }">
-          {{formatDate(item.metadata.dob)}}
+          {{ formatDate(item.metadata.dob) }}
         </template>
         <template v-slot:[`item.action`]="{ item }">
           <teacher-list-actions :item="item"></teacher-list-actions>
@@ -160,7 +158,7 @@ const originHeaders = [
     align: 'left',
     sortable: false,
     show: true,
-  }
+  },
 ]
 Vue.use(Vuetify)
 
@@ -172,7 +170,7 @@ export default {
     TeacherListActions,
     TeacherFilterDialog,
     NewTeacherDialog,
-    DropMenu
+    DropMenu,
   },
   data() {
     return {

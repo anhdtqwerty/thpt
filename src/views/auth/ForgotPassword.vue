@@ -35,7 +35,7 @@
                 validate-on-blur
                 @keyup.enter="submit"
                 type="text"
-                filled
+                outlined
               />
             </v-form>
             <div align="center" justify="center">

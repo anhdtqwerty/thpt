@@ -24,7 +24,7 @@
             item-value=""
             label="Họ tên"
             class="ma-2"
-            filled
+            outlined
             clearable
             single-line
             dense
@@ -38,7 +38,7 @@
             clearable
             deletable-chips
             label="Trạng Thái"
-            filled
+            outlined
             single-line
             dense
             multiple
@@ -71,7 +71,7 @@ import AutocompleteStaff from '@/components/basic/input/AutocompleteStaff'
 
 export default {
   components: {
-    AutocompleteStaff,
+    AutocompleteStaff
   },
   data() {
     return {
@@ -80,16 +80,16 @@ export default {
       name: '',
       status: '',
       dialog: false,
-      statusList: ['active', 'block'],
+      statusList: ['active', 'block']
     }
   },
   props: {
-    state: Boolean,
+    state: Boolean
   },
   computed: {
     isLoading() {
       return this.loading > 0
-    },
+    }
   },
   methods: {
     cancel() {
@@ -105,20 +105,19 @@ export default {
     onFilterChanged() {
       this.$emit('onFilterChanged', {
         name: this.name,
-        status: this.status,
+        status: this.status
       })
       this.dialog = false
       this.reset()
       this.$refs.form.reset()
-    },
+    }
   },
   watch: {
     state(state) {
       this.dialog = true
-    },
-  },
+    }
+  }
 }
 </script>
 
-<style>
-</style>
+<style></style>

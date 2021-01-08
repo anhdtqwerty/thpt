@@ -55,10 +55,7 @@
           </span>
         </v-col>
       </v-row>
-      <class-filter
-        v-if="$vuetify.breakpoint.mdAndUp"
-        @onFilterChanged="refresh"
-      />
+      <class-filter @onFilterChanged="refresh" />
       <v-row :class="{ 'mt-n5': $vuetify.breakpoint.smAndDown }">
         <v-col>
           <v-data-table
@@ -240,10 +237,10 @@ export default {
     getCourse: course => {
       return course || {}
     },
-    refresh(query) {
+    async refresh(query) {
       this.loading = true
-      this.setClasses([])
-      this.fetchClasses({
+      await this.setClasses([])
+      await this.fetchClasses({
         department: this.department.id,
         generation: this.currentGeneration.id,
         ...query

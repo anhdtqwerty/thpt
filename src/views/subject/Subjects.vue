@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="pa-4 pa-md-2 d-flex justify-space-between align-center">
+    <div class="pa-4 d-flex justify-space-between align-center">
       <div>
         <Breadcrumbs
           headline="Quản lý môn"
@@ -15,15 +15,22 @@
     </div>
     <SubjectNewDialog :state="createSubject" />
 
-    <v-card class="pa-2 pa-md-4 ma-md-2 elevation-1">
-      <p class="text-uppercase text-h6" style="color: #0d47a1">
-        Danh sách các môn
-      </p>
+    <v-card class="px-md-6 mx-md-4 elevation-1">
       <v-data-table
         :headers="headers"
         :items="subjects"
         @click:row="onSelected"
       >
+        <div slot="top" class="d-flex mb-2">
+          <v-spacer></v-spacer>
+          <div>
+            <drop-menu
+              :default-headers="headers"
+              @change="headers = $event"
+              v-if="$vuetify.breakpoint.mdAndUp"
+            ></drop-menu>
+          </div>
+        </div>
         <template v-slot:item.actions="{ item }">
           <div>
             <v-btn class="elevation-0" icon small @click="onRemove(item.id)">
@@ -45,33 +52,42 @@
 <script>
 import { mapActions, mapState } from 'vuex'
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
+import DropMenu from '@/modules/student/menu/Menu.vue'
 import SubjectNewDialog from '@/modules/subject/SubjectNewDialog'
 
 export default {
   components: {
     SubjectNewDialog,
-    Breadcrumbs
+    Breadcrumbs,
+    DropMenu,
   },
   props: {
-    role: String
+    role: String,
   },
   data() {
     return {
       headers: [
-        { text: 'Tên môn', value: 'title', align: 'left', sortable: false },
-        { text: 'Khối', value: 'grade' },
-        { text: 'Phân ban', value: 'divisions' },
-        { text: 'Hệ số tổng kết', value: 'markMultiply' },
-        { text: 'Loại đánh giá', value: 'markType' },
+        {
+          text: 'Tên môn',
+          value: 'title',
+          align: 'left',
+          sortable: false,
+          show: true,
+        },
+        { text: 'Khối', value: 'grade', show: true },
+        { text: 'Phân ban', value: 'divisions', show: true },
+        { text: 'Hệ số tổng kết', value: 'markMultiply', show: true },
+        { text: 'Loại đánh giá', value: 'markType', show: true },
         {
           text: 'Hành động',
           value: 'actions',
           align: 'center',
-          sortable: false
-        }
+          sortable: false,
+          show: true,
+        },
       ],
       createSubject: false,
-      selected: {}
+      selected: {},
     }
   },
 
@@ -86,7 +102,7 @@ export default {
         default:
           return 'Thêm môn'
       }
-    }
+    },
   },
   async created() {
     await this.refresh({})
@@ -114,19 +130,19 @@ export default {
         cancelText: 'Không',
         done: async () => {
           await this.removeSubject(id)
-        }
+        },
       })
-    }
+    },
   },
   filters: {
     getDivision(divisions) {
       if (!divisions || !divisions.length) return ''
-      return divisions.map(d => d.title).join(', ')
+      return divisions.map((d) => d.title).join(', ')
     },
     getGrade(grade) {
       if (!grade) return ''
       return grade.title
-    }
-  }
+    },
+  },
 }
 </script>

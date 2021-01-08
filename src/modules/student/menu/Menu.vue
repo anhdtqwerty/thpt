@@ -2,8 +2,8 @@
   <div>
     <v-menu open-on-hover bottom offset-y>
       <template v-slot:activator="{ on }">
-        <v-btn v-on="on" outlined>
-          menu
+        <v-btn text v-on="on" icon>
+          <v-icon right small>mdi-dots-horizontal</v-icon>
         </v-btn>
       </template>
       <v-list>
@@ -15,11 +15,7 @@
         </v-list-item>
       </v-list>
     </v-menu>
-    <setting-headers
-      @change="change"
-      :default-headers="defaultHeaders"
-      :state="settingState"
-    />
+    <setting-headers @change="change" :default-headers="defaultHeaders" :state="settingState" />
   </div>
 </template>
 <script>
@@ -33,20 +29,20 @@ export default {
       type: Array,
       default() {
         return []
-      }
+      },
     },
-    role: String
+    role: String,
   },
   data() {
     return {
       studentTableOptions: {},
-      settingState: false
+      settingState: false,
     }
   },
   async created() {},
   computed: {
     ...mapState('app', ['department']),
-    ...mapState('students', ['totalItems', 'students'])
+    ...mapState('students', ['totalItems', 'students']),
   },
   methods: {
     ...mapActions('students', ['requestPageSettings']),
@@ -54,7 +50,7 @@ export default {
     change(val) {
       this.$emit('change', val)
       this.dialog = false
-    }
-  }
+    },
+  },
 }
 </script>
