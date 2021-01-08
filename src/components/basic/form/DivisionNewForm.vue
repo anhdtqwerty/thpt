@@ -1,6 +1,5 @@
 <template>
   <v-form ref="form" flat class="pa-6">
-    <p class="h6 font-weight-bold">Năm học ....(từ ngày....)</p>
     <v-text-field
       label="Tên ban mới"
       v-model="title"
@@ -15,7 +14,6 @@
       label="Khối"
       outlined
       dense
-      deletable-chips
       :hide-details="$vuetify.breakpoint.smAndDown"
       :class="{ 'mb-4': $vuetify.breakpoint.smAndDown }"
     />

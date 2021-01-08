@@ -5,8 +5,8 @@
         <Breadcrumbs
           headline="Khen thưởng kỷ luật"
           :link="[
-            { text: 'Học sinh', href: '' },
-            { text: 'Khen thưởng kỷ luật', href: '/complimented' },
+             { text: 'Học sinh', href: '../students' },
+             { text: 'KTKL', href: '/complimented' },
           ]"
         />
       </div>

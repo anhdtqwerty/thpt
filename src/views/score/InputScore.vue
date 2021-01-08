@@ -4,7 +4,7 @@
       <Breadcrumbs
         headline="Nhập điểm"
         :link="[
-          { text: 'Điểm số' },
+          { text: 'Điểm số', href: '/marks' },
           { text: 'Nhập điểm', href: '/marks-input' }
         ]"
       />

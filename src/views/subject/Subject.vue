@@ -4,7 +4,7 @@
       <div>
         <Breadcrumbs
           headline="Quản lý môn"
-          :link="[{ text: 'Quản lý môn', href: '../subjects' }]"
+          :link="[{ text: 'Nâng cao', href: '../divisions' },{ text: 'Danh sách môn', href: '../subjects' }]"
         />
       </div>
     </div>

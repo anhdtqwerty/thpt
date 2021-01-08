@@ -1,6 +1,5 @@
 <template>
   <v-form ref="form" flat class="pa-6">
-    <p class="h6 font-weight-bold">Năm học ....(từ ngày....)</p>
     <autocomplete-grade
       v-model="grade"
       item-text="title"
@@ -41,24 +40,18 @@
       :hide-details="$vuetify.breakpoint.smAndDown"
       :class="{ 'mb-4': $vuetify.breakpoint.smAndDown }"
     />
-    <v-select
-      v-model="type"
-      outlined
-      label="Mục"
-      :items="options"
-      :rules="ruleRequired"
-      clearable
-      dense
-      deletable-chips
-      :class="{ 'mb-4': $vuetify.breakpoint.smAndDown }"
-      :hide-details="$vuetify.breakpoint.smAndDown"
-    />
-    <v-radio-group row class="shrink ml-4 mt-0">
+     <v-radio-group v-model="type" row class="shrink mt-0">
+      <p class="mr-2 my-0">Mục: </p>
+      <v-radio label="Kỷ luật" hide-details value="violation"></v-radio>
+      <v-radio label="Khen thưởng" hide-details value="commendation"></v-radio>
+    </v-radio-group>
+
+    <!-- <v-radio-group row class="shrink ml-4 mt-0">
       <p class="mx-2 my-0">Loại nội dung:</p>
       <v-radio label="Điểm" hide-details></v-radio>
       <v-radio label="Nề nếp" hide-details></v-radio>
       <v-radio label="Khác" hide-details></v-radio>
-    </v-radio-group>
+    </v-radio-group> -->
 
     <v-textarea
       v-model="description"
@@ -82,10 +75,6 @@ export default {
     AutocompleteStudent,
   },
   data: () => ({
-    options: [
-      { text: 'Kỷ luật', value: 'violation' },
-      { text: 'Khen thưởng', value: 'commendation' },
-    ],
     ruleRequired: [(v) => !!v || 'Phần này không được trống'],
     grade: '',
     classData: '',
