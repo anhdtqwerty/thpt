@@ -1,42 +1,9 @@
 <template>
-  <v-form>
-    <v-row :class="{ 'mt-7': $vuetify.breakpoint.smAndDown }">
+  <v-form ref="form">
+    <v-row>
       <v-col cols="12" md="10">
         <v-row>
-          <v-col
-            :class="{ 'py-0': $vuetify.breakpoint.mdAndUp }"
-            cols="12"
-            md="4"
-          >
-            <autocomplete-class
-              v-model="classData"
-              clear-icon="mdi-close"
-              clearable
-              placeholder="Lớp"
-              outlined
-              dense
-              deletable-chips
-              :hide-details="$vuetify.breakpoint.smAndDown"
-              :class="{ 'mb-4': $vuetify.breakpoint.smAndDown }"
-            />
-          </v-col>
-          <v-col
-            :class="{ 'py-0': $vuetify.breakpoint.mdAndUp }"
-            cols="12"
-            md="4"
-          >
-            <DateRangeIOSPicker
-              :date-range.sync="dateRange"
-              placeholder="Ngày"
-              outlined
-              outline
-            />
-          </v-col>
-          <v-col
-            :class="{ 'py-0': $vuetify.breakpoint.mdAndUp }"
-            cols="12"
-            md="4"
-          >
+          <v-col cols="12" md="4">
             <autocomplete-student
               v-model="student"
               item-text="name"
@@ -51,11 +18,38 @@
               :class="{ 'mb-4': $vuetify.breakpoint.smAndDown }"
             />
           </v-col>
+          <v-col cols="12" md="4">
+            <DateRangeIOSPicker
+              :date-range.sync="dateRange"
+              placeholder="Ngày"
+              outlined
+            />
+          </v-col>
+          <v-col cols="12" md="4">
+            <autocomplete-class
+              v-model="classData"
+              clear-icon="mdi-close"
+              clearable
+              placeholder="Lớp"
+              outlined
+              dense
+              large
+              deletable-chips
+              :hide-details="$vuetify.breakpoint.smAndDown"
+              :class="{ 'mb-4': $vuetify.breakpoint.smAndDown }"
+            />
+          </v-col>
         </v-row>
       </v-col>
 
-      <v-col cols="12" md="2">
-        <v-btn large dark @click="onFilterChanged" color="primary" outlined>
+      <v-col class="px-2 py-1" cols="12" md="2">
+        <v-btn
+          height="40"
+          dark
+          @click="onFilterChanged"
+          color="primary"
+          outlined
+        >
           <v-icon left dark>mdi-filter-outline</v-icon>Lọc
         </v-btn>
       </v-col>
@@ -74,21 +68,20 @@ export default {
   components: {
     AutocompleteClass,
     AutocompleteStudent,
-    DateRangeIOSPicker
+    DateRangeIOSPicker,
   },
   data: () => ({
     student: {},
     classData: '',
     tags: '',
-    student: '',
     query: '',
     time: null,
     createdAt_gt: '',
     createdAt_lt: '',
-    dateRange: []
+    dateRange: [],
   }),
   computed: {
-    ...mapState('constant', ['classStatus'])
+    ...mapState('constant', ['classStatus']),
   },
   methods: {
     onFilterChanged() {
@@ -96,7 +89,7 @@ export default {
         class: this.classData,
         student: this.student,
         dateRange: this.dateRange,
-        _sort: 'createdAt:desc'
+        _sort: 'createdAt:desc',
       })
       this.createdAt_gt = ''
       this.createdAt_lt = ''
@@ -122,7 +115,7 @@ export default {
         student: this.student.id,
         createdAt_gt: this.createdAt_gt,
         createdAt_lt: this.createdAt_lt,
-        _sort: 'createdAt:desc'
+        _sort: 'createdAt:desc',
       })
       this.reset()
     },
@@ -130,8 +123,8 @@ export default {
       this.classData = ''
       this.student = ''
       this.dateRange = []
-    }
-  }
+    },
+  },
 }
 </script>
 

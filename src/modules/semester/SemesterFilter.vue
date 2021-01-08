@@ -1,18 +1,23 @@
 <template>
   <v-form>
-    <div class="d-flex">
-      <autocomplete-generation
-        v-model="generation"
-        class="mr-4"
-        placeholder="Năm học"
-        outlined
-        dense
-        clearable
-      ></autocomplete-generation>
-      <v-btn class="py-5" color="primary" outlined @click="onFilterChanged">
-        <v-icon left>mdi-filter-outline</v-icon>Lọc
-      </v-btn>
-    </div>
+    <v-row no-gutters>
+      <v-col cols="6">
+        <autocomplete-generation
+          v-model="generation"
+          class="mr-4"
+          placeholder="Năm học"
+          outlined
+          dense
+          clearable
+        ></autocomplete-generation>
+      </v-col>
+
+      <v-col cols="6">
+        <v-btn color="primary" height="40" outlined @click="onFilterChanged">
+          <v-icon left>mdi-filter-outline</v-icon>Lọc
+        </v-btn>
+      </v-col>
+    </v-row>
   </v-form>
 </template>
 
@@ -21,18 +26,18 @@ import AutocompleteGeneration from '@/components/basic/input/AutocompleteGenerat
 
 export default {
   components: {
-    AutocompleteGeneration
+    AutocompleteGeneration,
   },
   data: () => ({
-    generation: ''
+    generation: '',
   }),
   computed: {},
   methods: {
     onFilterChanged() {
       this.$emit('onFilterChanged', {
-        generation: this.generation
+        generation: this.generation,
       })
-    }
-  }
+    },
+  },
 }
 </script>

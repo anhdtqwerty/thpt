@@ -1,5 +1,5 @@
 <template>
-  <v-list-group :value="false" active-class="black-text">
+  <v-list-group :value="false">
     <template v-slot:activator>
       <v-list-item-icon class="mr-4">
         <v-icon>mdi-layers</v-icon>

@@ -30,16 +30,11 @@
         <date-picker
           placeholder="Ngày sinh"
           outlined
+          dense
           hide-details
           outline
-          dense
           :date.sync="dob"
         ></date-picker>
-      </v-col>
-      <v-col md="3">
-        <v-btn class="py-5" color="#0D47A1" @click="onFilterChanged" outlined>
-          <v-icon left dark>mdi-filter-outline</v-icon>Lọc
-        </v-btn>
       </v-col>
     </v-row>
     <v-row>
@@ -63,7 +58,6 @@
           item-text="title"
           item-value="status"
           placeholder="Chọn trạng thái"
-          flat
           outlined
           dense
           clearable
@@ -77,12 +71,16 @@
           item-value="value"
           v-model="gender"
           placeholder="Giới tính"
-          flat
           outlined
           dense
           clearable
           hide-details
         />
+      </v-col>
+      <v-col md="3">
+        <v-btn height="40" color="#0D47A1" @click="onFilterChanged" outlined>
+          <v-icon left dark>mdi-filter-outline</v-icon>Lọc
+        </v-btn>
       </v-col>
     </v-row>
   </v-form>
@@ -95,7 +93,7 @@ import moment from 'moment'
 
 export default {
   components: {
-    DatePicker
+    DatePicker,
   },
   data: () => ({
     show: false,
@@ -109,29 +107,25 @@ export default {
     genders: [
       { title: 'Nam', value: 'male' },
       { title: 'Nữ', value: 'female' },
-      { title: 'Khác', value: 'other' }
-    ]
+      { title: 'Khác', value: 'other' },
+    ],
   }),
   computed: {
-    ...mapState('constant', ['studentStatus'])
+    ...mapState('constant', ['studentStatus']),
   },
   methods: {
     onFilterChanged() {
       this.$emit('onFilterChanged', {
         name_contains: this.name,
         classes: this.classes,
-        dob_gt: moment(this.dob)
-          .startOf('month')
-          .toISOString(),
-        dob_lt: moment(this.dob)
-          .endOf('month')
-          .toISOString(),
+        dob_gt: moment(this.dob).startOf('month').toISOString(),
+        dob_lt: moment(this.dob).endOf('month').toISOString(),
         code_contains: this.code,
         status: this.status,
         gender: this.gender,
-        _sort: 'createdAt:desc'
+        _sort: 'createdAt:desc',
       })
-    }
-  }
+    },
+  },
 }
 </script>

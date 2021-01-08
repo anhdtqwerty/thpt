@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="pa-4 pa-md-2 d-flex justify-space-between align-center">
+    <div class="pa-4 d-flex justify-space-between align-center">
       <div>
         <Breadcrumbs
           headline="Danh sách"
@@ -26,7 +26,7 @@
       </div>
     </div>
 
-    <v-card class="pa-2 pa-md-4 ma-md-2 elevation-1">
+    <v-card class="px-md-6 mx-md-4 elevation-1">
       <v-data-table
         item-key="id"
         :options.sync="studentTableOptions"
@@ -40,35 +40,35 @@
         }"
         v-model="selected"
         show-select
-        dense
       >
-        <div slot="top" class="d-flex mb-4">
-          <div class="ma-1" v-if="$vuetify.breakpoint.mdAndUp">
-            <student-filter @onFilterChanged="refresh"></student-filter>
-          </div>
-          <!-- <v-spacer></v-spacer> -->
-          <div>
-            <v-btn
-              v-if="$vuetify.breakpoint.smAndDown"
-              icon
-              @click.stop="filterState = !filterState"
-            >
-              <v-icon right>mdi-filter-outline</v-icon>
-            </v-btn>
+        <div slot="top" class="mb-md-6">
+          <div class="d-flex justify-end">
             <drop-menu
               :default-headers="originHeaders"
               @change="headers = $event"
               v-if="$vuetify.breakpoint.mdAndUp"
             ></drop-menu>
           </div>
+          <div class="ma-1" v-if="$vuetify.breakpoint.mdAndUp">
+            <student-filter @onFilterChanged="refresh"></student-filter>
+          </div>
+          <div class="d-flex justify-end">
+            <v-btn
+              v-if="$vuetify.breakpoint.smAndDown"
+              icon
+              @click.stop="filterState = !filterState"
+            >
+              <v-icon>mdi-filter-outline</v-icon>
+            </v-btn>
+          </div>
         </div>
         <template v-slot:[`item.name`]="{ item }">
           <card-student-name :student="item" link />
         </template>
         <template v-slot:[`item.status`]="{ item }">
-          <p v-if="item.status" :class="getColor(item.status)">
+          <span v-if="item.status" :class="getColor(item.status)">
             {{ item.status | getStatus }}
-          </p>
+          </span>
         </template>
         <template v-slot:[`item.classes`]="{ item }">
           <span v-if="item.classes">{{ item.classes | getClasses }}</span>

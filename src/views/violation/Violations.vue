@@ -1,10 +1,7 @@
 <template>
-  <div class=" pa-2">
-    <v-row
-      class="pa-4 pa-md-2 d-flex justify-space-between align-center"
-      no-gutters
-    >
-      <v-col>
+  <div>
+    <div class="pa-4 d-flex justify-space-between align-center">
+      <div>
         <Breadcrumbs
           headline="Khen thưởng kỷ luật"
           :link="[
@@ -12,48 +9,41 @@
             { text: 'Khen thưởng kỷ luật', href: '/complimented' },
           ]"
         />
-      </v-col>
-      <v-col class="d-flex justify-end">
+      </div>
+      <div>
         <v-btn color="primary" @click="dialog = !dialog">
           <v-icon left>add</v-icon> Thêm
         </v-btn>
-      </v-col>
-    </v-row>
+      </div>
+    </div>
 
-    <v-card class="pa-2 elevation-1">
-      <v-row no-gutters class="mx-4">
-        <v-col cols="12" md="11">
-          <violation-filter
-            v-if="$vuetify.breakpoint.mdAndUp"
-            @onFilterChanged="refresh"
-          />
-        </v-col>
-        <v-col cols="12" md="1">
-          <span v-if="$vuetify.breakpoint.smAndDown">
-            <violation-dialog-filter @onFilterChanged="refresh" />
-          </span>
-          <setting-table-header
-            :default-headers="originHeaders"
-            @change="headers = $event"
-          />
-          <span v-if="$vuetify.breakpoint.mdAndUp">
-            <kebap-menu>
-              <v-list>
-                <v-list-item>
-                  <export-excel :custom-header="headers" api="/classes/" />
-                </v-list-item>
-              </v-list>
-            </kebap-menu>
-          </span>
-        </v-col>
-      </v-row>
+    <v-card class="px-md-6 mx-md-4 elevation-1">
       <v-data-table
         :loading="loading"
         :headers="originHeaders"
         :items="violations"
         item-key="id"
-        dense
       >
+        <div slot="top">
+          <div class="d-flex justify-end">
+            <drop-menu
+              :default-headers="originHeaders"
+              @change="headers = $event"
+              v-if="$vuetify.breakpoint.mdAndUp"
+            ></drop-menu>
+          </div>
+          <div class="ma-2">
+            <violation-filter
+              v-if="$vuetify.breakpoint.mdAndUp"
+              @onFilterChanged="refresh"
+            />
+          </div>
+          <div class="d-flex justify-end pa-0">
+            <span v-if="$vuetify.breakpoint.smAndDown">
+              <violation-dialog-filter @onFilterChanged="refresh" />
+            </span>
+          </div>
+        </div>
         <template v-slot:item.action="{ item }">
           <violation-actions :selected="item"> </violation-actions>
         </template>
@@ -78,7 +68,7 @@
 </template>
 
 <script>
-import { mapActions, mapState, mapGetters } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import DropMenu from '@/modules/student/menu/Menu.vue'
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import SettingTableHeader from '@/components/basic/table/SettingHeaders'
@@ -95,13 +85,6 @@ import { get } from 'lodash'
 
 const originHeaders = [
   {
-    text: 'Ngày',
-    value: 'createdAt',
-    align: 'left',
-    sortable: false,
-    show: true,
-  },
-  {
     text: 'Họ tên',
     value: 'student.name',
     align: 'left',
@@ -109,8 +92,8 @@ const originHeaders = [
     show: true,
   },
   {
-    text: 'Lớp',
-    value: 'class.title',
+    text: 'Ngày',
+    value: 'createdAt',
     align: 'left',
     sortable: false,
     show: true,
@@ -118,6 +101,13 @@ const originHeaders = [
   {
     text: 'Mục',
     value: 'type',
+    align: 'left',
+    sortable: false,
+    show: true,
+  },
+  {
+    text: 'Lớp',
+    value: 'class.title',
     align: 'left',
     sortable: false,
     show: true,
@@ -149,7 +139,7 @@ export default {
     ExportExcel,
     KebapMenu,
     ViolationNewDialog,
-    ViolationUpdateDialog
+    ViolationUpdateDialog,
   },
   data() {
     return {
@@ -183,7 +173,7 @@ export default {
         await this.fetchViolation({
           ...query,
           _limit: 9999,
-          _sort: 'createdAt:desc'
+          _sort: 'createdAt:desc',
         })
       } catch (err) {
         console.log(err)
