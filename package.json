@@ -52,8 +52,8 @@
     "node-sass": "^4.13.0",
     "sass": "^1.24.0",
     "sass-loader": "^8.0.0",
-    "vue-cli-plugin-vuetify": "^0.6.3",
+    "vue-cli-plugin-vuetify": "^2.0.9",
     "vue-template-compiler": "^2.6.10",
-    "vuetify-loader": "^1.2.2"
+    "vuetify-loader": "^1.6.0"
   }
 }
