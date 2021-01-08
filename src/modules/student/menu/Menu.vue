@@ -20,24 +20,37 @@
 </template>
 <script>
 import { mapActions, mapState } from 'vuex'
+import SettingHeaders from '@/components/basic/table/SettingHeaders'
+
 export default {
+  components: { SettingHeaders },
   props: {
-    role: String
+    defaultHeaders: {
+      type: Array,
+      default() {
+        return []
+      },
+    },
+    role: String,
   },
-  data () {
+  data() {
     return {
-      studentTableOptions: {}
+      studentTableOptions: {},
+      settingState: false,
     }
   },
-  async created () {},
+  async created() {},
   computed: {
     ...mapState('app', ['department']),
-    ...mapState('students', ['totalItems', 'students'])
+    ...mapState('students', ['totalItems', 'students']),
   },
   methods: {
     ...mapActions('students', ['requestPageSettings']),
-    getXLSX () {}
+    getXLSX() {},
+    change(val) {
+      this.$emit('change', val)
+      this.dialog = false
+    },
   },
-  watch: {}
 }
 </script>

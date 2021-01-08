@@ -1,57 +1,38 @@
 <template>
   <div>
     <v-row no-gutters>
-      <autocomplete-teacher
-        v-model="name"
-        item-text=""
-        item-value=""
-        label="Họ tên"
-        class="mr-4"
-        filled
-        clearable
-        single-line
-        dense
-      ></autocomplete-teacher>
-      <v-btn
-        class="py-5"
-        outlined
-        height="41"
-        color="#0D47A1"
-        depressed
-        @click="onFilterChanged"
-      >
-        <v-icon class="" left>mdi-filter-outline</v-icon>Lọc
-      </v-btn>
-    </v-row>
-
-    <v-row class="d-flex d-md-none justify-end">
-      <v-btn icon @click="filterState = !filterState">
-        <v-icon left>mdi-filter-outline</v-icon>
-      </v-btn>
-
-      <teacher-filter-dialog
-        @onFilterChanged="onFilterDialogChange"
-        :state="filterState"
-      />
+      <v-col cols="6">
+        <autocomplete-teacher
+          v-model="name"
+          label="Họ tên"
+          class="mr-4"
+          outlined
+          clearable
+          single-line
+          dense
+        ></autocomplete-teacher>
+      </v-col>
+      <v-col>
+        <v-btn
+          class="py-4"
+          outlined
+          height="41"
+          color="#0D47A1"
+          @click="onFilterChanged"
+        >
+          <v-icon left>mdi-filter-outline</v-icon>Lọc
+        </v-btn>
+      </v-col>
     </v-row>
   </div>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
-import moment from 'moment'
 import AutocompleteTeacher from '@/components/basic/input/AutocompleteTeacher'
-import AutocompleteClass from '@/components/basic/input/AutocompleteClass'
-import AutocompleteMajor from '@/components/basic/input/AutocompleteMajor'
-import DateRangePicker from '@/components/basic/picker/DateRangeIOSPicker'
-import TeacherFilterDialog from '@/modules/teacher/TeacherFilterDialog'
 
 export default {
   components: {
     AutocompleteTeacher,
-    AutocompleteClass,
-    AutocompleteMajor,
-    TeacherFilterDialog,
   },
   data: () => ({
     query: '',

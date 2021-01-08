@@ -2,13 +2,12 @@
   <v-autocomplete
     v-bind="this.$attrs"
     item-text="title"
-    :items="classList"
+    :items="classes"
     clearable
     item-value="id"
     @change="onChange"
     return-object
     v-on:input="$emit('input', $event)"
-    :rules="[v => !!v || 'Item is required']"
     @input="onChange"
   ></v-autocomplete>
 </template>
@@ -26,10 +25,7 @@ export default {
     defaultClasses: Array
   },
   computed: {
-    ...mapGetters('app', ['department', 'roles', 'roleIdByName']),
-    classList() {
-      return this.classes.map(c => ({ ...c, title: `${c.code} - ${c.title}` }))
-    }
+    ...mapGetters('app', ['department', 'roles', 'roleIdByName'])
   },
   created() {
     this.classes = this.defaultClasses || []

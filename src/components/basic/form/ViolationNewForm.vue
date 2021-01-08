@@ -17,7 +17,8 @@
     />
     <autocomplete-class
       v-model="classData"
-      :defaultClasses = [classData]
+      item-text="title"
+      item-value="id"
       clear-icon="mdi-close"
       clearable
       :rules="ruleRequired"
@@ -30,7 +31,6 @@
     ></autocomplete-class>
     <autocomplete-student
       v-model="student"
-      :defaultStudent = "student"
       :rules="ruleRequired"
       clearable
       clear-icon="mdi-close"
@@ -96,13 +96,9 @@ export default {
   computed: {
     ...mapGetters('app', ['department']),
   },
-  props: {
-    violation: { type: Object, default: () => {} },
-  },
+  props: {},
   methods: {
-    reset() {
-      this.$refs.form.reset()
-    },
+    reset() {},
     validate() {
       return this.$refs.form.validate()
     },
@@ -115,18 +111,17 @@ export default {
           grade: this.grade,
           description: this.description,
           student: this.student,
-          classData: this.class,
+          classData: this.classData,
           type: this.type,
         }
       }
     },
     resetDefault() {
-      console.log(this.violation)
       if (this.violation) {
         this.grade = this.violation.grade
         this.description = this.violation.description
         this.student = this.violation.student
-        this.classData = this.violation.class
+        this.classData = this.violation.classData
         this.type = this.violation.type
       } else {
         this.grade = ''
@@ -142,3 +137,6 @@ export default {
   },
 }
 </script>
+<style scoped>
+</style>>
+

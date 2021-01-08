@@ -1,131 +1,151 @@
 <template>
-  <v-row v-if="teacher">
-    <v-app-bar class="d-md-none mb-2 white">
-      <v-btn to="/teachers" icon>
-        <v-icon left>mdi-arrow-left</v-icon>
-      </v-btn>
-      <h3>Hồ sơ</h3>
-      <v-spacer></v-spacer>
-      <div class="d-flex flex-row justify-end">
-        <v-btn
-          depressed
-          medium
-          class="primary--text mr-2"
-          color="blue lighten-5"
-          right
-          @click="cancel"
-          :to="'/teachers'"
-          >Hủy</v-btn
-        >
-        <v-btn depressed medium color="primary" @click="save">Lưu</v-btn>
-      </div>
-    </v-app-bar>
-
-    <v-col cols="12" md="4" class="text-center">
-      <h2>{{ teacher.name }}</h2>
-      <user-avatar-picker
-        v-if="teacher"
-        type="teacher"
-        :student="teacher"
-        :avatar="avatar"
-      />
+  <v-row :no-gutters="$vuetify.breakpoint.smAndDown" class="px-md-3" v-if="teacher">
+    <div class="d-flex justify-end" v-if="$vuetify.breakpoint.smAndDown">
+      <v-btn class="ma-2" depressed color="primary" @click="save()">Lưu</v-btn>
+    </div>
+    <v-col class="text-center" cols="12" md="4">
+      <v-card class="pa-6" :flat="$vuetify.breakpoint.smAndDown">
+        <user-avatar-picker :student="teacher" type="students" />
+        <h2>{{ teacher.name }}</h2>
+        <table class="info-student-general mx-6">
+          <tr>
+            <td>Mã số</td>
+            <td>{{ teacher.code }}</td>
+          </tr>
+          <tr>
+            <td>Lớp</td>
+            <td>10A</td>
+          </tr>
+          <tr>
+            <td>Trạng thái</td>
+            <td>{{ teacher.status }}</td>
+          </tr>
+        </table>
+      </v-card>
     </v-col>
-
-    <v-col cols="12" md="8">
-      <div>
-        <div class="d-md-flex justify-space-between">
-          <h3 class="mb-4">Thông tin cá nhân</h3>
-          <div class="flex-row justify-end d-none d-md-flex">
-            <v-btn
-              depressed
-              medium
-              class="primary--text mr-2"
-              color="blue lighten-5"
-              right
-              @click="cancel"
-              :to="'/teachers'"
-              >Hủy</v-btn
-            >
-            <v-btn depressed medium color="primary" @click="save">Lưu</v-btn>
-          </div>
-        </div>
-        <h4 class="my-4">Thông tin liên lạc</h4>
-        <teacher-info-form ref="teacherInfoForm" :teacher="teacher" />
-        <h4 class="my-4">Địa chỉ</h4>
-        <user-address-form ref="teacherAddressForm" :address="teacher.data" />
-      </div>
-
-      <div>
-        <h3 class="mb-4">Học tập & làm việc</h3>
-        <h4 class="my-4">Trường đại học</h4>
-        <teacher-university-form
-          ref="teacherUniversityForm"
-          :data="teacher.data"
-        />
-        <h4 class="my-4">Công ty</h4>
-        <teacher-company-form ref="teacherCompanyForm" :work="teacher.data" />
-      </div>
+    <v-col class="" cols="12" md="8">
+      <v-card :flat="$vuetify.breakpoint.smAndDown" class="pa-md-4">
+        <v-row no-gutters>
+          <v-col cols="12" class="pa-4" md="9">
+            <h3>1. Thông tin cơ bản</h3>
+            <teacher-general-form-edit
+              ref="teacherGeneralFormEdit"
+              :teacher="teacher"
+            ></teacher-general-form-edit>
+          </v-col>
+          <v-col
+            class="text-right"
+            v-if="!$vuetify.breakpoint.smAndDown"
+            md="3"
+          >
+            <v-btn depressed color="primary" @click="save()">Lưu</v-btn>
+          </v-col>
+          <v-col cols="12" class="pa-4" md="9">
+            <h3>2. Thông tin tại trường</h3>
+            <teacher-school-form
+              :teacher="teacher"
+              ref="teacherSchoolForm"
+            ></teacher-school-form>
+          </v-col>
+          <v-col cols="12" class="pa-4" md="9">
+            <h3>3. Thông tin liên lạc</h3>
+            <teacher-contact-form
+              :teacher="teacher"
+              ref="teacherContactForm"
+            ></teacher-contact-form>
+          </v-col>
+          <v-col cols="12" class="pa-4" md="9">
+            <h3>4. Thông tin chuyên môn</h3>
+            <teacher-specialize-form
+              :teacher="teacher"
+              ref="teacherSpecializeForm"
+            ></teacher-specialize-form>
+          </v-col>
+        </v-row>
+      </v-card>
     </v-col>
   </v-row>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import TeacherInfoForm from '@/components/basic/form/TeacherInfoForm'
+import TeacherGeneralFormEdit from '@/components/basic/form/TeacherGeneralFormEdit'
+import TeacherSchoolForm from '@/components/basic/form/TeacherSchoolForm'
+import TeacherContactForm from '@/components/basic/form/TeacherContactForm'
+import TeacherSpecializeForm from '@/components/basic/form/TeacherSpecializeForm'
 import UserAvatarPicker from '@/components/basic/picker/UserAvatarPicker'
-import TeacherUniversityForm from '@/components/basic/form/UserUniversityForm'
-import TeacherCompanyForm from '@/components/basic/form/UserCompanyForm'
-import UserAddressForm from '@/components/basic/form/UserAddressForm'
 
 export default {
   components: {
-    TeacherInfoForm,
-    UserAddressForm,
+    TeacherSpecializeForm,
+    TeacherGeneralFormEdit,
+    TeacherContactForm,
+    TeacherSchoolForm,
     UserAvatarPicker,
-    TeacherCompanyForm,
-    TeacherUniversityForm
   },
   props: {
-    teacher: Object
+    teacher: Object,
   },
   data() {
     return {
-      tab: null
+      tab: null,
     }
   },
   computed: {
-    ...mapGetters('teacher', ['avatar'])
+    ...mapGetters('teacher', ['avatar']),
   },
   methods: {
     ...mapActions('teacher', ['updateTeacher']),
-    reset() {
-      this.$refs.form.reset()
-    },
     resetValidation() {
-      this.$refs.form.resetValidation()
+      this.$refs.teacherGeneralFormEdit.resetValidation()
+      this.$refs.teacherSchoolForm.resetValidation()
+      this.$refs.teacherContactForm.resetValidation()
+      this.$refs.teacherSpecializeForm.resetValidation()
     },
-    save() {
-      const teacherInfo = this.$refs.teacherInfoForm.getData()
-      const teacherAddress = this.$refs.teacherAddressForm.getData()
-      const teacherUniversity = this.$refs.teacherUniversityForm.getData()
-      const teacherCompany = this.$refs.teacherCompanyForm.getData()
-
-      this.updateTeacher({
-        id: this.teacher.id,
-        ...teacherInfo,
-        address: teacherAddress.frequentlyAddress,
-        data: {
-          ...this.teacher.data,
-          facebook: teacherInfo.facebook,
-          ...teacherAddress,
-          ...teacherUniversity,
-          ...teacherCompany
-        }
-      })
+    async save() {
+      try {
+        const teacherGeneralFormEdit = this.$refs.teacherGeneralFormEdit.getData()
+        const teacherSchoolForm = this.$refs.teacherSchoolForm.getData()
+        const teacherContactForm = this.$refs.teacherContactForm.getData()
+        const teacherSpecializeForm = this.$refs.teacherSpecializeForm.getData()
+        await this.updateTeacher({
+          id: this.teacher.id,
+          name: teacherGeneralFormEdit.name,
+          address: teacherContactForm.currentLive,
+          gender: teacherGeneralFormEdit.gender,
+          status: teacherSchoolForm.status,
+          type: teacherSchoolForm.type,
+          subject: teacherSpecializeForm.subject,
+          metadata: {
+            ...teacherGeneralFormEdit,
+            ...teacherContactForm,
+            ...teacherSchoolForm,
+            ...teacherSpecializeForm,
+          },
+        })
+        this.dialog = false
+      } catch (e) {
+        console.log(e)
+      }
     },
     cancel() {
       this.state = false
-    }
-  }
+    },
+  },
 }
 </script>
+<style scoped>
+.info-student-general {
+  width: 100%;
+  text-align: left;
+}
+.info-student-general td:nth-child(1) {
+  width: 70%;
+}
+.info-student-general td:nth-child(2) {
+  font-weight: bold;
+}
+h3 {
+  margin-bottom: 10px;
+}
+</style>

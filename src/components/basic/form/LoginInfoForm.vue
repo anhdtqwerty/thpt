@@ -12,7 +12,7 @@
         ></v-text-field>
         <v-text-field
           v-model="email"
-          label="Email Học Sinh"
+          label="Email"
           outlined
           dense
           class="required"
@@ -45,13 +45,17 @@ export default {
       type: [Object],
       default: () => {},
     },
+    teacher: {
+      type: [Object],
+      default: () => {},
+    },
   },
   data: () => ({
     valid: true,
     show: false,
-    phone: '',
-    email: '',
-    password: '',
+    phone: `${Date.now()}`,
+    email: `random${Date.now()}@gmail.com`,
+    password: '123123',
     rules: {
       required: (value) => !!value || 'Required.',
       min: (v) => v.length >= 6 || 'Min 8 characters',
@@ -59,9 +63,7 @@ export default {
     },
   }),
   created() {
-    if (this.student) {
-      this.reset()
-    }
+    this.reset()
   },
   methods: {
     ...mapActions('user', ['generateUserName', 'validateEmail']),
@@ -73,12 +75,12 @@ export default {
       }
     },
     validate() {
-      return this.$refs.form.validate()
+      this.$refs.form.validate()
     },
     reset() {
-      this.phone = this.phone
-      this.email = this.email
-      this.password = this.password
+      this.phone = `${Date.now()}`
+      this.email = `random${Date.now()}@gmail.com`
+      this.password = '123123'
     },
     resetValidation() {
       this.$refs.form.resetValidation()
@@ -86,6 +88,9 @@ export default {
   },
   watch: {
     student(student) {
+      this.reset()
+    },
+    teacher(teacher) {
       this.reset()
     },
   },

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="pa-4 pa-md-2 d-flex justify-space-between align-center">
+    <div class="pa-4 d-flex justify-space-between align-center">
       <div>
         <Breadcrumbs
           headline="Lớp học"
@@ -11,87 +11,109 @@
         <v-btn color="primary" @click="dialog = !dialog"
           ><v-icon left>add</v-icon>{{ addButtonText }}</v-btn
         >
+        <v-btn
+          v-if="selected.length"
+          color="green"
+          @click="onUpdate('running')"
+          dark
+          class="mx-2"
+          ><v-icon left>mdi-lock-open</v-icon>Mở</v-btn
+        >
+        <v-btn
+          v-if="selected.length"
+          color="gray"
+          @click="onUpdate('done')"
+          dark
+          class="mr-2"
+          ><v-icon left>mdi-lock</v-icon>Đóng</v-btn
+        >
+        <v-btn
+          v-if="selected.length"
+          color="red"
+          @click="onRemove"
+          dark
+          ><v-icon left>mdi-delete</v-icon>Xóa</v-btn
+        >
       </div>
     </div>
-    <v-card class="pa-2 pa-md-4 ma-md-2 elevation-1">
-      <v-row>
-        <v-col class="pa-0" cols="12" md="11">
-          <class-filter
-            v-if="$vuetify.breakpoint.mdAndUp"
-            @onFilterChanged="refresh"
-          />
-        </v-col>
-        <v-col class="d-flex justify-end pa-0" cols="12" md="1">
-          <span v-if="$vuetify.breakpoint.smAndDown">
-            <class-filter-dialog @onFilterChanged="refresh" />
-          </span>
-          <setting-table-header
-            :default-headers="originHeaders"
-            @change="headers = $event"
-          />
-          <span v-if="$vuetify.breakpoint.mdAndUp">
-            <kebap-menu>
+    <v-card class="px-md-6 mx-md-4 elevation-1">
+      <v-data-table
+        item-key="id"
+        :headers="headers"
+        :items="classes"
+        :search="search"
+        v-model="selected"
+        show-select
+        :disable-sort="$vuetify.breakpoint.smAndDown"
+      >
+        <div slot="top">
+          <div class="d-flex justify-end">
+            <drop-menu
+              :default-headers="originHeaders"
+              @change="headers = $event"
+              v-if="$vuetify.breakpoint.mdAndUp"
+            ></drop-menu>
+            <span v-if="$vuetify.breakpoint.mdAndUp">
+              <kebap-menu>
                 <v-list>
                   <v-list-item>
                     <export-excel :custom-header="headers" api="/classes/" />
                   </v-list-item>
                 </v-list>
-            </kebap-menu>
+              </kebap-menu>
+            </span>
+          </div>
+          <div class="ma-2">
+            <class-filter
+              v-if="$vuetify.breakpoint.mdAndUp"
+              @onFilterChanged="refresh"
+            />
+          </div>
+          <div class="d-flex justify-end pa-0" cols="12">
+            <span v-if="$vuetify.breakpoint.smAndDown">
+              <class-filter-dialog @onFilterChanged="refresh" />
+            </span>
+          </div>
+        </div>
+        <template v-slot:item.status="{ item }">
+          <span v-if="item.status" :class="getColor(item.status)"
+            >{{ item.status | classStatus }}
           </span>
-        </v-col>
-      </v-row>
-
-      <v-row :class="{ 'mt-n5': $vuetify.breakpoint.smAndDown }">
-        <v-col>
-          <v-data-table
-            item-key="id"
-            :headers="headers"
-            :items="classes"
-            :search="search"
-            :disable-sort="$vuetify.breakpoint.smAndDown"
-          >
-            <template v-slot:item.status="{ item }">
-              {{ item.status | classStatus }}
+        </template>
+        <template v-slot:item.title="{ item }">
+          <v-tooltip top>
+            <template v-slot:activator="{ on }">
+              <div v-on="on" style="text-decoration: none; white-space: nowrap">
+                <router-link
+                  v-on="on"
+                  style="text-decoration: none; white-space: nowrap"
+                  :to="'/class/' + item.id"
+                  >{{ item.title }}</router-link
+                >
+              </div>
             </template>
-            <template v-slot:item.title="{ item }">
-              <v-tooltip top>
-                <template v-slot:activator="{ on }">
-                  <div
-                    v-on="on"
-                    style="text-decoration: none; white-space: nowrap"
-                  >
-                    <router-link
-                      v-on="on"
-                      style="text-decoration: none; white-space: nowrap"
-                      :to="'/class/' + item.id"
-                      >{{ item.title }}</router-link
-                    >
-                  </div>
-                </template>
-                <span>Xem lớp</span>
-              </v-tooltip>
-            </template>
-            <template v-slot:item.generation="{ item }">
-              <p style="margin: 0; white-space: nowrap">
-                {{ item.generation | getGeneration }}
-              </p>
-            </template>
-            <template v-slot:item.division="{ item }">
-              <p style="margin: 0; white-space: nowrap">
-                {{ item.division | getDivision }}
-              </p>
-            </template>
-            <template v-slot:item.teachers="{ item }">
-              <p style="margin: 0; white-space: nowrap">
-                {{ item | getTeacherNames }}
-              </p>
-            </template>
-            <template v-slot:item.actions="{ item }">
-              <class-list-actions :selected="item" />
-            </template>
-          </v-data-table>
-        </v-col>
-      </v-row>
+            <span>Xem lớp</span>
+          </v-tooltip>
+        </template>
+        <template v-slot:item.generation="{ item }">
+          <p style="margin: 0; white-space: nowrap">
+            {{ item.generation | getGeneration }}
+          </p>
+        </template>
+        <template v-slot:item.division="{ item }">
+          <p style="margin: 0; white-space: nowrap">
+            {{ item.division | getDivision }}
+          </p>
+        </template>
+        <template v-slot:item.teachers="{ item }">
+          <p style="margin: 0; white-space: nowrap">
+            {{ item | getTeacherNames }}
+          </p>
+        </template>
+        <template v-slot:item.actions="{ item }">
+          <class-list-actions :selected="item" />
+        </template>
+      </v-data-table>
     </v-card>
     <new-class-dialog :state="dialog" style="margin: 0 20px"></new-class-dialog>
   </div>
@@ -107,7 +129,7 @@ import ClassListActions from '@/modules/class/ClassListActions'
 import ClassFilterDialog from '@/modules/class/ClassFilterDialog'
 import ExportExcel from '@/components/basic/ExportExcel'
 import KebapMenu from '@/components/basic/menu/KebapMenu'
-import SettingTableHeader from '@/components/basic/table/SettingHeaders'
+import DropMenu from '@/modules/student/menu/Menu.vue'
 import moment from 'moment'
 import _ from 'lodash'
 
@@ -151,7 +173,7 @@ const originHeaders = [
 export default {
   components: {
     ClassFilter,
-    SettingTableHeader,
+    DropMenu,
     NewClassDialog,
     ClassFilterDialog,
     ClassListActions,
@@ -164,7 +186,7 @@ export default {
   },
   data() {
     return {
-      headers: [],
+      headers: originHeaders,
       originHeaders: originHeaders,
       draw: false,
       search: '',
@@ -178,10 +200,10 @@ export default {
       ready: false,
       editClassId: '',
       dialog: false,
+      selected: [],
     }
   },
   async created() {
-    console.log(this.currentGeneration.id)
     await this.refresh({
       department: this.department.id,
       generation: this.currentGeneration.id,
@@ -203,12 +225,18 @@ export default {
     },
   },
   methods: {
-    ...mapActions('class', ['fetchClasses', 'setClass', 'setClasses']),
+    ...mapActions('class', [
+      'fetchClasses',
+      'setClass',
+      'setClasses',
+      'updateClasses',
+      'removeClasses',
+    ]),
     getColor(status) {
-      if (status === 'opened') return 'primary'
-      if (status === 'running') return 'green'
-      else if (status === 'pending' || status === 'rejected') return 'red'
-      else if (status === 'done') return 'gray'
+      if (status === 'opened') return 'primary--text'
+      if (status === 'running') return 'green--text'
+      else if (status === 'pending' || status === 'rejected') return 'red--text'
+      else if (status === 'done') return 'gray--text'
       else return 'red'
     },
     getCourse: (course) => {
@@ -220,6 +248,33 @@ export default {
         department: this.department.id,
         generation: this.currentGeneration.id,
         ...query,
+      })
+    },
+    onRemove() {
+      this.$dialog.confirm({
+        title: 'Xóa Lớp Học',
+        text: `Bạn Có chắc muốn xóa những Lớp học này.? ${this.selected.length} lớp học đã chọn`,
+        okText: 'Có',
+        cancelText: 'Không',
+        done: async () => {
+          await this.removeClasses(this.selected)
+          this.selected = []
+          this.$emit('removed')
+        },
+      })
+    },
+    onUpdate(status) {
+      this.$dialog.confirm({
+        title: 'Cập Nhật Lớp Học',
+        text: `${this.selected.length} lớp học đã chọn`,
+        okText: 'Có',
+        cancelText: 'Không',
+        done: async () => {
+          await this.updateClasses(
+            this.selected.map((c) => ({ id: c.id, status }))
+          )
+          this.selected = []
+        },
       })
     },
   },

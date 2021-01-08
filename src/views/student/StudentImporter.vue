@@ -1,77 +1,78 @@
 <template>
-  <v-sheet style="position: relative;">
-    <v-card flat>
-      <v-card-title flex>
-        <v-file-input
-          show-size
-          label="Chọn File"
-          @change="onFileSelected"
-          :value="value"
-          :disabled="isLoading"
-        ></v-file-input>
-        <v-text-field
-          v-model="search"
-          clear-icon="mdi-close"
-          clearable
-          append-icon="mdi-magnify"
-          label="Tìm Kiếm"
-          class="mx-12"
-        ></v-text-field>
-        <v-btn
-          depressed
-          small
-          color="green"
-          @click="upload"
-          :disabled="isLoading || loading"
-        >Lưu lại</v-btn>
-      </v-card-title>
-      <v-data-table
-        class="mb-2 flex-center-between"
-        style="flex-direction: row-reverse;"
-        :headers="headers"
-        :items="students"
-        :search="search"
+  <v-card class="ma-2">
+    <v-card-title flex>
+      <v-file-input
+        show-size
+        label="Chọn File"
+        @change="onFileSelected"
+        :value="value"
+        :disabled="isLoading"
+        append-icon="file"
+        style="max-width:300px"
+      ></v-file-input>
+      <v-btn
+        depressed
+        color="primary"
+        @click="upload"
+        :disabled="isLoading || loading"
+        dark
+        >Lưu lại</v-btn
       >
-        <template v-slot:item.major="{ item }">
-          <router-link v-if="item.major" :to="'/major/' + item.major.id">
-            <v-tooltip top>
-              <template v-slot:activator="{ on }">
-                <span v-on="on">{{item.major.code}}</span>
-              </template>
-              <span>{{item.major.title}}</span>
-            </v-tooltip>
-          </router-link>
-        </template>
-        <template v-slot:item.generation="{ item }">
-          <router-link v-if="item.generation" :to="'/generation/' + item.generation.id">
-            <v-tooltip top>
-              <template v-slot:activator="{ on }">
-                <span v-on="on">{{item.generation.code}}</span>
-              </template>
-              <span>{{item.generation.name}}</span>
-            </v-tooltip>
-          </router-link>
-        </template>
-        <template v-slot:item.uploadStatus="{ item }">
-          <v-chip
-            small
-            dark
-            :color="getColor(item.uploadStatus)"
-          >{{ item.uploadStatus | getStatus }}</v-chip>
-        </template>
-        <template v-slot:item.dob="{ item }">{{item.dob| familiarizeDate}}</template>
-      </v-data-table>
-    </v-card>
-  </v-sheet>
+    </v-card-title>
+    <v-data-table
+      class="mb-2 flex-center-between"
+      style="flex-direction: row-reverse;"
+      :headers="headers"
+      :items="students"
+      :search="search"
+    >
+      <template v-slot:item.grade="{ item }">
+        <router-link v-if="item.grade" :to="'/grade/' + item.grade.id">
+          <v-tooltip top>
+            <template v-slot:activator="{ on }">
+              <span v-on="on">{{ item.grade }}</span>
+            </template>
+            <span>{{ item.grade }}</span>
+          </v-tooltip>
+        </router-link>
+      </template>
+      <template v-slot:item.classes="{ item }">
+        <span>{{ item.classes | getClasses }}</span>
+      </template>
+      <template v-slot:item.generation="{ item }">
+        <router-link
+          v-if="item.generation"
+          :to="'/generation/' + item.generation"
+        >
+          <v-tooltip top>
+            <template v-slot:activator="{ on }">
+              <span v-on="on">{{ item.generation }}</span>
+            </template>
+            <span>{{ item.generation }}</span>
+          </v-tooltip>
+        </router-link>
+      </template>
+      <template v-slot:item.uploadStatus="{ item }">
+        <v-chip small dark :color="getColor(item.uploadStatus)">{{
+          item.uploadStatus | getStatus
+        }}</v-chip>
+      </template>
+      <template v-slot:item.dob="{ item }">{{
+        item.dob | familiarizeDate
+      }}</template>
+    </v-data-table>
+  </v-card>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import { get } from 'lodash'
+import utils from '@/plugins/utils'
 import XLSX from 'xlsx'
 import moment from 'moment'
 export default {
   components: {},
-  data () {
+  data() {
     return {
       search: '',
       dialog: false,
@@ -88,6 +89,7 @@ export default {
         },
         { text: 'Tên Học Sinh', value: 'name' },
         { text: 'Code', value: 'username' },
+        { text: 'Lớp', value: 'classes' },
         { text: 'Email', value: 'email' },
         { text: 'phone', value: 'phone' },
         { text: 'Giới Tính', value: 'gender' },
@@ -95,7 +97,7 @@ export default {
         { text: 'Facebook', value: 'facebook' },
         { text: 'Năm Sinh', value: 'dob' },
         { text: 'Mật Khẩu', value: 'password' },
-        { text: 'Chuyên Ngành', value: 'major' },
+        { text: 'Khối', value: 'grade' },
         { text: 'Khóa', value: 'generation' }
       ]
     }
@@ -105,34 +107,36 @@ export default {
     ...mapGetters('studentImporter', [
       'students',
       'loading',
-      'majors',
+      'grade',
+      'classes',
       'generations'
     ]),
     ...mapGetters('app', ['roleIdByName', 'roles']),
-    isProcessing () {
+    isProcessing() {
       return this.loading || this.isLoading
     }
   },
-  async created () {
+  async created() {
     this.isLoading = true
-    await this.fetchMajors({ department: this.department.id })
     await this.fetchGenerations({ department: this.department.id })
+    await this.fetchClasses({ department: this.department.id })
     this.isLoading = false
   },
   methods: {
     ...mapActions('studentImporter', [
       'fetchGenerations',
+      'fetchClasses',
       'fetchMajors',
       'setStudents',
       'setStudent',
       'migrateStudents',
       'validateStudents'
     ]),
-    ...mapActions('user', ['generateUserName', 'validateEmail']),
-    onFileSelected (file) {
+    ...mapActions('user', ['validateEmail']),
+    onFileSelected(file) {
       let self = this
       let reader = new FileReader()
-      reader.onload = function (e) {
+      reader.onload = function(e) {
         var data = new Uint8Array(e.target.result)
         var workbook = XLSX.read(data, { type: 'array' })
         let sheetName = workbook.SheetNames[0]
@@ -141,19 +145,29 @@ export default {
 
         self.setStudents(
           students.map((student, index) => {
+            const code = parseInt(student.code)
+            const indexName = utils.generateUserName(
+              utils.clearUnicode(student.name)
+            )
+            const studentClass = self.classes[student.classes]
             return {
               ...self.$utils.filterObject(student),
               dob: moment(student.dob, 'DD/MM/YYYY').toISOString(),
+              username: `${indexName}${student.code}`,
+              username_indexing: indexName,
+              username_no: code,
               key: index,
-              phone: student.phone,
+              phone: student.phone | '',
               department: self.department.id,
-              major: self.majors[student.major],
-              generation: self.generations[student.generation],
+              classes: [studentClass],
+              grade: get(studentClass, 'grade.id'),
+              generation: get(studentClass, 'generation.id'),
+              // generation: student.generation.id,
               uploadStatus: 'validate',
               address: student.frequentlyAddress,
               status: 'active',
               tags: student.tags,
-              password: "123123",
+              password: '123123',
               role: self.roleIdByName('Student'),
               data: {
                 frequentlyAddress: student.frequentlyAddress,
@@ -179,7 +193,7 @@ export default {
       }
       reader.readAsArrayBuffer(file)
     },
-    getColor (status) {
+    getColor(status) {
       if (status === 'ready') return 'green'
       else if (status === 'success') return 'blue'
       else if (status === 'failed') return 'red'
@@ -188,12 +202,12 @@ export default {
       else if (status === 'validate') return 'gray'
     },
 
-    upload () {
+    upload() {
       this.migrateStudents()
     }
   },
   filters: {
-    getStatus (status) {
+    getStatus(status) {
       if (status === 'ready') return 'Hợp Lệ'
       else if (status === 'success') return 'Đã Lưu'
       else if (status === 'failed') return 'Không Hợp Lệ'
@@ -205,7 +219,7 @@ export default {
       if (!time) {
         return 'None'
       }
-      return moment(time).format('DD/MM/MM')
+      return moment(time).format('DD/MM/YYYY')
     },
     currencyTuition: tuition => {
       if (!tuition) {
@@ -221,12 +235,16 @@ export default {
         return 'không có'
       }
       return moment(time).format('DD/MM')
+    },
+    getClasses(classes) {
+      if (!classes || !classes.length) return ''
+      if (classes[0]) {
+        return classes.map(c => c.title).join(', ')
+      }
     }
   }
 }
 </script>
-
-To change the font size for a single component, such as a text field, application-wide:
 
 <style>
 .v-select__level-sale {

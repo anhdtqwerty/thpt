@@ -1,47 +1,35 @@
 <template>
-  <v-menu
-    v-bind="$attrs"
-    v-model="menu"
-    :close-on-content-click="false"
-    :nudge-right="40"
-    transition="scale-transition"
-    offset-y
-  >
-    <template v-slot:activator="{ on }">
-      <v-text-field
-        v-bind="$attrs"
-        :value="display"
-        @click:clear="updated('')"
-        readonly
-        clearable
-        flat
-        dense
-        v-on="on"
-      ></v-text-field>
-    </template>
-    <v-date-picker
-      locale="vi"
-      v-model="data"
-      color="#0D47A1"
-      @input="updated"
-    ></v-date-picker>
-  </v-menu>
+  <v-text-field
+    v-bind="this.$attrs"
+    ref="code"
+    v-mask="mask"
+    :rules="[v => !!v || 'Item is required']"
+    v-on:input="$emit('input', $event)"
+    v-model="data"
+  ></v-text-field>
 </template>
 
 <script>
 import moment from 'moment'
+import { mask } from 'vue-the-mask'
 export default {
   props: {
-    date: String,
+    date: String
+  },
+  directives: {
+    mask
   },
   data: () => ({
-    data: new Date().toISOString().substr(0, 10),
+    data: moment().format('DD/MM/YYYY'),
     menu: false,
+    mask: 'XX/XX/XXXX'
   }),
+
   methods: {
+
     updated(value) {
       if (value) {
-        this.$emit('update:date', moment(this.data).toISOString())
+        this.$emit('update:date', moment(this.data, 'DD/MM/YYYY').toISOString())
       } else {
         this.$emit('update:date', '')
       }
@@ -49,25 +37,17 @@ export default {
     },
     reset() {
       if (this.date) {
-        this.data = moment(this.date).format('YYYY-MM-DD')
+        this.data = moment(this.date).format('DD/MM/YYYY')
       }
-    },
-  },
-  computed: {
-    display() {
-      if (this.date) {
-        return moment(this.date).format('DD/MM/YYYY')
-      }
-      return ''
-    },
+    }
   },
   created() {
     this.reset()
   },
   watch: {
-    date() {
-      this.reset()
-    },
-  },
+    data(value) {
+      this.updated(this.data)
+    }
+  }
 }
 </script>

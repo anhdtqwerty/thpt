@@ -7,16 +7,19 @@
         </v-btn>
       </template>
       <v-list>
-        <v-list-item @click.stop="changeState = !changeState">
+        <v-list-item>
           <v-list-item-title>Chuyển lớp</v-list-item-title>
         </v-list-item>
         <v-list-item>
           <v-list-item-title>Chuyển trạng thái</v-list-item-title>
         </v-list-item>
+        <v-list-item @click="onRemove">
+          <v-list-item-title>Xóa học sinh</v-list-item-title>
+        </v-list-item>
       </v-list>
     </v-menu>
 
-    <change-class-dialog :item="item" :state="changeState"></change-class-dialog>
+    <!-- <change-class-dialog :item="item" :state="changeState"></change-class-dialog> -->
   </div>
 </template>
 
@@ -32,7 +35,7 @@ export default {
   props: {
     disabled: Boolean,
     filter: Boolean,
-    item: Object,
+    item: Object
   },
   data() {
     return {
@@ -47,28 +50,28 @@ export default {
     ...mapState('student', ['students']),
     sendingName() {
       const { name } = this.students.find(
-        (student) => student.phone === this.sending
+        student => student.phone === this.sending
       )
       return name
     },
     multipleAction() {
       return !_.isEmpty(this.selected)
-    },
+    }
   },
   methods: {
-    ...mapActions('students', ['removeStudents', 'updateStudents']),
+    ...mapActions('students', ['removeStudent', 'updateStudents']),
     ...mapActions('noti', ['sendEmails', 'sendSMS']),
     ...mapActions('sale', ['setStudents']),
     disableStudent() {
       this.updateStudents(
-        this.selected.map((item) => {
+        this.selected.map(item => {
           return { ...item, status: 'block' }
         })
       )
     },
     enableStudent() {
       this.updateStudents(
-        this.selected.map((item) => {
+        this.selected.map(item => {
           return { ...item, status: 'active' }
         })
       )
@@ -80,9 +83,9 @@ export default {
         okText: 'Có',
         cancelText: 'Không',
         done: async () => {
-          await this.removeStudents(this.selected)
+          await this.removeStudent(this.item)
           this.$emit('removed')
-        },
+        }
       })
     },
     onReserve() {
@@ -93,10 +96,10 @@ export default {
         cancelText: 'Không',
         done: async () => {
           await this.updateStudents(
-            this.selected.map((s) => ({ id: s.id, status: 'reserved' }))
+            this.selected.map(s => ({ id: s.id, status: 'reserved' }))
           )
           this.$emit('removed')
-        },
+        }
       })
     },
     onTuition() {
@@ -111,12 +114,12 @@ export default {
         cancelText: 'Không',
         done: async () => {
           await this.updateStudents(
-            this.selected.map((s) => ({ id: s.id, status: 'active' }))
+            this.selected.map(s => ({ id: s.id, status: 'active' }))
           )
           this.$emit('removed')
-        },
+        }
       })
-    },
-  },
+    }
+  }
 }
 </script>

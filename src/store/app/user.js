@@ -187,6 +187,7 @@ export default {
         _limit: 1,
         type: 'staff'
       })
+      console.log(users)
       if (users.length) userNo = _.get(_.last(users), 'username_no', 0) + 1
       return {
         username: `${userNameIndex}${userNo || ''}`,
@@ -198,7 +199,6 @@ export default {
       let userNameIndex = utils.generateUserName(utils.clearUnicode(name))
       userNameIndex = utils.removeUnicode(userNameIndex).toLowerCase()
       const users = await api.User.search({
-        username_indexing: userNameIndex,
         _sort: 'username_no:DESC',
         _limit: 1,
         type: 'student'

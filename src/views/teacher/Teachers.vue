@@ -1,12 +1,10 @@
 <template>
   <div>
-    <div class="pa-4 pa-md-2 d-flex justify-space-between align-center">
+    <div class="pa-4 d-flex justify-space-between align-center">
       <div>
         <Breadcrumbs
           headline="Giáo viên"
-          :link="[
-            { text: 'Giáo viên', href: '../teachers' },
-            ]"
+          :link="[{ text: 'Giáo viên', href: '../teachers' }]"
         />
       </div>
       <div class="flex-center">
@@ -16,22 +14,27 @@
       </div>
     </div>
 
-    <v-card class="pa-2 pa-md-4 ma-md-2 elevation-1">
+    <v-card class="px-md-6 mx-md-4 elevation-1">
       <v-data-table
-        :items-per-page="5"
+        :items-per-page="10"
         item-key="id"
         :headers="headers"
         :items="teachers"
         :loading="isLoading"
         loading-text="Đang Tải"
-        :search="search"
         dense
       >
-        <div slot="top" class="d-flex mb-4">
-          <div v-if="!$vuetify.breakpoint.mobile">
+        <div slot="top" class="mb-md-4">
+          <div class="d-flex justify-end">
+            <drop-menu
+              :default-headers="originHeaders"
+              @change="headers = $event"
+              v-if="$vuetify.breakpoint.mdAndUp"
+            ></drop-menu>
+          </div>
+          <div v-if="$vuetify.breakpoint.mdAndUp">
             <teacher-filter @onFilterChanged="refresh"></teacher-filter>
           </div>
-          <v-spacer></v-spacer>
           <div>
             <v-btn
               v-if="$vuetify.breakpoint.mobile"
@@ -40,11 +43,6 @@
             >
               <v-icon right>mdi-filter-outline</v-icon>
             </v-btn>
-            <setting-table-header
-              :default-headers="originHeaders"
-              @change="headers = $event"
-            />
-            <KebapMenu v-if="!$vuetify.breakpoint.mobile"></KebapMenu>
           </div>
         </div>
 
@@ -62,23 +60,47 @@
             }}
           </span>
         </template>
-        <template v-slot:[`item.actions`]="{ item }">
+        <template v-slot:[`item.metadata.type`]="{ item }">
+          <span v-if="item.metadata.type">
+            {{
+              item.metadata.type === 'long-tern'
+                ? 'Dài hạn'
+                : item.metadata.type === 'short-tern'
+                ? 'Ngắn hạn'
+                : ''
+            }}
+          </span>
+        </template>
+        <template v-slot:[`item.subject`]="{ item }">
+          <span v-if="item.subject">{{
+            item.subject[item.subject.length - 1]
+          }}</span>
+        </template>
+        <template v-slot:[`item.metadata.dob`]="{ item }">
+          {{ formatDate(item.metadata.dob) }}
+        </template>
+        <template v-slot:[`item.action`]="{ item }">
           <teacher-list-actions :item="item"></teacher-list-actions>
         </template>
       </v-data-table>
     </v-card>
     <new-teacher-dialog :state="createState" />
+    <teacher-filter-dialog
+      @onFilterChanged="refresh"
+      :state="filterState"
+    ></teacher-filter-dialog>
   </div>
 </template>
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex'
+import moment from 'moment'
 import UserItem from '@/components/basic/card/CardTeacherName.vue'
 import TeacherFilter from '@/modules/teacher/TeacherFilter.vue'
+import TeacherFilterDialog from '@/modules/teacher/TeacherFilterDialog'
 import TeacherListActions from '@/modules/teacher/TeacherListActions'
 import NewTeacherDialog from '@/modules/teacher/TeacherNewDialog'
 import Breadcrumbs from '@/components/layout/Breadcrumbs.vue'
-import SettingTableHeader from '@/components/basic/table/SettingHeaders'
-import KebapMenu from '@/components/basic/menu/KebapMenu.vue'
+import DropMenu from '@/modules/student/menu/Menu.vue'
 import Vuetify from 'vuetify'
 import Vue from 'vue'
 const originHeaders = [
@@ -91,7 +113,7 @@ const originHeaders = [
   },
   {
     text: 'Ngày sinh',
-    value: 'data.dob',
+    value: 'metadata.dob',
     align: 'left',
     sortable: false,
     show: true,
@@ -105,7 +127,14 @@ const originHeaders = [
   },
   {
     text: 'Loại cán bộ',
-    value: 'type',
+    value: 'metadata.type',
+    align: 'left',
+    sortable: false,
+    show: true,
+  },
+  {
+    text: 'Lĩnh vực',
+    value: 'subject',
     align: 'left',
     sortable: false,
     show: true,
@@ -117,7 +146,20 @@ const originHeaders = [
     sortable: false,
     show: true,
   },
-  { text: 'Hành động', value: 'actions', show: true },
+  {
+    text: 'Ghi chú',
+    value: 'metadata.notes',
+    align: 'left',
+    sortable: false,
+    show: true,
+  },
+  {
+    text: 'Hành động',
+    value: 'action',
+    align: 'left',
+    sortable: false,
+    show: true,
+  },
 ]
 Vue.use(Vuetify)
 
@@ -127,18 +169,17 @@ export default {
     UserItem,
     TeacherFilter,
     TeacherListActions,
-    SettingTableHeader,
+    TeacherFilterDialog,
     NewTeacherDialog,
-    KebapMenu
+    DropMenu,
   },
   data() {
     return {
-      headers: [],
-      search: '',
-      teacherId: '',
+      headers: originHeaders,
       isLoading: false,
       originHeaders: originHeaders,
       createState: false,
+      filterState: false,
     }
   },
   created() {
@@ -166,6 +207,9 @@ export default {
       if (status === 'active') return 'green--text'
       if (status === 'block') return 'red--text'
       else return 'gray--text'
+    },
+    formatDate(date) {
+      return moment(date).format('DD/MM/YYYY')
     },
     refresh(query) {
       this.isLoading = true

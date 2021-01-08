@@ -1,15 +1,10 @@
 <template>
-  <v-list class="py-0" v-if="role.name === 'Manager'">
+  <v-list class="pa-2" v-if="role.name === 'Manager'">
     <Dashboard />
-    <v-divider inset />
     <Students />
-    <v-divider inset />
     <Teachers />
-    <v-divider inset />
     <Classes />
-    <v-divider inset />
     <Scores />
-    <v-divider inset />
     <AdvanceSetting />
   </v-list>
 </template>

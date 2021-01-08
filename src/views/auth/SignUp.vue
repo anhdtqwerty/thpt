@@ -17,7 +17,6 @@
         >
           <div class="px-sm-16">
             <v-img src="../../assets/logo.svg"></v-img>
-            <v-img class="mt-n7" src="../../assets/sologan.svg"></v-img>
           </div>
         </v-col>
 

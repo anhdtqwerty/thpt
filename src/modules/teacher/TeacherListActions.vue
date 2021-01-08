@@ -11,14 +11,6 @@
           <v-icon left>mdi-delete</v-icon>
           <v-list-item-title>Xóa</v-list-item-title>
         </v-list-item>
-        <v-list-item @click.stop="smsDialogState = !smsDialogState">
-          <v-icon left>mdi-message-processing</v-icon>
-          <v-list-item-title>SMS</v-list-item-title>
-        </v-list-item>
-        <v-list-item @click.stop="mailDialogState = !mailDialogState">
-          <v-icon left>mdi-email</v-icon>
-          <v-list-item-title>Gửi email</v-list-item-title>
-        </v-list-item>
       </v-list>
     </v-menu>
 

@@ -9,24 +9,29 @@ export default {
     students: [],
     student: null,
     loading: false,
-    majors: {
-      // code: major
+    grade: {
+      // code: grade
     },
     generations: {
-      // code: major
-    }
+      // code: grade
+    },
+    classes: {}
   },
   actions: {
-    async fetchMajors({ commit }, options) {
-      const majorList = await api.Major.fetch(options)
-      commit('changeState', { majors: _.keyBy(majorList, 'code') })
+    async fetchGrades({ commit }, options) {
+      const gradeList = await api.Grade.fetch(options)
+      commit('changeState', { grade: _.keyBy(gradeList, 'code') })
+    },
+    async fetchClasses({ commit }, options) {
+      const classes = await api.Class.fetch(options)
+      console.log(classes)
+      commit('changeState', { classes: _.keyBy(classes, 'title') })
     },
     async fetchGenerations({ commit }, options) {
       const generationList = await api.Generation.fetch(options)
       commit('changeState', { generations: _.keyBy(generationList, 'code') })
     },
     async createStudent({ state, dispatch, commit }, userData) {
-      delete userData.major
       let user = {}
       try {
         user = await api.User.create({ ...userData, type: 'student' })
@@ -50,7 +55,6 @@ export default {
       }
     },
     async validateStudents({ commit, state, dispatch }) {
-      commit('setLoading', true)
       for (let student of state.students) {
         student.uploadStatus = 'validate'
         commit('receiveStudent', student)
@@ -69,26 +73,13 @@ export default {
           student.duplicated = duplicate
         } else {
           student.uploadStatus = 'ready'
-          // eslint-disable-next-line
-          const { username, username_indexing, username_no } = await dispatch(
-            'user/generateUserName',
-            student.name,
-            {
-              root: true
-            }
-          )
           student = {
-            ...student,
-            email: student.email ? student.email : `${username}@quanlylop.com`,
-            username,
-            username_indexing,
-            username_no
+            ...student
           }
         }
 
         commit('receiveStudent', student)
       }
-      commit('setLoading', false)
       alert.success('Students Validated')
     },
     async migrateStudents({ commit, state, rootState, dispatch }) {
@@ -97,14 +88,38 @@ export default {
         if (student.uploadStatus === 'duplicated') continue
         student.uploadStatus = 'loading'
         commit('receiveStudent', student)
-        await dispatch('createStudent', {
-          ...student,
-          name: student.name.trim(),
-          phone: student.phone + '',
-          rootMajor: _.get(student, '.major.root.id'),
-          generation: _.get(student, 'generation.id'),
-          majors: [_.get(student, 'major.id')].filter(i => !!i)
-        })
+
+        if (student.username) {
+          await dispatch('createStudent', {
+            ...student,
+            name: student.name.trim(),
+            phone: student.phone + '',
+            email: student.email
+              ? student.email
+              : `random${Date.now()}@quanlylop.com`
+          })
+        } else {
+          const { username, username_indexing, username_no } = await dispatch(
+            'user/generateStudentCode',
+            student.name,
+            {
+              root: true
+            }
+          )
+          await dispatch('createStudent', {
+            ...student,
+            name: student.name.trim(),
+            phone: student.phone + '',
+            email: student.email
+              ? student.email
+              : `random${Date.now()}@quanlylop.com`,
+            username,
+            username_indexing,
+            username_no,
+            gender: student.gender === 'Nữ' ? 'female' : 'male',
+            data: { ...student }
+          })
+        }
       }
       commit('setLoading', false)
       alert.success('Student updated')
@@ -161,11 +176,14 @@ export default {
     students(state) {
       return state.students
     },
+    classes(state) {
+      return state.classes
+    },
     loading(state) {
       return state.loading
     },
-    majors(state) {
-      return state.majors
+    grade(state) {
+      return state.grade
     },
     generations(state) {
       return state.generations

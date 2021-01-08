@@ -1,5 +1,38 @@
-import { Subject } from '@/plugins/api'
+import { Subject, Factor } from '@/plugins/api'
 import alert from '@/plugins/alert'
+const defaultFactors = [
+  {
+    title: 'Miệng',
+    index: 0,
+    quantity: 3,
+    multiply: 1
+  },
+  {
+    title: 'Thực hành',
+    index: 1,
+    quantity: 2,
+    multiply: 1
+  },
+  {
+    title: '15 phút',
+    index: 2,
+    quantity: 3,
+    multiply: 1
+  },
+  {
+    title: '1 tiết',
+    index: 3,
+    quantity: 2,
+    multiply: 2
+  },
+  {
+    title: 'Học kỳ',
+    index: 4,
+    quantity: 1,
+    multiply: 3
+  }
+]
+
 export default {
   namespaced: true,
   state: {
@@ -23,7 +56,24 @@ export default {
     },
     async createSubject({ commit }, data) {
       try {
-        commit('createSubject', await Subject.create(data))
+        const factors = [
+          ...defaultFactors.map(f => ({
+            ...f,
+            semesterType: 'semester-1'
+          })),
+          ...defaultFactors.map(f => ({
+            ...f,
+            semesterType: 'semester-2'
+          }))
+        ]
+        console.log(factors)
+        const factorPromises = factors.map(async f => Factor.create(f))
+        const factorRes = await Promise.all(factorPromises)
+        console.log(factors)
+        commit(
+          'createSubject',
+          await Subject.create({ ...data, factors: factorRes.map(f => f.id) })
+        )
       } catch (e) {
         alert.error(e)
       }

@@ -8,7 +8,7 @@
       <v-card-title class="blue darken-4 white--text"
         >Thêm mới ban mới
         <v-spacer />
-        <v-icon color="white" @click="cancel">close</v-icon>
+        <v-icon color="white" @click="dialog=false">close</v-icon>
       </v-card-title>
       <v-divider></v-divider>
       <division-info-form ref="form" :editCode="true" />
@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import DivisionInfoForm from '@/components/basic/form/DivisionFrom.vue'
+import DivisionInfoForm from '@/components/basic/form/DivisionNewForm.vue'
 import { mapActions, mapState } from 'vuex'
 
 export default {
@@ -54,6 +54,7 @@ export default {
     async save() {
       this.loading = true
       const data = this.$refs.form.getData()
+      console.log(data)
       await this.createDivision({ ...data })
       this.$alert.success('Tạo phân ban mới thành công')
       this.$refs.form.resetDefault()
@@ -61,7 +62,6 @@ export default {
       this.dialog = false
     },
     cancel() {
-      this.dialog = false
       this.$refs.form.resetDefault()
     }
   },

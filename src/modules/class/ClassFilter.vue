@@ -1,10 +1,9 @@
 <template>
   <v-form>
-    <v-row :class="{ 'mt-7': $vuetify.breakpoint.smAndDown }" no-gutters>
+    <v-row :class="{ 'mt-7': $vuetify.breakpoint.smAndDown }">
       <v-col cols="12" md="10">
-        <v-row no-gutters>
+        <v-row>
           <v-col
-            :class="{ 'pa-2': $vuetify.breakpoint.mdAndUp }"
             cols="12"
             md="4"
           >
@@ -15,7 +14,7 @@
               clear-icon="mdi-close"
               clearable
               placeholder="Khối"
-              filled
+              outlined
               dense
               deletable-chips
               :hide-details="$vuetify.breakpoint.smAndDown"
@@ -34,7 +33,7 @@
               clear-icon="mdi-close"
               placeholder="Ban"
               item-value="id"
-              filled
+              outlined
               dense
               deletable-chips
               :hide-details="$vuetify.breakpoint.smAndDown"
@@ -52,7 +51,7 @@
               clearable
               clear-icon="mdi-close"
               placeholder="Giáo viên chủ nhiệm"
-              filled
+              outlined
               item-value="id"
               dense
               deletable-chips
@@ -64,7 +63,12 @@
       </v-col>
 
       <v-col class="pa-2" cols="12" md="2">
-        <v-btn large dark @click="onFilterChanged" color="primary" outlined>
+        <v-btn
+          dark
+          @click="onFilterChanged"
+          color="primary"
+          outlined
+        >
           <v-icon left dark>mdi-filter-outline</v-icon>Lọc
         </v-btn>
       </v-col>
@@ -81,17 +85,17 @@ export default {
   components: {
     AutocompleteTeacher,
     AutocompleteGrade,
-    AutocompleteDivision
+    AutocompleteDivision,
   },
   data: () => ({
     division: '',
     teacher: {},
     grade: '',
     status: 'running',
-    tags: ''
+    tags: '',
   }),
   computed: {
-    ...mapState('constant', ['classStatus'])
+    ...mapState('constant', ['classStatus']),
   },
   methods: {
     onFilterChanged() {
@@ -100,14 +104,14 @@ export default {
         grade: this.grade,
         division: this.division,
         teacher: this.teacher,
-        _sort: 'createdAt:desc'
+        _sort: 'createdAt:desc',
       })
       this.$emit('onFilterChanged', {
         dialog: false,
         grade: this.grade,
         division: this.division,
         teachers: this.teacher,
-        _sort: 'createdAt:desc'
+        _sort: 'createdAt:desc',
       })
     },
     reset() {
@@ -117,8 +121,8 @@ export default {
       this.status = 'running'
       this.division = ''
       this.teacher = ''
-    }
-  }
+    },
+  },
 }
 </script>
 

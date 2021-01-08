@@ -1,23 +1,32 @@
 <template>
   <div>
-    <div class="pa-4 pa-md-2 d-flex justify-space-between align-center">
+    <div class="pa-4 d-flex justify-space-between align-center">
       <div>
         <Breadcrumbs
           headline="Danh sách"
           :link="[
-            { text: 'Học sinh'},
+            { text: 'Học sinh' },
             { text: 'Danh sách', href: '../students' }
           ]"
         />
       </div>
       <div class="flex-center">
+        <v-btn
+          v-if="selected.length"
+          dark
+          color="red"
+          @click.stop="onRemove"
+          class="mr-2"
+        >
+          <v-icon left>mdi-delete</v-icon>Xóa
+        </v-btn>
         <v-btn dark color="#0D47A1" @click.stop="createState = !createState">
           <v-icon left>add</v-icon>{{ btnTitle }}
         </v-btn>
       </div>
     </div>
 
-    <v-card class="px-md-6 ma-md-4 elevation-1">
+    <v-card class="px-md-6 mx-md-4 elevation-1">
       <v-data-table
         item-key="id"
         :options.sync="studentTableOptions"
@@ -27,9 +36,10 @@
         :loading="loading"
         :items-per-page="10"
         :footer-props="{
-          itemsPerPageOptions: [5, 10, 15, 20, 30],
+          itemsPerPageOptions: [5, 10, 15, 20, 30]
         }"
-        dense
+        v-model="selected"
+        show-select
       >
         <div slot="top" class="mb-md-10">
           <div class="d-flex justify-end">
@@ -50,19 +60,14 @@
             >
               <v-icon>mdi-filter-outline</v-icon>
             </v-btn>
-            <setting-table-header
-              :default-headers="originHeaders"
-              @change="headers = $event"
-            />
-            <drop-menu v-if="$vuetify.breakpoint.mdAndUp"></drop-menu>
           </div>
         </div>
         <template v-slot:[`item.name`]="{ item }">
           <card-student-name :student="item" link />
         </template>
         <template v-slot:[`item.status`]="{ item }">
-          <span v-if="item.status" :class="getColor(item.status)"
-            >{{ item.status | getStatus }}
+          <span v-if="item.status" :class="getColor(item.status)">
+            {{ item.status | getStatus }}
           </span>
         </template>
         <template v-slot:[`item.classes`]="{ item }">
@@ -93,7 +98,6 @@ import { mapActions, mapState } from 'vuex'
 import CardStudentName from '@/components/basic/card/CardStudentName.vue'
 import StudentFilter from '@/modules/student/StudentFilter'
 import DropMenu from '@/modules/student/menu/Menu.vue'
-import SettingTableHeader from '@/components/basic/table/SettingHeaders'
 import StudentNewDialog from '@/modules/student/StudentNewDialog'
 import StudentFilterDialog from '@/modules/student/StudentFilterDialog'
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
@@ -105,7 +109,7 @@ const originHeaders = [
     value: 'name',
     align: 'left',
     sortable: false,
-    show: true,
+    show: true
   },
   { text: 'Lớp', value: 'classes', align: 'left', sortable: false, show: true },
   {
@@ -113,36 +117,36 @@ const originHeaders = [
     value: 'dob',
     align: 'left',
     sortable: false,
-    show: true,
+    show: true
   },
   {
     text: 'Giới tính',
     value: 'gender',
     align: 'left',
     sortable: false,
-    show: true,
+    show: true
   },
   {
     text: 'Trạng thái',
     value: 'status',
     align: 'left',
     sortable: false,
-    show: true,
+    show: true
   },
   {
     text: 'Ghi chú',
     value: 'notes',
     align: 'left',
     sortable: false,
-    show: true,
+    show: true
   },
   {
     text: 'Hành động',
     value: 'action',
     align: 'left',
     sortable: false,
-    show: true,
-  },
+    show: true
+  }
 ]
 export default {
   components: {
@@ -150,17 +154,16 @@ export default {
     DropMenu,
     StudentNewDialog,
     StudentFilter,
-    SettingTableHeader,
     StudentFilterDialog,
     Breadcrumbs,
-    StudentListActions,
+    StudentListActions
   },
   props: {
-    role: String,
+    role: String
   },
   data() {
     return {
-      headers: [],
+      headers: originHeaders,
       originHeaders: originHeaders,
       draw: false,
       search: '',
@@ -168,7 +171,7 @@ export default {
       loading: true,
       statuses: [
         { text: 'Active', value: 'false' },
-        { text: 'Blocked', value: 'true' },
+        { text: 'Blocked', value: 'true' }
       ],
       range: { from: null, to: null },
       previewUserId: null,
@@ -176,6 +179,7 @@ export default {
       studentTableOptions: {},
       createState: false,
       filterState: false,
+      selected: []
     }
   },
   async created() {
@@ -190,15 +194,16 @@ export default {
       } else {
         return 'Thêm học sinh'
       }
-    },
+    }
   },
   methods: {
     ...mapActions('students', [
       'requestPageSettings',
       'searchStudents',
       'updateStudent',
+      'removeStudents',
+      'fetchStudents'
     ]),
-    ...mapActions('student', ['fetchStudents']),
     updateDraw(draw) {
       this.draw = draw
     },
@@ -206,6 +211,19 @@ export default {
       if (status === 'active') return 'green--text'
       if (status === 'reserved') return 'orange--text'
       else return 'gray--text'
+    },
+    onRemove() {
+      this.$dialog.confirm({
+        title: 'Xóa Học Sinh',
+        text: `Bạn Có chắc muốn xóa những học sinh này.? ${this.selected.length} học sinh đã chọn`,
+        okText: 'Có',
+        cancelText: 'Không',
+        done: async () => {
+          await this.removeStudents(this.selected)
+          this.selected = []
+          this.$emit('removed')
+        }
+      })
     },
     async refresh(query) {
       this.loading = true
@@ -215,13 +233,13 @@ export default {
     getTuitionStatus(leads) {
       if (!leads) return ''
       return leads
-        .map((lead) => {
+        .map(lead => {
           return lead.liabilities
         })
         .reduce((a, b) => a + b, 0) >= 0
         ? ''
         : 'Nợ'
-    },
+    }
   },
   watch: {
     studentTableOptions: {
@@ -232,12 +250,12 @@ export default {
         if (pageChanged || itemPerPageChanged) {
           this.requestPageSettings({
             page: newOptions.page,
-            itemsPerPage: newOptions.itemsPerPage,
+            itemsPerPage: newOptions.itemsPerPage
           })
         }
       },
-      deep: true,
-    },
+      deep: true
+    }
   },
   filters: {
     getStatus(status) {
@@ -249,10 +267,11 @@ export default {
       return classes ? classes.length : 0
     },
     getClasses(classes) {
-      if (classes && classes.length > 0) return classes[classes.length - 1].title
-      else return ''
-    },
-  },
+      if (classes && classes.length > 0) {
+        return classes.map(c => c.title).join(' ,')
+      } else return ''
+    }
+  }
 }
 </script>
 <style scoped>

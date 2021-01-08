@@ -5,15 +5,17 @@
       flat
       dense
       item-key="id"
-      disableSort
       v-model="selected"
       :items-per-page="-1"
       :headers="headers"
       :items="factors"
+      :sort-by="['semesterType', 'index', 'multiply']"
       class="mt-3"
     >
       <template v-slot:item.status="{ item }"> </template>
-      <template v-slot:item.gender="{ item }">{{}}</template>
+      <template v-slot:item.semesterType="{ item }">{{
+        item.semesterType | getSemester
+      }}</template>
       <template v-slot:item.action="{ item }">
         <v-btn text icon @click="updateFactor(item)">
           <v-icon dense small>mdi-pencil</v-icon>
@@ -28,17 +30,18 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import FactorEditDialog from '@/modules/factor/FactorEditDialog'
 const defaultHeaders = [
   { text: 'Tên đầu điểm', value: 'title' },
   { text: 'Hệ số', value: 'multiply' },
   { text: 'Cột điểm', value: 'quantity' },
-  { text: 'Mô tả', value: 'description' },
+  { text: 'Học kỳ', value: 'semesterType' },
   { text: 'Hành động', value: 'action' }
 ]
 export default {
   components: { FactorEditDialog },
+  props: { subject: Object },
   data() {
     return {
       headers: defaultHeaders,
@@ -61,6 +64,7 @@ export default {
     ...mapActions('factor', ['removeFactor']),
     updateFactor(factor) {
       this.factor = factor
+      this.dialog = !this.dialog
     },
     onRemove(id) {
       this.$dialog.confirm({
@@ -72,6 +76,13 @@ export default {
           await this.removeFactor(id)
         }
       })
+    }
+  },
+  filters: {
+    getSemester(s) {
+      if (!s) return s
+      if (s === 'semester-1') return 'Học kỳ 1'
+      if (s === 'semester-2') return 'Học kỳ 2'
     }
   }
 }

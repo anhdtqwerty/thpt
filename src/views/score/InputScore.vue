@@ -9,17 +9,18 @@
         ]"
       />
     </div>
-    <v-card class="pa-2 pa-md-4 ma-md-2 elevation-1 mb-5">
-      <v-card-text class="px-5">
-        <v-row>
+    <v-card class="px-2 px-md-4 mx-md-2 elevation-1 mb-2">
+      <v-card-text class="px-2">
+        <v-row no-gutters>
           <v-col cols="12">
             <v-row class="basic-filter" v-if="filterMode === 'normal'">
-              <v-col cols="12" md="4">
+              <v-col cols="12" md="3">
                 <autocomplete-class
                   placeholder="Chọn lớp"
                   filled
                   dense
                   @change="filterInputs.classObj = $event"
+                  hide-details
                 />
               </v-col>
               <v-col cols="12" md="3">
@@ -28,6 +29,7 @@
                   placeholder="Chọn môn học"
                   filled
                   dense
+                  hide-details
                   @change="filterInputs.subjectObj = $event"
                 />
               </v-col>
@@ -36,9 +38,11 @@
                   placeholder="Chọn đầu điểm"
                   filled
                   dense
+                  hide-details
                   @change="filterInputs.factorObj = $event"
                 />
               </v-col>
+              <v-col cols="0" md="1" class="pa-0 ma-0"></v-col>
               <v-col cols="12" md="2">
                 <v-btn
                   color="primary"
@@ -69,6 +73,7 @@
                   placeholder="Chọn học kỳ"
                   filled
                   dense
+                  hide-details
                   @change="filterInputs.semesterObj = $event"
                 />
               </v-col>
@@ -77,6 +82,7 @@
                   placeholder="Chọn lớp"
                   filled
                   dense
+                  hide-details
                   @change="filterInputs.classObj = $event"
                 />
               </v-col>
@@ -86,6 +92,7 @@
                   placeholder="Chọn môn học"
                   filled
                   dense
+                  hide-details
                   @change="filterInputs.subjectObj = $event"
                 />
               </v-col>
@@ -94,6 +101,7 @@
                   placeholder="Chọn đầu điểm"
                   filled
                   dense
+                  hide-details
                   @change="filterInputs.factorObj = $event"
                 />
               </v-col>
@@ -143,21 +151,9 @@
             :items="items"
             :loading="loading"
           >
-            <template v-slot:item.mark="{ item }">
-              <!-- <input
-                v-for="mark in item.marks"
-                :key="mark.id"
-                class="custom-input"
-                type="text"
-                :value="mark.value"
-                @input="
-                  (event) =>
-                    onInputMark(item.studentId, mark.id, event.target.value)
-                "
-              /> -->
-
+            <template v-if="filterInputs.subjectObj.markType === 'evaluate'" v-slot:item.mark="{ item }">
               <v-select
-                class="mark-selector"
+                class="mark-input"
                 v-for="mark in item.marks"
                 :key="mark.id"
                 :items="[
@@ -170,6 +166,21 @@
                 outlined
                 dense
               ></v-select>
+            </template>
+            <template v-else v-slot:item.mark="{ item }">
+              <v-text-field
+              class="mark-input"
+                v-for="mark in item.marks"
+                :key="mark.id"
+                :value="mark.value"
+                hide-details
+                outlined
+                dense
+                @input="
+                  (event) =>
+                    onInputMark(item.studentId, mark.id, event)
+                "
+              />
             </template>
           </v-data-table>
         </template>
@@ -190,6 +201,11 @@ import AutocompleteFactor from '@/components/basic/input/AutocompleteFactor'
 import AutocompleteSemeter from '@/components/basic/input/AutocompleteSemester'
 import AutocompleteStudent from '@/components/basic/input/AutocompleteStudent'
 import { mapState, mapActions } from 'vuex'
+import {
+  mapPropObj,
+  accumulateMark
+} from './helpers'
+import scoreMixin from './mixins'
 export default {
   components: {
     Breadcrumbs,
@@ -199,19 +215,9 @@ export default {
     AutocompleteSemeter,
     AutocompleteStudent,
   },
+  mixins: [ scoreMixin ],
   data() {
     return {
-      filterMode: 'normal',
-      filterOptions: {
-        normal: {
-          label: 'Tìm kiếm nâng cao',
-          icon: 'mdi-chevron-down',
-        },
-        advanced: {
-          label: 'Ẩn tìm kiếm nâng cao',
-          icon: 'mdi-chevron-up',
-        },
-      },
       filterInputs: {
         classObj: '',
         subjectObj: '',
@@ -267,9 +273,9 @@ export default {
       }
     },
     marks(data) {
-      this.items = this.groupBy('studentId')(
-        this.generateDataTable(this.setOrderForMark(Object.values(data)))
-      )
+      const groupedMark = _.groupBy(this.generateDataTable(Object.values(data)), 'studentId')
+      const accumulatedMark = mapPropObj(groupedMark)(accumulateMark)
+      this.items = Object.values(accumulatedMark)
     },
   },
   computed: {
@@ -296,29 +302,11 @@ export default {
         studentId: item.student.id,
         fullName: item.student.name,
         dateOfBirth: item.student.dob,
-        marks: [
-          {
-            id: item.id,
-            value: item.value,
-          },
-        ],
+        mark: {
+          id: item.id,
+          value: item.value,
+        },
       }))
-    },
-    groupBy: (field) => (marks) => {
-      let accumulatedFactor = []
-      if (marks.length > 0) {
-        const groupResult = marks.reduce((acc, item) => {
-          const compareField = item[field]
-          if (!acc[compareField]) {
-            acc[compareField] = { ...item }
-          } else {
-            acc[compareField].marks.push({ ...item.marks[0] })
-          }
-          return acc
-        }, {})
-        accumulatedFactor = Object.values(groupResult)
-      }
-      return accumulatedFactor
     },
     findAndUpdate: (arr) => (key) => (value) => (fn) => {
       return arr.map((item) => (item[key] === value ? fn(item) : item))
@@ -395,13 +383,9 @@ export default {
   justify-content: space-between;
   text-transform: uppercase;
 }
-.mark-selector {
+.mark-input {
   display: inline-block;
   max-width: 150px;
   margin-right: 10px;
-  // text-align: right;
-  // padding: 8px;
-  // border: 1px solid #E0E0E0;
-  // border-radius: 4px;
 }
 </style>

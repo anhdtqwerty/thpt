@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="pa-2 d-flex justify-space-between align-center">
+    <div class="pa-4 d-flex justify-space-between align-center">
       <div>
         <Breadcrumbs
           headline="Quản lý khóa"
@@ -20,19 +20,16 @@
         </v-btn>
       </div>
     </div>
-    <v-card class="pa-4 ma-md-2 elevation-1">
+    <v-card class="px-md-6 mx-md-4 elevation-1">
       <v-data-table item-key="id" :headers="headers" :items="generations">
-        <div slot="top" class="d-flex mb-4">
-          <p class="text-uppercase text-h6" style="color: #0d47a1">
-            DANH SÁCH CÁC KHÓA
-          </p>
+        <div slot="top" class="d-flex mb-2">
           <v-spacer></v-spacer>
           <div>
-            <setting-table-header
+            <drop-menu
               :default-headers="originHeaders"
               @change="headers = $event"
-            />
-            <drop-menu v-if="!$vuetify.breakpoint.mobile"></drop-menu>
+              v-if="$vuetify.breakpoint.mdAndUp"
+            ></drop-menu>
           </div>
         </div>
         <template v-slot:[`item.actions`]="{ item }">
@@ -121,7 +118,7 @@ export default {
   },
   data() {
     return {
-      headers: [],
+      headers: originHeaders,
       originHeaders: originHeaders,
       selected: {},
       draw: false,

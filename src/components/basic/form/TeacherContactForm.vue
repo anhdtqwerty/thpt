@@ -3,28 +3,25 @@
     <v-row>
       <v-col cols="12">
         <v-text-field
+          ref="currentLive"
           v-model="currentLive"
-          label="Địa chỉ liên lạc"
+          label="Địa chỉ hiện tại"
           outlined
           dense
-          :rules="[rules.required]"
-          class="required"
         ></v-text-field>
         <v-text-field
+          ref="province"
           v-model="province"
-          label="Tỉnh/Thành phố"
+          label="Tỉnh/thành phố đang sống"
           outlined
           dense
-          :rules="[rules.required]"
-          class="required"
         ></v-text-field>
         <v-text-field
-          v-model="district"
-          label="Quận/Huyện"
+          ref="landlinePhone"
+          v-model="landlinePhone"
+          label="Điện thoại nhà riêng"
           outlined
           dense
-          :rules="[rules.required]"
-          class="required"
         ></v-text-field>
       </v-col>
     </v-row>
@@ -35,27 +32,29 @@
 // import { get } from 'lodash'
 export default {
   props: {
-    student: {
+    teacher: {
       type: [Object],
-      default: () => {},
-    },
+      default: () => {}
+    }
   },
   data: () => ({
     valid: true,
     currentLive: '',
     province: '',
-    district: '',
+    mobilePhone: '',
+    landlinePhone: '',
     rules: {
-      required: (value) => !!value || 'Required.',
-      min: (v) => v.length >= 6 || 'Min 8 characters',
-      email: (v) => /.+@.+/.test(v) || 'E-mail must be valid',
-    },
+      required: value => !!value || 'Required.',
+      min: v => v.length >= 6 || 'Min 8 characters',
+      email: v => /.+@.+/.test(v) || 'E-mail must be valid'
+    }
   }),
   created() {
-    if (this.student) {
-      this.currentLive = this.student.data.currentLive
-      this.province = this.student.data.province
-      this.district = this.student.data.district
+    if (this.teacher) {
+      this.currentLive = this.teacher.metadata.currentLive
+      this.province = this.teacher.metadata.province
+      this.mobilePhone = this.teacher.metadata.mobilePhone
+      this.landlinePhone = this.teacher.metadata.landlinePhone
     }
   },
   methods: {
@@ -66,7 +65,8 @@ export default {
       return {
         currentLive: this.currentLive,
         province: this.province,
-        district: this.district,
+        mobilePhone: this.mobilePhone,
+        landlinePhone: this.landlinePhone
       }
     },
     reset() {
@@ -74,10 +74,14 @@ export default {
     },
     resetValidation() {
       this.$refs.form.resetValidation()
-    },
+    }
   },
+  watch: {
+    teacher(teacher) {
+      this.reset()
+    }
+  }
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
