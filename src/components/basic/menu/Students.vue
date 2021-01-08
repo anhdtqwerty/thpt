@@ -1,10 +1,12 @@
 <template>
-  <v-list-group :value="false">
+  <v-list-group :value="false" active-class="black-text">
     <template v-slot:activator>
-      <v-list-item-icon class="mr-2">
-        <v-icon>mdi-library</v-icon>
-      </v-list-item-icon>
-      <v-list-item-title class="font-weight-black">Học sinh</v-list-item-title>
+      <v-list-item class="px-0">
+        <v-list-item-icon class="mr-4">
+          <v-icon>mdi-library</v-icon>
+        </v-list-item-icon>
+        <v-list-item-title>HỌC SINH</v-list-item-title>
+      </v-list-item>
     </template>
     <v-list class="py-0">
       <v-list-item
@@ -45,10 +47,9 @@ export default {
     return { menu: null }
   },
   computed: {
-    ...mapGetters('auth', ['user', 'role']),
-  },
+    ...mapGetters('auth', ['user', 'role'])
+  }
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

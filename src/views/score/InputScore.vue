@@ -5,7 +5,7 @@
         headline="Nhập điểm"
         :link="[
           { text: 'Điểm số' },
-          { text: 'Nhập điểm', href: '/marks-input' },
+          { text: 'Nhập điểm', href: '/marks-input' }
         ]"
       />
     </div>
@@ -17,7 +17,7 @@
               <v-col cols="12" md="3">
                 <autocomplete-class
                   placeholder="Chọn lớp"
-                  filled
+                  outlined
                   dense
                   @change="filterInputs.classObj = $event"
                   hide-details
@@ -27,7 +27,7 @@
                 <autocomplete-subject
                   return-object
                   placeholder="Chọn môn học"
-                  filled
+                  outlined
                   dense
                   hide-details
                   @change="filterInputs.subjectObj = $event"
@@ -36,7 +36,7 @@
               <v-col cols="12" md="3">
                 <autocomplete-factor
                   placeholder="Chọn đầu điểm"
-                  filled
+                  outlined
                   dense
                   hide-details
                   @change="filterInputs.factorObj = $event"
@@ -71,7 +71,7 @@
               <v-col cols="12" md="4">
                 <autocomplete-semeter
                   placeholder="Chọn học kỳ"
-                  filled
+                  outlined
                   dense
                   hide-details
                   @change="filterInputs.semesterObj = $event"
@@ -80,7 +80,7 @@
               <v-col cols="12" md="4">
                 <autocomplete-class
                   placeholder="Chọn lớp"
-                  filled
+                  outlined
                   dense
                   hide-details
                   @change="filterInputs.classObj = $event"
@@ -90,7 +90,7 @@
                 <autocomplete-subject
                   return-object
                   placeholder="Chọn môn học"
-                  filled
+                  outlined
                   dense
                   hide-details
                   @change="filterInputs.subjectObj = $event"
@@ -99,7 +99,7 @@
               <v-col cols="12" md="4">
                 <autocomplete-factor
                   placeholder="Chọn đầu điểm"
-                  filled
+                  outlined
                   dense
                   hide-details
                   @change="filterInputs.factorObj = $event"
@@ -123,8 +123,8 @@
         <template
           v-if="
             filterInputs.subjectObj &&
-            filterInputs.classObj &&
-            filterInputs.factorObj
+              filterInputs.classObj &&
+              filterInputs.factorObj
           "
         >
           <div class="table-label primary--text mb-3">
@@ -136,7 +136,7 @@
                 <autocomplete-student
                   style="max-width: 275px"
                   placeholder="Chọn học sinh"
-                  filled
+                  outlined
                   dense
                   @change="filterInputs.studentObj = $event"
                 />
@@ -151,17 +151,20 @@
             :items="items"
             :loading="loading"
           >
-            <template v-if="filterInputs.subjectObj.markType === 'evaluate'" v-slot:item.mark="{ item }">
+            <template
+              v-if="filterInputs.subjectObj.markType === 'evaluate'"
+              v-slot:item.mark="{ item }"
+            >
               <v-select
                 class="mark-input"
                 v-for="mark in item.marks"
                 :key="mark.id"
                 :items="[
                   { text: 'Đạt', value: 1 },
-                  { text: 'Không đạt', value: 0 },
+                  { text: 'Không đạt', value: 0 }
                 ]"
                 :value="mark.value"
-                @change="(event) => onInputMark(item.studentId, mark.id, event)"
+                @change="event => onInputMark(item.studentId, mark.id, event)"
                 hide-details
                 outlined
                 dense
@@ -169,17 +172,14 @@
             </template>
             <template v-else v-slot:item.mark="{ item }">
               <v-text-field
-              class="mark-input"
+                class="mark-input"
                 v-for="mark in item.marks"
                 :key="mark.id"
                 :value="mark.value"
                 hide-details
                 outlined
                 dense
-                @input="
-                  (event) =>
-                    onInputMark(item.studentId, mark.id, event)
-                "
+                @input="event => onInputMark(item.studentId, mark.id, event)"
               />
             </template>
           </v-data-table>
@@ -201,10 +201,7 @@ import AutocompleteFactor from '@/components/basic/input/AutocompleteFactor'
 import AutocompleteSemeter from '@/components/basic/input/AutocompleteSemester'
 import AutocompleteStudent from '@/components/basic/input/AutocompleteStudent'
 import { mapState, mapActions } from 'vuex'
-import {
-  mapPropObj,
-  accumulateMark
-} from './helpers'
+import { mapPropObj, accumulateMark } from './helpers'
 import scoreMixin from './mixins'
 export default {
   components: {
@@ -213,9 +210,9 @@ export default {
     AutocompleteSubject,
     AutocompleteFactor,
     AutocompleteSemeter,
-    AutocompleteStudent,
+    AutocompleteStudent
   },
-  mixins: [ scoreMixin ],
+  mixins: [scoreMixin],
   data() {
     return {
       filterInputs: {
@@ -223,7 +220,7 @@ export default {
         subjectObj: '',
         factorObj: '',
         semesterObj: '',
-        studentObj: '',
+        studentObj: ''
       },
       originHeaders: [
         {
@@ -231,35 +228,35 @@ export default {
           value: 'order',
           align: 'left',
           sortable: false,
-          show: true,
+          show: true
         },
         {
           text: 'Họ và tên',
           value: 'fullName',
           align: 'left',
           sortable: false,
-          show: true,
+          show: true
         },
         {
           text: 'Ngày sinh',
           value: 'dateOfBirth',
           align: 'left',
           sortable: false,
-          show: true,
+          show: true
         },
         {
           text: '',
           value: 'mark',
           align: 'left',
           sortable: false,
-          show: true,
-        },
+          show: true
+        }
       ],
       totalClass: 0,
       options: {},
       loading: false,
       filterQuery: {},
-      items: [],
+      items: []
     }
   },
   watch: {
@@ -269,14 +266,17 @@ export default {
         subjectObj: '',
         factorObj: '',
         semesterObj: '',
-        studentObj: '',
+        studentObj: ''
       }
     },
     marks(data) {
-      const groupedMark = _.groupBy(this.generateDataTable(Object.values(data)), 'studentId')
+      const groupedMark = _.groupBy(
+        this.generateDataTable(Object.values(data)),
+        'studentId'
+      )
       const accumulatedMark = mapPropObj(groupedMark)(accumulateMark)
       this.items = Object.values(accumulatedMark)
-    },
+    }
   },
   computed: {
     ...mapState('mark', ['marks']),
@@ -287,7 +287,7 @@ export default {
       return `Nhập điểm ${[subjectTitle, classTitle, factorTitle]
         .filter(Boolean)
         .join(' - ')}`
-    },
+    }
   },
   methods: {
     ...mapActions('mark', ['fetchMarks', 'updateMarks']),
@@ -295,7 +295,7 @@ export default {
       return marks.map((item, index) => ({ ...item, order: index + 1 }))
     },
     generateDataTable(marks) {
-      return marks.map((item) => ({
+      return marks.map(item => ({
         tag: 'origin',
         order: item.order,
         factorId: item.factor ? item.factor.id : undefined,
@@ -304,24 +304,24 @@ export default {
         dateOfBirth: item.student.dob,
         mark: {
           id: item.id,
-          value: item.value,
-        },
+          value: item.value
+        }
       }))
     },
-    findAndUpdate: (arr) => (key) => (value) => (fn) => {
-      return arr.map((item) => (item[key] === value ? fn(item) : item))
+    findAndUpdate: arr => key => value => fn => {
+      return arr.map(item => (item[key] === value ? fn(item) : item))
     },
     updateMark(studentId, markId, mark) {
-      return (marks) => {
-        return this.findAndUpdate(marks)('studentId')(studentId)((item) => {
+      return marks => {
+        return this.findAndUpdate(marks)('studentId')(studentId)(item => {
           return {
             ...item,
             tag: 'updated',
-            marks: this.findAndUpdate(item.marks)('id')(markId)((m) => ({
+            marks: this.findAndUpdate(item.marks)('id')(markId)(m => ({
               ...m,
               tag: 'updated',
-              value: mark,
-            })),
+              value: mark
+            }))
           }
         })
       }
@@ -338,12 +338,12 @@ export default {
     },
     onClickSaveButton() {
       const updatedMarks = this.items
-        .filter((item) => item.tag === 'updated')
-        .flatMap((item) => item.marks)
-        .filter((item) => item.tag === 'updated')
+        .filter(item => item.tag === 'updated')
+        .flatMap(item => item.marks)
+        .filter(item => item.tag === 'updated')
         .map(({ id, value }) => ({
           ...this.marks[id],
-          value,
+          value
         }))
       this.updateMarks(updatedMarks)
     },
@@ -367,10 +367,10 @@ export default {
         subject: subjectId,
         factor: factorId,
         semester: semesterId,
-        student: studentId,
+        student: studentId
       })
-    },
-  },
+    }
+  }
 }
 </script>
 

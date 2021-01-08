@@ -17,7 +17,7 @@
           <autocomplete-generation
             v-model="generation"
             placeholder="Năm học"
-            filled
+            outlined
             dense
             clearable
           ></autocomplete-generation>

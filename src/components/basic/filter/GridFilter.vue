@@ -1,20 +1,35 @@
 <template>
   <v-form class="grid-form" v-model="valid">
     <v-row>
-        <template v-if="inputs.length > 0">
-        <v-col v-for="(input, index) in inputs" :key="index" cols="12" :md="evalWidthCol(colNumber, input.span)">
-          <component class="ma-0" :is="input.tag" v-bind="input.props" v-model="input.data[input.key]" />
+      <template v-if="inputs.length > 0">
+        <v-col
+          v-for="(input, index) in inputs"
+          :key="index"
+          cols="12"
+          :md="evalWidthCol(colNumber, input.span)"
+        >
+          <component
+            class="ma-0"
+            :is="input.tag"
+            v-bind="input.props"
+            v-model="input.data[input.key]"
+          />
         </v-col>
-        </template>
-        <v-col v-if="!hideAction" style="display: flex; align-items: center" cols="12" :md="evalWidthCol(colNumber, 1)">
-          <slot name="action">
-            <v-btn style="width: 100%" color="primary">
-              <v-icon>mdi-filter</v-icon>
-              <span>Lọc</span>
-            </v-btn>
-          </slot>
-        </v-col>
-      </v-row>
+      </template>
+      <v-col
+        v-if="!hideAction"
+        style="display: flex; align-items: center"
+        cols="12"
+        :md="evalWidthCol(colNumber, 1)"
+      >
+        <slot name="action">
+          <v-btn style="width: 100%" color="primary">
+            <v-icon>mdi-filter</v-icon>
+            <span>Lọc</span>
+          </v-btn>
+        </slot>
+      </v-col>
+    </v-row>
   </v-form>
 </template>
 
@@ -68,7 +83,7 @@ export default {
     },
     meta: {
       type: Object,
-      default () {
+      default() {
         return {
           title: '',
           inputs: []
@@ -80,7 +95,7 @@ export default {
       default: false
     }
   },
-  data () {
+  data() {
     return {
       valid: false,
       inputs: [],
@@ -88,14 +103,14 @@ export default {
         text: {
           tag: 'v-text-field',
           props: {
-            filled: true,
+            outlined: true,
             dense: true
           }
         },
         dropdown: {
           tag: 'v-select',
           props: {
-            filled: true,
+            outlined: true,
             dense: true
           }
         },
@@ -108,34 +123,38 @@ export default {
   },
   watch: {
     meta: {
-      handler (val) {
+      handler(val) {
         if (val.length === 0) {
           this.inputs = []
         } else {
-          this.inputs = val.inputs
-            .map(item => {
-              const compInfo = JSON.parse(JSON.stringify(this.inputTypes[item.type]))
+          this.inputs = val.inputs.map(item => {
+            const compInfo = JSON.parse(
+              JSON.stringify(this.inputTypes[item.type])
+            )
 
-              if (item.config.items) {
-                compInfo.props.itemText = item.config.itemText || 'text'
-                compInfo.props.itemValue = item.config.itemValue || 'value'
-                compInfo.props.items = item.config.items
-              }
-              if (item.config.rules) compInfo.props.rules = item.config.rules.map(this.convertRule).filter(this.ruleIsFunction)
-              if (item.config.label) compInfo.props.label = item.config.label
-              compInfo.props.hideDetails = this.hideDetails
+            if (item.config.items) {
+              compInfo.props.itemText = item.config.itemText || 'text'
+              compInfo.props.itemValue = item.config.itemValue || 'value'
+              compInfo.props.items = item.config.items
+            }
+            if (item.config.rules)
+              compInfo.props.rules = item.config.rules
+                .map(this.convertRule)
+                .filter(this.ruleIsFunction)
+            if (item.config.label) compInfo.props.label = item.config.label
+            compInfo.props.hideDetails = this.hideDetails
 
-              const { tag, props } = compInfo
-              return {
-                tag,
-                props,
-                span: item.config.span || 1,
-                key: item.config.key,
-                data: {
-                  [item.config.key]: item.config.defaultValue
-                }
+            const { tag, props } = compInfo
+            return {
+              tag,
+              props,
+              span: item.config.span || 1,
+              key: item.config.key,
+              data: {
+                [item.config.key]: item.config.defaultValue
               }
-            })
+            }
+          })
         }
       },
       immediate: true,
@@ -143,37 +162,38 @@ export default {
     }
   },
   computed: {
-    formData () {
+    formData() {
       if (this.inputs.length === 0) return {}
-      return this.inputs.reduce((acc, input) => Object.assign(acc, input.data), {})
+      return this.inputs.reduce(
+        (acc, input) => Object.assign(acc, input.data),
+        {}
+      )
     }
   },
   methods: {
-    ruleIsFunction (rule) {
+    ruleIsFunction(rule) {
       return typeof rule === 'function'
     },
-    convertRule (ruleValue) {
+    convertRule(ruleValue) {
       if (typeof ruleValue === 'string') return this.$rules[ruleValue]
       if (typeof ruleValue === 'function') return ruleValue
       return undefined
     },
-    evalWidthCol (colNumber, span = 1) {
+    evalWidthCol(colNumber, span = 1) {
       if (colNumber === 0) return 12
       if (span < colNumber) {
         return (12 / colNumber) * span
       }
       return 12
     },
-    getFormData () {
+    getFormData() {
       return this.formData
     },
-    onClickFilter () {
+    onClickFilter() {
       this.$emit('filter')
     }
   }
 }
 </script>
 
-<style>
-
-</style>
+<style></style>

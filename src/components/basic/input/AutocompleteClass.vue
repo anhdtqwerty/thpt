@@ -9,6 +9,7 @@
     return-object
     v-on:input="$emit('input', $event)"
     @input="onChange"
+    :loading="loading"
   ></v-autocomplete>
 </template>
 
@@ -18,7 +19,8 @@ import { Class } from '@/plugins/api'
 
 export default {
   data: () => ({
-    classes: []
+    classes: [],
+    loading: false
   }),
   props: {
     filter: Object,
@@ -33,11 +35,14 @@ export default {
   },
   methods: {
     async fetchClass() {
+      this.loading = true
       this.classes = await Class.fetch({
         ...this.filter,
+
         department: this.department.id,
         status_in: ['opened', 'running']
       })
+      this.loading = false
     },
     onChange(data) {
       this.$emit('change', data)
