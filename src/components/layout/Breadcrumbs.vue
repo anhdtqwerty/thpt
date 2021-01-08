@@ -1,6 +1,5 @@
 <template>
   <div>
-   
     <p class="font-weight-bold text-h5 ma-0">
       {{ headline }}
     </p>
@@ -37,7 +36,13 @@ export default {
     links() {
       return [...this.items, ...this.link]
     },
+   
   },
+  methods:{
+     comeBack(){
+      history.back()
+    },
+  }
 }
 </script>
 <style scoped>
