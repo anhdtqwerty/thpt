@@ -17,7 +17,7 @@
       </div>
     </div>
 
-    <v-card class="pa-2 pa-md-4 ma-md-2 elevation-1">
+    <v-card class="px-md-6 ma-md-4 elevation-1">
       <v-data-table
         item-key="id"
         :options.sync="studentTableOptions"
@@ -31,18 +31,24 @@
         }"
         dense
       >
-        <div slot="top" class="d-flex mb-4">
-          <div v-if="$vuetify.breakpoint.mdAndUp">
+        <div slot="top" class="mb-md-10">
+          <div class="d-flex justify-end">
+            <drop-menu
+              :default-headers="originHeaders"
+              @change="headers = $event"
+              v-if="$vuetify.breakpoint.mdAndUp"
+            ></drop-menu>
+          </div>
+          <div class="ma-1" v-if="$vuetify.breakpoint.mdAndUp">
             <student-filter @onFilterChanged="refresh"></student-filter>
           </div>
-          <v-spacer></v-spacer>
-          <div>
+          <div class="d-flex justify-end">
             <v-btn
               v-if="$vuetify.breakpoint.smAndDown"
               icon
               @click.stop="filterState = !filterState"
             >
-              <v-icon right>mdi-filter-outline</v-icon>
+              <v-icon>mdi-filter-outline</v-icon>
             </v-btn>
             <setting-table-header
               :default-headers="originHeaders"

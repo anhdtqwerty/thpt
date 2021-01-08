@@ -8,8 +8,12 @@
       <img :src="avatar" alt="" />
     </div>
     <div>
-      <router-link v-if="link" :to="'/student/' + student.id">
-        <div style="white-space: nowrap; text-decoration: none">
+      <router-link
+        style="text-decoration: none"
+        v-if="link"
+        :to="'/student/' + student.id"
+      >
+        <div style="white-space: nowrap">
           {{ student.name }}
         </div>
       </router-link>

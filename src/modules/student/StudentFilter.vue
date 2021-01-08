@@ -8,7 +8,7 @@
           return-object
           clearable
           flat
-          filled
+          outlined
           dense
           hide-details
         />
@@ -20,7 +20,7 @@
           placeholder="Lớp"
           clearable
           flat
-          filled
+          outlined
           dense
           return-object
           hide-details
@@ -29,7 +29,9 @@
       <v-col md="3">
         <date-picker
           placeholder="Ngày sinh"
-          filled
+          outlined
+          dense
+          hide-details
           outline
           :date.sync="dob"
         ></date-picker>
@@ -42,7 +44,7 @@
           clear-icon="mdi-close"
           placeholder="Mã học viên"
           flat
-          filled
+          outlined
           dense
           clearable
           hide-details
@@ -56,8 +58,7 @@
           item-text="title"
           item-value="status"
           placeholder="Chọn trạng thái"
-          flat
-          filled
+          outlined
           dense
           clearable
           hide-details
@@ -70,20 +71,14 @@
           item-value="value"
           v-model="gender"
           placeholder="Giới tính"
-          flat
-          filled
+          outlined
           dense
           clearable
           hide-details
         />
       </v-col>
       <v-col md="3">
-        <v-btn
-          class="py-5"
-          color="#0D47A1"
-          @click="onFilterChanged"
-          outlined
-        >
+        <v-btn class="py-5" color="#0D47A1" @click="onFilterChanged" outlined>
           <v-icon left dark>mdi-filter-outline</v-icon>Lọc
         </v-btn>
       </v-col>
