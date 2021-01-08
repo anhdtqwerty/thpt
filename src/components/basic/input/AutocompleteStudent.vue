@@ -8,6 +8,7 @@
     @change="onChange"
     :search-input.sync="inputValue"
     clearable
+    :loading="loading"
   ></v-autocomplete>
 </template>
 
@@ -18,7 +19,8 @@ import utils from '@/plugins/utils.js'
 export default {
   data: () => ({
     students: [],
-    inputValue: ''
+    inputValue: '',
+    loading: false
   }),
   props: {
     filters: Object,
@@ -38,11 +40,13 @@ export default {
     },
     debounce: debounce(async (search, context) => {
       if (!search) return
+      this.loading = true
       const data = await api.Student.search({
         code_contains: utils.removeUnicode(search),
-        _limit: 10,
+        _limit: 5,
         _sort: 'createdAt:DESC'
       })
+      this.loading = false
       context.students = data
     }, 150)
   },
