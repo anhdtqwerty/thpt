@@ -202,3 +202,18 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+::v-deep tr:hover {
+  background-color: transparent !important;
+}
+::v-deep td:hover {
+  background-color: #e3e3e3 !important;
+}
+::v-deep td {
+  padding: 0 !important;
+}
+::v-deep td .v-small-dialog__activator {
+  width: 100%;
+  height: 100%;
+}
+</style>

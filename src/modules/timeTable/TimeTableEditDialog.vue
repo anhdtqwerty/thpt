@@ -1,6 +1,6 @@
 <template>
   <v-edit-dialog @save="save" @cancel="cancel" @open="open" @close="close">
-    <div style="display: block">
+    <div style="display: block; position:relative">
       <span v-if="data" class="primary--text subtitle-1">
         {{ data | getSubject }}</span
       >
@@ -8,7 +8,10 @@
       <span v-if="data" class="primary--text caption">
         {{ data | getTeacher }}</span
       >
-      <span v-if="!data" class="primary--text ">sửa</span>
+      <div
+        v-if="!data"
+        style="position: absolute; width: 100%; height: 100; background-color: red; top: 0; left: 0 "
+      ></div>
     </div>
     <template v-slot:input>
       <v-autocomplete
@@ -22,6 +25,8 @@
         return-object
         dense
         single-line
+        clearable
+        @change="save"
       />
       <v-autocomplete
         :items="teachers"
@@ -29,10 +34,12 @@
         item-text="name"
         item-value="id"
         return-object
-        label="Giáo viến"
+        label="Giáo viên"
         outlined
         dense
         single-line
+        clearable
+        @change="save"
       />
     </template>
   </v-edit-dialog>
@@ -61,10 +68,15 @@ export default {
   },
   methods: {
     save() {
-      console.log(123)
       this.$emit('update:data', {
-        subject: { title: this.subject.title, id: this.subject.id },
-        teacher: { name: this.teacher.name, id: this.teacher.id }
+        subject: {
+          title: get(this.subject, 'title'),
+          id: get(this.subject, 'id')
+        },
+        teacher: {
+          name: get(this.teacher, 'name'),
+          id: get(this.teacher, 'id')
+        }
       })
     },
     cancel() {
@@ -89,3 +101,9 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+::v-deep td div {
+  height: 100%;
+  background-color: red;
+}
+</style>
