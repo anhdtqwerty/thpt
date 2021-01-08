@@ -1,23 +1,27 @@
 <template>
-  <v-list-group :value="false" active-class="left-amber-border black--text">
+  <v-list-group :value="false" active-class="black-text">
     <template v-slot:activator>
-      <v-list-item-icon class="pl-2">
-        <v-icon>mdi-library</v-icon>
-      </v-list-item-icon>
-      <v-list-item-title >Học sinh</v-list-item-title>
+      <v-list-item class="px-0">
+        <v-list-item-icon class="mr-2">
+          <v-icon>mdi-library</v-icon>
+        </v-list-item-icon>
+        <v-list-item-title class="font-weight-black"
+          >Học sinh</v-list-item-title
+        >
+      </v-list-item>
     </template>
-    <v-list class="left-amber-border py-0">
-      <v-list-item link to="/students">
+    <v-list class="py-0">
+      <v-list-item active-class="left-amber-border" class="px-0" link to="/students">
         <v-list-item-action></v-list-item-action>
-        <v-list-item-title class="ml-3">Danh sách</v-list-item-title>
+        <v-list-item-title>Danh sách</v-list-item-title>
       </v-list-item>
-      <v-list-item link to="/attendanced" >
+      <v-list-item active-class="left-amber-border" class="px-0" link to="/attendanced">
         <v-list-item-action></v-list-item-action>
-        <v-list-item-title class="ml-3">Điểm danh</v-list-item-title>
+        <v-list-item-title>Điểm danh</v-list-item-title>
       </v-list-item>
-      <v-list-item link to="/complimented">
+      <v-list-item active-class="left-amber-border" class="px-0" link to="/complimented">
         <v-list-item-action></v-list-item-action>
-        <v-list-item-title class="ml-3">Khen thưởng kỷ luật</v-list-item-title>
+        <v-list-item-title>Khen thưởng kỷ luật</v-list-item-title>
       </v-list-item>
     </v-list>
   </v-list-group>
