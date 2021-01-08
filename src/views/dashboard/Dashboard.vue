@@ -10,7 +10,7 @@
           v-for="item in overviewDataArray"
           :key="item.order"
         >
-          <v-card class="dashboard__box">
+          <v-card class="px-md-6 mx-md-2 elevation-1 mb-2">
             <v-card-text class="databoard__content">
               <div class="dashboard__box__icon">
                 <img :src="item.icon" alt="log size 24x24" />
@@ -39,7 +39,7 @@
       </v-row>
     </div>
     <div class="dashboard__graph-wrapper">
-      <v-card class="dashboard__graph-card">
+      <v-card class="px-md-6 mx-md-2 elevation-1">
         <v-card-title class="v-card-title-custom">
           <card-title>Doanh thu</card-title>
           <v-select
@@ -65,7 +65,7 @@
       </v-card>
     </div>
     <div class="dashboard__table-wrapper">
-      <v-card>
+      <v-card class="px-md-6 mx-md-2 elevation-1">
         <v-card-title>
           <card-title> Học viên mới </card-title>
         </v-card-title>
@@ -217,10 +217,10 @@ export default {
       const data =
         dataInYear.length > 0
           ? dataInYear.reduce((acc, item) => {
-              const month = new Date(item.createdAt).getMonth()
-              acc[month] += item.customerPaid ? item.customerPaid : 0
-              return acc
-            }, Array(12).fill(0))
+            const month = new Date(item.createdAt).getMonth()
+            acc[month] += item.customerPaid ? item.customerPaid : 0
+            return acc
+          }, Array(12).fill(0))
           : []
 
       return [{ name, data }]
