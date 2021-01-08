@@ -49,7 +49,7 @@
               v-if="$vuetify.breakpoint.mdAndUp"
             ></drop-menu>
           </div>
-          <div class="ma-1" v-if="$vuetify.breakpoint.mdAndUp">
+          <div v-if="$vuetify.breakpoint.mdAndUp">
             <student-filter @onFilterChanged="refresh"></student-filter>
           </div>
           <div class="d-flex justify-end">

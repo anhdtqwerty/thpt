@@ -3,7 +3,7 @@
     <v-menu open-on-hover bottom offset-y>
       <template v-slot:activator="{ on }">
         <v-btn text v-on="on" icon>
-          <v-icon right small>mdi-dots-horizontal</v-icon>
+          <v-icon medium>mdi-dots-horizontal</v-icon>
         </v-btn>
       </template>
       <v-list>

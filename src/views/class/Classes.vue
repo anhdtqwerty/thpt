@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="pa-4 pa-md-2 d-flex justify-space-between align-center">
+    <div class="pa-4 d-flex justify-space-between align-center">
       <div>
         <Breadcrumbs
           headline="Lớp học"
@@ -8,7 +8,7 @@
         />
       </div>
       <div class="flex-center">
-        <v-btn color="primary" @click="dialog = !dialog" class="mr-2"
+        <v-btn color="primary" @click="dialog = !dialog"
           ><v-icon left>add</v-icon>{{ addButtonText }}</v-btn
         >
         <v-btn
@@ -16,7 +16,7 @@
           color="green"
           @click="onUpdate('running')"
           dark
-          class="mr-2"
+          class="mx-2"
           ><v-icon left>mdi-lock-open</v-icon>Mở</v-btn
         >
         <v-btn
@@ -32,12 +32,11 @@
           color="red"
           @click="onRemove"
           dark
-          class="mr-2"
           ><v-icon left>mdi-delete</v-icon>Xóa</v-btn
         >
       </div>
     </div>
-    <v-card class="pa-2 pa-md-4 ma-md-2 elevation-1">
+    <v-card class="px-md-6 mx-md-4 elevation-1">
       <v-row no-gutters>
         <v-col class="text-right pa-0">
           <setting-table-header
