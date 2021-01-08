@@ -13,10 +13,19 @@
         >
         <v-btn
           v-if="selected.length"
+          dark
+          color="amber"
+          @click="sendState = !sendState"
+          class="mx-2"
+        >
+          <v-icon left>mdi-message-processing</v-icon>Gửi SMS
+        </v-btn>
+        <v-btn
+          v-if="selected.length"
           color="green"
           @click="onUpdate('running')"
           dark
-          class="mx-2"
+          class="mr-2"
           ><v-icon left>mdi-lock-open</v-icon>Mở</v-btn
         >
         <v-btn
@@ -27,11 +36,7 @@
           class="mr-2"
           ><v-icon left>mdi-lock</v-icon>Đóng</v-btn
         >
-        <v-btn
-          v-if="selected.length"
-          color="red"
-          @click="onRemove"
-          dark
+        <v-btn v-if="selected.length" color="red" @click="onRemove" dark
           ><v-icon left>mdi-delete</v-icon>Xóa</v-btn
         >
       </div>
@@ -113,6 +118,10 @@
       </v-row>
     </v-card>
     <new-class-dialog :state="dialog" style="margin: 0 20px"></new-class-dialog>
+    <classes-send-s-m-s-dialog
+      :data="selected"
+      :state="sendState"
+    ></classes-send-s-m-s-dialog>
   </div>
 </template>
 
@@ -125,6 +134,7 @@ import ClassFilter from '@/modules/class/ClassFilter'
 import ClassListActions from '@/modules/class/ClassListActions'
 import SettingTableHeader from '@/components/basic/table/SettingHeaders'
 import KebapMenu from '@/components/basic/menu/KebapMenu'
+import ClassesSendSMSDialog from '@/modules/sms/ClassesSendSMSDialog'
 import moment from 'moment'
 import _ from 'lodash'
 
@@ -134,36 +144,36 @@ const originHeaders = [
     value: 'title',
     align: 'left',
     sortable: false,
-    show: true
+    show: true,
   },
   {
     text: 'Phân ban',
     value: 'division',
     align: 'left',
     sortable: false,
-    show: true
+    show: true,
   },
   {
     text: 'Giáo viên chủ nhiệm',
     value: 'teachers',
     align: 'left',
     sortable: false,
-    show: true
+    show: true,
   },
   {
     text: 'Trạng thái',
     value: 'status',
     align: 'left',
     sortable: false,
-    show: true
+    show: true,
   },
   {
     text: 'Ghi chú',
     value: 'note',
     align: 'left',
     sortable: false,
-    show: true
-  }
+    show: true,
+  },
 ]
 export default {
   components: {
@@ -172,10 +182,11 @@ export default {
     NewClassDialog,
     SettingTableHeader,
     ClassListActions,
-    Breadcrumbs
+    Breadcrumbs,
+    ClassesSendSMSDialog,
   },
   props: {
-    role: String
+    role: String,
   },
   data() {
     return {
@@ -187,21 +198,22 @@ export default {
       loading: false,
       statuses: [
         { text: 'Active', value: 'false' },
-        { text: 'Blocked', value: 'true' }
+        { text: 'Blocked', value: 'true' },
       ],
       range: { from: null, to: null },
       previewUserId: null,
       ready: false,
       editClassId: '',
       dialog: false,
-      selected: []
+      selected: [],
+      sendState: false,
     }
   },
   async created() {
     await this.refresh({
       department: this.department.id,
       generation: this.currentGeneration.id,
-      _sort: 'createdAt:desc'
+      _sort: 'createdAt:desc',
     })
   },
   computed: {
@@ -216,7 +228,7 @@ export default {
         default:
           return 'Thêm lớp học'
       }
-    }
+    },
   },
   methods: {
     ...mapActions('class', [
@@ -224,7 +236,7 @@ export default {
       'setClass',
       'setClasses',
       'updateClasses',
-      'removeClasses'
+      'removeClasses',
     ]),
     getColor(status) {
       if (status === 'opened') return 'primary--text'
@@ -233,7 +245,7 @@ export default {
       else if (status === 'done') return 'gray--text'
       else return 'red'
     },
-    getCourse: course => {
+    getCourse: (course) => {
       return course || {}
     },
     async refresh(query) {
@@ -242,7 +254,7 @@ export default {
       await this.fetchClasses({
         department: this.department.id,
         generation: this.currentGeneration.id,
-        ...query
+        ...query,
       })
       this.loading = false
     },
@@ -256,7 +268,7 @@ export default {
           await this.removeClasses(this.selected)
           this.selected = []
           this.$emit('removed')
-        }
+        },
       })
     },
     onUpdate(status) {
@@ -267,42 +279,42 @@ export default {
         cancelText: 'Không',
         done: async () => {
           await this.updateClasses(
-            this.selected.map(c => ({ id: c.id, status }))
+            this.selected.map((c) => ({ id: c.id, status }))
           )
           this.selected = []
-        }
+        },
       })
-    }
+    },
   },
   filters: {
-    studentCounter: students => {
+    studentCounter: (students) => {
       if (!students) {
         return 0
       }
       return students.length
     },
-    classStatus: status => {
+    classStatus: (status) => {
       if (status === 'opened') return 'Đang chờ'
       else if (status === 'running') return 'Đang Học'
       else if (status === 'done') return 'Kết Thúc'
       else return ''
     },
-    getGeneration: item => {
+    getGeneration: (item) => {
       return _.get(item, 'name', '')
     },
-    getRoom: item => {
+    getRoom: (item) => {
       return _.get(item, 'title', '')
     },
-    getTeacherNames: classData => {
-      return classData.teachers.map(teacher => teacher.name).join(',')
+    getTeacherNames: (classData) => {
+      return classData.teachers.map((teacher) => teacher.name).join(',')
     },
-    getDivision: division => {
+    getDivision: (division) => {
       return division ? division.title : ''
     },
-    displayDate: date => {
+    displayDate: (date) => {
       if (date) return moment(date).format('DD/MM')
-    }
-  }
+    },
+  },
 }
 </script>
 

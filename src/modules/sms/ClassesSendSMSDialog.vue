@@ -14,7 +14,9 @@
           </v-btn>
         </v-card-title>
         <v-card-text>
-          <p class="text-caption mt-4">Đã chọn {{ data.length }} Số liên lạc</p>
+          <p class="text-caption mt-4">
+            Đã chọn {{ studentCount }} Số liên lạc của {{ data.length }} lớp
+          </p>
           <div class="d-flex">
             <v-checkbox class="my-0 mr-3 py-0" label="SMS"></v-checkbox>
             <v-checkbox class="my-0 mr-3 py-0" label="App"></v-checkbox>
@@ -59,6 +61,13 @@ export default {
   },
   computed: {
     ...mapGetters('noti', ['sms']),
+    studentCount() {
+      let count = 0
+      for (let classes of this.data) {
+        count += classes.students.length
+      }
+      return count
+    },
   },
   methods: {
     ...mapActions('noti', ['sendEmail', 'sendSMS']),
@@ -92,17 +101,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-.send-sms-container td:nth-child(1) {
-  font-weight: bold;
-  text-align: end;
-  vertical-align: top;
-}
-.send-sms-container td:nth-child(2) {
-  padding-left: 50px;
-}
-tr.spaceUnder > td {
-  padding-bottom: 30px;
-}
-</style>
