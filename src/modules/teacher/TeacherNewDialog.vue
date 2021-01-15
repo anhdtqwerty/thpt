@@ -2,7 +2,7 @@
   <v-dialog :fullscreen="isMobile" width="661" v-model="dialog" scrollable>
     <v-card>
       <v-card-title class="primary white--text">
-        Thêm Mới Giáo viên
+        <v-toolbar-title>THÊM GIÁO VIÊN</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-btn dark icon>
           <v-icon @click="cancel">close</v-icon>
@@ -32,7 +32,7 @@
         <v-btn
           :loading="isLoading"
           depressed
-          class="mr-2"
+          class="mx-8"
           color="primary"
           medium
           @click="save"
