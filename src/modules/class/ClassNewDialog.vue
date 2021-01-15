@@ -6,7 +6,7 @@
   >
     <v-card>
       <v-card-title class="primary white--text "
-        >Thêm lớp học
+        ><v-toolbar-title>THÊM LỚP HỌC</v-toolbar-title>
         <v-spacer />
         <v-icon color="white" @click="cancel">close</v-icon>
       </v-card-title>

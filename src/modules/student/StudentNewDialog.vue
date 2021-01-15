@@ -2,17 +2,17 @@
   <v-dialog
     :fullscreen="$vuetify.breakpoint.smAndDown"
     v-model="dialog"
-    width="661"
+    width="600"
     scrollable
   >
     <v-card>
       <v-card-title class="primary white--text">
-         Thêm Mới Học Sinh
-          <v-spacer></v-spacer>
-          <v-btn dark icon>
-            <v-icon @click="cancel">close</v-icon>
-          </v-btn>
-       </v-card-title>
+        Thêm Mới Học Sinh
+        <v-spacer></v-spacer>
+        <v-btn dark icon>
+          <v-icon @click="cancel">close</v-icon>
+        </v-btn>
+      </v-card-title>
       <v-divider />
       <v-card-text>
         <v-form ref="form" class="pa-2">
@@ -24,13 +24,17 @@
           <student-note-form ref="studentNoteForm"></student-note-form>
           <h3 class="mb-2">4. Thông tin gia đình</h3>
           <student-family-form ref="studentFamilyForm"></student-family-form>
-          <h3 class="mb-2">5. Thông tin đăng nhập</h3>
-          <login-info-form ref="loginInfoForm"></login-info-form>
         </v-form>
       </v-card-text>
-      <v-card-actions class="px-4">
+      <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn dark color="#0D47A1" @click="save()" :disabled="isLoading" dense
+        <v-btn
+          class="mx-8"
+          dark
+          color="#0D47A1"
+          @click="save()"
+          :disabled="isLoading"
+          dense
           >Lưu</v-btn
         >
       </v-card-actions>
@@ -45,15 +49,13 @@ import StudentGeneralForm from '@/components/basic/form/StudentGeneralForm.vue'
 import StudentContactForm from '@/components/basic/form/StudentContactForm.vue'
 import StudentNoteForm from '@/components/basic/form/StudentNoteForm.vue'
 import StudentFamilyForm from '@/components/basic/form/StudentFamilyForm.vue'
-import LoginInfoForm from '@/components/basic/form/LoginInfoForm'
 
 export default {
   components: {
     StudentGeneralForm,
     StudentContactForm,
     StudentNoteForm,
-    StudentFamilyForm,
-    LoginInfoForm,
+    StudentFamilyForm
   },
   data() {
     return {
@@ -75,10 +77,10 @@ export default {
       password: '',
       emailError: '',
       rules: {
-        required: (value) => !!value || 'Required.',
-        min: (v) => v.length >= 6 || 'Min 8 characters',
-        email: (v) => /.+@.+/.test(v) || 'E-mail must be valid',
-      },
+        required: value => !!value || 'Required.',
+        min: v => v.length >= 6 || 'Min 8 characters',
+        email: v => /.+@.+/.test(v) || 'E-mail must be valid'
+      }
     }
   },
   props: {
@@ -87,7 +89,7 @@ export default {
     defaultPhone: String,
     defaultEmail: String,
     defaultName: String,
-    defaultOveride: Object,
+    defaultOveride: Object
   },
   computed: {
     ...mapState('app', ['roles', 'department', 'currentGeneration']),
@@ -97,15 +99,14 @@ export default {
     },
     majors() {
       return this.rootMajor.majors || []
-    },
+    }
   },
   methods: {
     ...mapActions('students', ['createStudent']),
     async save() {
       if (
         !this.$refs.studentGeneralForm.validate() ||
-        !this.$refs.studentContactForm.validate() ||
-        !this.$refs.loginInfoForm.validate()
+        !this.$refs.studentContactForm.validate()
       ) {
         return
       }
@@ -113,7 +114,6 @@ export default {
       const studentContactForm = this.$refs.studentContactForm.getData()
       const studentNoteForm = this.$refs.studentNoteForm.getData()
       const studentFamilyForm = this.$refs.studentFamilyForm.getData()
-      const loginInfoForm = this.$refs.loginInfoForm.getData()
       this.classes.push(studentGeneralForm.classes)
       const overide = this.defaultOveride || {}
       const student = await this.createStudent({
@@ -124,19 +124,18 @@ export default {
         username: studentGeneralForm.username,
         username_indexing: studentGeneralForm.username_indexing,
         username_no: studentGeneralForm.username_no,
-        password: loginInfoForm.password,
+        password: '123123',
         status: 'active',
-        phone: loginInfoForm.phone,
         address: studentContactForm.currentLive,
         notes: studentNoteForm.notes,
-        email: loginInfoForm.email,
+        email: `${studentGeneralForm.username}@ltvhn.edu.vn`,
         gender: studentGeneralForm.gender,
         dob: studentGeneralForm.dob,
         data: {
           ...studentGeneralForm,
           ...studentContactForm,
           ...studentFamilyForm,
-          ...studentNoteForm,
+          ...studentNoteForm
         },
         ...overide,
         type: 'student'
@@ -157,7 +156,7 @@ export default {
       this.$refs.studentNoteForm.reset()
       this.$refs.studentFamilyForm.reset()
       this.$refs.loginInfoForm.reset()
-    },
+    }
   },
   watch: {
     state(state) {
@@ -169,7 +168,7 @@ export default {
         this.nameLostFocus()
       }
     },
-    rootMajor() {},
-  },
+    rootMajor() {}
+  }
 }
 </script>

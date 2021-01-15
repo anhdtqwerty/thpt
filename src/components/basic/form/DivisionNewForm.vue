@@ -1,5 +1,5 @@
 <template>
-  <v-form ref="form" flat class="pa-6">
+  <v-form ref="form" flat class="pt-5">
     <v-text-field
       label="Tên ban mới"
       v-model="title"
@@ -25,7 +25,6 @@
       label="Môn học"
       multiple
       dense
-      small-chips
       :hide-details="$vuetify.breakpoint.smAndDown"
       :class="{ 'mb-4': $vuetify.breakpoint.smAndDown }"
     />

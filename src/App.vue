@@ -19,6 +19,8 @@ input {
 }
 
 .left-amber-border {
+  position: absolute;
+  left: 0;
   border-left: 4px solid #0d47a1;
 }
 .required label::after {

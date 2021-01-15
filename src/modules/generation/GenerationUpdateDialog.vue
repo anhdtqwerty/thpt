@@ -3,23 +3,25 @@
     v-model="dialog"
     width="661px"
     :fullscreen="$vuetify.breakpoint.smAndDown"
+    scrollable
   >
     <v-card>
-      <v-toolbar dense class="elevation-0" color="#0D47A1" dark>
-        <v-toolbar-title>SỬA KHÓA</v-toolbar-title>
+      <v-card-title class="primary white--text ">
+          <v-toolbar-title>SỬA KHÓA</v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-btn icon>
+        <v-btn dark icon>
           <v-icon @click="cancel">close</v-icon>
         </v-btn>
-      </v-toolbar>
-      <v-divider></v-divider>
+      </v-card-title>
+      <v-card-text>
+         <v-divider></v-divider>
       <generation-info-form
         v-if="generation.id"
         :generation="generation"
         ref="form"
       />
-      <div class="d-flex pa-6">
-        <v-spacer></v-spacer>
+      </v-card-text>
+      <v-card-actions class="d-flex justify-end pa-6">
         <v-btn
           depressed
           color="primary"
@@ -27,7 +29,7 @@
           @click="save"
           >Lưu</v-btn
         >
-      </div>
+      </v-card-actions>
     </v-card>
   </v-dialog>
 </template>

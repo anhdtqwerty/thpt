@@ -1,12 +1,23 @@
 <template>
   <div>
     <grade-update-dialog v-bind:grade="selected" :state="EditGrade" />
-    <v-btn class="elevation-0" icon @click="EditGrade = !EditGrade">
-      <v-icon>mdi-pencil</v-icon>
-    </v-btn>
-    <v-btn class="elevation-0" icon @click="onRemove()">
-      <v-icon>mdi-delete</v-icon>
-    </v-btn>
+     <v-menu offset-y>
+      <template v-slot:activator="{ on, attrs }">
+        <v-icon v-bind="attrs" v-on="on">mdi-dots-vertical</v-icon>
+      </template>
+      <v-list>
+        <v-list-item>
+          <v-btn class="elevation-0" icon @click="EditGrade = !EditGrade">
+            <v-icon>mdi-pencil</v-icon>
+          </v-btn>
+        </v-list-item>
+        <v-list-item>
+          <v-btn class="elevation-0" icon @click="onRemove()">
+            <v-icon>mdi-delete</v-icon>
+          </v-btn>
+        </v-list-item>
+      </v-list>
+    </v-menu>
   </div>
 </template>
 <script>

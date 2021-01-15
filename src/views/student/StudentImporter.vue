@@ -185,6 +185,11 @@ export default {
                 momName: student.momName,
                 momPhone: student.momPhone,
                 momEmail: student.momEmail
+              },
+              contact: {
+                phone: student.contactPhone,
+                code: student.contactCode,
+                app: student.contactApp !== 'FALSE'
               }
             }
           })

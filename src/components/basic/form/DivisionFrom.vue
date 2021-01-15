@@ -1,5 +1,5 @@
 <template>
-  <v-form ref="form" flat class="pa-6">
+  <v-form ref="form" flat class="pt-6">
     <v-text-field
       label="Tên ban mới"
       v-model="title"
@@ -16,7 +16,6 @@
       label="Khối"
       outlined
       dense
-      deletable-chips
       :hide-details="$vuetify.breakpoint.smAndDown"
       :class="{ 'mb-4': $vuetify.breakpoint.smAndDown }"
     />
