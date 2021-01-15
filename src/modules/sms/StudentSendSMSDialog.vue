@@ -14,11 +14,22 @@
           </v-btn>
         </v-card-title>
         <v-card-text>
-          <p class="text-caption mt-4">Đã chọn {{ data.length }} Số liên lạc</p>
+          <p class="text-caption mt-4">
+            Đã chọn {{ data.length }} Số liên lạc
+          </p>
           <div class="d-flex">
-            <v-checkbox class="my-0 mr-3 py-0" label="SMS"></v-checkbox>
-            <v-checkbox class="my-0 mr-3 py-0" label="App"></v-checkbox>
-            <v-checkbox class="my-0 mr-3 py-0" label="Tự động"></v-checkbox>
+            <v-checkbox
+              class="my-0 mr-3 py-0"
+              label="SMS"
+            ></v-checkbox>
+            <v-checkbox
+              class="my-0 mr-3 py-0"
+              label="App"
+            ></v-checkbox>
+            <v-checkbox
+              class="my-0 mr-3 py-0"
+              label="Tự động"
+            ></v-checkbox>
           </div>
           <v-radio-group v-model="radioGroup" row>
             <v-radio class="mr-3" label="VPKL"></v-radio>
@@ -44,7 +55,8 @@
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
-  components: {},
+  components: {
+  },
   props: {
     data: { type: Array, required: true, default: () => [] },
     state: Boolean,
@@ -92,17 +104,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-.send-sms-container td:nth-child(1) {
-  font-weight: bold;
-  text-align: end;
-  vertical-align: top;
-}
-.send-sms-container td:nth-child(2) {
-  padding-left: 50px;
-}
-tr.spaceUnder > td {
-  padding-bottom: 30px;
-}
-</style>

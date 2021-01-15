@@ -1,12 +1,12 @@
 <template>
   <div>
-    <div class="pa-4 pa-md-2 d-flex justify-space-between align-center">
+    <div class="pa-4 d-flex justify-space-between align-center">
       <Breadcrumbs
         headline="Sổ điểm"
         :link="[ { text: 'Điểm số', href: '/marks' }, { text: 'Số điểm', href: '/marks' }]"
       />
     </div>
-    <v-card class="px-2 px-md-4 mx-md-2 elevation-1 mb-2">
+    <v-card class="px-md-6 mx-md-4 elevation-1 mb-2">
       <v-card-text class="px-2">
         <v-row no-gutters>
           <v-col cols="12">
@@ -96,7 +96,7 @@
         </v-row>
       </v-card-text>
     </v-card>
-    <v-card class="pa-2 pa-md-4 ma-md-2 elevation-1">
+    <v-card class="px-md-6 mx-md-4 elevation-1">
       <v-card-text>
         <div class="table-label primary--text mb-5">
           {{ titleTable }}
