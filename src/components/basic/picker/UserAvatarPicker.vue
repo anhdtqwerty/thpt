@@ -1,7 +1,7 @@
 <template>
   <div>
-    <v-avatar size="230" tile>
-      <img :src="avatar" alt="Avatar" />
+    <v-avatar v-bind="this.$attrs" size="230" rounded>
+      <img :src="avatar" alt="Avatar" style="boder-radius: 4px !important;" />
       <v-file-input
         class="file-input"
         :rules="rules"

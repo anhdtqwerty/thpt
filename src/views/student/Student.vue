@@ -2,17 +2,14 @@
   <div>
     <div class="pa-2 d-none d-md-block">
       <Breadcrumbs
-        headline="Danh sách"
-          :link="[
-            { text: 'Học sinh', href: '../students' }
-          ]"
-        />
+        :headline="student ? student.name : 'Học Sinh'"
+        :link="[{ text: 'Học sinh', href: '../students' }]"
+      />
     </div>
 
     <student-profile v-if="student.id" :student="student" />
   </div>
 </template>
-
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import moment from 'moment'
@@ -21,14 +18,14 @@ import Breadcrumbs from '@/components/layout/Breadcrumbs'
 export default {
   components: {
     StudentProfile,
-    Breadcrumbs,
+    Breadcrumbs
   },
   computed: {
-    ...mapGetters('student', ['student']),
+    ...mapGetters('student', ['student'])
   },
   data() {
     return {
-      tab: null,
+      tab: null
     }
   },
   async created() {
@@ -47,6 +44,6 @@ export default {
       data.handledDate = moment().toISOString()
       this.updateStudent({ ...this.student, ...data })
     }
-  },
+  }
 }
 </script>
