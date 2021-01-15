@@ -58,17 +58,8 @@
               v-if="$vuetify.breakpoint.mdAndUp"
             ></drop-menu>
           </div>
-          <div v-if="$vuetify.breakpoint.mdAndUp">
+          <div>
             <student-filter @onFilterChanged="refresh"></student-filter>
-          </div>
-          <div class="d-flex justify-end">
-            <v-btn
-              v-if="$vuetify.breakpoint.smAndDown"
-              icon
-              @click.stop="filterState = !filterState"
-            >
-              <v-icon>mdi-filter-outline</v-icon>
-            </v-btn>
           </div>
         </div>
         <template v-slot:[`item.name`]="{ item }">
@@ -89,6 +80,9 @@
             ? 'Nữ'
             : 'Khác'
         }}</template>
+        <template v-slot:[`item.dob`]="{ item }">
+          <span>{{item.dob}}</span>
+        </template>
         <template v-slot:[`item.action`]="{ item }">
           <student-list-actions :item="item"></student-list-actions>
         </template>
@@ -221,9 +215,13 @@ export default {
       this.draw = draw
     },
     getColor(status) {
-      if (status === 'active') return 'green--text'
-      if (status === 'reserved') return 'orange--text'
-      else return 'gray--text'
+      switch (status) {
+        case 'active': return 'green--text'
+        case 'reserved': return 'orange--text'
+        case 'graduated': return 'primary--text'
+        case 'left': return 'red--text'
+        default: return 'grey--text'
+      }
     },
     onRemove() {
       this.$dialog.confirm({

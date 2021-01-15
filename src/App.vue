@@ -22,7 +22,7 @@ input {
   border-left: 4px solid #0d47a1;
 }
 .required label::after {
-  content: '*';
+  content: ' *';
   color: red;
 }
 </style>
