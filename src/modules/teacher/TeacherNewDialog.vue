@@ -51,7 +51,7 @@ import TeacherGeneralForm from '@/components/basic/form/TeacherGeneralForm'
 import TeacherContactForm from '@/components/basic/form/TeacherContactForm'
 import TeacherSchoolForm from '@/components/basic/form/TeacherSchoolForm'
 import TeacherSpecializeForm from '@/components/basic/form/TeacherSpecializeForm'
-import LoginInfoForm from '@/components/basic/form/LoginInfoForm'
+import LoginInfoForm from '@/components/basic/form/StaffLoginForm.vue'
 
 export default {
   components: {
@@ -142,7 +142,7 @@ export default {
             ...teacherContactForm,
             ...teacherSchoolForm,
             ...teacherSpecializeForm,
-            ...teacherGeneralForm,
+            ...teacherGeneralForm
           },
           department: this.department.id,
           type: 'staff'
