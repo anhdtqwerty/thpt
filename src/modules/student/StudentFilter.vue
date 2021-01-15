@@ -4,7 +4,7 @@
       <v-col cols="12" md="8" v-if="advanced">
         <v-row no-gutters>
           <v-col
-            class="pa-2"
+            class="py-2 pr-4"
             cols="12"
             md="4"
           >
@@ -20,7 +20,7 @@
             />
           </v-col>
           <v-col
-            class="pa-2"
+            class="py-2 pr-4"
             cols="12"
             md="4"
           >
@@ -36,7 +36,7 @@
             />
           </v-col>
           <v-col
-            class="pa-2"
+            class="py-2 pr-4"
             cols="12"
             md="4"
           >
@@ -53,7 +53,7 @@
         </v-row>
         <v-row no-gutters>
           <v-col
-            class="pa-2"
+            class="py-2 pr-4"
             cols="12"
             md="4"
           >
@@ -69,7 +69,7 @@
             />
           </v-col>
           <v-col
-            class="pa-2"
+            class="py-2 pr-4"
             cols="12"
             md="4"
           >
@@ -87,7 +87,7 @@
             />
           </v-col>
           <v-col
-            class="pa-2"
+            class="py-2 pr-4"
             cols="12"
             md="4"
           >
@@ -107,7 +107,7 @@
       </v-col>
       <v-col cols="12" md="8" v-else>
         <v-row no-gutters>
-          <v-col cols="12" md="4">
+          <v-col cols="12" md="4" class="pt-md-2">
             <AutocompleteClass
               prepend-inner-icon="mdi-magnify"
               v-model="classData"
@@ -126,13 +126,13 @@
           </v-col>
         </v-row>
       </v-col>
-      <v-col class="pa-2 d-flex" cols="12" md="4">
+      <v-col class="py-2 d-flex" cols="12" md="4">
         <v-btn v-if="advanced" height="40" color="#0D47A1" @click="onFilterChanged" outlined>
           <v-icon left dark>mdi-filter-outline</v-icon>Lọc
         </v-btn>
         <v-spacer />
         <v-checkbox
-          class="py-0 mt-2 ml-2"
+        class="mt-n1 pt-3"
           v-model="advanced"
           label="Nâng cao"
         ></v-checkbox>
@@ -167,7 +167,8 @@ export default {
       { title: 'Nữ', value: 'female' },
       { title: 'Khác', value: 'other' },
     ],
-    advanced: false
+    advanced: false,
+    classData: ''
   }),
   computed: {
     ...mapState('constant', ['studentStatus']),

@@ -97,7 +97,7 @@ export default {
     username: '',
     username_indexing: '',
     username_no: '',
-    gender: { title: 'Nam', value: 'male' },
+    gender: '',
     dob: '',
     ethnic: '',
     frequentlyAddress: '',
