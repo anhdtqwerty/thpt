@@ -27,6 +27,7 @@ import StudentClasses from '@/views/student/Classes'
 import StudentImporter from '@/views/student/StudentImporter.vue'
 import Violation from '@/views/violation/Violations.vue'
 import ContactBook from '@/views/account/ContactBook.vue'
+import ContactBookDetail from '@/views/account/ContactBookDetail.vue'
 
 // ---------------- DEPARTMENT -------------------------------
 import Department from '@/views/department/Department'
@@ -381,6 +382,15 @@ const routes = [
         path: 'contact-book',
         name: 'Sổ liên lạc',
         component: ContactBook,
+        meta: {
+          title: 'Sổ liên lạc',
+          auth: true
+        }
+      },
+      {
+        path: 'contact-book/:id',
+        name: 'Chi tiết sổ liên lạc',
+        component: ContactBookDetail,
         meta: {
           title: 'Sổ liên lạc',
           auth: true

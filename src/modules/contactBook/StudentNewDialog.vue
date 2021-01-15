@@ -155,7 +155,6 @@ export default {
       this.$refs.studentContactForm.reset()
       this.$refs.studentNoteForm.reset()
       this.$refs.studentFamilyForm.reset()
-      this.$refs.loginInfoForm.reset()
     }
   },
   watch: {

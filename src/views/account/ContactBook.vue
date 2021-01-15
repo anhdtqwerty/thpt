@@ -4,10 +4,7 @@
       <div>
         <Breadcrumbs
           headline="Sổ Liên Lạc"
-          :link="[
-            { text: 'Hệ thống' },
-            { text: 'Sổ liên lạc', href: '../contact-book' }
-          ]"
+          :link="[{ text: 'Sổ liên lạc', href: '../contact-book' }]"
         />
       </div>
       <div class="flex-center">
@@ -48,6 +45,11 @@
         </div>
         <template v-slot:[`item.name`]="{ item }">
           <card-student-name :student="item" link />
+        </template>
+        <template v-slot:[`item.action`]="{ item }">
+          <v-btn icon :to="'contact-book/' + item.id">
+            <v-icon small>mdi-pencil</v-icon>
+          </v-btn>
         </template>
         <template v-slot:[`item.contact.app`]="{ item }">
           <v-chip
@@ -102,8 +104,8 @@ const originHeaders = [
     show: true
   },
   {
-    text: 'App',
-    value: 'contact.app',
+    text: 'Hành động',
+    value: 'action',
     align: 'center',
     sortable: false,
     show: true

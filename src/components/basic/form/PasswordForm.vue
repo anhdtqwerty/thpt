@@ -3,20 +3,28 @@
     <v-row>
       <v-col cols="12">
         <v-text-field
-          v-model="phone"
-          label="Số điện thoại"
-          :rules="[rules.required]"
-          class="required"
+          v-model="password"
+          label="Mật Khẩu"
           outlined
           dense
+          :append-icon="show ? 'visibility' : 'visibility_off'"
+          :rules="[rules.required, rules.min]"
+          :type="show ? 'text' : 'password'"
+          @click:append="show = !show"
+          hint="At least 6 characters"
+          class="required"
         ></v-text-field>
         <v-text-field
-          v-model="email"
-          label="Email"
+          v-model="retypePassword"
+          label="Nhập Lại Mật Khẩu"
           outlined
           dense
+          :append-icon="show ? 'visibility' : 'visibility_off'"
+          :rules="[rules.required, rules.min]"
+          :type="show ? 'text' : 'password'"
+          @click:append="show = !show"
+          hint="At least 6 characters"
           class="required"
-          :rules="[rules.required, rules.email]"
         ></v-text-field>
       </v-col>
     </v-row>
@@ -43,6 +51,8 @@ export default {
     show: false,
     phone: '',
     email: '',
+    password: '',
+    retypePassword: '',
     rules: {
       required: value => !!value || 'Required.',
       min: v => v.length >= 6 || 'Min 8 characters',
@@ -56,27 +66,22 @@ export default {
     ...mapActions('user', ['generateUserName', 'validateEmail']),
     getData() {
       return {
-        phone: this.phone,
-        email: this.email
+        password: this.password
       }
     },
     validate() {
+      if (this.password !== this.retypePassword) {
+        this.$alert.error('Mật khẩu nhập lại không khớp')
+        return false
+      }
       return this.$refs.form.validate()
     },
     reset(user) {
-      this.phone = user ? user.phone : ''
-      this.email = user ? user.email : ''
+      this.password = ''
+      this.retypePassword = ''
     },
     resetValidation() {
       this.$refs.form.resetValidation()
-    }
-  },
-  watch: {
-    student(student) {
-      this.reset(student.contact || {})
-    },
-    teacher(teacher) {
-      this.reset(teacher)
     }
   }
 }
