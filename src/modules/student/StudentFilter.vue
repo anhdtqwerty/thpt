@@ -4,7 +4,7 @@
       <v-col cols="12" md="8" v-if="advanced">
         <v-row no-gutters>
           <v-col
-            :class="{ 'pa-2': $vuetify.breakpoint.mdAndUp }"
+            class="pa-2"
             cols="12"
             md="4"
           >
@@ -20,7 +20,7 @@
             />
           </v-col>
           <v-col
-            :class="{ 'pa-2': $vuetify.breakpoint.mdAndUp }"
+            class="pa-2"
             cols="12"
             md="4"
           >
@@ -36,7 +36,7 @@
             />
           </v-col>
           <v-col
-            :class="{ 'pa-2': $vuetify.breakpoint.mdAndUp }"
+            class="pa-2"
             cols="12"
             md="4"
           >
@@ -53,7 +53,7 @@
         </v-row>
         <v-row no-gutters>
           <v-col
-            :class="{ 'pa-2': $vuetify.breakpoint.mdAndUp }"
+            class="pa-2"
             cols="12"
             md="4"
           >
@@ -69,7 +69,7 @@
             />
           </v-col>
           <v-col
-            :class="{ 'pa-2': $vuetify.breakpoint.mdAndUp }"
+            class="pa-2"
             cols="12"
             md="4"
           >
@@ -87,7 +87,7 @@
             />
           </v-col>
           <v-col
-            :class="{ 'pa-2': $vuetify.breakpoint.mdAndUp }"
+            class="pa-2"
             cols="12"
             md="4"
           >

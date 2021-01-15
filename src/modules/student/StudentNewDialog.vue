@@ -15,7 +15,7 @@
       </v-card-title>
       <v-divider />
       <v-card-text>
-        <v-form ref="form" class="pa-2">
+        <v-form ref="form" class="py-4">
           <h3 class="mb-2">1. Thông tin cơ bản</h3>
           <student-general-form ref="studentGeneralForm"></student-general-form>
           <h3 class="mb-2">2. Thông tin liên lạc</h3>
@@ -29,12 +29,12 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn
-          class="mx-8"
+          class="ma-2"
           dark
+          depressed
           color="#0D47A1"
           @click="save()"
           :disabled="isLoading"
-          dense
           >Lưu</v-btn
         >
       </v-card-actions>

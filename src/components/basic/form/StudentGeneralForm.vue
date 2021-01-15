@@ -1,7 +1,7 @@
 <template>
   <v-form v-model="valid" ref="form" v-bind="this.$attrs">
     <v-row>
-      <v-col cols="12">
+      <v-col class="pb-0" cols="12" md="6">
         <v-text-field
           v-model="name"
           label="Họ và tên"
@@ -11,15 +11,19 @@
           @blur="nameLostFocus()"
           :rules="[rules.required]"
         ></v-text-field>
+      </v-col>
+      <v-col class="pb-0" cols="12" md="6">
         <v-text-field
           v-model="username"
           outlined
           dense
           label="Mã học sinh"
           disabled
-          class="required"
-          :rules="[rules.required]"
         ></v-text-field>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col class="pb-0" cols="12" md="6">
         <autocomplete-class
           :rules="[rules.required]"
           v-model="classes"
@@ -29,38 +33,45 @@
           dense
           class="required"
         ></autocomplete-class>
+      </v-col>
+      <v-col class="pb-0" cols="12" md="6">
         <date-picker
           :date.sync="dob"
           label="Ngày Sinh"
+          placeholder="DD/MM/YYYY"
           dense
           outlined
-          :rules="[rules.required]"
-          class="required"
         ></date-picker>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col class="pb-0" cols="12" md="6">
         <v-select
           v-model="gender"
-          :items="['male', 'female']"
+          :items="genders"
+          item-text="title"
+          item-value="value"
           label="Giới Tính"
           dense
           outlined
-          :rules="[rules.required]"
-          class="required"
         ></v-select>
-        <v-text-field
-          v-model="frequentlyAddress"
-          label="Quê quán"
-          outlined
-          dense
-          :rules="[rules.required]"
-          class="required"
-        ></v-text-field>
+      </v-col>
+      <v-col class="pb-0" cols="12" md="6">
         <v-text-field
           v-model="ethnic"
           label="Dân tộc"
           outlined
           dense
-          :rules="[rules.required]"
-          class="required"
+        ></v-text-field>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col class="pb-0" cols="12">
+        <v-text-field
+          v-model="frequentlyAddress"
+          label="Quê quán"
+          outlined
+          dense
         ></v-text-field>
       </v-col>
     </v-row>
@@ -86,16 +97,21 @@ export default {
     username: '',
     username_indexing: '',
     username_no: '',
-    gender: '',
+    gender: { title: 'Nam', value: 'male' },
     dob: '',
     ethnic: '',
     frequentlyAddress: '',
     classes: {},
     rules: {
-      required: (value) => !!value || 'Required.',
+      required: (value) => !!value || 'Item is required',
       min: (v) => v.length >= 6 || 'Min 8 characters',
       email: (v) => /.+@.+/.test(v) || 'E-mail must be valid',
     },
+    genders: [
+      { title: 'Nam', value: 'male' },
+      { title: 'Nữ', value: 'female' },
+      { title: 'Khác', value: 'other' },
+    ],
   }),
   created() {
     if (this.student) {
