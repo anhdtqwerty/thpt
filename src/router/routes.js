@@ -26,6 +26,7 @@ import Student from '@/views/student/Student'
 import StudentClasses from '@/views/student/Classes'
 import StudentImporter from '@/views/student/StudentImporter.vue'
 import Violation from '@/views/violation/Violations.vue'
+import ContactBook from '@/views/account/ContactBook.vue'
 
 // ---------------- DEPARTMENT -------------------------------
 import Department from '@/views/department/Department'
@@ -373,6 +374,15 @@ const routes = [
         component: ViewScore,
         meta: {
           title: 'Sổ điểm',
+          auth: true
+        }
+      },
+      {
+        path: 'contact-book',
+        name: 'Sổ liên lạc',
+        component: ContactBook,
+        meta: {
+          title: 'Sổ liên lạc',
           auth: true
         }
       },
