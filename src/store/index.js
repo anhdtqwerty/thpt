@@ -6,6 +6,7 @@ import classModule from './learning/class'
 import classDetail from './learning/classDetail'
 import category from './other/category'
 import email from './notify/email'
+import search from './view/search.js'
 /**
  * SALE
 /**
@@ -106,7 +107,8 @@ export default createStore(Vuex.Store, {
     grade,
     factor,
     subjects,
-    violation
+    violation,
+    search
   },
   mixins: {
     mutations: {

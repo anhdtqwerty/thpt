@@ -48,6 +48,8 @@ import Grades from '@/views/grade/Grades.vue'
 import Subjects from '@/views/subject/Subjects.vue'
 import Subject from '@/views/subject/Subject.vue'
 import Classes from '@/views/class/Classes'
+import TimeTableConfig from '@/views/timetable/TimeTableConfig.vue'
+
 const routes = [
   {
     path: '/',
@@ -176,6 +178,15 @@ const routes = [
         name: 'Subject',
         meta: {
           title: 'Môn Học',
+          auth: true
+        }
+      },
+      {
+        path: 'title-table/config',
+        component: TimeTableConfig,
+        name: 'timetable',
+        meta: {
+          title: 'Cấu Hình Thời Khóa Biểu',
           auth: true
         }
       },

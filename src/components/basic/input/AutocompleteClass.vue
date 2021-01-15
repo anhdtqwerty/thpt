@@ -3,12 +3,12 @@
     v-bind="this.$attrs"
     item-text="title"
     :items="classes"
-    clearable
     item-value="id"
     @change="onChange"
     return-object
     v-on:input="$emit('input', $event)"
     @input="onChange"
+    auto-select-first
     :loading="loading"
   ></v-autocomplete>
 </template>

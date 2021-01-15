@@ -4,7 +4,7 @@
       <div>
         <Breadcrumbs
           headline="Quản lý khối"
-          :link="[{ text: 'Quản lý khối', href: '../grades' }]"
+          :link="[{ text: 'Nâng cao', href: '../divisions' },{ text: 'QL Khối', href: '../grades' }]"
         />
       </div>
       <div class="flex-center">

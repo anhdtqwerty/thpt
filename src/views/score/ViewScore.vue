@@ -3,7 +3,7 @@
     <div class="pa-4 d-flex justify-space-between align-center">
       <Breadcrumbs
         headline="Sổ điểm"
-        :link="[{ text: 'Điểm số' }, { text: 'Sổ điểm', href: '/marks' }]"
+        :link="[ { text: 'Điểm số', href: '/marks' }, { text: 'Số điểm', href: '/marks' }]"
       />
     </div>
     <v-card class="px-md-6 mx-md-4 elevation-1 mb-2">

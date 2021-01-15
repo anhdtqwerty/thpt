@@ -4,7 +4,10 @@
       <div>
         <Breadcrumbs
           headline="Quản lý phân ban"
-          :link="[{ text: 'Quản lý phân ban', href: '../divisions' }]"
+          :link="[
+            { text: 'Nâng cao', href: '../divisions' },
+            { text: 'QL Phân Ban', href: '../divisions' },
+          ]"
         />
       </div>
       <div class="flex-center">
@@ -19,7 +22,7 @@
     </div>
     <v-card class="px-md-6 mx-md-4 elevation-1">
       <v-data-table :headers="headers" :items="divisions">
-        <div slot="top" class="d-flex mb-2">
+        <div slot="top" class="d-flex">
           <v-spacer></v-spacer>
           <div>
             <drop-menu
@@ -30,7 +33,12 @@
           </div>
         </div>
         <template v-slot:item.subjects="{ item }">
-          <p>{{ item | getSubject }}</p>
+          <v-tooltip max-width="200px" bottom>
+            <template v-slot:activator="{ on, attrs }">
+               <p v-bind="attrs" v-on="on" class="shortenContent ma-0">{{ item | getSubject }}</p>
+            </template>
+            <span>{{item | getSubject}}</span>
+          </v-tooltip>
         </template>
         <template v-slot:item.actions="{ item }">
           <division-actions :selected="item"> </division-actions>
@@ -110,6 +118,7 @@ export default {
   },
   async created() {
     await this.refresh({})
+    console.log(this.divisions)
   },
   methods: {
     ...mapActions('division', ['fetchDivision']),
@@ -134,3 +143,12 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.shortenContent {
+  white-space: nowrap;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  width: 200px;
+}
+</style>

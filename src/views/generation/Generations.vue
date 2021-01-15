@@ -5,8 +5,7 @@
         <Breadcrumbs
           headline="Quản lý khóa"
           :link="[
-            { text: 'Nâng cao' },
-            { text: 'Quản lý khóa', href: '/generations' }
+             { text: 'Nâng cao', href: '../divisions' },{ text: 'QL Khóa', href: '/generations' }
           ]"
         />
       </div>

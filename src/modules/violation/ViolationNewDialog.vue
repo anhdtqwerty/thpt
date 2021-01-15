@@ -19,7 +19,7 @@
         <v-btn
           depressed
           color="primary"
-          class="mr-4 mt-n4 mb-2 white--text"
+          class="mr-2 mt-n4 mb-2 white--text"
           @click="save"
           >Lưu</v-btn
         >
