@@ -113,6 +113,7 @@ export default {
       }
     },
     async removeStudent({ commit }, student) {
+      console.log(student)
       try {
         if (student.user) {
           await api.User.remove(student.user)

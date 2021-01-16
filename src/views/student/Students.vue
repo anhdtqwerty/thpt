@@ -21,13 +21,12 @@
           <v-icon left>mdi-message-processing</v-icon>Gửi SMS
         </v-btn>
         <v-btn
-          v-if="selected.length"
-          dark
-          color="red"
-          @click.stop="onRemove"
+          v-if="$vuetify.breakpoint.mdAndUp"
           class="mr-2"
+          dark
+          color="success"
         >
-          <v-icon left>mdi-delete</v-icon>Xóa
+          <v-icon left>mdi-file-excel</v-icon> Xuất Excel
         </v-btn>
         <v-btn dark color="#0D47A1" @click.stop="createState = !createState">
           <v-icon left>add</v-icon>{{ btnTitle }}
@@ -50,26 +49,8 @@
         v-model="selected"
         show-select
       >
-        <div slot="top" class="mb-md-6">
-          <div class="d-flex justify-end">
-            <drop-menu
-              :default-headers="originHeaders"
-              @change="headers = $event"
-              v-if="$vuetify.breakpoint.mdAndUp"
-            ></drop-menu>
-          </div>
-          <div v-if="$vuetify.breakpoint.mdAndUp">
-            <student-filter @onFilterChanged="refresh"></student-filter>
-          </div>
-          <div class="d-flex justify-end">
-            <v-btn
-              v-if="$vuetify.breakpoint.smAndDown"
-              icon
-              @click.stop="filterState = !filterState"
-            >
-              <v-icon>mdi-filter-outline</v-icon>
-            </v-btn>
-          </div>
+        <div slot="top" class="py-md-6">
+          <student-filter @onFilterChanged="refresh"></student-filter>
         </div>
         <template v-slot:[`item.name`]="{ item }">
           <card-student-name :student="item" link />
@@ -89,6 +70,9 @@
             ? 'Nữ'
             : 'Khác'
         }}</template>
+        <template v-slot:[`item.dob`]="{ item }">
+          <span>{{ formatDate(item.dob) }}</span>
+        </template>
         <template v-slot:[`item.action`]="{ item }">
           <student-list-actions :item="item"></student-list-actions>
         </template>
@@ -99,8 +83,11 @@
       @onFilterDialogChanged="refresh"
       :state="filterState"
     />
-     <student-new-dialog :state="createState" @done="requestPageSettings({})" />
-     <student-send-s-m-s-dialog :data="selected" :state="sendState"></student-send-s-m-s-dialog>
+    <student-new-dialog :state="createState" @done="requestPageSettings({})" />
+    <student-send-s-m-s-dialog
+      :data="selected"
+      :state="sendState"
+    ></student-send-s-m-s-dialog>
   </div>
 </template>
 <script>
@@ -113,7 +100,7 @@ import StudentFilterDialog from '@/modules/student/StudentFilterDialog'
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import StudentListActions from '@/modules/student/StudentListActions'
 import StudentSendSMSDialog from '@/modules/sms/StudentSendSMSDialog'
-
+import moment from 'moment'
 const originHeaders = [
   {
     text: 'Tên học sinh',
@@ -122,20 +109,28 @@ const originHeaders = [
     sortable: false,
     show: true,
   },
-  { text: 'Lớp', value: 'classes', align: 'left', sortable: false, show: true },
+  {
+    text: 'Lớp',
+    value: 'classes',
+    align: 'center',
+    sortable: false,
+    show: true,
+    width: '10px',
+  },
   {
     text: 'Ngày sinh',
     value: 'dob',
-    align: 'left',
+    align: 'center',
     sortable: false,
     show: true,
   },
   {
     text: 'Giới tính',
     value: 'gender',
-    align: 'left',
+    align: 'center',
     sortable: false,
     show: true,
+    width: '10px'
   },
   {
     text: 'Trạng thái',
@@ -154,21 +149,21 @@ const originHeaders = [
   {
     text: 'Hành động',
     value: 'action',
-    align: 'left',
+    align: 'center',
     sortable: false,
     show: true,
+    width: '10px',
   },
 ]
 export default {
   components: {
     CardStudentName,
-    DropMenu,
     StudentNewDialog,
     StudentFilter,
     StudentFilterDialog,
     Breadcrumbs,
     StudentListActions,
-    StudentSendSMSDialog
+    StudentSendSMSDialog,
   },
   props: {
     role: String,
@@ -192,7 +187,7 @@ export default {
       createState: false,
       filterState: false,
       selected: [],
-      sendState: false
+      sendState: false,
     }
   },
   async created() {
@@ -220,10 +215,22 @@ export default {
     updateDraw(draw) {
       this.draw = draw
     },
+    formatDate(date) {
+      return moment(date).format('DD/MM/YYYY')
+    },
     getColor(status) {
-      if (status === 'active') return 'green--text'
-      if (status === 'reserved') return 'orange--text'
-      else return 'gray--text'
+      switch (status) {
+        case 'active':
+          return 'green--text'
+        case 'reserved':
+          return 'orange--text'
+        case 'graduated':
+          return 'primary--text'
+        case 'left':
+          return 'red--text'
+        default:
+          return 'grey--text'
+      }
     },
     onRemove() {
       this.$dialog.confirm({

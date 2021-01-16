@@ -1,30 +1,30 @@
 <template>
   <v-form v-model="valid" ref="form" v-bind="this.$attrs">
     <v-row>
-      <v-col cols="12">
+      <v-col class="pb-0" cols="12">
         <v-text-field
           v-model="currentLive"
           label="Địa chỉ liên lạc"
           outlined
           dense
-          :rules="[rules.required]"
-          class="required"
         ></v-text-field>
-        <v-text-field
-          v-model="province"
-          label="Tỉnh/Thành phố"
-          outlined
-          dense
-          :rules="[rules.required]"
-          class="required"
-        ></v-text-field>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col class="pb-0" cols="12" md="6">
         <v-text-field
           v-model="district"
           label="Quận/Huyện"
           outlined
           dense
-          :rules="[rules.required]"
-          class="required"
+        ></v-text-field>
+      </v-col>
+      <v-col>
+        <v-text-field
+          v-model="province"
+          label="Tỉnh/Thành phố"
+          outlined
+          dense
         ></v-text-field>
       </v-col>
     </v-row>

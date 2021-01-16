@@ -55,6 +55,7 @@ export default {
       subject: '',
       text: '',
       progress: 1,
+      radioGroup: ''
     }
   },
   computed: {
