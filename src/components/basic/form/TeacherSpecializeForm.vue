@@ -1,7 +1,7 @@
 <template>
   <v-form v-model="valid" ref="form" v-bind="this.$attrs">
     <v-row>
-      <v-col cols="12">
+      <v-col class="pb-0" cols="12" md="6">
         <v-text-field
           ref="level"
           v-model="level"
@@ -9,6 +9,8 @@
           outlined
           dense
         ></v-text-field>
+      </v-col>
+      <v-col class="pb-0" cols="12" md="6">
         <v-text-field
           ref="subject"
           v-model="subject"
@@ -16,6 +18,10 @@
           outlined
           dense
         ></v-text-field>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col class="pb-0" cols="12" md="6">
         <v-text-field
           ref="trainingPlace"
           v-model="trainingPlace"
@@ -23,6 +29,8 @@
           outlined
           dense
         ></v-text-field>
+      </v-col>
+      <v-col class="pb-0" cols="12" md="6">
         <v-text-field
           ref="majorDate"
           v-model="majorDate"
@@ -41,8 +49,8 @@ export default {
   props: {
     teacher: {
       type: [Object],
-      default: () => {}
-    }
+      default: () => {},
+    },
   },
   data: () => ({
     valid: true,
@@ -51,10 +59,10 @@ export default {
     trainingPlace: '',
     majorDate: '',
     rules: {
-      required: value => !!value || 'Required.',
-      min: v => v.length >= 6 || 'Min 8 characters',
-      email: v => /.+@.+/.test(v) || 'E-mail must be valid'
-    }
+      required: (value) => !!value || 'Required.',
+      min: (v) => v.length >= 6 || 'Min 8 characters',
+      email: (v) => /.+@.+/.test(v) || 'E-mail must be valid',
+    },
   }),
   created() {
     if (this.teacher) {
@@ -70,7 +78,7 @@ export default {
         level: this.level,
         subject: this.subject,
         trainingPlace: this.trainingPlace,
-        majorDate: this.majorDate
+        majorDate: this.majorDate,
       }
     },
     validate() {
@@ -81,12 +89,12 @@ export default {
     },
     resetValidation() {
       this.$refs.form.resetValidation()
-    }
+    },
   },
   watch: {
     teacher(teacher) {
       this.reset()
-    }
-  }
+    },
+  },
 }
 </script>

@@ -1,7 +1,7 @@
 <template>
   <v-form v-model="valid" ref="form" v-bind="this.$attrs">
     <v-row>
-      <v-col cols="12">
+      <v-col class="pb-0" cols="12" md="6">
         <v-text-field
           ref="name"
           v-model="name"
@@ -12,6 +12,8 @@
           outlined
           dense
         ></v-text-field>
+      </v-col>
+      <v-col class="pb-0" cols="12" md="6">
         <v-text-field
           v-model="username"
           outlined
@@ -21,12 +23,18 @@
           class="required"
           :rules="[rules.required]"
         ></v-text-field>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col class="pb-0" cols="12" md="6">
         <date-picker
           :date.sync="dob"
           label="Ngày Sinh"
           outlined
           dense
         ></date-picker>
+      </v-col>
+      <v-col class="pb-0" cols="12" md="6">
         <v-select
           ref="gender"
           v-model="gender"
@@ -35,6 +43,10 @@
           outlined
           dense
         ></v-select>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col class="pb-0" cols="12" md="6">
         <v-text-field
           ref="frequentlyAddress"
           v-model="frequentlyAddress"
@@ -42,6 +54,8 @@
           outlined
           dense
         ></v-text-field>
+      </v-col>
+      <v-col class="pb-0" cols="12" md="6">
         <v-text-field
           ref="ethinic"
           v-model="ethnic"
@@ -63,8 +77,8 @@ export default {
   props: {
     teacher: {
       type: [Object],
-      default: () => {}
-    }
+      default: () => {},
+    },
   },
   data: () => ({
     username: '',
@@ -77,10 +91,10 @@ export default {
     ethnic: '',
     frequentlyAddress: '',
     rules: {
-      required: value => !!value || 'Required.',
-      min: v => v.length >= 6 || 'Min 8 characters',
-      email: v => /.+@.+/.test(v) || 'E-mail must be valid'
-    }
+      required: (value) => !!value || 'Required.',
+      min: (v) => v.length >= 6 || 'Min 8 characters',
+      email: (v) => /.+@.+/.test(v) || 'E-mail must be valid',
+    },
   }),
   created() {
     if (this.teacher) {
@@ -99,7 +113,7 @@ export default {
         // eslint-disable-next-line
         username_indexing,
         // eslint-disable-next-line
-        username_no
+        username_no,
       } = await this.generateUserName(this.name)
       this.username = username
       // eslint-disable-next-line
@@ -116,7 +130,7 @@ export default {
         frequentlyAddress: this.frequentlyAddress,
         username: this.username,
         username_indexing: this.username_indexing,
-        username_no: this.username_no
+        username_no: this.username_no,
       }
     },
     validate() {
@@ -127,12 +141,12 @@ export default {
     },
     resetValidation() {
       this.$refs.form.resetValidation()
-    }
+    },
   },
   watch: {
     teacher(teacher) {
       this.reset()
-    }
-  }
+    },
+  },
 }
 </script>
