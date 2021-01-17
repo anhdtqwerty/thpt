@@ -7,20 +7,6 @@
       <v-card class="pa-6" :flat="$vuetify.breakpoint.smAndDown">
         <user-avatar-picker :student="teacher" type="students" />
         <h2>{{ teacher.name }}</h2>
-        <table class="info-student-general mx-6">
-          <tr>
-            <td>Mã số</td>
-            <td>{{ teacher.code }}</td>
-          </tr>
-          <tr>
-            <td>Lớp</td>
-            <td>10A</td>
-          </tr>
-          <tr>
-            <td>Trạng thái</td>
-            <td>{{ teacher.status }}</td>
-          </tr>
-        </table>
       </v-card>
     </v-col>
     <v-col class="" cols="12" md="8">
