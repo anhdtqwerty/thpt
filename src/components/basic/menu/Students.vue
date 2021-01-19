@@ -10,7 +10,6 @@
     </template>
     <v-list class="py-0">
       <v-list-item
-        active-class="left-amber-border"
         class="px-0"
         link
         to="/students"
@@ -19,7 +18,6 @@
         <v-list-item-title>Danh sách</v-list-item-title>
       </v-list-item>
       <v-list-item
-        active-class="left-amber-border"
         class="px-0"
         link
         to="/attendanced"
@@ -28,7 +26,6 @@
         <v-list-item-title>Điểm danh</v-list-item-title>
       </v-list-item>
       <v-list-item
-        active-class="left-amber-border"
         class="px-0"
         link
         to="/complimented"

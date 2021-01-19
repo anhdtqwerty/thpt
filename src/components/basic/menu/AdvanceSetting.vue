@@ -8,7 +8,6 @@
     </template>
     <v-list class="py-0">
       <v-list-item
-        active-class="left-amber-border"
         class="px-0"
         link
         to="/divisions"
@@ -17,7 +16,6 @@
         <v-list-item-title>Quản lý phân ban</v-list-item-title>
       </v-list-item>
       <v-list-item
-        active-class="left-amber-border"
         class="px-0"
         link
         to="/grades"
@@ -26,7 +24,6 @@
         <v-list-item-title>Quản lý khối</v-list-item-title>
       </v-list-item>
       <v-list-item
-        active-class="left-amber-border"
         class="px-0"
         link
         to="/semesters"
@@ -35,7 +32,6 @@
         <v-list-item-title>Quản lý học kỳ</v-list-item-title>
       </v-list-item>
       <v-list-item
-        active-class="left-amber-border"
         class="px-0"
         link
         to="/generations"
@@ -44,7 +40,6 @@
         <v-list-item-title>Quản lý khóa</v-list-item-title>
       </v-list-item>
       <v-list-item
-        active-class="left-amber-border"
         class="px-0"
         link
         to="/subjects"
@@ -53,7 +48,6 @@
         <v-list-item-title>Môn học</v-list-item-title>
       </v-list-item>
       <v-list-item
-        active-class="left-amber-border"
         class="px-0"
         link
         to="/title-table/config"
