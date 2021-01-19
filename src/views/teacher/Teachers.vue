@@ -8,6 +8,14 @@
         />
       </div>
       <div class="flex-center">
+        <v-btn
+          v-if="$vuetify.breakpoint.mdAndUp"
+          class="mr-2"
+          dark
+          color="success"
+        >
+          <v-icon left>mdi-file-excel</v-icon> Xuất Excel
+        </v-btn>
         <v-btn dark color="#0D47A1" @click.stop="createState = !createState">
           <v-icon left>add</v-icon>{{ titleBtn }}
         </v-btn>
@@ -23,26 +31,8 @@
         :loading="isLoading"
         loading-text="Đang Tải"
       >
-        <div slot="top">
-          <div class="d-flex justify-end">
-            <drop-menu
-              :default-headers="originHeaders"
-              @change="headers = $event"
-              v-if="$vuetify.breakpoint.mdAndUp"
-            ></drop-menu>
-          </div>
-          <div v-if="$vuetify.breakpoint.mdAndUp">
-            <teacher-filter @onFilterChanged="refresh"></teacher-filter>
-          </div>
-          <div>
-            <v-btn
-              v-if="$vuetify.breakpoint.mobile"
-              icon
-              @click.stop="filterState = !filterState"
-            >
-              <v-icon right>mdi-filter-outline</v-icon>
-            </v-btn>
-          </div>
+        <div slot="top" class="py-md-6">
+          <teacher-filter @onFilterChanged="refresh"></teacher-filter>
         </div>
 
         <template v-slot:[`item.name`]="{ item }">
@@ -78,16 +68,15 @@
         <template v-slot:[`item.metadata.dob`]="{ item }">
           {{ formatDate(item.metadata.dob) }}
         </template>
+        <template v-slot:[`item.gender`]="{ item }">
+          {{ item.gender | getGender }}
+        </template>
         <template v-slot:[`item.action`]="{ item }">
           <teacher-list-actions :item="item"></teacher-list-actions>
         </template>
       </v-data-table>
     </v-card>
     <new-teacher-dialog :state="createState" />
-    <teacher-filter-dialog
-      @onFilterChanged="refresh"
-      :state="filterState"
-    ></teacher-filter-dialog>
   </div>
 </template>
 <script>
@@ -120,9 +109,10 @@ const originHeaders = [
   {
     text: 'Giới tính',
     value: 'gender',
-    align: 'left',
+    align: 'center',
     sortable: false,
     show: true,
+    width: 10,
   },
   {
     text: 'Loại cán bộ',
@@ -130,6 +120,7 @@ const originHeaders = [
     align: 'left',
     sortable: false,
     show: true,
+    width: 100,
   },
   {
     text: 'Lĩnh vực',
@@ -144,6 +135,7 @@ const originHeaders = [
     align: 'left',
     sortable: false,
     show: true,
+    width: 10,
   },
   {
     text: 'Ghi chú',
@@ -155,9 +147,10 @@ const originHeaders = [
   {
     text: 'Hành động',
     value: 'action',
-    align: 'left',
+    align: 'center',
     sortable: false,
     show: true,
+    width: 10,
   },
 ]
 Vue.use(Vuetify)
@@ -217,6 +210,15 @@ export default {
           this.isLoading = false
         }
       )
+    },
+  },
+  filters: {
+    getGender(gender) {
+      if (gender === 'male') {
+        return 'Nam'
+      } else if (gender === 'female') {
+        return 'Nữ'
+      }
     },
   },
 }
