@@ -3,9 +3,9 @@
     <p class="font-weight-bold text-h5 ma-0">
       {{ headline }}
     </p>
-    <v-breadcrumbs v-if="!$vuetify.breakpoint.smAndDown" :items="links" icon=""
+    <v-breadcrumbs class="pa-0 ma-0" v-if="!$vuetify.breakpoint.smAndDown" :items="links" icon=""
       ><template v-slot:divider>
-        <v-icon class="pa-0 ma-0">mdi-chevron-right</v-icon>
+        <v-icon>mdi-chevron-right</v-icon>
       </template></v-breadcrumbs
     >
     <v-icon v-if="$vuetify.breakpoint.smAndDown" class="elevation-0 pa-0 ma-0"
@@ -36,21 +36,21 @@ export default {
     links() {
       return [...this.items, ...this.link]
     },
-   
+
   },
-  methods:{
-     comeBack(){
+  methods: {
+    comeBack() {
       history.back()
     },
   }
 }
 </script>
-<style scoped>
+<style>
 .v-breadcrumbs {
   padding: 0;
   margin: 0;
 }
 .v-breadcrumbs__divider {
-  padding: 0;
+  padding: 0 !important;
 }
 </style>
