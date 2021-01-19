@@ -8,7 +8,6 @@
     </template>
     <v-list class="left-amber-border py-0">
       <v-list-item
-        active-class="left-amber-border"
         class="px-0"
         link
         to="/marks"
@@ -17,7 +16,6 @@
         <v-list-item-title>Số điểm</v-list-item-title>
       </v-list-item>
       <v-list-item
-        active-class="left-amber-border"
         class="px-0"
         link
         to="/marks-input"

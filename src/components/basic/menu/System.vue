@@ -8,7 +8,6 @@
     </template>
     <v-list class="py-0">
       <v-list-item
-        active-class="left-amber-border"
         class="px-0"
         link
         to="/contact-book"
