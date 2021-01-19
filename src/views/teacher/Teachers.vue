@@ -1,50 +1,38 @@
 <template>
   <div>
-    <div class="pa-4 pa-md-2 d-flex justify-space-between align-center">
+    <div class="pa-4 d-flex justify-space-between align-center">
       <div>
         <Breadcrumbs
           headline="Giáo viên"
-          :link="[
-            { text: 'Giáo viên', href: '../teachers' },
-            ]"
+          :link="[{ text: 'Giáo viên', href: '../teachers' }]"
         />
       </div>
       <div class="flex-center">
+        <v-btn
+          v-if="$vuetify.breakpoint.mdAndUp"
+          class="mr-2"
+          dark
+          color="success"
+        >
+          <v-icon left>mdi-file-excel</v-icon> Xuất Excel
+        </v-btn>
         <v-btn dark color="#0D47A1" @click.stop="createState = !createState">
           <v-icon left>add</v-icon>{{ titleBtn }}
         </v-btn>
       </div>
     </div>
 
-    <v-card class="pa-2 pa-md-4 ma-md-2 elevation-1">
+    <v-card class="px-md-6 mx-md-4 elevation-1">
       <v-data-table
-        :items-per-page="5"
+        :items-per-page="10"
         item-key="id"
         :headers="headers"
         :items="teachers"
         :loading="isLoading"
         loading-text="Đang Tải"
-        dense
       >
-        <div slot="top" class="d-flex mb-4">
-          <div v-if="!$vuetify.breakpoint.mobile">
-            <teacher-filter @onFilterChanged="refresh"></teacher-filter>
-          </div>
-          <v-spacer></v-spacer>
-          <div>
-            <v-btn
-              v-if="$vuetify.breakpoint.mobile"
-              icon
-              @click.stop="filterState = !filterState"
-            >
-              <v-icon right>mdi-filter-outline</v-icon>
-            </v-btn>
-             <drop-menu
-              :default-headers="originHeaders"
-              @change="headers = $event"
-              v-if="$vuetify.breakpoint.mdAndUp"
-            ></drop-menu>
-          </div>
+        <div slot="top" class="py-md-6">
+          <teacher-filter @onFilterChanged="refresh"></teacher-filter>
         </div>
 
         <template v-slot:[`item.name`]="{ item }">
@@ -78,7 +66,10 @@
           }}</span>
         </template>
         <template v-slot:[`item.metadata.dob`]="{ item }">
-          {{formatDate(item.metadata.dob)}}
+          {{ formatDate(item.metadata.dob) }}
+        </template>
+        <template v-slot:[`item.gender`]="{ item }">
+          {{ item.gender | getGender }}
         </template>
         <template v-slot:[`item.action`]="{ item }">
           <teacher-list-actions :item="item"></teacher-list-actions>
@@ -86,10 +77,6 @@
       </v-data-table>
     </v-card>
     <new-teacher-dialog :state="createState" />
-    <teacher-filter-dialog
-      @onFilterChanged="refresh"
-      :state="filterState"
-    ></teacher-filter-dialog>
   </div>
 </template>
 <script>
@@ -122,9 +109,10 @@ const originHeaders = [
   {
     text: 'Giới tính',
     value: 'gender',
-    align: 'left',
+    align: 'center',
     sortable: false,
     show: true,
+    width: 10,
   },
   {
     text: 'Loại cán bộ',
@@ -132,6 +120,7 @@ const originHeaders = [
     align: 'left',
     sortable: false,
     show: true,
+    width: 100,
   },
   {
     text: 'Lĩnh vực',
@@ -146,6 +135,7 @@ const originHeaders = [
     align: 'left',
     sortable: false,
     show: true,
+    width: 10,
   },
   {
     text: 'Ghi chú',
@@ -157,10 +147,11 @@ const originHeaders = [
   {
     text: 'Hành động',
     value: 'action',
-    align: 'left',
+    align: 'center',
     sortable: false,
     show: true,
-  }
+    width: 10,
+  },
 ]
 Vue.use(Vuetify)
 
@@ -172,7 +163,7 @@ export default {
     TeacherListActions,
     TeacherFilterDialog,
     NewTeacherDialog,
-    DropMenu
+    DropMenu,
   },
   data() {
     return {
@@ -219,6 +210,15 @@ export default {
           this.isLoading = false
         }
       )
+    },
+  },
+  filters: {
+    getGender(gender) {
+      if (gender === 'male') {
+        return 'Nam'
+      } else if (gender === 'female') {
+        return 'Nữ'
+      }
     },
   },
 }

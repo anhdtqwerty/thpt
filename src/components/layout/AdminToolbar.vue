@@ -6,6 +6,7 @@
     <Classes />
     <Scores />
     <AdvanceSetting />
+    <System />
   </v-list>
 </template>
 <script>
@@ -15,6 +16,7 @@ import Teachers from '@/components/basic/menu/Teachers.vue'
 import Dashboard from '@/components/basic/menu/Dashboard'
 import Scores from '@/components/basic/menu/Scores.vue'
 import AdvanceSetting from '@/components/basic/menu/AdvanceSetting.vue'
+import System from '@/components/basic/menu/System.vue'
 import { mapState } from 'vuex'
 export default {
   components: {
@@ -23,7 +25,8 @@ export default {
     Students,
     Teachers,
     Scores,
-    AdvanceSetting
+    AdvanceSetting,
+    System
   },
   computed: {
     ...mapState('auth', ['profile', 'role'])

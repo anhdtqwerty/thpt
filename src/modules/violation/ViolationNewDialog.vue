@@ -1,25 +1,28 @@
 <template>
   <v-dialog
     v-model="dialog"
-    width="800px"
+    width="600"
     :fullscreen="$vuetify.breakpoint.smAndDown"
+    scrollable
   >
-    <v-card>
+    <v-card >
       <v-card-title class="primary white--text "
-        >Thêm Khen thưởng kỉ luật
+        ><v-toolbar-title>THÊM KTKL</v-toolbar-title>
         <v-spacer />
         <v-icon color="white" @click="dialog = false">close</v-icon>
       </v-card-title>
-      <v-divider></v-divider>
-      <violation-new-form
+      <v-card-text>
+        <violation-new-form
         ref="form"
       />
+      </v-card-text>
+      
       <v-card-actions>
         <v-spacer />
         <v-btn
           depressed
           color="primary"
-          class="mr-4 mt-n4 mb-2 white--text"
+          class="ma-2 white--text"
           @click="save"
           >Lưu</v-btn
         >

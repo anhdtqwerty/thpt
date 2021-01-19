@@ -13,9 +13,6 @@
         <v-list-item>
           <v-list-item-title>Chuyển trạng thái</v-list-item-title>
         </v-list-item>
-        <v-list-item @click="onRemove">
-          <v-list-item-title>Xóa học sinh</v-list-item-title>
-        </v-list-item>
       </v-list>
     </v-menu>
 

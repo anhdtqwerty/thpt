@@ -93,6 +93,9 @@ export default {
     setSlot({ commit, state }, slot) {
       commit('setSlot', slot)
     },
+    setClass({ commit, state }, slot) {
+      commit('setClass', slot)
+    },
     async removeSlots({ dispatch }, items) {
       await Promise.all(items.map(item => dispatch('removeSlot', item.id)))
     }

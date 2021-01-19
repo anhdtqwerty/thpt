@@ -1,10 +1,10 @@
 <template>
-  <v-list-group :value="false" active-class="black-text">
+  <v-list-group :value="false">
     <template v-slot:activator>
-      <v-list-item-icon class="mr-2">
+      <v-list-item-icon class="mr-4">
         <v-icon>mdi-layers</v-icon>
       </v-list-item-icon>
-      <v-list-item-title class="font-weight-black">Nâng cao</v-list-item-title>
+      <v-list-item-title>NÂNG CAO</v-list-item-title>
     </template>
     <v-list class="py-0">
       <v-list-item
@@ -52,6 +52,15 @@
         <v-list-item-action></v-list-item-action>
         <v-list-item-title>Môn học</v-list-item-title>
       </v-list-item>
+      <v-list-item
+        active-class="left-amber-border"
+        class="px-0"
+        link
+        to="/title-table/config"
+      >
+        <v-list-item-action></v-list-item-action>
+        <v-list-item-title>Cấu hình thời khóa biểu</v-list-item-title>
+      </v-list-item>
     </v-list>
   </v-list-group>
 </template>
@@ -63,8 +72,8 @@ export default {
     return { menu: null }
   },
   computed: {
-    ...mapGetters('auth', ['user', 'role']),
-  },
+    ...mapGetters('auth', ['user', 'role'])
+  }
 }
 </script>
 

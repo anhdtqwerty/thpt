@@ -1,5 +1,5 @@
 <template>
-  <v-form ref="form" flat class="pa-6">
+  <v-form ref="form"  class="pt-6">
     <v-text-field
       label="Tên"
       v-model="name"

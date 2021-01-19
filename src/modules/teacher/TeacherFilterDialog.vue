@@ -19,7 +19,7 @@
             item-value=""
             label="Họ tên"
             class="ma-2"
-            filled
+            outlined
             clearable
             single-line
             dense
@@ -44,23 +44,23 @@ import AutocompleteTeacher from '@/components/basic/input/AutocompleteTeacher'
 
 export default {
   components: {
-    AutocompleteTeacher,
+    AutocompleteTeacher
   },
   data() {
     return {
       query: '',
       loading: 0,
       name: '',
-      dialog: false,
+      dialog: false
     }
   },
   props: {
-    state: Boolean,
+    state: Boolean
   },
   computed: {
     isLoading() {
       return this.loading > 0
-    },
+    }
   },
   methods: {
     cancel() {
@@ -74,20 +74,19 @@ export default {
     ...mapActions('staff', ['updateStudent']),
     onFilterChanged() {
       this.$emit('onFilterChanged', {
-        id: this.name,
+        id: this.name
       })
       this.dialog = false
       this.reset()
       this.$refs.form.reset()
-    },
+    }
   },
   watch: {
     state(state) {
       this.dialog = true
-    },
-  },
+    }
+  }
 }
 </script>
 
-<style>
-</style>
+<style></style>

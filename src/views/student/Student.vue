@@ -1,19 +1,26 @@
 <template>
   <div>
-    <div class="pa-2 d-none d-md-block">
-      <h2>Học viên</h2>
-      <breadcrumbs />
+    <div class="pa-4 d-flex justify-space-between align-center">
+      <div>
+        <Breadcrumbs
+          :headline="student ? student.name : 'Học Sinh'"
+          :link="[{ text: 'Học sinh', href: '../students' }]"
+        />
+      </div>
+      <div>
+        <v-btn dark class="mr-2" color="red" @click="remove">Xóa</v-btn>
+        <v-btn color="primary" @click="save">Lưu</v-btn>
+      </div>
     </div>
 
     <student-profile v-if="student.id" :student="student" />
   </div>
 </template>
-
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import moment from 'moment'
 import StudentProfile from '@/modules/student/profile/StudentProfile'
-import Breadcrumbs from '@/components/basic/Breadcrumbs'
+import Breadcrumbs from '@/components/layout/Breadcrumbs'
 export default {
   components: {
     StudentProfile,
@@ -31,7 +38,12 @@ export default {
     this.refresh()
   },
   methods: {
-    ...mapActions('student', ['updateStudent', 'fetchStudent', 'setTuitions']),
+    ...mapActions('student', [
+      'updateStudent',
+      'fetchStudent',
+      'setTuitions',
+      'removeStudent',
+    ]),
     async refresh() {
       this.setTuitions([])
       await this.fetchStudent(this.$route.params.id)
@@ -42,7 +54,18 @@ export default {
     save(data) {
       data.handledDate = moment().toISOString()
       this.updateStudent({ ...this.student, ...data })
-    }
+    },
+    remove() {
+      this.$dialog.confirm({
+        title: 'Xóa Học Sinh',
+        text: `Bạn Có chắc muốn xóa học sinh này.?`,
+        okText: 'Có',
+        cancelText: 'Không',
+        done: async () => {
+          await this.removeStudent(this.student)
+        },
+      })
+    },
   },
 }
 </script>

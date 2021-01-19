@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div class="pa-4 pa-md-2 d-flex justify-space-between align-center">
+    <div class="pa-4 d-flex justify-space-between align-center">
       <div>
         <Breadcrumbs
           headline="Quản lý khối"
-          :link="[{ text: 'Quản lý khối', href: '../grades' }]"
+          :link="[{ text: 'Nâng cao', href: '../divisions' },{ text: 'QL Khối', href: '../grades' }]"
         />
       </div>
       <div class="flex-center">
@@ -15,10 +15,14 @@
     </div>
     <new-grade-dialog :state="createGrade" />
 
-    <v-card class="pa-2 pa-md-4 ma-md-2 elevation-1">
-      <p class="text-uppercase text-h6" style="color: #0d47a1">
-        Danh sách các khối
-      </p>
+    <v-card class="px-md-6 mx-md-4 elevation-1">
+      <div class="d-flex justify-end">
+        <drop-menu
+          :default-headers="headers"
+          @change="headers = $event"
+          v-if="$vuetify.breakpoint.mdAndUp"
+        ></drop-menu>
+      </div>
       <v-data-table :headers="headers" :items="grades">
         <template v-slot:item.actions="{ item }">
           <grade-list-actions :selected="item"> </grade-list-actions>
@@ -29,16 +33,18 @@
 </template>
 
 <script>
-import { mapActions, mapState, mapGetters } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import NewGradeDialog from '@/modules/grade/NewGradeDialog.vue'
 import GradeListActions from '@/modules/grade/GradeListActions.vue'
+import DropMenu from '@/modules/student/menu/Menu.vue'
 
 export default {
   components: {
     NewGradeDialog,
     Breadcrumbs,
     GradeListActions,
+    DropMenu
   },
   props: {
     role: String,
@@ -46,14 +52,27 @@ export default {
   data() {
     return {
       headers: [
-        { text: 'Tên khối', value: 'title', align: 'left', sortable: false },
+        {
+          text: 'Tên khối',
+          value: 'title',
+          align: 'left',
+          sortable: false,
+          show: true,
+        },
         {
           text: 'Ghi chú',
           value: 'description',
           align: 'left',
           sortable: false,
+          show: true,
         },
-        { text: 'Hành động', value: 'actions', align: 'left', sortable: false },
+        {
+          text: 'Hành động',
+          value: 'actions',
+          align: 'left',
+          sortable: false,
+          show: true,
+        },
       ],
       createGrade: false,
       selected: {},

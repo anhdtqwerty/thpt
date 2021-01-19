@@ -146,7 +146,9 @@ export default {
         self.setStudents(
           students.map((student, index) => {
             const code = parseInt(student.code)
-            const indexName = utils.generateUserName(student.name)
+            const indexName = utils.generateUserName(
+              utils.clearUnicode(student.name)
+            )
             const studentClass = self.classes[student.classes]
             return {
               ...self.$utils.filterObject(student),
@@ -183,6 +185,11 @@ export default {
                 momName: student.momName,
                 momPhone: student.momPhone,
                 momEmail: student.momEmail
+              },
+              contact: {
+                phone: student.contactPhone,
+                code: student.contactCode,
+                app: student.contactApp !== 'FALSE'
               }
             }
           })

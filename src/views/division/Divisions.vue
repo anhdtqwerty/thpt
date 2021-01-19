@@ -1,45 +1,67 @@
 <template>
   <div>
-    <div class="pa-4 pa-md-2 d-flex justify-space-between align-center">
+    <div class="pa-4 d-flex justify-space-between align-center">
       <div>
         <Breadcrumbs
           headline="Quản lý phân ban"
-          :link="[{ text: 'Quản lý phân ban', href: '../divisions' }]"
+          :link="[
+            { text: 'Nâng cao', href: '../divisions' },
+            { text: 'QL Phân Ban', href: '../divisions' },
+          ]"
         />
       </div>
       <div class="flex-center">
-        <v-btn @click="createStateDialog = !createStateDialog" dark color="#0D47A1">
+        <v-btn
+          @click="createStateDialog = !createStateDialog"
+          dark
+          color="#0D47A1"
+        >
           <v-icon left>add</v-icon>{{ addButtonText }}
         </v-btn>
       </div>
     </div>
-    <new-division-dialog :state="createStateDialog" />
-    <v-card class="pa-2 pa-md-4 ma-md-2 elevation-1">
-      <p class="text-uppercase text-h6" style="color: #0d47a1">
-        Danh sách các ban chuyên
-      </p>
+    <v-card class="px-md-6 mx-md-4 elevation-1">
       <v-data-table :headers="headers" :items="divisions">
+        <div slot="top" class="d-flex">
+          <v-spacer></v-spacer>
+          <div>
+            <drop-menu
+              :default-headers="headers"
+              @change="headers = $event"
+              v-if="$vuetify.breakpoint.mdAndUp"
+            ></drop-menu>
+          </div>
+        </div>
         <template v-slot:item.subjects="{ item }">
-          <p>{{ item | getSubject }}</p>
+          <v-tooltip max-width="200px" bottom>
+            <template v-slot:activator="{ on, attrs }">
+               <p v-bind="attrs" v-on="on" class="shortenContent ma-0">{{ item | getSubject }}</p>
+            </template>
+            <span>{{item | getSubject}}</span>
+          </v-tooltip>
         </template>
         <template v-slot:item.actions="{ item }">
           <division-actions :selected="item"> </division-actions>
         </template>
       </v-data-table>
     </v-card>
+
+    <new-division-dialog :state="createStateDialog" />
   </div>
 </template>
 <script>
-import { mapActions, mapState, mapGetters } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import NewDivisionDialog from '@/modules/division/NewDivisionDialog.vue'
 import DivisionActions from '@/modules/division/DivisionListActions.vue'
+import DropMenu from '@/modules/student/menu/Menu.vue'
 
 export default {
   components: {
     NewDivisionDialog,
     Breadcrumbs,
     DivisionActions,
+    DropMenu,
   },
   props: {
     role: String,
@@ -47,15 +69,34 @@ export default {
   data() {
     return {
       headers: [
-        { text: 'Phân ban', value: 'title', align: 'left', sortable: false },
-        { text: 'Khối', value: 'grade.title', align: 'left', sortable: false },
+        {
+          text: 'Phân ban',
+          value: 'title',
+          align: 'left',
+          sortable: false,
+          show: true,
+        },
+        {
+          text: 'Khối',
+          value: 'grade.title',
+          align: 'left',
+          sortable: false,
+          show: true,
+        },
         {
           text: 'Các môn học',
           value: 'subjects',
           align: 'left',
           sortable: false,
+          show: true,
         },
-        { text: 'Hành động', value: 'actions', align: 'left', sortable: false },
+        {
+          text: 'Hành động',
+          value: 'actions',
+          align: 'left',
+          sortable: false,
+          show: true,
+        },
       ],
       createStateDialog: false,
       selected: {},
@@ -77,6 +118,7 @@ export default {
   },
   async created() {
     await this.refresh({})
+    console.log(this.divisions)
   },
   methods: {
     ...mapActions('division', ['fetchDivision']),
@@ -101,3 +143,12 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.shortenContent {
+  white-space: nowrap;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  width: 200px;
+}
+</style>

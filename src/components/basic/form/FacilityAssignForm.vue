@@ -1,5 +1,4 @@
-
- <template>
+<template>
   <v-form v-model="valid" ref="form">
     <autocomplete-student
       v-if="!teacher && !staff"
@@ -39,11 +38,21 @@
       item-value="status"
       :items="facilityStatus"
       disabled
-      filled
+      outlined
       label="Tình Trạng"
     ></v-select>
-    <date-selector label="Hạn Trả" :date="deadlineValue" @change="onDeadlineChange"></date-selector>
-    <v-text-field ref="date" dense :value="displaydate" label="Ngày Mượn" disabled></v-text-field>
+    <date-selector
+      label="Hạn Trả"
+      :date="deadlineValue"
+      @change="onDeadlineChange"
+    ></date-selector>
+    <v-text-field
+      ref="date"
+      dense
+      :value="displaydate"
+      label="Ngày Mượn"
+      disabled
+    ></v-text-field>
   </v-form>
 </template>
 
@@ -72,18 +81,18 @@ export default {
     deadline: '',
     date: ''
   }),
-  created () {
+  created() {
     this.reset()
   },
   computed: {
     ...mapState('constant', ['facilityStatus', 'facilityTypes']),
-    displaydate () {
+    displaydate() {
       return moment(this.date).format('DD/MM/YYYY')
     },
-    deadlineValue () {
+    deadlineValue() {
       return moment(this.deadline).format('YYYY-MM-DD')
     },
-    facilityDuration () {
+    facilityDuration() {
       return [
         {
           title: 'Trong Ngày',
@@ -117,13 +126,13 @@ export default {
     }
   },
   methods: {
-    validate () {
+    validate() {
       this.$refs.form.validate()
     },
-    onDeadlineChange (value) {
+    onDeadlineChange(value) {
       this.deadline = moment(value, 'YYYY-MM-DD').toISOString()
     },
-    reset () {
+    reset() {
       if (!this.facility) {
         this.student = null
         this.teacher = null
@@ -140,10 +149,10 @@ export default {
         this.date = this.facility.date
       }
     },
-    resetValidation () {
+    resetValidation() {
       this.$refs.form.resetValidation()
     },
-    getData () {
+    getData() {
       console.log({
         teacher: _.get(this.teacher, 'id', null),
         student: _.get(this.student, 'id', null),
@@ -163,12 +172,11 @@ export default {
     }
   },
   watch: {
-    facility () {
+    facility() {
       this.reset()
     }
   }
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

@@ -1,55 +1,45 @@
 <template>
   <v-form v-model="valid" ref="form" v-bind="this.$attrs">
     <v-row>
-      <v-col cols="12">
+      <v-col class="pb-0" cols="12">
         <v-text-field
           v-model="notes"
           label="Ghi chú"
           outlined
           dense
         ></v-text-field>
-        <v-text-field
-          v-model="changeNotes"
-          label="Những thay đổi cần ghi chú"
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="12" md="6">
+        <v-checkbox
+          class="pa-0 ma-0"
+          v-model="isYoung"
+          label="Đội viên"
+          hide-details
+        ></v-checkbox>
+        <date-picker
+          :disabled="!isYoung"
+          :date.sync="youngJoinedDate"
+          label="Ngày vào Đội"
+          outlined
+          dense
+        ></date-picker>
+      </v-col>
+      <v-col cols="12" md="6">
+        <v-checkbox
+          class="pa-0 ma-0"
+          v-model="isCommunist"
+          label="Đoàn viên"
+          hide-details
+        ></v-checkbox>
+        <date-picker
+          :disabled="!isCommunist"
+          :date.sync="communistJoinedDate"
+          label="Ngày vào Đoàn"
           dense
           outlined
-        ></v-text-field>
-        <v-row no-gutters>
-          <v-col class="pa-0" cols="6">
-            <v-checkbox
-              class="pa-0 ma-0"
-              v-model="isYoung"
-              label="Đội viên"
-            ></v-checkbox>
-          </v-col>
-          <v-col class="pa-0" cols="6">
-            <date-picker
-              :disabled="!isYoung"
-              :date.sync="youngJoinedDate"
-              label="Ngày vào Đội"
-              outlined
-              dense
-            ></date-picker>
-          </v-col>
-        </v-row>
-        <v-row no-gutters>
-          <v-col class="pa-0" cols="6">
-            <v-checkbox
-              class="pa-0 ma-0"
-              v-model="isCommunist"
-              label="Đoàn viên"
-            ></v-checkbox>
-          </v-col>
-          <v-col class="pa-0" cols="6">
-            <date-picker
-              :disabled="!isCommunist"
-              :date.sync="communistJoinedDate"
-              label="Ngày vào Đoàn"
-              dense
-              outlined
-            ></date-picker>
-          </v-col>
-        </v-row>
+        ></date-picker>
       </v-col>
     </v-row>
   </v-form>
@@ -71,7 +61,6 @@ export default {
   data: () => ({
     valid: true,
     notes: '',
-    changeNotes: '',
     youngJoinedDate: '',
     communistJoinedDate: '',
     isCommunist: false,
@@ -80,7 +69,6 @@ export default {
   created() {
     if (this.student) {
       this.notes = this.student.notes
-      this.changeNotes = this.student.data.changeNotes
       this.youngJoinedDate = this.student.data.youngJoinedDate
       this.communistJoinedDate = this.student.data.communistJoinedDate
     }
@@ -92,7 +80,6 @@ export default {
     getData() {
       return {
         notes: this.notes,
-        changeNotes: this.changeNotes,
         youngJoinedDate: this.youngJoinedDate,
         communistJoinedDate: this.communistJoinedDate,
       }

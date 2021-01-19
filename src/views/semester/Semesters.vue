@@ -1,12 +1,12 @@
 <template>
   <div>
-    <div class="pa-4 pa-md-2 d-flex justify-space-between align-center">
+    <div class="pa-4 d-flex justify-space-between align-center">
       <div>
         <Breadcrumbs
           headline="Quản lý học kỳ"
           :link="[
-            { text: 'Quản lý nâng cao' },
-            { text: 'Quản lý học kỳ', href: '/semesters' }
+            { text: 'Nâng cao', href: '../divisions' },
+             { text: 'QL Học Kỳ', href: '/semesters' }
           ]"
         />
       </div>
@@ -17,32 +17,32 @@
       </div>
     </div>
 
-    <v-card class="pa-2 pa-md-4 ma-md-2 elevation-1">
+    <v-card class="px-md-6 mx-md-4 elevation-1">
       <v-data-table
         :loading="loading"
         :headers="headers"
         :items="semesters"
         item-key="id"
-        dense
       >
-        <div slot="top" class="d-flex mb-4">
-          <div v-if="!$vuetify.breakpoint.mobile">
-            <semester-filter @onFilterChanged="refresh"></semester-filter>
-          </div>
-          <v-spacer></v-spacer>
-          <div>
-            <v-btn
-              v-if="$vuetify.breakpoint.mobile"
-              icon
-              @click.stop="filterState = !filterState"
-            >
-              <v-icon right>mdi-filter-outline</v-icon>
-            </v-btn>
+        <div slot="top" class="mb-md-4">
+          <div class="d-flex justify-end">
             <drop-menu
               :default-headers="originHeaders"
               @change="headers = $event"
               v-if="$vuetify.breakpoint.mdAndUp"
             ></drop-menu>
+          </div>
+          <div v-if="$vuetify.breakpoint.mdAndUp">
+            <semester-filter @onFilterChanged="refresh"></semester-filter>
+          </div>
+          <div>
+            <v-btn
+              v-if="$vuetify.breakpoint.smAndDown"
+              icon
+              @click.stop="filterState = !filterState"
+            >
+              <v-icon right>mdi-filter-outline</v-icon>
+            </v-btn>
           </div>
         </div>
 
@@ -73,9 +73,8 @@
 
 <script>
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
-import { mapActions, mapState, mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import DropMenu from '@/modules/student/menu/Menu.vue'
-import SettingTableHeader from '@/components/basic/table/SettingHeaders'
 import SemesterFilter from '@/modules/semester/SemesterFilter'
 import SemesterNewDialog from '@/modules/semester/SemesterNewDialog'
 import SemesterFilterDialog from '@/modules/semester/SemesterFilterDialog'

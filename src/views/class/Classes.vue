@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="pa-4 pa-md-2 d-flex justify-space-between align-center">
+    <div class="pa-4 d-flex justify-space-between align-center">
       <div>
         <Breadcrumbs
           headline="Lớp học"
@@ -8,9 +8,18 @@
         />
       </div>
       <div class="flex-center">
-        <v-btn color="primary" @click="dialog = !dialog" class="mr-2"
+        <v-btn color="primary" @click="dialog = !dialog"
           ><v-icon left>add</v-icon>{{ addButtonText }}</v-btn
         >
+        <v-btn
+          v-if="selected.length"
+          dark
+          color="amber"
+          @click="sendState = !sendState"
+          class="mx-2"
+        >
+          <v-icon left>mdi-message-processing</v-icon>Gửi SMS
+        </v-btn>
         <v-btn
           v-if="selected.length"
           color="green"
@@ -27,33 +36,18 @@
           class="mr-2"
           ><v-icon left>mdi-lock</v-icon>Đóng</v-btn
         >
-        <v-btn
-          v-if="selected.length"
-          color="red"
-          @click="onRemove"
-          dark
-          class="mr-2"
+        <v-btn v-if="selected.length" color="red" @click="onRemove" dark
           ><v-icon left>mdi-delete</v-icon>Xóa</v-btn
         >
       </div>
     </div>
-    <v-card class="pa-2 pa-md-4 ma-md-2 elevation-1">
-      <v-row>
-        <v-col class="pa-0" cols="12" md="11">
-          <class-filter
-            v-if="$vuetify.breakpoint.mdAndUp"
-            @onFilterChanged="refresh"
-          />
-        </v-col>
-        <v-col class="d-flex justify-end pa-0" cols="12" md="1">
-          <span v-if="$vuetify.breakpoint.smAndDown">
-            <class-filter-dialog @onFilterChanged="refresh" />
-          </span>
-          <drop-menu
+    <v-card class="px-md-6 mx-md-4 elevation-1">
+      <v-row no-gutters>
+        <v-col class="text-right pa-0">
+          <setting-table-header
             :default-headers="originHeaders"
             @change="headers = $event"
-            v-if="$vuetify.breakpoint.mdAndUp"
-          ></drop-menu>
+          />
           <span v-if="$vuetify.breakpoint.mdAndUp">
             <kebap-menu>
               <v-list>
@@ -65,7 +59,7 @@
           </span>
         </v-col>
       </v-row>
-
+      <class-filter @onFilterChanged="refresh" />
       <v-row :class="{ 'mt-n5': $vuetify.breakpoint.smAndDown }">
         <v-col>
           <v-data-table
@@ -74,6 +68,7 @@
             :items="classes"
             :search="search"
             v-model="selected"
+            :loading="loading"
             show-select
             :disable-sort="$vuetify.breakpoint.smAndDown"
           >
@@ -123,6 +118,10 @@
       </v-row>
     </v-card>
     <new-class-dialog :state="dialog" style="margin: 0 20px"></new-class-dialog>
+    <classes-send-s-m-s-dialog
+      :data="selected"
+      :state="sendState"
+    ></classes-send-s-m-s-dialog>
   </div>
 </template>
 
@@ -133,10 +132,9 @@ import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import NewClassDialog from '@/modules/class/ClassNewDialog'
 import ClassFilter from '@/modules/class/ClassFilter'
 import ClassListActions from '@/modules/class/ClassListActions'
-import ClassFilterDialog from '@/modules/class/ClassFilterDialog'
-import ExportExcel from '@/components/basic/ExportExcel'
+import SettingTableHeader from '@/components/basic/table/SettingHeaders'
 import KebapMenu from '@/components/basic/menu/KebapMenu'
-import DropMenu from '@/modules/student/menu/Menu.vue'
+import ClassesSendSMSDialog from '@/modules/sms/ClassesSendSMSDialog'
 import moment from 'moment'
 import _ from 'lodash'
 
@@ -146,50 +144,49 @@ const originHeaders = [
     value: 'title',
     align: 'left',
     sortable: false,
-    show: true
+    show: true,
   },
   {
     text: 'Phân ban',
     value: 'division',
     align: 'left',
     sortable: false,
-    show: true
+    show: true,
   },
   {
     text: 'Giáo viên chủ nhiệm',
     value: 'teachers',
     align: 'left',
     sortable: false,
-    show: true
+    show: true,
   },
   {
     text: 'Trạng thái',
     value: 'status',
     align: 'left',
     sortable: false,
-    show: true
+    show: true,
   },
   {
     text: 'Ghi chú',
     value: 'note',
     align: 'left',
     sortable: false,
-    show: true
-  }
+    show: true,
+  },
 ]
 export default {
   components: {
     ClassFilter,
-    DropMenu,
+    KebapMenu,
     NewClassDialog,
-    ClassFilterDialog,
+    SettingTableHeader,
     ClassListActions,
     Breadcrumbs,
-    ExportExcel,
-    KebapMenu
+    ClassesSendSMSDialog,
   },
   props: {
-    role: String
+    role: String,
   },
   data() {
     return {
@@ -198,23 +195,25 @@ export default {
       draw: false,
       search: '',
       status: null,
+      loading: false,
       statuses: [
         { text: 'Active', value: 'false' },
-        { text: 'Blocked', value: 'true' }
+        { text: 'Blocked', value: 'true' },
       ],
       range: { from: null, to: null },
       previewUserId: null,
       ready: false,
       editClassId: '',
       dialog: false,
-      selected: []
+      selected: [],
+      sendState: false,
     }
   },
   async created() {
     await this.refresh({
       department: this.department.id,
       generation: this.currentGeneration.id,
-      _sort: 'createdAt:desc'
+      _sort: 'createdAt:desc',
     })
   },
   computed: {
@@ -229,7 +228,7 @@ export default {
         default:
           return 'Thêm lớp học'
       }
-    }
+    },
   },
   methods: {
     ...mapActions('class', [
@@ -237,7 +236,7 @@ export default {
       'setClass',
       'setClasses',
       'updateClasses',
-      'removeClasses'
+      'removeClasses',
     ]),
     getColor(status) {
       if (status === 'opened') return 'primary--text'
@@ -246,16 +245,18 @@ export default {
       else if (status === 'done') return 'gray--text'
       else return 'red'
     },
-    getCourse: course => {
+    getCourse: (course) => {
       return course || {}
     },
-    refresh(query) {
-      this.setClasses([])
-      this.fetchClasses({
+    async refresh(query) {
+      this.loading = true
+      await this.setClasses([])
+      await this.fetchClasses({
         department: this.department.id,
         generation: this.currentGeneration.id,
-        ...query
+        ...query,
       })
+      this.loading = false
     },
     onRemove() {
       this.$dialog.confirm({
@@ -267,7 +268,7 @@ export default {
           await this.removeClasses(this.selected)
           this.selected = []
           this.$emit('removed')
-        }
+        },
       })
     },
     onUpdate(status) {
@@ -278,42 +279,42 @@ export default {
         cancelText: 'Không',
         done: async () => {
           await this.updateClasses(
-            this.selected.map(c => ({ id: c.id, status }))
+            this.selected.map((c) => ({ id: c.id, status }))
           )
           this.selected = []
-        }
+        },
       })
-    }
+    },
   },
   filters: {
-    studentCounter: students => {
+    studentCounter: (students) => {
       if (!students) {
         return 0
       }
       return students.length
     },
-    classStatus: status => {
+    classStatus: (status) => {
       if (status === 'opened') return 'Đang chờ'
       else if (status === 'running') return 'Đang Học'
       else if (status === 'done') return 'Kết Thúc'
       else return ''
     },
-    getGeneration: item => {
+    getGeneration: (item) => {
       return _.get(item, 'name', '')
     },
-    getRoom: item => {
+    getRoom: (item) => {
       return _.get(item, 'title', '')
     },
-    getTeacherNames: classData => {
-      return classData.teachers.map(teacher => teacher.name).join(',')
+    getTeacherNames: (classData) => {
+      return classData.teachers.map((teacher) => teacher.name).join(',')
     },
-    getDivision: division => {
+    getDivision: (division) => {
       return division ? division.title : ''
     },
-    displayDate: date => {
+    displayDate: (date) => {
       if (date) return moment(date).format('DD/MM')
-    }
-  }
+    },
+  },
 }
 </script>
 

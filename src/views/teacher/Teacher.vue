@@ -1,10 +1,14 @@
 <template>
   <div>
-    <div class="pa-2 d-none d-md-block">
+    <div class="pa-4 d-flex justify-space-between align-center">
       <Breadcrumbs
         headline="Giáo viên"
         :link="[{ text: 'Giáo viên', href: '../teachers' }]"
       />
+      <div>
+        <v-btn dark class="mr-2" color="red" @click="remove">Xóa</v-btn>
+        <v-btn color="primary" @click="save">Lưu</v-btn>
+      </div>
     </div>
 
     <teacher-profile :teacher="teacherInfo"></teacher-profile>

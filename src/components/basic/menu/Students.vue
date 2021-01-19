@@ -2,24 +2,37 @@
   <v-list-group :value="false" active-class="black-text">
     <template v-slot:activator>
       <v-list-item class="px-0">
-        <v-list-item-icon class="mr-2">
+        <v-list-item-icon class="mr-4">
           <v-icon>mdi-library</v-icon>
         </v-list-item-icon>
-        <v-list-item-title class="font-weight-black"
-          >Học sinh</v-list-item-title
-        >
+        <v-list-item-title>HỌC SINH</v-list-item-title>
       </v-list-item>
     </template>
     <v-list class="py-0">
-      <v-list-item active-class="left-amber-border" class="px-0" link to="/students">
+      <v-list-item
+        active-class="left-amber-border"
+        class="px-0"
+        link
+        to="/students"
+      >
         <v-list-item-action></v-list-item-action>
         <v-list-item-title>Danh sách</v-list-item-title>
       </v-list-item>
-      <v-list-item active-class="left-amber-border" class="px-0" link to="/attendanced">
+      <v-list-item
+        active-class="left-amber-border"
+        class="px-0"
+        link
+        to="/attendanced"
+      >
         <v-list-item-action></v-list-item-action>
         <v-list-item-title>Điểm danh</v-list-item-title>
       </v-list-item>
-      <v-list-item active-class="left-amber-border" class="px-0" link to="/complimented">
+      <v-list-item
+        active-class="left-amber-border"
+        class="px-0"
+        link
+        to="/complimented"
+      >
         <v-list-item-action></v-list-item-action>
         <v-list-item-title>Khen thưởng kỷ luật</v-list-item-title>
       </v-list-item>
@@ -34,10 +47,9 @@ export default {
     return { menu: null }
   },
   computed: {
-    ...mapGetters('auth', ['user', 'role']),
-  },
+    ...mapGetters('auth', ['user', 'role'])
+  }
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

@@ -1,5 +1,5 @@
 <template>
-  <v-form ref="form" flat class="pa-6">
+  <v-form ref="form" flat class="pt-5">
     <p class="caption">Thông tin môn học</p>
     <v-text-field
       label="Tên Môn *"

@@ -14,11 +14,19 @@
         <v-btn
           v-if="selected.length"
           dark
-          color="red"
-          @click.stop="onRemove"
+          color="amber"
+          @click="sendState = !sendState"
           class="mr-2"
         >
-          <v-icon left>mdi-delete</v-icon>Xóa
+          <v-icon left>mdi-message-processing</v-icon>Gửi SMS
+        </v-btn>
+        <v-btn
+          v-if="$vuetify.breakpoint.mdAndUp"
+          class="mr-2"
+          dark
+          color="success"
+        >
+          <v-icon left>mdi-file-excel</v-icon> Xuất Excel
         </v-btn>
         <v-btn dark color="#0D47A1" @click.stop="createState = !createState">
           <v-icon left>add</v-icon>{{ btnTitle }}
@@ -26,7 +34,7 @@
       </div>
     </div>
 
-    <v-card class="px-6 ma-md-4 elevation-1">
+    <v-card class="px-md-6 mx-md-4 elevation-1">
       <v-data-table
         item-key="id"
         :options.sync="studentTableOptions"
@@ -40,35 +48,17 @@
         }"
         v-model="selected"
         show-select
-        dense
       >
-        <div slot="top" class="mb-10">
-          <drop-menu
-            :default-headers="originHeaders"
-            @change="headers = $event"
-            v-if="$vuetify.breakpoint.mdAndUp"
-          ></drop-menu>
-          <div class="ma-1" v-if="$vuetify.breakpoint.mdAndUp">
-            <student-filter @onFilterChanged="refresh"></student-filter>
-          </div>
-          <!-- <v-spacer></v-spacer> -->
-          <div>
-            <v-btn
-              v-if="$vuetify.breakpoint.smAndDown"
-              icon
-              @click.stop="filterState = !filterState"
-            >
-              <v-icon right>mdi-filter-outline</v-icon>
-            </v-btn>
-          </div>
+        <div slot="top" class="py-md-6">
+          <student-filter @onFilterChanged="refresh"></student-filter>
         </div>
         <template v-slot:[`item.name`]="{ item }">
           <card-student-name :student="item" link />
         </template>
         <template v-slot:[`item.status`]="{ item }">
-          <p v-if="item.status" :class="getColor(item.status)">
+          <span v-if="item.status" :class="getColor(item.status)">
             {{ item.status | getStatus }}
-          </p>
+          </span>
         </template>
         <template v-slot:[`item.classes`]="{ item }">
           <span v-if="item.classes">{{ item.classes | getClasses }}</span>
@@ -80,29 +70,36 @@
             ? 'Nữ'
             : 'Khác'
         }}</template>
+        <template v-slot:[`item.dob`]="{ item }">
+          <span>{{ formatDate(item.dob) }}</span>
+        </template>
         <template v-slot:[`item.action`]="{ item }">
           <student-list-actions :item="item"></student-list-actions>
         </template>
       </v-data-table>
     </v-card>
 
-    <student-new-dialog :state="createState" @done="requestPageSettings({})" />
     <student-filter-dialog
       @onFilterDialogChanged="refresh"
       :state="filterState"
     />
+    <student-new-dialog :state="createState" @done="requestPageSettings({})" />
+    <student-send-s-m-s-dialog
+      :data="selected"
+      :state="sendState"
+    ></student-send-s-m-s-dialog>
   </div>
 </template>
 <script>
 import { mapActions, mapState } from 'vuex'
 import CardStudentName from '@/components/basic/card/CardStudentName.vue'
 import StudentFilter from '@/modules/student/StudentFilter'
-import DropMenu from '@/modules/student/menu/Menu.vue'
 import StudentNewDialog from '@/modules/student/StudentNewDialog'
 import StudentFilterDialog from '@/modules/student/StudentFilterDialog'
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import StudentListActions from '@/modules/student/StudentListActions'
-
+import StudentSendSMSDialog from '@/modules/sms/StudentSendSMSDialog'
+import moment from 'moment'
 const originHeaders = [
   {
     text: 'Tên học sinh',
@@ -111,20 +108,28 @@ const originHeaders = [
     sortable: false,
     show: true,
   },
-  { text: 'Lớp', value: 'classes', align: 'left', sortable: false, show: true },
+  {
+    text: 'Lớp',
+    value: 'classes',
+    align: 'center',
+    sortable: false,
+    show: true,
+    width: '10px',
+  },
   {
     text: 'Ngày sinh',
     value: 'dob',
-    align: 'left',
+    align: 'center',
     sortable: false,
     show: true,
   },
   {
     text: 'Giới tính',
     value: 'gender',
-    align: 'left',
+    align: 'center',
     sortable: false,
     show: true,
+    width: '10px'
   },
   {
     text: 'Trạng thái',
@@ -143,20 +148,21 @@ const originHeaders = [
   {
     text: 'Hành động',
     value: 'action',
-    align: 'left',
+    align: 'center',
     sortable: false,
     show: true,
+    width: '10px',
   },
 ]
 export default {
   components: {
     CardStudentName,
-    DropMenu,
     StudentNewDialog,
     StudentFilter,
     StudentFilterDialog,
     Breadcrumbs,
     StudentListActions,
+    StudentSendSMSDialog,
   },
   props: {
     role: String,
@@ -180,6 +186,7 @@ export default {
       createState: false,
       filterState: false,
       selected: [],
+      sendState: false,
     }
   },
   async created() {
@@ -207,10 +214,22 @@ export default {
     updateDraw(draw) {
       this.draw = draw
     },
+    formatDate(date) {
+      return moment(date).format('DD/MM/YYYY')
+    },
     getColor(status) {
-      if (status === 'active') return 'green--text'
-      if (status === 'reserved') return 'orange--text'
-      else return 'gray--text'
+      switch (status) {
+        case 'active':
+          return 'green--text'
+        case 'reserved':
+          return 'orange--text'
+        case 'graduated':
+          return 'primary--text'
+        case 'left':
+          return 'red--text'
+        default:
+          return 'grey--text'
+      }
     },
     onRemove() {
       this.$dialog.confirm({

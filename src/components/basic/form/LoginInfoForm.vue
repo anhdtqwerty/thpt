@@ -18,18 +18,6 @@
           class="required"
           :rules="[rules.required, rules.email]"
         ></v-text-field>
-        <v-text-field
-          v-model="password"
-          label="Mật Khẩu"
-          outlined
-          dense
-          :append-icon="show ? 'visibility' : 'visibility_off'"
-          :rules="[rules.required, rules.min]"
-          :type="show ? 'text' : 'password'"
-          @click:append="show = !show"
-          hint="At least 6 characters"
-          class="required"
-        ></v-text-field>
       </v-col>
     </v-row>
   </v-form>
@@ -43,56 +31,53 @@ export default {
   props: {
     student: {
       type: [Object],
-      default: () => {},
+      default: () => {}
     },
     teacher: {
       type: [Object],
-      default: () => {},
-    },
+      default: () => {}
+    }
   },
   data: () => ({
     valid: true,
     show: false,
-    phone: `${Date.now()}`,
-    email: `random${Date.now()}@gmail.com`,
-    password: '123123',
+    phone: '',
+    email: '',
     rules: {
-      required: (value) => !!value || 'Required.',
-      min: (v) => v.length >= 6 || 'Min 8 characters',
-      email: (v) => /.+@.+/.test(v) || 'E-mail must be valid',
-    },
+      required: value => !!value || 'Required.',
+      min: v => v.length >= 6 || 'Min 8 characters',
+      email: v => /.+@.+/.test(v) || 'E-mail must be valid'
+    }
   }),
   created() {
-    this.reset()
+    this.reset(this.student ? this.student.contact : this.teacher)
   },
   methods: {
     ...mapActions('user', ['generateUserName', 'validateEmail']),
     getData() {
       return {
         phone: this.phone,
-        email: this.email,
-        password: this.password,
+        email: this.email
       }
     },
     validate() {
-      this.$refs.form.validate()
+      return this.$refs.form.validate()
     },
-    reset() {
-      this.phone = `${Date.now()}`
-      this.email = `random${Date.now()}@gmail.com`
-      this.password = '123123'
+    reset(user) {
+      this.phone = user ? user.phone : ''
+      this.email = user ? user.email : ''
     },
     resetValidation() {
       this.$refs.form.resetValidation()
-    },
+    }
   },
   watch: {
     student(student) {
-      this.reset()
+      this.reset(student.contact || {})
     },
     teacher(teacher) {
-      this.reset()
-    },
-  },
+      this.reset(teacher)
+    }
+  }
 }
 </script>

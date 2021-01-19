@@ -20,7 +20,7 @@ export default {
     mask
   },
   data: () => ({
-    data: moment().format('DD/MM/YYYY'),
+    data: '',
     menu: false,
     mask: 'XX/XX/XXXX'
   }),
@@ -37,7 +37,7 @@ export default {
     },
     reset() {
       if (this.date) {
-        this.data = moment(this.date).format('DD/MM/YYYY')
+        this.data = ''
       }
     }
   },

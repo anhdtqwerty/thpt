@@ -6,12 +6,9 @@
           v-model="name"
           label="Họ và tên"
           outlined
-          class="required"
           dense
-          :rules="[rules.required]"
         ></v-text-field>
         <autocomplete-class
-          :rules="[rules.required]"
           v-model="classes"
           :defaultClasses="classes"
           return-object
@@ -19,15 +16,12 @@
           outlined
           multiple
           dense
-          class="required"
         ></autocomplete-class>
         <date-picker
           :date.sync="dob"
           label="Ngày Sinh"
           dense
           outlined
-          :rules="[rules.required]"
-          class="required"
         ></date-picker>
         <v-select
           v-model="gender"
@@ -37,24 +31,18 @@
           label="Giới Tính"
           dense
           outlined
-          :rules="[rules.required]"
-          class="required"
         ></v-select>
         <v-text-field
           v-model="frequentlyAddress"
           label="Quê quán"
           outlined
           dense
-          :rules="[rules.required]"
-          class="required"
         ></v-text-field>
         <v-text-field
           v-model="ethnic"
           label="Dân tộc"
           outlined
           dense
-          :rules="[rules.required]"
-          class="required"
         ></v-text-field>
       </v-col>
     </v-row>

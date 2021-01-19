@@ -4,13 +4,12 @@
       <student-list-actions></student-list-actions>
     </v-card-actions>
     <v-card-title>
-      <h1>{{student.name}}</h1>
+      <h1>{{ student.name }}</h1>
     </v-card-title>
     <v-card-text>
       <p class="font-weight-regular">
-        Mã Học sinh: {{student.code}}.
-        <br />Mã Lớp: kodu-101.
-        <br />Khóa Học: Kodu Nhập Môn
+        Mã Học sinh: {{ student.code }}. <br />Mã Lớp: kodu-101. <br />Khóa Học:
+        Kodu Nhập Môn
       </p>
       <h2>Tình Trạng điểm danh</h2>
       <br />
@@ -19,9 +18,7 @@
           <tbody>
             <tr>
               <td>Đi học đúng giờ</td>
-              <td>
-                <b class="font-weight-black">4/16</b> (25%)
-              </td>
+              <td><b class="font-weight-black">4/16</b> (25%)</td>
             </tr>
             <tr>
               <td>Đi học muộn</td>
@@ -92,7 +89,6 @@
 
 <script>
 import StudentListActions from '@/modules/class/student/StudentListActions'
-
 export default {
   components: {
     StudentListActions

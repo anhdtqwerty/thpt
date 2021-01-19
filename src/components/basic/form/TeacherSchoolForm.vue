@@ -1,7 +1,7 @@
 <template>
   <v-form v-model="valid" ref="form" v-bind="this.$attrs">
     <v-row>
-      <v-col cols="12">
+      <v-col class="pb-0" cols="12" md="4">
         <v-autocomplete
           :items="typeList"
           item-text="title"
@@ -12,6 +12,8 @@
           outlined
           dense
         ></v-autocomplete>
+      </v-col>
+      <v-col class="pb-0" cols="12" md="4">
         <v-text-field
           ref="schoolDate"
           v-model="schoolDate"
@@ -19,6 +21,8 @@
           outlined
           dense
         ></v-text-field>
+      </v-col>
+      <v-col class="pb-0" cols="12" md="4">
         <v-select
           auto-select-first
           :items="teacherStatus"
