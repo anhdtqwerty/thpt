@@ -1,15 +1,13 @@
 <template>
-  <v-row :no-gutters="$vuetify.breakpoint.smAndDown" class="px-md-3" v-if="teacher">
-    <div class="d-flex justify-end" v-if="$vuetify.breakpoint.smAndDown">
-      <v-btn class="ma-2" depressed color="primary" @click="save()">Lưu</v-btn>
-    </div>
-    <v-col class="text-center" cols="12" md="4">
-      <v-card class="pa-6" :flat="$vuetify.breakpoint.smAndDown">
-        <user-avatar-picker :student="teacher" type="students" />
-        <h2>{{ teacher.name }}</h2>
-      </v-card>
+  <v-row
+    :no-gutters="$vuetify.breakpoint.smAndDown"
+    class="px-md-3"
+    v-if="teacher"
+  >
+    <v-col class="text-center" cols="12" md="3">
+      <user-avatar-picker :student="teacher" type="students" />
     </v-col>
-    <v-col class="" cols="12" md="8">
+    <v-col class="" cols="12" md="9">
       <v-card :flat="$vuetify.breakpoint.smAndDown" class="pa-md-4">
         <v-row no-gutters>
           <v-col cols="12" class="pa-4" md="9">
@@ -24,7 +22,6 @@
             v-if="!$vuetify.breakpoint.smAndDown"
             md="3"
           >
-            <v-btn depressed color="primary" @click="save()">Lưu</v-btn>
           </v-col>
           <v-col cols="12" class="pa-4" md="9">
             <h3>2. Thông tin tại trường</h3>

@@ -1,6 +1,7 @@
 <template>
   <v-app>
     <navigation-drawer
+      width="212"
       class="d-print-none"
       :drawer="drawer"
     ></navigation-drawer>
@@ -44,11 +45,11 @@ export default {
     PluginAlert,
     PluginLoading,
     Confirm,
-    NavigationDrawer
+    NavigationDrawer,
   },
   data() {
     return {
-      drawer: true
+      drawer: true,
     }
   },
   computed: {
@@ -57,12 +58,13 @@ export default {
     simpleLayout() {
       const { meta = {}, matched = [] } = this.$route
       return (
-        meta.auth === false || matched.some(route => route.meta.auth === false)
+        meta.auth === false ||
+        matched.some((route) => route.meta.auth === false)
       )
     },
     isDesktop() {
       return true
-    }
+    },
   },
   async created() {
     if (this.isAuthenticated) {
@@ -87,18 +89,18 @@ export default {
       'fetchStaffs',
       'setDepartment',
       'fetchDepartment',
-      'setPolicies'
+      'setPolicies',
     ]),
     ...mapActions('course', ['fetchCourses']),
     ...mapActions('auth', [
       'fetchProfile',
       'fetchTeacher',
       'fetchStudent',
-      'setRole'
+      'setRole',
     ]),
-    toggleDrawer: function(updatedDrawer) {
+    toggleDrawer: function (updatedDrawer) {
       this.drawer = updatedDrawer
-    }
-  }
+    },
+  },
 }
 </script>

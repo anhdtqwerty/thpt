@@ -108,14 +108,12 @@
       <v-col cols="12" md="8" v-else>
         <v-row no-gutters>
           <v-col cols="12" md="4" class="pt-md-2">
-            <AutocompleteClass
+            <v-text-field
               prepend-inner-icon="mdi-magnify"
-              v-model="classData"
-              item-text="name"
-              item-value="id"
+              v-model="code"
               clear-icon="mdi-close"
               clearable
-              label="Tìm kiếm Lớp"
+              label="Tìm học sinh"
               outlined
               dense
               deletable-chips
@@ -168,7 +166,7 @@ export default {
       { title: 'Khác', value: 'other' },
     ],
     advanced: false,
-    classData: ''
+    classData: '',
   }),
   computed: {
     ...mapState('constant', ['studentStatus']),

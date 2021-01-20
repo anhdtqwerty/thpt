@@ -63,6 +63,7 @@ export default {
         cancelText: 'Không',
         done: async () => {
           await this.removeStudent(this.student)
+          this.$router.push(`/students/`)
         },
       })
     },

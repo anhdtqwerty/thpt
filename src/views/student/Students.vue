@@ -94,7 +94,6 @@
 import { mapActions, mapState } from 'vuex'
 import CardStudentName from '@/components/basic/card/CardStudentName.vue'
 import StudentFilter from '@/modules/student/StudentFilter'
-import DropMenu from '@/modules/student/menu/Menu.vue'
 import StudentNewDialog from '@/modules/student/StudentNewDialog'
 import StudentFilterDialog from '@/modules/student/StudentFilterDialog'
 import Breadcrumbs from '@/components/layout/Breadcrumbs'

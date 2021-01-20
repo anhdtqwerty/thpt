@@ -2,7 +2,7 @@
   <div>
     <div class="pa-4 d-flex justify-space-between align-center">
       <Breadcrumbs
-        headline="Giáo viên"
+        :headline="teacherInfo.name"
         :link="[{ text: 'Giáo viên', href: '../teachers' }]"
       />
       <div>
@@ -40,7 +40,19 @@ export default {
     await this.fetchTeacher(this.$route.params.id)
   },
   methods: {
-    ...mapActions('teacher', ['fetchTeacher']),
+    ...mapActions('teacher', ['fetchTeacher', 'removeTeacher']),
+    remove() {
+      this.$dialog.confirm({
+        title: 'Xóa Giáo Viên',
+        text: `Bạn Có chắc muốn xóa giáo viên này.?`,
+        okText: 'Có',
+        cancelText: 'Không',
+        done: async () => {
+          await this.removeTeacher(this.teacherInfo)
+          this.$router.push(`/teachers/`)
+        },
+      })
+    },
   },
 }
 </script>
