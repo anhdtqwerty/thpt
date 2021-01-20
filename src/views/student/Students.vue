@@ -5,7 +5,6 @@
         <Breadcrumbs
           headline="Danh sách"
           :link="[
-            { text: 'Học sinh' },
             { text: 'Danh sách', href: '../students' },
           ]"
         />
@@ -129,7 +128,7 @@ const originHeaders = [
     align: 'center',
     sortable: false,
     show: true,
-    width: '10px'
+    width: '100'
   },
   {
     text: 'Trạng thái',
@@ -146,7 +145,6 @@ const originHeaders = [
     show: true,
   },
   {
-    text: 'Hành động',
     value: 'action',
     align: 'center',
     sortable: false,
