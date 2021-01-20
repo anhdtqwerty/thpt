@@ -1,43 +1,55 @@
 <template>
   <v-form v-model="valid" ref="form" v-bind="this.$attrs">
     <v-row>
-      <v-col cols="12">
+      <v-col class="pb-0" cols="12" md="6">
         <v-text-field
           v-model="name"
           label="Họ và tên"
           outlined
           dense
         ></v-text-field>
+      </v-col>
+      <v-col class="pb-0" cols="12" md="6">
         <autocomplete-class
           v-model="classes"
-          :defaultClasses="classes"
           return-object
           label="Chọn lớp"
           outlined
-          multiple
           dense
         ></autocomplete-class>
-        <date-picker
-          :date.sync="dob"
-          label="Ngày Sinh"
-          dense
-          outlined
-        ></date-picker>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col class="pb-0" cols="12" md="6">
         <v-select
           v-model="gender"
-          :items="genderList"
+          :items="genders"
           item-text="title"
           item-value="value"
           label="Giới Tính"
           dense
           outlined
         ></v-select>
+      </v-col>
+      <v-col class="pb-0" cols="12" md="6">
+        <date-picker
+          :date.sync="dob"
+          label="Ngày Sinh"
+          dense
+          outlined
+        ></date-picker>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col class="pb-0" cols="12" md="6">
         <v-text-field
           v-model="frequentlyAddress"
           label="Quê quán"
           outlined
           dense
         ></v-text-field>
+      </v-col>
+      <v-col class="pb-0" cols="12" md="6">
         <v-text-field
           v-model="ethnic"
           label="Dân tộc"

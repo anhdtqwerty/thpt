@@ -11,13 +11,15 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="12" md="6">
+      <v-col class="py-0 pt-4" cols="12" md="3">
         <v-checkbox
           class="pa-0 ma-0"
           v-model="isYoung"
           label="Đội viên"
           hide-details
         ></v-checkbox>
+      </v-col>
+      <v-col class="pb-0" cols="12" md="6">
         <date-picker
           :disabled="!isYoung"
           :date.sync="youngJoinedDate"
@@ -26,13 +28,17 @@
           dense
         ></date-picker>
       </v-col>
-      <v-col cols="12" md="6">
+    </v-row>
+    <v-row>
+      <v-col class="py-0 pt-4" cols="12" md="3">
         <v-checkbox
           class="pa-0 ma-0"
           v-model="isCommunist"
           label="Đoàn viên"
           hide-details
         ></v-checkbox>
+      </v-col>
+      <v-col class="pb-0" cols="12" md="6">
         <date-picker
           :disabled="!isCommunist"
           :date.sync="communistJoinedDate"
