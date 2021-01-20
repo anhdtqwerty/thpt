@@ -43,6 +43,7 @@
           dense
           outlined
           class="required"
+          :rules="[rules.required]"
         ></date-picker>
       </v-col>
     </v-row>

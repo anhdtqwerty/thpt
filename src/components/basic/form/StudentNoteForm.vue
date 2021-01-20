@@ -21,7 +21,7 @@
       </v-col>
       <v-col class="pb-0" cols="12" md="6">
         <date-picker
-          v-show="isYoung"
+          :disabled="!isYoung"
           :date.sync="youngJoinedDate"
           label="Ngày vào Đội"
           outlined
@@ -40,7 +40,7 @@
       </v-col>
       <v-col class="pb-0" cols="12" md="6">
         <date-picker
-          v-show="isCommunist"
+          :disabled="!isCommunist"
           :date.sync="communistJoinedDate"
           label="Ngày vào Đoàn"
           dense
