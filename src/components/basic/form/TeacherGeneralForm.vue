@@ -31,6 +31,8 @@
           :date.sync="dob"
           label="Ngày Sinh"
           outlined
+          class="required"
+          :rules="[rules.required]"
           dense
         ></date-picker>
       </v-col>

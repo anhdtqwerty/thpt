@@ -1,10 +1,10 @@
 <template>
   <div
-    class="d-flex flex-row flex-nowrap align-center pa-1"
+    class="d-flex flex-row flex-nowrap align-center py-2"
     :key="teacher.id"
     @click="$emit('change', teacher)"
   >
-    <div v-if="!$vuetify.breakpoint.mobile" class="image-wrapper mr-1">
+    <div v-if="!$vuetify.breakpoint.mobile" class="image-wrapper mr-2">
       <img :src="avatar" alt="" />
     </div>
     <div>
@@ -36,9 +36,9 @@ export default {
 
 <style lang="scss" scoped>
 .image-wrapper {
-  width: 60px;
-  min-width: 60px;
-  height: 60px;
+  width: 55px;
+  min-width: 55px;
+  height: 55px;
   display: flex;
   align-items: center;
   border-radius: 4px;
