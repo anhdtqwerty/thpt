@@ -81,6 +81,7 @@ export default {
       type: [Object],
       default: () => {},
     },
+    rules: Object,
   },
   data: () => ({
     username: '',
@@ -92,11 +93,6 @@ export default {
     dob: '',
     ethnic: '',
     frequentlyAddress: '',
-    rules: {
-      required: (value) => !!value || 'Required.',
-      min: (v) => v.length >= 6 || 'Min 8 characters',
-      email: (v) => /.+@.+/.test(v) || 'E-mail must be valid',
-    },
   }),
   created() {
     if (this.teacher) {

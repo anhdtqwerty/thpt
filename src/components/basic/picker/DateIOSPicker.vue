@@ -3,7 +3,6 @@
     v-bind="this.$attrs"
     ref="code"
     v-mask="mask"
-    :rules="[v => !!v || 'Item is required']"
     v-on:input="$emit('input', $event)"
     v-model="data"
   ></v-text-field>
