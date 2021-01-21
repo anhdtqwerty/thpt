@@ -3,6 +3,7 @@
     v-bind="this.$attrs"
     ref="code"
     v-mask="mask"
+    placeholder="--/--/----"
     v-on:input="$emit('input', $event)"
     v-model="data"
   ></v-text-field>
