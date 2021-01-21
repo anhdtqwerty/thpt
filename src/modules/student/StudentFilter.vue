@@ -1,13 +1,9 @@
 <template>
   <v-form>
     <v-row no-gutters>
-      <v-col cols="12" md="8" v-if="advanced">
+      <v-col cols="12" md="10" v-if="!advanced">
         <v-row no-gutters>
-          <v-col
-            class="py-2 pr-4"
-            cols="12"
-            md="4"
-          >
+          <v-col class="py-2 pr-4" cols="12" md="3">
             <v-text-field
               v-model="name"
               label="Tên học sinh"
@@ -19,11 +15,7 @@
               hide-details
             />
           </v-col>
-          <v-col
-            class="py-2 pr-4"
-            cols="12"
-            md="4"
-          >
+          <v-col class="py-2 pr-4" cols="12" md="3">
             <autocomplete-class
               v-model="classes"
               clear-icon="mdi-close"
@@ -35,14 +27,9 @@
               hide-details
             />
           </v-col>
-          <v-col
-            class="py-2 pr-4"
-            cols="12"
-            md="4"
-          >
+          <v-col class="py-2 pr-4" cols="12" md="3">
             <date-picker
               label="Ngày sinh"
-              placeholder="DD/MM/YYYY"
               outlined
               dense
               hide-details
@@ -52,11 +39,7 @@
           </v-col>
         </v-row>
         <v-row no-gutters>
-          <v-col
-            class="py-2 pr-4"
-            cols="12"
-            md="4"
-          >
+          <v-col class="py-2 pr-4" cols="12" md="3">
             <v-text-field
               v-model="code"
               clear-icon="mdi-close"
@@ -68,11 +51,7 @@
               hide-details
             />
           </v-col>
-          <v-col
-            class="py-2 pr-4"
-            cols="12"
-            md="4"
-          >
+          <v-col class="py-2 pr-4" cols="12" md="3">
             <v-select
               v-model="status"
               :items="studentStatus"
@@ -86,11 +65,7 @@
               hide-details
             />
           </v-col>
-          <v-col
-            class="py-2 pr-4"
-            cols="12"
-            md="4"
-          >
+          <v-col class="py-2 pr-4" cols="12" md="3">
             <v-select
               :items="genders"
               item-text="title"
@@ -103,9 +78,20 @@
               hide-details
             />
           </v-col>
+          <v-col class="py-2 pr-4" cols="12" md="3">
+            <v-btn
+              v-if="!advanced"
+              height="40"
+              color="#0D47A1"
+              @click="onFilterChanged"
+              outlined
+            >
+              <v-icon left dark>mdi-filter-outline</v-icon>Lọc
+            </v-btn>
+          </v-col>
         </v-row>
       </v-col>
-      <v-col cols="12" md="8" v-else>
+      <v-col cols="12" md="10" v-else>
         <v-row no-gutters>
           <v-col cols="12" md="4" class="pt-md-2">
             <v-text-field
@@ -124,15 +110,12 @@
           </v-col>
         </v-row>
       </v-col>
-      <v-col class="py-2 d-flex" cols="12" md="4">
-        <v-btn v-if="advanced" height="40" color="#0D47A1" @click="onFilterChanged" outlined>
-          <v-icon left dark>mdi-filter-outline</v-icon>Lọc
-        </v-btn>
+      <v-col class="py-2 d-flex" cols="12" md="2">
         <v-spacer />
         <v-checkbox
-        class="mt-n1 pt-3"
+          class="mt-n1 pt-3"
           v-model="advanced"
-          label="Nâng cao"
+          label="Tìm kiếm nhanh"
         ></v-checkbox>
       </v-col>
     </v-row>

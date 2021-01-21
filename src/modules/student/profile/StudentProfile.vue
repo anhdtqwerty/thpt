@@ -10,53 +10,57 @@
     <v-col class="" cols="12" md="9">
       <v-card :flat="$vuetify.breakpoint.smAndDown">
         <v-tabs v-model="tab" background-color="primary" dark>
-          <v-tab :key="1"> Tổng quan </v-tab>
-          <v-tab :key="2"> Địa chỉ </v-tab>
+          <v-tab :key="1"> Hồ sơ </v-tab>
+          <!-- <v-tab :key="2"> Địa chỉ </v-tab>
           <v-tab :key="3"> Ghi chú </v-tab>
-          <v-tab :key="4"> Gia đình </v-tab>
+          <v-tab :key="4"> Gia đình </v-tab> -->
         </v-tabs>
 
         <v-tabs-items v-model="tab">
           <v-tab-item :key="1">
             <v-card flat>
-              <v-col cols="12" class="pa-4">
-                <h3>1. Thông tin cơ bản</h3>
+              <v-col cols="12" class="px-4 py-0">
+                <div class="d-flex justify-space-between">
+                  <h3 class="ma-0 pt-3">1. Thông tin cơ bản</h3>
+                  <v-btn
+                    v-if="!edit"
+                    class="my-2"
+                    depressed
+                    color="success"
+                    @click="edit = !edit"
+                    >Sửa</v-btn
+                  >
+                  <v-btn
+                    v-else
+                    depressed
+                    class="my-2"
+                    color="primary"
+                    @click="onSave"
+                    >Lưu</v-btn
+                  >
+                </div>
                 <student-general-form-edit
                   ref="studentGeneralFormEdit"
                   :student="student"
+                  :readonly="!edit"
                 ></student-general-form-edit>
-              </v-col>
-            </v-card>
-          </v-tab-item>
-          <v-tab-item :key="2">
-            <v-card flat>
-              <v-col cols="12" class="pa-4">
                 <h3>2. Thông tin liên lạc</h3>
                 <student-contact-form
                   :student="student"
                   ref="studentContactForm"
+                  :readonly="!edit"
                 ></student-contact-form>
-              </v-col>
-            </v-card>
-          </v-tab-item>
-          <v-tab-item :key="3">
-            <v-card flat>
-              <v-col cols="12" class="pa-4" md="9">
                 <h3>3. Ghi chú về học sinh</h3>
                 <student-note-form
                   :student="student"
                   ref="studentNoteForm"
+                  :readonly="!edit"
                 ></student-note-form>
-              </v-col>
-            </v-card>
-          </v-tab-item>
-          <v-tab-item :key="4">
-            <v-card flat>
-              <v-col cols="12" class="pa-4" md="12">
                 <h3>4. Thông tin gia đình</h3>
                 <student-family-form
                   :student="student"
                   ref="studentFamilyForm"
+                  :readonly="!edit"
                 ></student-family-form>
               </v-col>
             </v-card>
@@ -89,6 +93,7 @@ export default {
     return {
       tab: null,
       dialog: true,
+      edit: false,
     }
   },
   methods: {
@@ -116,6 +121,10 @@ export default {
           ...studentNoteForm,
         },
       })
+    },
+    async onSave() {
+      await this.save()
+      this.edit = !this.edit
     },
     remove() {
       // this.$dialog.confirm({

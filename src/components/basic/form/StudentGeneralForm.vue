@@ -13,17 +13,6 @@
         ></v-text-field>
       </v-col>
       <v-col class="pb-0" cols="12" md="6">
-        <v-text-field
-          v-model="username"
-          outlined
-          dense
-          label="Mã học sinh"
-          disabled
-        ></v-text-field>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col class="pb-0" cols="12" md="6">
         <autocomplete-class
           :rules="[rules.required]"
           v-model="classes"
@@ -33,15 +22,6 @@
           dense
           class="required"
         ></autocomplete-class>
-      </v-col>
-      <v-col class="pb-0" cols="12" md="6">
-        <date-picker
-          :date.sync="dob"
-          label="Ngày Sinh"
-          placeholder="DD/MM/YYYY"
-          dense
-          outlined
-        ></date-picker>
       </v-col>
     </v-row>
     <v-row>
@@ -57,19 +37,29 @@
         ></v-select>
       </v-col>
       <v-col class="pb-0" cols="12" md="6">
+        <date-picker
+          :date.sync="dob"
+          label="Ngày Sinh"
+          dense
+          outlined
+          class="required"
+          :rules="[rules.required]"
+        ></date-picker>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col class="pb-0" cols="12" md="6">
         <v-text-field
-          v-model="ethnic"
-          label="Dân tộc"
+          v-model="frequentlyAddress"
+          label="Quê quán"
           outlined
           dense
         ></v-text-field>
       </v-col>
-    </v-row>
-    <v-row>
-      <v-col class="pb-0" cols="12">
+      <v-col class="pb-0" cols="12" md="6">
         <v-text-field
-          v-model="frequentlyAddress"
-          label="Quê quán"
+          v-model="ethnic"
+          label="Dân tộc"
           outlined
           dense
         ></v-text-field>
@@ -90,6 +80,7 @@ export default {
       type: [Object],
       default: () => {},
     },
+    rules: Object
   },
   data: () => ({
     valid: true,
@@ -102,11 +93,6 @@ export default {
     ethnic: '',
     frequentlyAddress: '',
     classes: {},
-    rules: {
-      required: (value) => !!value || 'Item is required',
-      min: (v) => v.length >= 6 || 'Min 8 characters',
-      email: (v) => /.+@.+/.test(v) || 'E-mail must be valid',
-    },
     genders: [
       { title: 'Nam', value: 'male' },
       { title: 'Nữ', value: 'female' },

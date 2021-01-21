@@ -11,12 +11,17 @@
         <v-btn
           v-if="$vuetify.breakpoint.mdAndUp"
           class="mr-2"
-          dark
+          outlined
           color="success"
         >
           <v-icon left>mdi-file-excel</v-icon> Xuất Excel
         </v-btn>
-        <v-btn dark color="#0D47A1" @click.stop="createState = !createState">
+        <v-btn
+          depressed
+          dark
+          color="#0D47A1"
+          @click.stop="createState = !createState"
+        >
           <v-icon left>add</v-icon>{{ titleBtn }}
         </v-btn>
       </div>
@@ -24,12 +29,14 @@
 
     <v-card class="px-md-6 mx-md-4 elevation-1">
       <v-data-table
+        mobile-breakpoint="0"
         :items-per-page="10"
         item-key="id"
         :headers="headers"
         :items="teachers"
         :loading="isLoading"
         loading-text="Đang Tải"
+        sort-by="name"
       >
         <div slot="top" class="py-md-6">
           <teacher-filter @onFilterChanged="refresh"></teacher-filter>
@@ -71,9 +78,6 @@
         <template v-slot:[`item.gender`]="{ item }">
           {{ item.gender | getGender }}
         </template>
-        <template v-slot:[`item.action`]="{ item }">
-          <teacher-list-actions :item="item"></teacher-list-actions>
-        </template>
       </v-data-table>
     </v-card>
     <new-teacher-dialog :state="createState" />
@@ -84,11 +88,8 @@ import { mapActions, mapState, mapGetters } from 'vuex'
 import moment from 'moment'
 import UserItem from '@/components/basic/card/CardTeacherName.vue'
 import TeacherFilter from '@/modules/teacher/TeacherFilter.vue'
-import TeacherFilterDialog from '@/modules/teacher/TeacherFilterDialog'
-import TeacherListActions from '@/modules/teacher/TeacherListActions'
 import NewTeacherDialog from '@/modules/teacher/TeacherNewDialog'
 import Breadcrumbs from '@/components/layout/Breadcrumbs.vue'
-import DropMenu from '@/modules/student/menu/Menu.vue'
 import Vuetify from 'vuetify'
 import Vue from 'vue'
 const originHeaders = [
@@ -96,13 +97,13 @@ const originHeaders = [
     text: 'Họ tên',
     value: 'name',
     align: 'left',
-    sortable: false,
+    sortable: true,
     show: true,
   },
   {
     text: 'Ngày sinh',
     value: 'metadata.dob',
-    align: 'left',
+    align: 'center',
     sortable: false,
     show: true,
   },
@@ -112,12 +113,12 @@ const originHeaders = [
     align: 'center',
     sortable: false,
     show: true,
-    width: 10,
+    width: 100,
   },
   {
     text: 'Loại cán bộ',
     value: 'metadata.type',
-    align: 'left',
+    align: 'center',
     sortable: false,
     show: true,
     width: 100,
@@ -128,6 +129,7 @@ const originHeaders = [
     align: 'left',
     sortable: false,
     show: true,
+    width: 100
   },
   {
     text: 'Trạng thái',
@@ -135,7 +137,7 @@ const originHeaders = [
     align: 'left',
     sortable: false,
     show: true,
-    width: 10,
+    width: 100,
   },
   {
     text: 'Ghi chú',
@@ -143,14 +145,6 @@ const originHeaders = [
     align: 'left',
     sortable: false,
     show: true,
-  },
-  {
-    text: 'Hành động',
-    value: 'action',
-    align: 'center',
-    sortable: false,
-    show: true,
-    width: 10,
   },
 ]
 Vue.use(Vuetify)
@@ -160,10 +154,7 @@ export default {
     Breadcrumbs,
     UserItem,
     TeacherFilter,
-    TeacherListActions,
-    TeacherFilterDialog,
     NewTeacherDialog,
-    DropMenu,
   },
   data() {
     return {

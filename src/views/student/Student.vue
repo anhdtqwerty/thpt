@@ -3,13 +3,12 @@
     <div class="pa-4 d-flex justify-space-between align-center">
       <div>
         <Breadcrumbs
-          :headline="student ? student.name : 'Học Sinh'"
+          :headline="student ? `${student.name} - ${formatCode}` : 'Học Sinh'"
           :link="[{ text: 'Học sinh', href: '../students' }]"
         />
       </div>
       <div>
-        <v-btn dark class="mr-2" color="red" @click="remove">Xóa</v-btn>
-        <v-btn color="primary" @click="save">Lưu</v-btn>
+        <v-btn class="mr-1" dark color="red" @click="remove">Xóa</v-btn>
       </div>
     </div>
 
@@ -28,6 +27,9 @@ export default {
   },
   computed: {
     ...mapGetters('student', ['student']),
+    formatCode() {
+      return this.student.code.substring(this.student.code.length - 5)
+    },
   },
   data() {
     return {

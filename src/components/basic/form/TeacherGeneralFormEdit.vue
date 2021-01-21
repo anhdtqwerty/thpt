@@ -1,7 +1,7 @@
 <template>
   <v-form v-model="valid" ref="form" v-bind="this.$attrs">
     <v-row>
-      <v-col class="pb-0" cols="12">
+      <v-col class="pb-0" cols="12" md="6">
         <v-text-field
           ref="name"
           v-model="name"
@@ -10,8 +10,6 @@
           dense
         ></v-text-field>
       </v-col>
-    </v-row>
-    <v-row>
       <v-col class="pb-0" cols="12" md="6">
         <date-picker
           :date.sync="dob"
@@ -20,6 +18,8 @@
           dense
         ></date-picker>
       </v-col>
+    </v-row>
+    <v-row>
       <v-col class="pb-0" cols="12" md="6">
         <v-select
           ref="gender"
@@ -30,22 +30,22 @@
           dense
         ></v-select>
       </v-col>
-    </v-row>
-    <v-row>
-      <v-col class="pb-0" cols="12" md="6">
-        <v-text-field
-          ref="frequentlyAddress"
-          v-model="frequentlyAddress"
-          label="Địa chỉ thường trú"
-          outlined
-          dense
-        ></v-text-field>
-      </v-col>
       <v-col class="pb-0" cols="12" md="6">
         <v-text-field
           ref="ethinic"
           v-model="ethnic"
           label="Dân tộc"
+          outlined
+          dense
+        ></v-text-field>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col class="pb-0" cols="12">
+        <v-text-field
+          ref="frequentlyAddress"
+          v-model="frequentlyAddress"
+          label="Địa chỉ thường trú"
           outlined
           dense
         ></v-text-field>

@@ -8,43 +8,67 @@
       <user-avatar-picker :student="teacher" type="students" />
     </v-col>
     <v-col class="" cols="12" md="9">
-      <v-card :flat="$vuetify.breakpoint.smAndDown" class="pa-md-4">
-        <v-row no-gutters>
-          <v-col cols="12" class="pa-4" md="9">
-            <h3>1. Thông tin cơ bản</h3>
-            <teacher-general-form-edit
-              ref="teacherGeneralFormEdit"
-              :teacher="teacher"
-            ></teacher-general-form-edit>
-          </v-col>
-          <v-col
-            class="text-right"
-            v-if="!$vuetify.breakpoint.smAndDown"
-            md="3"
-          >
-          </v-col>
-          <v-col cols="12" class="pa-4" md="9">
-            <h3>2. Thông tin tại trường</h3>
-            <teacher-school-form
-              :teacher="teacher"
-              ref="teacherSchoolForm"
-            ></teacher-school-form>
-          </v-col>
-          <v-col cols="12" class="pa-4" md="9">
-            <h3>3. Thông tin liên lạc</h3>
-            <teacher-contact-form
-              :teacher="teacher"
-              ref="teacherContactForm"
-            ></teacher-contact-form>
-          </v-col>
-          <v-col cols="12" class="pa-4" md="9">
-            <h3>4. Thông tin chuyên môn</h3>
-            <teacher-specialize-form
-              :teacher="teacher"
-              ref="teacherSpecializeForm"
-            ></teacher-specialize-form>
-          </v-col>
-        </v-row>
+      <v-card :flat="$vuetify.breakpoint.smAndDown"
+        ><v-tabs v-model="tab" background-color="primary" dark>
+          <v-tab :key="1"> Hồ sơ </v-tab>
+        </v-tabs>
+
+        <v-tabs-items v-model="tab">
+          <v-tab-item :key="1">
+            <v-card flat>
+              <v-col cols="12" class="pa-4">
+                <div class="d-flex justify-space-between">
+                  <h3>1. Thông tin cơ bản</h3>
+                  <v-btn
+                    v-if="!edit"
+                    depressed
+                    class="mb-3"
+                    color="success"
+                    @click="edit = !edit"
+                    >Sửa</v-btn
+                  >
+                  <v-btn
+                    v-else
+                    depressed
+                    class="mb-3"
+                    color="primary"
+                    @click="onSave"
+                    >Lưu</v-btn
+                  >
+                </div>
+                <teacher-general-form-edit
+                  ref="teacherGeneralFormEdit"
+                  :readonly="!edit"
+                  :teacher="teacher"
+                ></teacher-general-form-edit>
+              </v-col>
+              <v-col cols="12" class="pa-4">
+                <h3>2. Thông tin tại trường</h3>
+                <teacher-school-form
+                  :readonly="!edit"
+                  :teacher="teacher"
+                  ref="teacherSchoolForm"
+                ></teacher-school-form>
+              </v-col>
+              <v-col cols="12" class="pa-4">
+                <h3>3. Thông tin liên lạc</h3>
+                <teacher-contact-form
+                  :readonly="!edit"
+                  :teacher="teacher"
+                  ref="teacherContactForm"
+                ></teacher-contact-form>
+              </v-col>
+              <v-col cols="12" class="pa-4">
+                <h3>4. Thông tin chuyên môn</h3>
+                <teacher-specialize-form
+                  :readonly="!edit"
+                  :teacher="teacher"
+                  ref="teacherSpecializeForm"
+                ></teacher-specialize-form>
+              </v-col>
+            </v-card>
+          </v-tab-item>
+        </v-tabs-items>
       </v-card>
     </v-col>
   </v-row>
@@ -72,6 +96,7 @@ export default {
   data() {
     return {
       tab: null,
+      edit: false,
     }
   },
   computed: {
@@ -84,6 +109,10 @@ export default {
       this.$refs.teacherSchoolForm.resetValidation()
       this.$refs.teacherContactForm.resetValidation()
       this.$refs.teacherSpecializeForm.resetValidation()
+    },
+    async onSave() {
+      await this.save()
+      this.edit = !this.edit
     },
     async save() {
       try {
