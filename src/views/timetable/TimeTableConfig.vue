@@ -5,8 +5,8 @@
         <Breadcrumbs
           headline="Cấu Hình Thời Khóa Biểu"
           :link="[
-            { text: 'Thời khóa biểu', href: '' },
-            { text: 'Cấu hình', href: '/time-table/config' }
+            { text: 'Thời khóa biểu',  href: '../divisions'  },
+            { text: 'Cấu hình', href: '/time-table/config' },
           ]"
         />
       </div>
@@ -23,20 +23,6 @@
     </div>
 
     <v-card class="px-md-6 mx-md-4 elevation-1">
-      <v-row>
-        <v-col cols="4" class="md-4">
-          <autocomplete-class
-            v-model="classData"
-            item-text="name"
-            item-value="id"
-            label="Lớp"
-            placeholder="Chọn Lớp Học"
-            required
-            dense
-            outlined
-          ></autocomplete-class>
-        </v-col>
-      </v-row>
       <v-data-table
         :loading="loading"
         :headers="originHeaders"
@@ -44,6 +30,23 @@
         hide-default-footer
         item-key="id"
       >
+        <div slot="top" class="py-md-6">
+          <v-row>
+            <v-col cols="4">
+              <autocomplete-class
+                v-model="classData"
+                item-text="name"
+                item-value="id"
+                label="Lớp"
+                placeholder="Chọn Lớp Học"
+                required
+                dense
+                outlined
+                hide-details
+              ></autocomplete-class>
+            </v-col>
+          </v-row>
+        </div>
         <template v-slot:item.monday="props">
           <TimeTableEditDialog :data.sync="props.item['monday']" />
         </template>
@@ -79,82 +82,82 @@ const originHeaders = [
     value: 'slot',
     align: 'center',
     sortable: false,
-    width: 100
+    width: 100,
   },
   {
     text: 'Thứ 2',
     value: 'monday',
     align: 'center',
-    sortable: false
+    sortable: false,
   },
   {
     text: 'Thứ 3',
     value: 'tuesday',
     align: 'center',
-    sortable: false
+    sortable: false,
   },
   {
     text: 'Thứ 4',
     value: 'wednesday',
     align: 'center',
-    sortable: false
+    sortable: false,
   },
   {
     text: 'Thứ 5',
     value: 'thursday',
     align: 'center',
-    sortable: false
+    sortable: false,
   },
   {
     text: 'Thứ 6',
     value: 'friday',
     align: 'center',
-    sortable: false
+    sortable: false,
   },
   {
     text: 'Thứ 7',
     value: 'saturday',
     align: 'center',
-    sortable: false
-  }
+    sortable: false,
+  },
 ]
 const defaultSlots = [
   {
-    slot: 'Tiết 1'
+    slot: 'Tiết 1',
   },
   {
-    slot: 'Tiết 2'
+    slot: 'Tiết 2',
   },
   {
-    slot: 'Tiết 3'
+    slot: 'Tiết 3',
   },
   {
-    slot: 'Tiết 4'
+    slot: 'Tiết 4',
   },
   {
-    slot: 'Tiết 5'
+    slot: 'Tiết 5',
   },
   {
-    slot: 'Tiết 6'
+    slot: 'Tiết 6',
   },
   {
-    slot: 'Tiết 7'
+    slot: 'Tiết 7',
   },
   {
-    slot: 'Tiết 8'
+    slot: 'Tiết 8',
   },
   {
-    slot: 'Tiết 9'
+    slot: 'Tiết 9',
   },
   {
-    slot: 'Tiết 10'
-  }
+    slot: 'Tiết 10',
+  },
 ]
 export default {
   components: {
     Breadcrumbs,
     TimeTableEditDialog,
-    AutocompleteClass
+    AutocompleteClass,
   },
   data() {
     return {
@@ -165,7 +168,7 @@ export default {
       filterState: false,
       dialog: false,
       classData: {},
-      slots: []
+      slots: [],
     }
   },
   computed: {},
@@ -180,7 +183,7 @@ export default {
     ...mapActions('classDetail', [
       'fetchClass',
       'updateClass',
-      'createAttendances'
+      'createAttendances',
     ]),
     open() {},
     cancel() {},
@@ -190,7 +193,7 @@ export default {
       this.$alert.success('Cập nhật thành công')
       this.loading = false
     },
-    close() {}
+    close() {},
   },
   watch: {
     classData() {
@@ -198,8 +201,8 @@ export default {
       this.slots = this.classData.schedule
         ? this.classData.schedule
         : JSON.parse(JSON.stringify(defaultSlots))
-    }
-  }
+    },
+  },
 }
 </script>
 <style lang="scss" scoped>

@@ -1,10 +1,9 @@
 <template>
   <v-form>
-    <v-row no-gutters>
-      <v-col cols="6">
+    <v-row >
+      <v-col cols="4">
         <autocomplete-generation
           v-model="generation"
-          class="mr-4"
           placeholder="Năm học"
           outlined
           dense
@@ -12,7 +11,7 @@
         ></autocomplete-generation>
       </v-col>
 
-      <v-col cols="6">
+      <v-col cols="4">
         <v-btn color="primary" height="40" outlined @click="onFilterChanged">
           <v-icon left>mdi-filter-outline</v-icon>Lọc
         </v-btn>

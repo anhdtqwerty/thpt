@@ -8,6 +8,14 @@
         />
       </div>
       <div class="flex-center">
+        <v-btn
+          v-if="$vuetify.breakpoint.mdAndUp"
+          class="mr-2"
+          outlined
+          color="success"
+        >
+          <v-icon left>mdi-file-excel</v-icon> Xuất Excel
+        </v-btn>
         <v-btn color="primary" @click="dialog = !dialog"
           ><v-icon left>add</v-icon>{{ addButtonText }}</v-btn
         >
@@ -42,80 +50,58 @@
       </div>
     </div>
     <v-card class="px-md-6 mx-md-4 elevation-1">
-      <v-row no-gutters>
-        <v-col class="text-right pa-0">
-          <setting-table-header
-            :default-headers="originHeaders"
-            @change="headers = $event"
-          />
-          <span v-if="$vuetify.breakpoint.mdAndUp">
-            <kebap-menu>
-              <v-list>
-                <v-list-item>
-                  <export-excel :custom-header="headers" api="/classes/" />
-                </v-list-item>
-              </v-list>
-            </kebap-menu>
+      <v-data-table
+        item-key="id"
+        :headers="headers"
+        :items="classes"
+        :search="search"
+        v-model="selected"
+        :loading="loading"
+        show-select
+        :disable-sort="$vuetify.breakpoint.smAndDown"
+      >
+        <div slot="top" class="py-md-6">
+          <class-filter @onFilterChanged="refresh" />
+        </div>
+        <template v-slot:item.status="{ item }">
+          <span v-if="item.status" :class="getColor(item.status)"
+            >{{ item.status | classStatus }}
           </span>
-        </v-col>
-      </v-row>
-      <class-filter @onFilterChanged="refresh" />
-      <v-row :class="{ 'mt-n5': $vuetify.breakpoint.smAndDown }">
-        <v-col>
-          <v-data-table
-            item-key="id"
-            :headers="headers"
-            :items="classes"
-            :search="search"
-            v-model="selected"
-            :loading="loading"
-            show-select
-            :disable-sort="$vuetify.breakpoint.smAndDown"
-          >
-            <template v-slot:item.status="{ item }">
-              <span v-if="item.status" :class="getColor(item.status)"
-                >{{ item.status | classStatus }}
-              </span>
+        </template>
+        <template v-slot:item.title="{ item }">
+          <v-tooltip top>
+            <template v-slot:activator="{ on }">
+              <div v-on="on" style="text-decoration: none; white-space: nowrap">
+                <router-link
+                  v-on="on"
+                  style="text-decoration: none; white-space: nowrap"
+                  :to="'/class/' + item.id"
+                  >{{ item.title }}</router-link
+                >
+              </div>
             </template>
-            <template v-slot:item.title="{ item }">
-              <v-tooltip top>
-                <template v-slot:activator="{ on }">
-                  <div
-                    v-on="on"
-                    style="text-decoration: none; white-space: nowrap"
-                  >
-                    <router-link
-                      v-on="on"
-                      style="text-decoration: none; white-space: nowrap"
-                      :to="'/class/' + item.id"
-                      >{{ item.title }}</router-link
-                    >
-                  </div>
-                </template>
-                <span>Xem lớp</span>
-              </v-tooltip>
-            </template>
-            <template v-slot:item.generation="{ item }">
-              <p style="margin: 0; white-space: nowrap">
-                {{ item.generation | getGeneration }}
-              </p>
-            </template>
-            <template v-slot:item.division="{ item }">
-              <p style="margin: 0; white-space: nowrap">
-                {{ item.division | getDivision }}
-              </p>
-            </template>
-            <template v-slot:item.teachers="{ item }">
-              <p style="margin: 0; white-space: nowrap">
-                {{ item | getTeacherNames }}
-              </p>
-            </template>
-            <template v-slot:item.actions="{ item }">
-              <class-list-actions :selected="item" />
-            </template>
-          </v-data-table>
-        </v-col>
-      </v-row>
+            <span>Xem lớp</span>
+          </v-tooltip>
+        </template>
+        <template v-slot:item.generation="{ item }">
+          <p style="margin: 0; white-space: nowrap">
+            {{ item.generation | getGeneration }}
+          </p>
+        </template>
+        <template v-slot:item.division="{ item }">
+          <p style="margin: 0; white-space: nowrap">
+            {{ item.division | getDivision }}
+          </p>
+        </template>
+        <template v-slot:item.teachers="{ item }">
+          <p style="margin: 0; white-space: nowrap">
+            {{ item | getTeacherNames }}
+          </p>
+        </template>
+        <template v-slot:item.actions="{ item }">
+          <class-list-actions :selected="item" />
+        </template>
+      </v-data-table>
     </v-card>
     <new-class-dialog :state="dialog" style="margin: 0 20px"></new-class-dialog>
     <classes-send-s-m-s-dialog

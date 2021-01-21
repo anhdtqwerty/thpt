@@ -12,6 +12,14 @@
       </div>
       <div class="flex-center">
         <v-btn
+          v-if="$vuetify.breakpoint.mdAndUp"
+          class="mr-2"
+          outlined
+          color="success"
+        >
+          <v-icon left>mdi-file-excel</v-icon> Xuất Excel
+        </v-btn>
+        <v-btn
           @click="createStateDialog = !createStateDialog"
           dark
           color="#0D47A1"
@@ -22,15 +30,7 @@
     </div>
     <v-card class="px-md-6 mx-md-4 elevation-1">
       <v-data-table :headers="headers" :items="divisions">
-        <div slot="top" class="d-flex">
-          <v-spacer></v-spacer>
-          <div>
-            <drop-menu
-              :default-headers="headers"
-              @change="headers = $event"
-              v-if="$vuetify.breakpoint.mdAndUp"
-            ></drop-menu>
-          </div>
+        <div slot="top" class="py-md-3">
         </div>
         <template v-slot:item.subjects="{ item }">
           <v-tooltip max-width="200px" bottom>
@@ -93,7 +93,7 @@ export default {
         {
           text: 'Hành động',
           value: 'actions',
-          align: 'left',
+          align: 'center',
           sortable: false,
           show: true,
         },

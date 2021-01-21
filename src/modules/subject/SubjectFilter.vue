@@ -14,8 +14,7 @@
               item-value="id"
               dense
               deletable-chips
-              :hide-details="$vuetify.breakpoint.smAndDown"
-              :class="{ 'mb-4': $vuetify.breakpoint.smAndDown }"
+              hide-details
             />
           </v-col>
           <v-col cols="12" md="4">
@@ -29,8 +28,7 @@
               item-value="id"
               dense
               deletable-chips
-              :hide-details="$vuetify.breakpoint.smAndDown"
-              :class="{ 'mb-4': $vuetify.breakpoint.smAndDown }"
+              hide-details
             />
           </v-col>
           <v-col cols="12" md="4">
@@ -45,8 +43,7 @@
               dense
               large
               deletable-chips
-              :hide-details="$vuetify.breakpoint.smAndDown"
-              :class="{ 'mb-4': $vuetify.breakpoint.smAndDown }"
+              hide-details
             />
           </v-col>
         </v-row>
