@@ -43,12 +43,12 @@ export default {
   props: {
     student: {
       type: [Object],
-      default: () => {}
+      default: () => {},
     },
     teacher: {
       type: [Object],
-      default: () => {}
-    }
+      default: () => {},
+    },
   },
   data: () => ({
     valid: true,
@@ -57,10 +57,10 @@ export default {
     email: '',
     password: '',
     rules: {
-      required: value => !!value || 'Required.',
-      min: v => v.length >= 6 || 'Min 8 characters',
-      email: v => /.+@.+/.test(v) || 'E-mail must be valid'
-    }
+      required: (value) => !!value || 'Trường này không được để trống',
+      min: (v) => v.length >= 6 || 'Ít nhất 6 ký tự',
+      email: (v) => /.+@.+/.test(v) || 'Email chưa đúng định dạng',
+    },
   }),
   created() {
     this.reset()
@@ -71,7 +71,7 @@ export default {
       return {
         phone: this.phone,
         email: this.email,
-        password: this.password
+        password: this.password,
       }
     },
     validate() {
@@ -84,7 +84,7 @@ export default {
     },
     resetValidation() {
       this.$refs.form.resetValidation()
-    }
+    },
   },
   watch: {
     student(student) {
@@ -92,7 +92,7 @@ export default {
     },
     teacher(teacher) {
       this.reset()
-    }
-  }
+    },
+  },
 }
 </script>

@@ -1,7 +1,7 @@
 <template>
   <v-form>
     <v-row no-gutters>
-      <v-col cols="12" md="8" v-if="advanced">
+      <v-col cols="12" md="8" v-if="!advanced">
         <v-row no-gutters>
           <v-col class="py-2 pr-4" cols="12" md="4">
             <v-text-field
@@ -65,7 +65,7 @@
       </v-col>
       <v-col class="py-2 d-flex" cols="12" md="4">
         <v-btn
-          v-if="advanced"
+          v-if="!advanced"
           height="40"
           color="#0D47A1"
           @click="onFilterChanged"
@@ -77,7 +77,7 @@
         <v-checkbox
           class="mt-n1 pt-3"
           v-model="advanced"
-          label="Nâng cao"
+          label="Tìm kiếm nhanh"
         ></v-checkbox>
       </v-col>
     </v-row>

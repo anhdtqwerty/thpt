@@ -2,12 +2,11 @@
   <div>
     <div class="pa-4 d-flex justify-space-between align-center">
       <Breadcrumbs
-        :headline="teacherInfo.name"
+        :headline="teacherInfo.name +' - ' + teacherInfo.code"
         :link="[{ text: 'Giáo viên', href: '../teachers' }]"
       />
       <div>
-        <v-btn dark class="mr-2" color="red" @click="remove">Xóa</v-btn>
-        <v-btn color="primary" @click="save">Lưu</v-btn>
+        <v-btn dark color="red" @click="remove">Xóa</v-btn>
       </div>
     </div>
 

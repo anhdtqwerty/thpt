@@ -13,7 +13,10 @@
       <v-card-text>
         <v-form ref="form" class="pa-2">
           <h3 class="mb-2">1. Thông tin cơ bản</h3>
-          <teacher-general-form ref="teacherGeneralForm"></teacher-general-form>
+          <teacher-general-form
+            :rules="rules"
+            ref="teacherGeneralForm"
+          ></teacher-general-form>
           <h3 class="mb-2">2. Thông tin tại trường</h3>
           <teacher-school-form ref="teacherSchoolForm"></teacher-school-form>
           <h3 class="mb-2">3. Thông tin liên lạc</h3>
@@ -59,7 +62,7 @@ export default {
     TeacherContactForm,
     TeacherSchoolForm,
     TeacherSpecializeForm,
-    LoginInfoForm
+    LoginInfoForm,
   },
   data() {
     return {
@@ -78,11 +81,11 @@ export default {
       password: '',
       emailError: '',
       rules: {
-        required: value => !!value || 'Required.',
-        min: v => v.length >= 6 || 'Min 8 characters',
-        email: v => /.+@.+/.test(v) || 'E-mail must be valid'
+        required: (value) => !!value || 'Trường này không được để trống',
+        min: (v) => v.length >= 6 || 'Ít nhất 6 ký tự',
+        email: (v) => /.+@.+/.test(v) || 'Email chưa đúng định dạng',
       },
-      isMobile: false
+      isMobile: false,
     }
   },
 
@@ -98,14 +101,14 @@ export default {
     window.addEventListener('resize', this.onResize, { passive: true })
   },
   props: {
-    state: Boolean
+    state: Boolean,
   },
   computed: {
     ...mapState('app', ['roles', 'department']),
     ...mapGetters('app', ['roleIdByName']),
     isLoading() {
       return this.loading > 0
-    }
+    },
   },
   methods: {
     ...mapActions('user', ['generateUserName', 'validateEmail']),
@@ -142,10 +145,10 @@ export default {
             ...teacherContactForm,
             ...teacherSchoolForm,
             ...teacherSpecializeForm,
-            ...teacherGeneralForm
+            ...teacherGeneralForm,
           },
           department: this.department.id,
-          type: 'staff'
+          type: 'staff',
         })
         this.dialog = false
         this.reset()
@@ -159,7 +162,7 @@ export default {
         // eslint-disable-next-line
         username_indexing,
         // eslint-disable-next-line
-        username_no
+        username_no,
       } = await this.generateUserName(this.name)
       this.username = username
       // eslint-disable-next-line
@@ -195,13 +198,13 @@ export default {
       } else {
         this.isMobile = false
       }
-    }
+    },
   },
   watch: {
     state(state) {
       this.dialog = true
-    }
-  }
+    },
+  },
 }
 </script>
 
