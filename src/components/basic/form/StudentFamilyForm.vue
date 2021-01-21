@@ -1,8 +1,7 @@
 <template>
-  <v-form v-model="valid" ref="form">
+  <v-form v-model="valid" ref="form" v-bind="this.$attrs">
     <v-row>
-      <v-col cols="12" md="6">
-        <h4>Bố</h4>
+      <v-col class="pb-0" cols="12" md="6">
         <v-text-field
           ref="dadName"
           v-model="dadName"
@@ -10,6 +9,8 @@
           outlined
           dense
         ></v-text-field>
+      </v-col>
+      <v-col class="pb-0" cols="12" md="6">
         <v-text-field
           ref="dadPhone"
           v-model="dadPhone"
@@ -17,6 +18,8 @@
           outlined
           dense
         ></v-text-field>
+      </v-col>
+      <v-col class="py-0" cols="12" md="6">
         <v-text-field
           ref="dadEmail"
           v-model="dadEmail"
@@ -25,8 +28,10 @@
           outlined
         ></v-text-field>
       </v-col>
-      <v-col cols="12" md="6">
-        <h4>Mẹ</h4>
+    </v-row>
+    <v-divider></v-divider>
+    <v-row class="mt-1">
+      <v-col class="pb-0" cols="12" md="6">
         <v-text-field
           ref="momName"
           v-model="momName"
@@ -34,6 +39,8 @@
           outlined
           dense
         ></v-text-field>
+      </v-col>
+      <v-col class="pb-0" cols="12" md="6">
         <v-text-field
           ref="momPhone"
           v-model="momPhone"
@@ -41,6 +48,8 @@
           outlined
           dense
         ></v-text-field>
+      </v-col>
+      <v-col class="py-0" cols="12" md="6">
         <v-text-field
           ref="momEmail"
           v-model="momEmail"

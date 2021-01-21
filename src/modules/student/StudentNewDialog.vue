@@ -17,7 +17,7 @@
       <v-card-text>
         <v-form ref="form" class="py-4">
           <h3 class="mb-2">1. Thông tin cơ bản</h3>
-          <student-general-form ref="studentGeneralForm"></student-general-form>
+          <student-general-form :rules="rules" ref="studentGeneralForm"></student-general-form>
           <h3 class="mb-2">2. Thông tin liên lạc</h3>
           <student-contact-form ref="studentContactForm"></student-contact-form>
           <h3 class="mb-2">3. Ghi chú về học sinh</h3>
@@ -77,9 +77,9 @@ export default {
       password: '',
       emailError: '',
       rules: {
-        required: value => !!value || 'Required.',
-        min: v => v.length >= 6 || 'Min 8 characters',
-        email: v => /.+@.+/.test(v) || 'E-mail must be valid'
+        required: value => !!value || 'Trường này không được để trống',
+        min: v => v.length >= 6 || 'Ít nhất 6 ký tự',
+        email: v => /.+@.+/.test(v) || 'Email chưa đúng định dạng'
       }
     }
   },

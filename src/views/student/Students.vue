@@ -4,16 +4,14 @@
       <div>
         <Breadcrumbs
           headline="Danh sách"
-          :link="[
-            { text: 'Học sinh' },
-            { text: 'Danh sách', href: '../students' },
-          ]"
+          :link="[{ text: 'Danh sách', href: '../students' }]"
         />
       </div>
       <div class="flex-center">
         <v-btn
           v-if="selected.length"
           dark
+          depressed
           color="amber"
           @click="sendState = !sendState"
           class="mr-2"
@@ -23,12 +21,17 @@
         <v-btn
           v-if="$vuetify.breakpoint.mdAndUp"
           class="mr-2"
-          dark
+          outlined
           color="success"
         >
           <v-icon left>mdi-file-excel</v-icon> Xuất Excel
         </v-btn>
-        <v-btn dark color="#0D47A1" @click.stop="createState = !createState">
+        <v-btn
+          depressed
+          dark
+          color="#0D47A1"
+          @click.stop="createState = !createState"
+        >
           <v-icon left>add</v-icon>{{ btnTitle }}
         </v-btn>
       </div>
@@ -36,17 +39,17 @@
 
     <v-card class="px-md-6 mx-md-4 elevation-1">
       <v-data-table
+        mobile-breakpoint="0"
+        :hide-default-header="selected.length"
         item-key="id"
         :options.sync="studentTableOptions"
         :server-items-length="totalItems"
         :headers="headers"
         :items="students"
         :loading="loading"
-        :items-per-page="10"
-        :footer-props="{
-          itemsPerPageOptions: [5, 10, 15, 20, 30],
-        }"
+        :items-per-page="5"
         v-model="selected"
+        sort-by="name"
         show-select
       >
         <div slot="top" class="py-md-6">
@@ -105,7 +108,7 @@ const originHeaders = [
     text: 'Tên học sinh',
     value: 'name',
     align: 'left',
-    sortable: false,
+    sortable: true,
     show: true,
   },
   {
@@ -129,7 +132,7 @@ const originHeaders = [
     align: 'center',
     sortable: false,
     show: true,
-    width: '10px'
+    width: '100',
   },
   {
     text: 'Trạng thái',
@@ -146,7 +149,6 @@ const originHeaders = [
     show: true,
   },
   {
-    text: 'Hành động',
     value: 'action',
     align: 'center',
     sortable: false,
