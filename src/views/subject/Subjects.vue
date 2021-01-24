@@ -4,7 +4,10 @@
       <div>
         <Breadcrumbs
           headline="Quản lý môn"
-          :link="[{ text: 'Nâng cao', href: '../divisions' },{ text: 'Môn học', href: '../subjects' }]"
+          :link="[
+            { text: 'Nâng cao', href: '../divisions' },
+            { text: 'Môn học', href: '../subjects' },
+          ]"
         />
       </div>
       <div class="flex-center">
@@ -16,33 +19,25 @@
     <SubjectNewDialog :state="createSubject" />
 
     <v-card class="px-md-6 mx-md-4 elevation-1">
+     
       <v-data-table
         :headers="headers"
         :items="subjects"
         @click:row="onSelected"
-      >
-        <div slot="top" class="d-flex mb-2">
-          <v-spacer></v-spacer>
+      > 
+        <div slot="top">
           <div>
-            <drop-menu
-              :default-headers="headers"
-              @change="headers = $event"
-              v-if="$vuetify.breakpoint.mdAndUp"
-            ></drop-menu>
-          </div>
+           <SubjectFilter @onFilterChanged="refresh"/>
         </div>
-        <template v-slot:item.actions="{ item }">
-          <div>
-            <v-btn class="elevation-0" icon small @click="onRemove(item.id)">
-              <v-icon>mdi-delete</v-icon>
-            </v-btn>
-          </div>
-        </template>
+        </div>
         <template v-slot:item.grade="{ item }">
           {{ item.grade | getGrade }}
         </template>
         <template v-slot:item.divisions="{ item }">
           {{ item.divisions | getDivision }}
+        </template>
+        <template v-slot:item.markType="{ item }">
+          {{ item.markType | getMarkType }}
         </template>
       </v-data-table>
     </v-card>
@@ -54,18 +49,21 @@ import { mapActions, mapState } from 'vuex'
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import DropMenu from '@/modules/student/menu/Menu.vue'
 import SubjectNewDialog from '@/modules/subject/SubjectNewDialog'
+import SubjectFilter from "@/modules/subject/SubjectFilter.vue"
 
 export default {
   components: {
     SubjectNewDialog,
     Breadcrumbs,
     DropMenu,
+    SubjectFilter
   },
   props: {
     role: String,
   },
   data() {
     return {
+      isLoading: false,
       headers: [
         {
           text: 'Tên môn',
@@ -74,17 +72,12 @@ export default {
           sortable: false,
           show: true,
         },
-        { text: 'Khối', value: 'grade', show: true },
+        { text: 'Nhóm môn học', value: 'type', show: true },
+        { text: 'Khối', value: 'grade', show: true},
         { text: 'Phân ban', value: 'divisions', show: true },
-        { text: 'Hệ số tổng kết', value: 'markMultiply', show: true },
+        { text: 'Hệ số tổng kết', value: 'multiply', show: true ,align: 'center' },
         { text: 'Loại đánh giá', value: 'markType', show: true },
-        {
-          text: 'Hành động',
-          value: 'actions',
-          align: 'center',
-          sortable: false,
-          show: true,
-        },
+        { text: 'Số tiết/tuần', value: 'data.weeklyLesson', show: true ,align: 'center'},
       ],
       createSubject: false,
       selected: {},
@@ -112,9 +105,19 @@ export default {
     updateDraw(draw) {
       this.draw = draw
     },
-    async refresh() {
-      console.log('refresh')
-      await this.fetchSubjects()
+    async refresh(query) {
+      console.log(query)
+      this.loading = true
+      try {
+        await this.fetchSubjects({
+          ...query,
+          _limit: 9999,
+        })
+      } catch (err) {
+        console.log(err)
+      } finally {
+        this.loading = false
+      }
     },
     onSubjectSelected(subject) {
       this.setSubject(subject)
@@ -143,6 +146,15 @@ export default {
       if (!grade) return ''
       return grade.title
     },
+    getMarkType(markType){
+      if (markType === "mark"){
+        return "Điểm số"
+      }
+      if (markType === "evaluate"){
+        return "Đánh giá"
+      }
+      return ""
+    }
   },
 }
 </script>
