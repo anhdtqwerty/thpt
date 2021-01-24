@@ -27,7 +27,10 @@ export default {
       commit('changeState', {
         classData,
         attendances: _.keyBy(attendances, a => a.slot.id + a.userId),
-        slots: _.keyBy(slots, 'id'),
+        slots: _.keyBy(
+          slots.map(s => ({ key: `${s.index}-${s.day}`, ...s })),
+          'key'
+        ),
         students: _.keyBy(classData.students, 'id'),
         marks: _.keyBy(marks, m => _.get(m, 'student.id', ''))
       })
@@ -64,9 +67,9 @@ export default {
         slots.map(item => dispatch('createSlot', { data: item }))
       )
     },
-    async createSlot({ commit }, { data, options }) {
+    async createSlot({ commit }, data) {
       try {
-        commit('setSlot', await Slot.create(data, options))
+        commit('setSlot', await Slot.create(data, {}))
       } catch (e) {
         alert.error(e)
       }
@@ -132,19 +135,14 @@ export default {
     setSlot(state, slot) {
       state.slots = {
         ...state.slots,
-        [slot.id]: slot
+        [`${slot.index}-${slot.day}`]: slot
       }
     },
     setSlots(state, slots) {
-      state.slots = {
-        ...slots.reduce(
-          (accumulator, currentValue) => ({
-            ...accumulator,
-            [currentValue.id]: currentValue
-          }),
-          {}
-        )
-      }
+      state.slots = _.keyBy(
+        slots.map(s => ({ key: `${s.index}-${s.day}`, ...s })),
+        'key'
+      )
     },
     removeSlot(state, slot) {
       delete state.slots[slot.id]
@@ -158,11 +156,7 @@ export default {
     logs: state => {
       return state.logs
     },
-    slots: state => {
-      return Object.values(state.slots).sort((a, b) => {
-        return ('' + a.code).localeCompare(b.code)
-      })
-    },
+    slots: state => state.slots,
     attendances: state => {
       return state.attendances
     },
