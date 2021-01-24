@@ -27,7 +27,7 @@
         show-select
       >
         <template slot="top">
-          <attendance-student-filter @onFilterChanged="refresh" class="pa-4" />
+          <attendance-student-filter  @onFilterChanged="refresh" class="pa-4" />
         </template>
         <template v-slot:[`item.time`]="{ item }">
           {{ formatTime(item) }}

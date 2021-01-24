@@ -26,13 +26,12 @@
           </v-col>
           <v-col cols="12" md="4">
             <autocomplete-student
-              v-model="name"
-              item-text="name"
-              item-value="id"
+              clearable
+              v-model="student"
               dense
               outlined
-              label="Học sinh"
-              clearable
+              label="Tên học sinh"
+              @change="change"
             />
           </v-col>
         </v-row>
@@ -57,7 +56,7 @@ export default {
     return {
       classes: '',
       status: '',
-      name: '',
+      student: '',
     }
   },
   computed: {
@@ -66,10 +65,13 @@ export default {
   methods: {
     onFilterChanged() {
       this.$emit('onFilterChanged', {
-        student_contains: this.name,
+        student: this.student ? this.student.id : '',
         status: this.status,
         class: this.classes ? this.classes.id : '',
       })
+    },
+    change(data) {
+      this.student = data
     },
   },
 }
