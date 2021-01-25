@@ -21,7 +21,7 @@
           <v-col cols="12" md="4">
             <autocomplete-grade
               v-model="grade"
-              item-text="name"
+              item-text="title"
               clearable
               clear-icon="mdi-close"
               outlined
@@ -37,13 +37,12 @@
             <autocomplete-division
               v-model="divisions"
               item-text="name"
-              item-value="id"
+              item-value="title"
               clear-icon="mdi-close"
               clearable
               placeholder="Phân ban"
               outlined
               dense
-              large
               deletable-chips
               :hide-details="$vuetify.breakpoint.smAndDown"
               :class="{ 'mb-4': $vuetify.breakpoint.smAndDown }"
@@ -83,7 +82,7 @@ export default {
   data: () => ({
     subject: '',
     query: '',
-    division:'',
+    divisions:'',
     grade:'',
     dialog: true,
   }),
@@ -95,7 +94,7 @@ export default {
     this.$emit('onFilterChanged', {
         grade: this.grade,
         divisions: this.divisions,
-        subject: this.subject.Title,
+        id: this.subject,
       }),
     this.reset()
     },
