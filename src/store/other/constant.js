@@ -265,6 +265,10 @@ export default {
         title: 'Có phép',
         status: 'yes'
       },
+      {
+        title: 'Không phép',
+        status: 'no'
+      }
     ],
     
     attendanceStates: [
