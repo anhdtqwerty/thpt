@@ -10,47 +10,21 @@
       </div>
     </div>
     <v-card class="px-md-6 mx-md-4 elevation-1">
-      <v-data-table
+       <v-data-table
         mobile-breakpoint="0"
-        :hide-default-header="selected.length"
+        :items-per-page="10"
         item-key="id"
-        :options.sync="studentTableOptions"
-        :server-items-length="totalItems"
         :headers="headers"
-        :items="students"
-        :loading="loading"
-        :items-per-page="5"
-        v-model="selected"
+        :items="teachers"
+        :loading="isLoading"
+        loading-text="Đang Tải"
         sort-by="name"
-        show-select
       >
         <div slot="top" class="py-md-6">
-          <student-filter @onFilterChanged="refresh"></student-filter>
+          <DiligenceFilter  @onFilterChanged="refresh"/>
         </div>
-        <!-- <template v-slot:[`item.name`]="{ item }">
-          <card-student-name :student="item" link />
-        </template>
-        <template v-slot:[`item.status`]="{ item }">
-          <span v-if="item.status" :class="getColor(item.status)">
-            {{ item.status | getStatus }}
-          </span>
-        </template>
-        <template v-slot:[`item.classes`]="{ item }">
-          <span v-if="item.classes">{{ item.classes | getClasses }}</span>
-        </template>
-        <template v-slot:[`item.gender`]="{ item }">{{
-          item.gender === 'male'
-            ? 'Nam'
-            : item.gender === 'female'
-            ? 'Nữ'
-            : 'Khác'
-        }}</template>
-        <template v-slot:[`item.dob`]="{ item }">
-          <span>{{ formatDate(item.dob) }}</span>
-        </template>
-        <template v-slot:[`item.action`]="{ item }">
-          <student-list-actions :item="item"></student-list-actions>
-        </template> -->
+
+        
       </v-data-table>
     </v-card>
 
@@ -59,25 +33,18 @@
       :state="filterState"
     />
     <student-new-dialog :state="createState" @done="requestPageSettings({})" />
-    <student-send-s-m-s-dialog
-      :data="selected"
-      :state="sendState"
-    ></student-send-s-m-s-dialog>
   </div>
 </template>
 <script>
 import { mapActions, mapState } from 'vuex'
-import CardStudentName from '@/components/basic/card/CardStudentName.vue'
-import StudentFilter from '@/modules/student/StudentFilter'
-import StudentNewDialog from '@/modules/student/StudentNewDialog'
-import StudentFilterDialog from '@/modules/student/StudentFilterDialog'
+
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
-import StudentListActions from '@/modules/student/StudentListActions'
-import StudentSendSMSDialog from '@/modules/sms/StudentSendSMSDialog'
+import DiligenceFilter from '@/modules/diligence/DiligenceFilter.vue'
+
 import moment from 'moment'
 const originHeaders = [
   {
-    text: 'Tên học sinh',
+    text: 'Học sinh',
     value: 'name',
     align: 'left',
     sortable: true,
@@ -89,55 +56,34 @@ const originHeaders = [
     align: 'center',
     sortable: false,
     show: true,
-    width: '10px',
   },
   {
-    text: 'Ngày sinh',
+    text: 'Có phép',
     value: 'dob',
     align: 'center',
     sortable: false,
     show: true,
   },
   {
-    text: 'Giới tính',
+    text: 'Không phép',
     value: 'gender',
     align: 'center',
     sortable: false,
     show: true,
-    width: '100',
   },
   {
-    text: 'Trạng thái',
-    value: 'status',
-    align: 'left',
-    sortable: false,
-    show: true,
-  },
-  {
-    text: 'Ghi chú',
-    value: 'notes',
-    align: 'left',
-    sortable: false,
-    show: true,
-  },
-  {
+    text: 'Hàng động',
     value: 'action',
     align: 'center',
     sortable: false,
     show: true,
-    width: '10px',
   },
 ]
 export default {
   components: {
-    CardStudentName,
-    StudentNewDialog,
-    StudentFilter,
-    StudentFilterDialog,
-    Breadcrumbs,
-    StudentListActions,
-    StudentSendSMSDialog,
-  },
+    DiligenceFilter,
+    Breadcrumbs
+    },
   props: {
     role: String,
   },
