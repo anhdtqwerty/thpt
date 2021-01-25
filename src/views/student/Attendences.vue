@@ -25,26 +25,41 @@
         loading-text="Đang Tải"
         :loading="isLoading"
         show-select
+        @click:row="handleClick"
       >
         <template slot="top">
-          <attendance-student-filter  @onFilterChanged="refresh" class="pa-4" />
+          <attendance-student-filter @onFilterChanged="refresh" class="pa-4" />
         </template>
         <template v-slot:[`item.time`]="{ item }">
-          {{ formatTime(item) }}
+          {{ formatTime(item.time, 'DD/MM/YYYY') }}
         </template>
-
         <template v-slot:[`item.action`]>
           <span class="mr-10">Gửi tin</span>
           <span>Xem</span>
         </template>
+        <template v-slot:[`item.checkin.inClass`]="{ item }">
+          {{ formatTime(item.checkin.inClass, 'LT') }}
+        </template>
+        <template v-slot:[`item.checkin.outClass`]="{ item }">
+          {{ formatTime(item.checkin.outClass, 'LT') }}
+        </template>
       </v-data-table>
     </v-card>
+
+    <attendance-student-edit-dialog
+      :editClass="editClass"
+      :editStudent="editStudent"
+      :editInClass="editInClass"
+      :editOutClass="editOutClass"
+      :state="editState"
+    />
   </div>
 </template>
 
 <script>
 import Breadcrumbs from '@/components/layout/Breadcrumbs.vue'
 import AttendanceStudentFilter from '@/modules/attendance/AttendanceStudentFilter.vue'
+import AttendanceStudentEditDialog from '@/modules/attendance/AttendanceStudentEditDialog'
 import { mapActions, mapState, mapGetters } from 'vuex'
 import moment from 'moment'
 
@@ -52,6 +67,7 @@ export default {
   components: {
     Breadcrumbs,
     AttendanceStudentFilter,
+    AttendanceStudentEditDialog,
   },
   data() {
     return {
@@ -59,12 +75,27 @@ export default {
         { text: 'Học sinh', value: 'student.name', sortable: true },
         { text: 'Lớp', value: 'class.title', width: 100, sortable: false },
         { text: 'Ngày', value: 'time', width: 100, sortable: false },
-        { text: 'Giờ đến', value: 'inClass', width: 100, sortable: false },
-        { text: 'Giờ về', value: 'outClass', width: 100, sortable: false },
+        {
+          text: 'Giờ đến',
+          value: 'checkin.inClass',
+          width: 100,
+          sortable: false,
+        },
+        {
+          text: 'Giờ về',
+          value: 'checkin.outClass',
+          width: 100,
+          sortable: false,
+        },
         { text: 'Trạng thái', value: 'status', width: 100, sortable: false },
         { text: 'Hành động', value: 'action', width: 200, sortable: false },
       ],
       isLoading: true,
+      editState: false,
+      editStudent: '',
+      editClass: '',
+      editInClass: '',
+      editOutClass: '',
     }
   },
   computed: {
@@ -84,8 +115,15 @@ export default {
         }
       )
     },
-    formatTime(time) {
-      return moment(time).format('DD/MM/YYYY')
+    formatTime(time, str) {
+      return moment(time).format(str)
+    },
+    handleClick(data) {
+      this.editState = !this.editState
+      this.editClass = data.class
+      this.editStudent = data.student
+      this.editInClass = data.inClass
+      this.editOutClass = data.outClass
     },
   },
 }

@@ -13,10 +13,11 @@
   >
     <template v-slot:activator="{ on }">
       <v-text-field
+        v-bind="$attrs"
         v-model="time"
         :label="label"
         readonly
-        prepend-icon="access_time"
+        prepend-inner-icon="access_time"
         v-on="on"
         v-on:input="$emit('input', $event)"
         @change="$emit('change', time)"
@@ -35,16 +36,16 @@
 export default {
   props: {
     input: String,
-    label: String
+    label: String,
   },
   data: () => ({
     time: '09:00',
-    menu: false
+    menu: false,
   }),
   methods: {
     getData() {
       return this.time
-    }
+    },
   },
   created() {
     this.time = this.input || '09:00'
@@ -52,8 +53,8 @@ export default {
   watch: {
     input(input) {
       this.time = input || '09:00'
-    }
-  }
+    },
+  },
 }
 </script>
 
