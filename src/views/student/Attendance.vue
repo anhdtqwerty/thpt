@@ -4,13 +4,11 @@
       <div>
         <Breadcrumbs
           headline="Điểm danh"
-          :link="[{ text: 'Điểm danh', href: '../attendances' }]"
+          :link="[
+            { text: 'Điểm danh', href: '../attendances' },
+            { text: 'Chi tiết điểm danh' },
+          ]"
         />
-      </div>
-      <div class="flex-center">
-        <v-btn dark color="#0D47A1">
-          <v-icon left>add</v-icon>Thêm điểm danh
-        </v-btn>
       </div>
     </div>
 
@@ -24,7 +22,6 @@
         :headers="headers"
         loading-text="Đang Tải"
         :loading="isLoading"
-        show-select
       >
         <template slot="top">
           <attendance-student-filter @onFilterChanged="refresh" class="pa-4" />
@@ -33,8 +30,7 @@
           {{ formatTime(item.time, 'DD/MM/YYYY') }}
         </template>
         <template v-slot:[`item.action`]="{ item }">
-          <span class="mr-10">Gửi tin</span>
-          <router-link :student="item" :to="'attendance/' + item.id">Xem</router-link>
+          <span>Xóa</span>
         </template>
         <template v-slot:[`item.checkin.inClass`]="{ item }">
           {{ formatTime(item.checkin.inClass, 'LT') }}
@@ -68,11 +64,12 @@ export default {
     AttendanceStudentFilter,
     AttendanceStudentEditDialog,
   },
+  props: {
+    student: Object,
+  },
   data() {
     return {
       headers: [
-        { text: 'Học sinh', value: 'student.name', sortable: true },
-        { text: 'Lớp', value: 'class.title', width: 100, sortable: false },
         { text: 'Ngày', value: 'time', width: 100, sortable: false },
         {
           text: 'Giờ đến',
@@ -86,7 +83,7 @@ export default {
           width: 100,
           sortable: false,
         },
-        { text: 'Trạng thái', value: 'status', width: 100, sortable: false },
+        { text: 'Ghi chú', value: 'data', width: 100, sortable: false },
         { text: 'Hành động', value: 'action', width: 200, sortable: false },
       ],
       isLoading: true,
