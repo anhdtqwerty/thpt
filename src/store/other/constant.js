@@ -258,8 +258,15 @@ export default {
       {
         title: 'Vắng',
         status: 'absent'
-      }
+      },
     ],
+    diligenceStatus: [
+      {
+        title: 'Có phép',
+        status: 'yes'
+      },
+    ],
+    
     attendanceStates: [
       {
         title: 'Từ Chối',
