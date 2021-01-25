@@ -40,7 +40,6 @@
     <v-card class="px-md-6 mx-md-4 elevation-1">
       <v-data-table
         mobile-breakpoint="0"
-        :hide-default-header="selected.length"
         item-key="id"
         :options.sync="studentTableOptions"
         :server-items-length="totalItems"

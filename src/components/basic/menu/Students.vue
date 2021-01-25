@@ -20,7 +20,7 @@
       <v-list-item
         class="px-0"
         link
-        to="/attendanced"
+        to="/attendances"
       >
         <v-list-item-action></v-list-item-action>
         <v-list-item-title>Điểm danh</v-list-item-title>
