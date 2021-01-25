@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div class="pa-4 d-flex justify-space-between align-center">
+     <div class="pa-4 d-flex justify-space-between align-center">
       <div>
-        <Breadcrumbs
+       <Breadcrumbs
           headline="Khen thưởng kỷ luật"
           :link="[
              { text: 'Học sinh', href: '../students' },
@@ -10,9 +10,17 @@
           ]"
         />
       </div>
-      <div>
+      <div class="flex-center">
+        <v-btn
+          v-if="$vuetify.breakpoint.mdAndUp"
+          class="mr-2"
+          outlined
+          color="success"
+        >
+          <v-icon left>mdi-file-excel</v-icon> Xuất Excel
+        </v-btn>
         <v-btn color="primary" @click="dialog = !dialog">
-          <v-icon left>add</v-icon> Thêm
+          <v-icon left>add</v-icon> {{ btnTitle }}
         </v-btn>
       </div>
     </div>
@@ -23,26 +31,13 @@
         :headers="originHeaders"
         :items="violations"
         item-key="id"
+        v-model="selected"
+        mobile-breakpoint="0"
       >
-        <div slot="top">
-          <div class="d-flex justify-end">
-            <drop-menu
-              :default-headers="originHeaders"
-              @change="headers = $event"
-              v-if="$vuetify.breakpoint.mdAndUp"
-            ></drop-menu>
-          </div>
-          <div class="ma-2">
+        <div slot="top" class="py-md-6">
             <violation-filter
-              v-if="$vuetify.breakpoint.mdAndUp"
               @onFilterChanged="refresh"
             />
-          </div>
-          <div class="d-flex justify-end pa-0">
-            <span v-if="$vuetify.breakpoint.smAndDown">
-              <violation-dialog-filter @onFilterChanged="refresh" />
-            </span>
-          </div>
         </div>
         <template v-slot:item.action="{ item }">
           <violation-actions :selected="item"> </violation-actions>
@@ -64,6 +59,7 @@
       </v-data-table>
     </v-card>
     <violation-new-dialog :state="dialog"> </violation-new-dialog>
+    
   </div>
 </template>
 
@@ -149,10 +145,19 @@ export default {
       createState: false,
       filterState: false,
       dialog: false,
+      selected: [],
+      sendState: false,
     }
   },
   computed: {
     ...mapState('violation', ['violations']),
+     btnTitle() {
+      if (this.$vuetify.breakpoint.smAndDown) {
+        return 'Thêm'
+      } else {
+        return 'Thêm KTKL'
+      }
+    },
   },
   async created() {
     await this.refresh({})

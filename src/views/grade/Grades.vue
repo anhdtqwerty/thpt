@@ -8,6 +8,14 @@
         />
       </div>
       <div class="flex-center">
+         <v-btn
+          v-if="$vuetify.breakpoint.mdAndUp"
+          class="mr-2"
+          outlined
+          color="success"
+        >
+          <v-icon left>mdi-file-excel</v-icon> Xuất Excel
+        </v-btn>
         <v-btn @click="createGrade = !createGrade" dark color="#0D47A1">
           <v-icon left>add</v-icon>{{ addButtonText }}
         </v-btn>
@@ -16,14 +24,10 @@
     <new-grade-dialog :state="createGrade" />
 
     <v-card class="px-md-6 mx-md-4 elevation-1">
-      <div class="d-flex justify-end">
-        <drop-menu
-          :default-headers="headers"
-          @change="headers = $event"
-          v-if="$vuetify.breakpoint.mdAndUp"
-        ></drop-menu>
-      </div>
+
       <v-data-table :headers="headers" :items="grades">
+      <div slot="top" class="py-md-3">
+      </div>
         <template v-slot:item.actions="{ item }">
           <grade-list-actions :selected="item"> </grade-list-actions>
         </template>
@@ -69,7 +73,7 @@ export default {
         {
           text: 'Hành động',
           value: 'actions',
-          align: 'left',
+          align: 'center',
           sortable: false,
           show: true,
         },
