@@ -25,22 +25,25 @@
         loading-text="Đang Tải"
         :loading="isLoading"
         show-select
+        @click:row="handleClick"
       >
         <template slot="top">
           <attendance-student-filter @onFilterChanged="refresh" class="pa-4" />
         </template>
         <template v-slot:[`item.time`]="{ item }">
-          {{ formatTime(item.time, 'DD/MM/YYYY') }}
+          {{ formatTime(item.checkin[0], 'DD/MM/YYYY') }}
         </template>
         <template v-slot:[`item.action`]="{ item }">
           <span class="mr-10">Gửi tin</span>
-          <router-link :student="item" :to="'attendance/' + item.id">Xem</router-link>
+          <router-link :student="item" :to="'attendance/' + item.id"
+            >Xem</router-link
+          >
         </template>
-        <template v-slot:[`item.checkin.inClass`]="{ item }">
-          {{ formatTime(item.checkin.inClass, 'LT') }}
+        <template v-slot:[`item.inClass`]="{ item }">
+          {{ formatTime(item.checkin[0], 'LT') }}
         </template>
-        <template v-slot:[`item.checkin.outClass`]="{ item }">
-          {{ formatTime(item.checkin.outClass, 'LT') }}
+        <template v-slot:[`item.outClass`]="{ item }">
+          {{ formatTime(item.checkin[1], 'LT') }}
         </template>
       </v-data-table>
     </v-card>
@@ -76,13 +79,13 @@ export default {
         { text: 'Ngày', value: 'time', width: 100, sortable: false },
         {
           text: 'Giờ đến',
-          value: 'checkin.inClass',
+          value: 'inClass',
           width: 100,
           sortable: false,
         },
         {
           text: 'Giờ về',
-          value: 'checkin.outClass',
+          value: 'outClass',
           width: 100,
           sortable: false,
         },
@@ -118,6 +121,7 @@ export default {
       return moment(time).format(str)
     },
     handleClick(data) {
+      console.log(data)
       this.editState = !this.editState
       this.editClass = data.class
       this.editStudent = data.student

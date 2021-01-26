@@ -10,7 +10,10 @@ export default {
   actions: {
     async fetchAttendances({ commit }, options) {
       commit('setAttendances', await Attendance.fetch(options))
-    }
+    },
+    // async checkinAttendance({ commit }, options) {
+    //   commit('checkinAttendance', await Attendance.checkin(options))
+    // }
   },
   mutations: {
     setAttendances(state, attendances) {
@@ -21,7 +24,13 @@ export default {
         }),
         {}
       )
-    }
+    },
+    // checkinAttendance(state, attendance) {
+    //   state.attendances = {
+    //     [attendance.id]: attendance,
+    //     ...state.attendances
+    //   }
+    // }
   },
   getters: {
     attendances: state => {
