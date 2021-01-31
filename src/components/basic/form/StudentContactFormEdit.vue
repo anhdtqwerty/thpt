@@ -1,29 +1,26 @@
 <template>
   <v-form v-model="valid" ref="form" v-bind="this.$attrs">
-    <v-row>
-      <v-col class="pb-0" cols="12">
-        <v-text-field
-          v-model="currentLive"
-          label="Địa chỉ liên lạc"
-          outlined
-          dense
-        ></v-text-field>
+    <p class="text-subtitle-2 mb-0">2. Thông tin liên lạc</p>
+    <v-row class="pr-12">
+      <v-col class="d-flex pb-0" cols="12">
+        <v-subheader class="px-0">Địa chỉ</v-subheader>
+        <v-text-field v-model="currentLive" dense></v-text-field>
       </v-col>
-      <v-col class="pb-0" cols="12" md="6">
-        <v-text-field
-          v-model="district"
-          label="Quận/Huyện"
-          outlined
-          dense
-        ></v-text-field>
+      <v-col class="pb-0 d-flex" cols="12">
+        <v-subheader class="px-0">Quận/huyện</v-subheader>
+        <v-text-field v-model="district" dense></v-text-field>
       </v-col>
-      <v-col>
-        <v-text-field
-          v-model="province"
-          label="Tỉnh/Thành phố"
-          outlined
-          dense
-        ></v-text-field>
+      <v-col class="pb-0 d-flex" cols="12">
+        <v-subheader class="px-0">Tỉnh/thành phố</v-subheader>
+        <v-text-field v-model="province" dense></v-text-field>
+      </v-col>
+      <v-col class="pb-0 d-flex" cols="12">
+        <v-subheader class="px-0">Số điện thoại</v-subheader>
+        <v-text-field v-model="phone" dense></v-text-field>
+      </v-col>
+      <v-col class="pb-0 d-flex" cols="12">
+        <v-subheader class="px-0">Email</v-subheader>
+        <v-text-field v-model="email" dense></v-text-field>
       </v-col>
     </v-row>
   </v-form>
@@ -43,6 +40,8 @@ export default {
     currentLive: '',
     province: '',
     district: '',
+    phone: '',
+    email: '',
     rules: {
       required: (value) => !!value || 'Required.',
       min: (v) => v.length >= 6 || 'Min 8 characters',
@@ -54,6 +53,8 @@ export default {
       this.currentLive = this.student.data.currentLive
       this.province = this.student.data.province
       this.district = this.student.data.district
+      this.phone = this.student.phone
+      this.email = this.student.email
     }
   },
   methods: {
@@ -65,6 +66,8 @@ export default {
         currentLive: this.currentLive,
         province: this.province,
         district: this.district,
+        phone: this.phone,
+        email: this.email
       }
     },
     reset() {
@@ -78,4 +81,7 @@ export default {
 </script>
 
 <style scoped>
+.v-subheader {
+  width: 30%;
+}
 </style>
