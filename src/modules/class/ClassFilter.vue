@@ -1,10 +1,9 @@
 <template>
   <v-form>
-    <v-row no-gutters>
+    <v-row >
       <v-col cols="12" md="8" v-if="advanced">
-        <v-row no-gutters>
+        <v-row>
           <v-col
-            :class="{ 'pa-2': $vuetify.breakpoint.mdAndUp }"
             cols="12"
             md="4"
           >
@@ -19,12 +18,10 @@
               outlined
               dense
               deletable-chips
-              :hide-details="$vuetify.breakpoint.smAndDown"
-              :class="{ 'mb-4': $vuetify.breakpoint.smAndDown }"
+              hide-details
             />
           </v-col>
           <v-col
-            :class="{ 'pa-2': $vuetify.breakpoint.mdAndUp }"
             cols="12"
             md="4"
           >
@@ -40,12 +37,10 @@
               outlined
               dense
               deletable-chips
-              :hide-details="$vuetify.breakpoint.smAndDown"
-              :class="{ 'mb-4': $vuetify.breakpoint.smAndDown }"
+              hide-details
             />
           </v-col>
           <v-col
-            :class="{ 'pa-2': $vuetify.breakpoint.mdAndUp }"
             cols="12"
             md="4"
           >
@@ -60,8 +55,7 @@
               item-value="id"
               dense
               deletable-chips
-              :hide-details="$vuetify.breakpoint.smAndDown"
-              :class="{ 'mb-4': $vuetify.breakpoint.smAndDown }"
+              hide-details
             />
           </v-col>
         </v-row>
@@ -80,14 +74,13 @@
               outlined
               dense
               deletable-chips
-              :hide-details="$vuetify.breakpoint.smAndDown"
-              :class="{ 'mb-4': $vuetify.breakpoint.smAndDown }"
+              hide-details
               @change="onFilterChanged"
             />
           </v-col>
         </v-row>
       </v-col>
-      <v-col class="pa-2 d-flex" cols="12" md="4">
+      <v-col class="d-flex" cols="12" md="4">
         <v-btn
           dark
           outlined

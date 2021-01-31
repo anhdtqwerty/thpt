@@ -11,6 +11,14 @@
         />
       </div>
       <div class="flex-center">
+        <v-btn
+          v-if="$vuetify.breakpoint.mdAndUp"
+          class="mr-2"
+          outlined
+          color="success"
+        >
+          <v-icon left>mdi-file-excel</v-icon> Xuất Excel
+        </v-btn>
         <v-btn @click="createSubject = !createSubject" dark color="primary">
           <v-icon left>add</v-icon>{{ addButtonText }}
         </v-btn>
@@ -19,16 +27,13 @@
     <SubjectNewDialog :state="createSubject" />
 
     <v-card class="px-md-6 mx-md-4 elevation-1">
-     
       <v-data-table
         :headers="headers"
         :items="subjects"
         @click:row="onSelected"
-      > 
-        <div slot="top">
-          <div>
-           <SubjectFilter @onFilterChanged="refresh"/>
-        </div>
+      >
+        <div slot="top" class="py-md-6">
+          <SubjectFilter @onFilterChanged="refresh" />
         </div>
         <template v-slot:item.grade="{ item }">
           {{ item.grade | getGrade }}
@@ -49,14 +54,14 @@ import { mapActions, mapState } from 'vuex'
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import DropMenu from '@/modules/student/menu/Menu.vue'
 import SubjectNewDialog from '@/modules/subject/SubjectNewDialog'
-import SubjectFilter from "@/modules/subject/SubjectFilter.vue"
+import SubjectFilter from '@/modules/subject/SubjectFilter.vue'
 
 export default {
   components: {
     SubjectNewDialog,
     Breadcrumbs,
     DropMenu,
-    SubjectFilter
+    SubjectFilter,
   },
   props: {
     role: String,
@@ -73,11 +78,21 @@ export default {
           show: true,
         },
         { text: 'Nhóm môn học', value: 'type', show: true },
-        { text: 'Khối', value: 'grade', show: true},
+        { text: 'Khối', value: 'grade', show: true },
         { text: 'Phân ban', value: 'divisions', show: true },
-        { text: 'Hệ số tổng kết', value: 'multiply', show: true ,align: 'center' },
+        {
+          text: 'Hệ số tổng kết',
+          value: 'multiply',
+          show: true,
+          align: 'center',
+        },
         { text: 'Loại đánh giá', value: 'markType', show: true },
-        { text: 'Số tiết/tuần', value: 'data.weeklyLesson', show: true ,align: 'center'},
+        {
+          text: 'Số tiết/tuần',
+          value: 'data.weeklyLesson',
+          show: true,
+          align: 'center',
+        },
       ],
       createSubject: false,
       selected: {},
@@ -146,15 +161,15 @@ export default {
       if (!grade) return ''
       return grade.title
     },
-    getMarkType(markType){
-      if (markType === "mark"){
-        return "Điểm số"
+    getMarkType(markType) {
+      if (markType === 'mark') {
+        return 'Điểm số'
       }
-      if (markType === "evaluate"){
-        return "Đánh giá"
+      if (markType === 'evaluate') {
+        return 'Đánh giá'
       }
-      return ""
-    }
+      return ''
+    },
   },
 }
 </script>

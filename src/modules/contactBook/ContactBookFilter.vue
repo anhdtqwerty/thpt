@@ -1,6 +1,6 @@
 <template>
   <v-form>
-    <v-row class="mb-2">
+    <v-row>
       <v-col md="3">
         <v-text-field
           v-model="name"
