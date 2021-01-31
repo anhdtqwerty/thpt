@@ -64,6 +64,7 @@ import AttendanceStudentFilter from '@/modules/attendance/AttendanceStudentFilte
 import AttendanceStudentEditDialog from '@/modules/attendance/AttendanceStudentEditDialog'
 import { mapActions, mapState, mapGetters } from 'vuex'
 import moment from 'moment'
+import { get } from 'lodash'
 
 export default {
   components: {
@@ -94,8 +95,8 @@ export default {
       ],
       isLoading: true,
       editState: false,
-      editStudent: '',
-      editClass: '',
+      editStudent: { name: '' },
+      editClass: { title: '' },
       editInClass: '',
       editOutClass: '',
     }
@@ -125,8 +126,8 @@ export default {
       this.editState = !this.editState
       this.editClass = data.class
       this.editStudent = data.student
-      this.editInClass = data.inClass
-      this.editOutClass = data.outClass
+      this.editInClass = data.checkin[0]
+      this.editOutClass = data.checkin[1]
     },
   },
 }

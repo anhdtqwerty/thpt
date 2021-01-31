@@ -40,21 +40,12 @@
         </template>
       </v-data-table>
     </v-card>
-
-    <attendance-student-edit-dialog
-      :editClass="editClass"
-      :editStudent="editStudent"
-      :editInClass="editInClass"
-      :editOutClass="editOutClass"
-      :state="editState"
-    />
   </div>
 </template>
 
 <script>
 import Breadcrumbs from '@/components/layout/Breadcrumbs.vue'
 import AttendanceStudentFilter from '@/modules/attendance/AttendanceStudentFilter.vue'
-import AttendanceStudentEditDialog from '@/modules/attendance/AttendanceStudentEditDialog'
 import { mapActions, mapState, mapGetters } from 'vuex'
 import moment from 'moment'
 
@@ -62,7 +53,6 @@ export default {
   components: {
     Breadcrumbs,
     AttendanceStudentFilter,
-    AttendanceStudentEditDialog,
   },
   props: {
     student: Object,
