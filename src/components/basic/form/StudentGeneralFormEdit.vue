@@ -1,61 +1,33 @@
 <template>
   <v-form v-model="valid" ref="form" v-bind="this.$attrs">
-    <v-row>
-      <v-col class="pb-0" cols="12" md="6">
-        <v-text-field
-          v-model="name"
-          label="Họ và tên"
-          outlined
-          dense
-        ></v-text-field>
+    <p class="text-subtitle-2 mb-0">1. Thông tin cơ bản</p>
+    <v-row class="pr-12">
+      <v-col class="d-flex pb-0" cols="12">
+        <v-subheader class="px-0">Họ và tên</v-subheader>
+        <v-text-field v-model="name" dense regular></v-text-field>
       </v-col>
-      <v-col class="pb-0" cols="12" md="6">
-        <autocomplete-class
-          v-model="classes"
-          return-object
-          label="Chọn lớp"
-          outlined
-          dense
-        ></autocomplete-class>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col class="pb-0" cols="12" md="6">
+      <v-col class="d-flex pb-0" cols="12">
+        <v-subheader class="px-0">Giới tính</v-subheader>
         <v-select
           v-model="gender"
           :items="genders"
           item-text="title"
           item-value="value"
-          label="Giới Tính"
           dense
-          outlined
+          regular
         ></v-select>
       </v-col>
-      <v-col class="pb-0" cols="12" md="6">
-        <date-picker
-          :date.sync="dob"
-          label="Ngày Sinh"
-          dense
-          outlined
-        ></date-picker>
+      <v-col class="pb-0 d-flex" cols="12">
+        <v-subheader class="px-0">Ngày sinh</v-subheader>
+        <date-picker :date.sync="dob" dense></date-picker>
       </v-col>
-    </v-row>
-    <v-row>
-      <v-col class="pb-0" cols="12" md="6">
-        <v-text-field
-          v-model="frequentlyAddress"
-          label="Quê quán"
-          outlined
-          dense
-        ></v-text-field>
+      <v-col class="pb-0 d-flex" cols="12">
+        <v-subheader class="px-0">Quê quán</v-subheader>
+        <v-text-field v-model="frequentlyAddress" dense></v-text-field>
       </v-col>
-      <v-col class="pb-0" cols="12" md="6">
-        <v-text-field
-          v-model="ethnic"
-          label="Dân tộc"
-          outlined
-          dense
-        ></v-text-field>
+      <v-col class="pb-0 d-flex" cols="12">
+        <v-subheader class="px-0">Dân tộc</v-subheader>
+        <v-text-field v-model="ethnic" dense></v-text-field>
       </v-col>
     </v-row>
   </v-form>
@@ -64,10 +36,9 @@
 <script>
 // import { get } from 'lodash'
 import DatePicker from '@/components/basic/picker/DateIOSPicker.vue'
-import AutocompleteClass from '@/components/basic/input/AutocompleteClass'
 import { mapActions } from 'vuex'
 export default {
-  components: { DatePicker, AutocompleteClass },
+  components: { DatePicker },
   props: {
     student: {
       type: [Object],
@@ -123,6 +94,12 @@ export default {
     resetValidation() {
       this.$refs.form.resetValidation()
     },
-  }
+  },
 }
 </script>
+
+<style scoped>
+.v-subheader {
+  width: 30%;
+}
+</style>
