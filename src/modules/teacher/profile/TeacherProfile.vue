@@ -13,48 +13,17 @@
     </v-col>
     <v-col class="" cols="12" md="9">
       <v-card :flat="$vuetify.breakpoint.smAndDown"
-        ><v-tabs v-model="tab" background-color="primary" dark>
+        ><v-tabs v-model="tab">
           <v-tab :key="1"> Hồ sơ </v-tab>
         </v-tabs>
 
         <v-tabs-items v-model="tab">
           <v-tab-item :key="1">
-            <v-card flat>
-              <v-col cols="12" class="pa-4">
-                <div class="d-flex justify-space-between">
-                  <h3>1. Thông tin cơ bản</h3>
-                </div>
-                <teacher-general-form-edit
-                  ref="teacherGeneralFormEdit"
-                  :readonly="!edit"
-                  :teacher="teacher"
-                ></teacher-general-form-edit>
+            <v-row>
+              <v-col cols="9">
+                <teacher-general-info :teacher="teacher" />
               </v-col>
-              <v-col cols="12" class="pa-4">
-                <h3>2. Thông tin tại trường</h3>
-                <teacher-school-form
-                  :readonly="!edit"
-                  :teacher="teacher"
-                  ref="teacherSchoolForm"
-                ></teacher-school-form>
-              </v-col>
-              <v-col cols="12" class="pa-4">
-                <h3>3. Thông tin liên lạc</h3>
-                <teacher-contact-form
-                  :readonly="!edit"
-                  :teacher="teacher"
-                  ref="teacherContactForm"
-                ></teacher-contact-form>
-              </v-col>
-              <v-col cols="12" class="pa-4">
-                <h3>4. Thông tin chuyên môn</h3>
-                <teacher-specialize-form
-                  :readonly="!edit"
-                  :teacher="teacher"
-                  ref="teacherSpecializeForm"
-                ></teacher-specialize-form>
-              </v-col>
-            </v-card>
+            </v-row>
           </v-tab-item>
         </v-tabs-items>
       </v-card>
@@ -64,19 +33,13 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import TeacherGeneralFormEdit from '@/components/basic/form/TeacherGeneralFormEdit'
-import TeacherSchoolForm from '@/components/basic/form/TeacherSchoolForm'
-import TeacherContactForm from '@/components/basic/form/TeacherContactForm'
-import TeacherSpecializeForm from '@/components/basic/form/TeacherSpecializeForm'
 import UserAvatarPicker from '@/components/basic/picker/UserAvatarPicker'
+import TeacherGeneralInfo from '@/modules/teacher/profile/TeacherGeneralInfo'
 
 export default {
   components: {
-    TeacherSpecializeForm,
-    TeacherGeneralFormEdit,
-    TeacherContactForm,
-    TeacherSchoolForm,
     UserAvatarPicker,
+    TeacherGeneralInfo,
   },
   props: {
     teacher: Object,

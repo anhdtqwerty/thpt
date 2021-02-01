@@ -1,54 +1,26 @@
 <template>
   <v-form v-model="valid" ref="form" v-bind="this.$attrs">
-    <v-row>
-      <v-col class="pb-0" cols="12" md="6">
-        <v-text-field
-          ref="name"
-          v-model="name"
-          label="Tên giáo viên"
-          outlined
-          dense
-        ></v-text-field>
+    <p class="text-subtitle-2 mb-0">1. Thông tin cơ bản</p>
+    <v-row class="pr-12">
+      <v-col class="d-flex pb-0" cols="12">
+        <v-subheader class="px-0">Họ và tên</v-subheader>
+        <v-text-field v-model="name" dense></v-text-field>
       </v-col>
-      <v-col class="pb-0" cols="12" md="6">
-        <date-picker
-          :date.sync="dob"
-          label="Ngày Sinh"
-          outlined
-          dense
-        ></date-picker>
+      <v-col class="d-flex pb-0" cols="12">
+        <v-subheader class="px-0">Ngày sinh</v-subheader>
+        <date-picker :date.sync="dob" dense></date-picker>
       </v-col>
-    </v-row>
-    <v-row>
-      <v-col class="pb-0" cols="12" md="6">
-        <v-select
-          ref="gender"
-          v-model="gender"
-          :items="['male', 'female']"
-          label="Giới tính"
-          outlined
-          dense
-        ></v-select>
+      <v-col class="d-flex pb-0" cols="12">
+        <v-subheader class="px-0">Giới tính</v-subheader>
+        <v-select v-model="gender" :items="['male', 'female']" dense></v-select>
       </v-col>
-      <v-col class="pb-0" cols="12" md="6">
-        <v-text-field
-          ref="ethinic"
-          v-model="ethnic"
-          label="Dân tộc"
-          outlined
-          dense
-        ></v-text-field>
+      <v-col class="d-flex pb-0" cols="12">
+        <v-subheader class="px-0">Dân tộc</v-subheader>
+        <v-text-field v-model="ethnic" dense></v-text-field>
       </v-col>
-    </v-row>
-    <v-row>
-      <v-col class="pb-0" cols="12">
-        <v-text-field
-          ref="frequentlyAddress"
-          v-model="frequentlyAddress"
-          label="Địa chỉ thường trú"
-          outlined
-          dense
-        ></v-text-field>
+      <v-col class="d-flex pb-0" cols="12">
+        <v-subheader class="px-0">Địa chỉ thường trú</v-subheader>
+        <v-text-field v-model="frequentlyAddress" dense></v-text-field>
       </v-col>
     </v-row>
   </v-form>
@@ -79,13 +51,11 @@ export default {
     },
   }),
   created() {
-    if (this.teacher) {
-      this.name = this.teacher.name
-      this.gender = this.teacher.gender
-      this.dob = this.teacher.metadata.dob
-      this.ethinic = this.teacher.metadata.ethinic
-      this.frequentlyAddress = this.teacher.metadata.frequentAddress
-    }
+    this.name = this.teacher.name
+    this.gender = this.teacher.gender
+    this.dob = this.teacher.metadata.dob
+    this.ethinic = this.teacher.metadata.ethinic
+    this.frequentlyAddress = this.teacher.metadata.frequentAddress
   },
   methods: {
     ...mapActions('user', ['generateStudentCode', 'validateEmail']),
@@ -108,10 +78,11 @@ export default {
       this.$refs.form.resetValidation()
     },
   },
-  watch: {
-    teacher(teacher) {
-      this.reset()
-    },
-  },
 }
 </script>
+
+<style scoped>
+.v-subheader {
+  width: 30%;
+}
+</style>
