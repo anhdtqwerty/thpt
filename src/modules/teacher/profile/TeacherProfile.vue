@@ -5,7 +5,11 @@
     v-if="teacher"
   >
     <v-col class="text-center" cols="12" md="3">
-      <user-avatar-picker :student="teacher" type="students" />
+      <v-card class="pa-0">
+        <user-avatar-picker width="100%" :student="teacher" type="students" />
+        <p class="font-weight-bold pt-6 my-0">Sửa hồ sơ giáo viên</p>
+        <p class="red--text py-4">Xóa giáo viên</p>
+      </v-card>
     </v-col>
     <v-col class="" cols="12" md="9">
       <v-card :flat="$vuetify.breakpoint.smAndDown"
@@ -19,22 +23,6 @@
               <v-col cols="12" class="pa-4">
                 <div class="d-flex justify-space-between">
                   <h3>1. Thông tin cơ bản</h3>
-                  <v-btn
-                    v-if="!edit"
-                    depressed
-                    class="mb-3"
-                    color="success"
-                    @click="edit = !edit"
-                    >Sửa</v-btn
-                  >
-                  <v-btn
-                    v-else
-                    depressed
-                    class="mb-3"
-                    color="primary"
-                    @click="onSave"
-                    >Lưu</v-btn
-                  >
                 </div>
                 <teacher-general-form-edit
                   ref="teacherGeneralFormEdit"

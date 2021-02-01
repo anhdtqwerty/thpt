@@ -5,9 +5,6 @@
         :headline="teacherInfo.name +' - ' + teacherInfo.code"
         :link="[{ text: 'Giáo viên', href: '../teachers' }]"
       />
-      <div>
-        <v-btn dark color="red" @click="remove">Xóa</v-btn>
-      </div>
     </div>
 
     <teacher-profile :teacher="teacherInfo"></teacher-profile>
