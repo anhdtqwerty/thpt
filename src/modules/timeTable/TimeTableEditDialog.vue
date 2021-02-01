@@ -1,51 +1,47 @@
 <template>
-  <v-edit-dialog @save="save" @cancel="cancel" @open="open" @close="close">
-    <div style="display: block; position:relative">
-      <span v-if="data" class="primary--text subtitle-1">
-        {{ data | getSubject }}</span
-      >
-      <br />
-      <span v-if="data" class="primary--text caption">
-        {{ data | getTeacher }}</span
-      >
-      <div
-        v-if="!data"
-        style="position: absolute; width: 100%; height: 100; background-color: red; top: 0; left: 0 "
-      ></div>
-    </div>
-    <template v-slot:input>
-      <v-autocomplete
-        class="mt-4"
-        :items="subjects"
-        v-model="subject"
-        item-text="title"
-        item-value="id"
-        label="Môn"
-        outlined
-        return-object
-        dense
-        single-line
-        clearable
-        @change="save"
-      />
-      <v-autocomplete
-        :items="teachers"
-        v-model="teacher"
-        item-text="name"
-        item-value="id"
-        return-object
-        label="Giáo viên"
-        outlined
-        dense
-        single-line
-        clearable
-        @change="save"
-      />
-    </template>
-  </v-edit-dialog>
+  <v-dialog v-model="dialog" width="360px">
+    <v-card>
+      <v-card-title class="headline primary lighten-1 white--text">
+        Cài đặt
+      </v-card-title>
+      <v-card-text class="pa-4">
+        <v-autocomplete
+          class="mt-4"
+          :items="subjects"
+          v-model="subject"
+          item-text="title"
+          item-value="id"
+          label="Môn"
+          outlined
+          return-object
+          dense
+          single-line
+          clearable
+        />
+        <v-autocomplete
+          :items="teachers"
+          v-model="teacher"
+          item-text="name"
+          item-value="id"
+          return-object
+          label="Giáo viên"
+          outlined
+          dense
+          single-line
+          clearable
+        />
+      </v-card-text>
+      <v-card-actions class="pa-4">
+        <v-spacer></v-spacer>
+        <v-btn color="primary" small @click="save">
+          Lưu
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import { get } from 'lodash'
 export default {
   data() {
@@ -56,28 +52,44 @@ export default {
     }
   },
   props: {
-    data: Object
+    slotData: Object,
+    state: Boolean,
+    classData: Object
   },
   computed: {
     ...mapGetters('search', ['teachers', 'subjects'])
   },
   created() {
-    if (!this.data) return
-    this.subject = this.data.subject
-    this.teacher = this.data.teacher
+    if (!this.slotData) return
+    this.subject = this.slotData.subject
+    this.teacher = this.slotData.teacher
   },
   methods: {
-    save() {
-      this.$emit('update:data', {
-        subject: {
-          title: get(this.subject, 'title'),
-          id: get(this.subject, 'id')
-        },
-        teacher: {
-          name: get(this.teacher, 'name'),
-          id: get(this.teacher, 'id')
-        }
-      })
+    ...mapActions('classDetail', ['createSlot', 'updateSlot']),
+    async save() {
+      this.loading = true
+      if (!this.slotData.id) {
+        await this.createSlot({
+          ...this.slotData,
+          class: get(this, 'classData.id'),
+          subject: get(this, 'subject.id'),
+          teacher: get(this, 'teacher.id')
+        })
+      } else {
+        console.log({
+          subject: get(this, 'subject.id'),
+          teacher: get(this, 'teacher.id')
+        })
+        await this.updateSlot({
+          id: this.slotData.id,
+          subject: get(this, 'subject.id'),
+          teacher: get(this, 'teacher.id')
+        })
+      }
+      // await this.updateClass({ id: this.classData.id, schedule: this.slots })
+      this.$alert.success('Cập nhật thành công')
+      this.loading = false
+      this.dialog = false
     },
     cancel() {
       this.snack = true
@@ -92,11 +104,18 @@ export default {
     close() {}
   },
   filters: {
-    getTeacher(data) {
-      return get(data, 'teacher.name')
+    getTeacher(slotData) {
+      return get(slotData, 'teacher.name')
     },
-    getSubject(data) {
-      return get(data, 'subject.title')
+    getSubject(slotData) {
+      return get(slotData, 'subject.title')
+    }
+  },
+  watch: {
+    state() {
+      this.dialog = true
+      this.subject = get(this.slotData, 'subject')
+      this.teacher = get(this.slotData, 'teacher')
     }
   }
 }

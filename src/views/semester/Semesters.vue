@@ -6,11 +6,19 @@
           headline="Quản lý học kỳ"
           :link="[
             { text: 'Nâng cao', href: '../divisions' },
-             { text: 'QL Học Kỳ', href: '/semesters' }
+            { text: 'QL Học Kỳ', href: '/semesters' },
           ]"
         />
       </div>
       <div class="flex-center">
+        <v-btn
+          v-if="$vuetify.breakpoint.mdAndUp"
+          class="mr-2"
+          outlined
+          color="success"
+        >
+          <v-icon left>mdi-file-excel</v-icon> Xuất Excel
+        </v-btn>
         <v-btn @click="createState = !createState" dark color="#0D47A1">
           <v-icon left>add</v-icon>Thêm học kỳ
         </v-btn>
@@ -24,14 +32,7 @@
         :items="semesters"
         item-key="id"
       >
-        <div slot="top" class="mb-md-4">
-          <div class="d-flex justify-end">
-            <drop-menu
-              :default-headers="originHeaders"
-              @change="headers = $event"
-              v-if="$vuetify.breakpoint.mdAndUp"
-            ></drop-menu>
-          </div>
+        <div slot="top" class="py-md-6">
           <div v-if="$vuetify.breakpoint.mdAndUp">
             <semester-filter @onFilterChanged="refresh"></semester-filter>
           </div>
@@ -88,50 +89,50 @@ const originHeaders = [
     value: 'title',
     align: 'left',
     sortable: false,
-    show: true
+    show: true,
   },
   {
     text: 'Năm học',
     value: 'generation.name',
     align: 'left',
     sortable: false,
-    show: true
+    show: true,
   },
   {
     text: 'Ngày bắt đầu',
     value: 'config.startDate',
     align: 'left',
     sortable: false,
-    show: true
+    show: true,
   },
   {
     text: 'Ngày kết thúc',
     value: 'config.endDate',
     align: 'left',
     sortable: false,
-    show: true
+    show: true,
   },
   {
     text: 'Trạng thái',
     value: 'status',
     align: 'left',
     sortable: false,
-    show: true
+    show: true,
   },
   {
     text: 'Ghi chú',
     value: 'config.notes',
     align: 'left',
     sortable: false,
-    show: true
+    show: true,
   },
   {
     text: 'Hành động',
     value: 'action',
     align: 'left',
     sortable: false,
-    show: true
-  }
+    show: true,
+  },
 ]
 
 export default {
@@ -141,7 +142,7 @@ export default {
     SemesterFilter,
     SemesterNewDialog,
     SemesterFilterDialog,
-    SemesterListAction
+    SemesterListAction,
   },
   data() {
     return {
@@ -149,11 +150,11 @@ export default {
       headers: originHeaders,
       originHeaders: originHeaders,
       createState: false,
-      filterState: false
+      filterState: false,
     }
   },
   computed: {
-    ...mapGetters('semester', ['semesters'])
+    ...mapGetters('semester', ['semesters']),
   },
   created() {
     this.loading = true
@@ -166,7 +167,7 @@ export default {
     refresh(query) {
       this.loading = true
       this.fetchSemesters({
-        ...query
+        ...query,
       }).then(() => {
         this.loading = false
       })
@@ -185,7 +186,7 @@ export default {
       return get(item, 'config.endDate', '')
         ? moment(item.config.endDate).format('D/MM/YYYY')
         : ''
-    }
-  }
+    },
+  },
 }
 </script>

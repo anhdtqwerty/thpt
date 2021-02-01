@@ -41,6 +41,8 @@ const APIHelper = api => ({
   fetchOne: (id, option) => axios.get(api + id, option),
   create: (params, options) =>
     axios.post(api, utils.filterObject(params), options),
+  checkin: (params, options) =>
+    axios.post(api + 'checkin', utils.filterObject(params), options),
   update: (id, params, option) =>
     axios.put(api + id, utils.filterObject(params), option),
   remove: (id, option) => axios.delete(api + id, option)

@@ -10,19 +10,9 @@
           ]"
         />
       </div>
-      <div>
-        <v-btn
-          color="primary"
-          @click="save"
-          :disabled="!classData.id"
-          :loading="loading"
-        >
-          <v-icon left>mdi-plus</v-icon> Lưu
-        </v-btn>
-      </div>
     </div>
 
-    <v-card class="px-md-6 mx-md-4 elevation-1">
+    <v-card class="pa-md-6 mx-md-4 elevation-1">
       <v-row>
         <v-col cols="4" class="md-4">
           <autocomplete-class
@@ -31,189 +21,81 @@
             item-value="id"
             label="Lớp"
             placeholder="Chọn Lớp Học"
+            auto-select-first
             required
             dense
             outlined
           ></autocomplete-class>
         </v-col>
       </v-row>
-      <v-data-table
-        :loading="loading"
-        :headers="originHeaders"
-        :items="slots"
-        hide-default-footer
-        item-key="id"
-      >
-        <template v-slot:item.monday="props">
-          <TimeTableEditDialog :data.sync="props.item['monday']" />
-        </template>
-        <template v-slot:item.tuesday="props">
-          <TimeTableEditDialog :data.sync="props.item['tuesday']" />
-        </template>
-        <template v-slot:item.wednesday="props">
-          <TimeTableEditDialog :data.sync="props.item['wednesday']" />
-        </template>
-        <template v-slot:item.thursday="props">
-          <TimeTableEditDialog :data.sync="props.item['thursday']" />
-        </template>
-        <template v-slot:item.friday="props">
-          <TimeTableEditDialog :data.sync="props.item['friday']" />
-        </template>
-        <template v-slot:item.saturday="props">
-          <TimeTableEditDialog :data.sync="props.item['saturday']" />
-        </template>
-      </v-data-table>
+      <TimeTableTable @onCellClick="onChange" :slots="slots" />
     </v-card>
+    <TimeTableEditDialog
+      :classData="classData"
+      :state="dialog"
+      :slotData="selected"
+    />
   </div>
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import AutocompleteClass from '@/components/basic/input/AutocompleteClass'
 import TimeTableEditDialog from '@/modules/timeTable/TimeTableEditDialog.vue'
+import TimeTableTable from '@/modules/timeTable/TimeTableTable.vue'
 
-const originHeaders = [
-  {
-    text: '',
-    value: 'slot',
-    align: 'center',
-    sortable: false,
-    width: 100
-  },
-  {
-    text: 'Thứ 2',
-    value: 'monday',
-    align: 'center',
-    sortable: false
-  },
-  {
-    text: 'Thứ 3',
-    value: 'tuesday',
-    align: 'center',
-    sortable: false
-  },
-  {
-    text: 'Thứ 4',
-    value: 'wednesday',
-    align: 'center',
-    sortable: false
-  },
-  {
-    text: 'Thứ 5',
-    value: 'thursday',
-    align: 'center',
-    sortable: false
-  },
-  {
-    text: 'Thứ 6',
-    value: 'friday',
-    align: 'center',
-    sortable: false
-  },
-  {
-    text: 'Thứ 7',
-    value: 'saturday',
-    align: 'center',
-    sortable: false
-  }
-]
-const defaultSlots = [
-  {
-    slot: 'Tiết 1'
-  },
-  {
-    slot: 'Tiết 2'
-  },
-  {
-    slot: 'Tiết 3'
-  },
-  {
-    slot: 'Tiết 4'
-  },
-  {
-    slot: 'Tiết 5'
-  },
-  {
-    slot: 'Tiết 6'
-  },
-  {
-    slot: 'Tiết 7'
-  },
-  {
-    slot: 'Tiết 8'
-  },
-  {
-    slot: 'Tiết 9'
-  },
-  {
-    slot: 'Tiết 10'
-  }
-]
 export default {
   components: {
     Breadcrumbs,
     TimeTableEditDialog,
+    TimeTableTable,
     AutocompleteClass
   },
   data() {
     return {
       loading: false,
-      headers: [],
-      originHeaders: originHeaders,
       createState: false,
       filterState: false,
       dialog: false,
-      classData: {},
-      slots: []
+      selected: null,
+      classData: {}
     }
   },
-  computed: {},
+  computed: {
+    ...mapGetters('classDetail', ['slots'])
+  },
   created() {
     this.searchTeachers()
     this.searchSubjects()
-    if (!this.slots || !this.slots[this.day]) {
-    }
   },
   methods: {
     ...mapActions('search', ['searchTeachers', 'searchSubjects']),
     ...mapActions('classDetail', [
-      'fetchClass',
-      'updateClass',
-      'createAttendances'
+      'fetchSlots',
+      'createSlot',
+      'updateSlot',
+      'updateClass'
     ]),
-    open() {},
-    cancel() {},
-    async save() {
-      this.loading = true
-      await this.updateClass({ id: this.classData.id, schedule: this.slots })
-      this.$alert.success('Cập nhật thành công')
-      this.loading = false
+    onChange(selected) {
+      this.selected = selected
+      this.dialog = !this.dialog
     },
+    cancel() {},
+
     close() {}
   },
   watch: {
-    classData() {
-      if (!this.classData) this.slots = []
-      this.slots = this.classData.schedule
-        ? this.classData.schedule
-        : JSON.parse(JSON.stringify(defaultSlots))
+    async classData() {
+      if (!this.classData) {
+      } else {
+        await this.fetchSlots({ class: this.classData.id })
+        console.log(this.slots)
+      }
+    },
+    slots() {
+      console.log(this.slots)
     }
   }
 }
 </script>
-<style lang="scss" scoped>
-::v-deep tr:hover {
-  background-color: transparent !important;
-}
-::v-deep td:hover {
-  background-color: #e3e3e3 !important;
-}
-::v-deep td {
-  padding: 0 !important;
-}
-::v-deep td .v-small-dialog__activator {
-  width: 100%;
-  height: 100%;
-}
-</style>

@@ -9,6 +9,14 @@
       </div>
       <div class="flex-center">
         <v-btn
+          v-if="$vuetify.breakpoint.mdAndUp"
+          class="mr-2"
+          outlined
+          color="success"
+        >
+          <v-icon left>mdi-file-excel</v-icon> Xuất Excel
+        </v-btn>
+        <v-btn
           v-if="selected.length"
           dark
           color="red"
@@ -38,10 +46,8 @@
         v-model="selected"
         show-select
       >
-        <div slot="top" class="mb-md-6">
-          <div class="pt-6">
+        <div slot="top" class="py-md-6">
             <student-filter @onFilterChanged="refresh"></student-filter>
-          </div>
         </div>
         <template v-slot:[`item.name`]="{ item }">
           <card-student-name :student="item" link />

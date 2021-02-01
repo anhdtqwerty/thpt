@@ -20,6 +20,7 @@
             outlined
             dense
             clearable
+            hide-details
           ></autocomplete-generation>
         </v-form>
 

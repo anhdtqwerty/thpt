@@ -20,6 +20,8 @@ import ClassSlots from '@/views/class/ClassSlots'
 import Generations from '@/views/generation/Generations'
 // ---------------- STUDENT -------------------------------
 import Students from '@/views/student/Students'
+import Attendances from '@/views/student/Attendences.vue'
+import Attendance from '@/views/student/Attendance'
 import Reservation from '@/views/student/Reservation.vue'
 import StudentDashboard from '@/views/student/Dashboard'
 import Student from '@/views/student/Student'
@@ -117,6 +119,24 @@ const routes = [
         component: DashBoard,
         meta: {
           title: 'Dashboard',
+          auth: true
+        }
+      },
+      {
+        path: 'attendances',
+        name: 'attendances',
+        component: Attendances,
+        meta: {
+          title: 'Attendances',
+          auth: true
+        }
+      },
+      {
+        path: 'attendance/:id',
+        name: 'attendance',
+        component: Attendance,
+        meta: {
+          title: 'Attendance',
           auth: true
         }
       },

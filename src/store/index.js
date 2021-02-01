@@ -27,6 +27,7 @@ import students from './user/students'
 import studentDashboard from './dashboard/studentDashboard'
 import student from './user/student'
 import studentImporter from './importer/studentImporter.js'
+import attendance from './student/attendance'
 import _ from 'lodash'
 /**
  * DEPARTMENT
@@ -75,6 +76,7 @@ export default createStore(Vuex.Store, {
   ],
   modules: {
     rest,
+    attendance,
     auth,
     view,
     user,
