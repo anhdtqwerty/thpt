@@ -17,7 +17,7 @@ export default {
     marks: {}
   },
   actions: {
-    async initClass({ commit }, { id }) {
+    async initClass({ commit }, {id}) {
       const [classData, slots, attendances, marks] = await Promise.all([
         Class.fetchOne(id),
         Slot.fetch({ class: id }),
@@ -26,7 +26,7 @@ export default {
       ])
       commit('changeState', {
         classData,
-        attendances: _.keyBy(attendances, a => a.slot.id + a.userId),
+        attendances: _.keyBy(attendances, a => a.id + a.userId),
         slots: _.keyBy(
           slots.map(s => ({ key: `${s.index}-${s.day}`, ...s })),
           'key'
