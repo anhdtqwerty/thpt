@@ -4,15 +4,30 @@
     <v-row class="pr-12">
       <v-col class="d-flex pb-0" cols="12">
         <v-subheader class="px-0">Địa chỉ hiện tại</v-subheader>
-        <v-text-field v-model="currentLive" dense></v-text-field>
+        <v-text-field
+          hide-details
+          :outlined="edit"
+          v-model="currentLive"
+          dense
+        ></v-text-field>
       </v-col>
       <v-col class="d-flex pb-0" cols="12">
         <v-subheader class="px-0">Tỉnh/thành phố</v-subheader>
-        <v-text-field v-model="province" dense></v-text-field>
+        <v-text-field
+          hide-details
+          :outlined="edit"
+          v-model="province"
+          dense
+        ></v-text-field>
       </v-col>
       <v-col class="d-flex pb-0" cols="12">
         <v-subheader class="px-0">Điện thoại nhà riêng</v-subheader>
-        <v-text-field v-model="landlinePhone" dense></v-text-field>
+        <v-text-field
+          hide-details
+          :outlined="edit"
+          v-model="landlinePhone"
+          dense
+        ></v-text-field>
       </v-col>
     </v-row>
   </v-form>
@@ -26,6 +41,7 @@ export default {
       type: [Object],
       default: () => {},
     },
+    edit: Boolean,
   },
   data: () => ({
     valid: true,

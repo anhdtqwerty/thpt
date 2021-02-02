@@ -2,12 +2,23 @@
   <div>
     <div class="pa-4 d-flex justify-space-between align-center">
       <Breadcrumbs
-        :headline="teacherInfo.name +' - ' + teacherInfo.code"
+        :headline="teacherInfo.name + ' - ' + teacherInfo.code"
         :link="[{ text: 'Giáo viên', href: '../teachers' }]"
       />
+      <div>
+        <v-btn @click="cancel" v-if="edit" class="mr-2" color="primary" outlined
+          >Hủy</v-btn
+        >
+        <v-btn @click="save" v-if="edit" depressed color="primary">Lưu</v-btn>
+      </div>
     </div>
 
-    <teacher-profile :teacher="teacherInfo"></teacher-profile>
+    <teacher-profile
+      ref="teacherProfile"
+      :edit="edit"
+      @onEdit="edit = !edit"
+      :teacher="teacherInfo"
+    ></teacher-profile>
   </div>
 </template>
 
@@ -30,25 +41,20 @@ export default {
     return {
       tab: null,
       avatar: {},
+      edit: false,
     }
   },
   async created() {
     await this.fetchTeacher(this.$route.params.id)
   },
   methods: {
-    ...mapActions('teacher', ['fetchTeacher', 'removeTeacher']),
-    remove() {
-      this.$dialog.confirm({
-        title: 'Xóa Giáo Viên',
-        text: `Bạn Có chắc muốn xóa giáo viên này.?`,
-        okText: 'Có',
-        cancelText: 'Không',
-        done: async () => {
-          await this.removeTeacher(this.teacherInfo)
-          this.$router.push(`/teachers/`)
-        },
-      })
+    ...mapActions('teacher', ['fetchTeacher']),
+    cancel() {
+      this.edit = !this.edit
     },
+    save() {
+      this.$refs.teacherProfile.save()
+    }
   },
 }
 </script>

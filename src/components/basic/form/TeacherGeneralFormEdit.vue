@@ -4,23 +4,51 @@
     <v-row class="pr-12">
       <v-col class="d-flex pb-0" cols="12">
         <v-subheader class="px-0">Họ và tên</v-subheader>
-        <v-text-field v-model="name" dense></v-text-field>
+        <v-text-field
+          hide-details
+          v-model="name"
+          :outlined="edit"
+          dense
+        ></v-text-field>
       </v-col>
       <v-col class="d-flex pb-0" cols="12">
         <v-subheader class="px-0">Ngày sinh</v-subheader>
-        <date-picker :date.sync="dob" dense></date-picker>
+        <date-picker
+          hide-details
+          :date.sync="dob"
+          :outlined="edit"
+          dense
+        ></date-picker>
       </v-col>
       <v-col class="d-flex pb-0" cols="12">
         <v-subheader class="px-0">Giới tính</v-subheader>
-        <v-select v-model="gender" :items="['male', 'female']" dense></v-select>
+        <v-select
+          v-model="gender"
+          :items="genders"
+          item-text="title"
+          item-value="value"
+          :outlined="edit"
+          dense
+          hide-details
+        ></v-select>
       </v-col>
       <v-col class="d-flex pb-0" cols="12">
         <v-subheader class="px-0">Dân tộc</v-subheader>
-        <v-text-field v-model="ethnic" dense></v-text-field>
+        <v-text-field
+          hide-details
+          :outlined="edit"
+          v-model="ethnic"
+          dense
+        ></v-text-field>
       </v-col>
       <v-col class="d-flex pb-0" cols="12">
         <v-subheader class="px-0">Địa chỉ thường trú</v-subheader>
-        <v-text-field v-model="frequentlyAddress" dense></v-text-field>
+        <v-text-field
+          :outlined="edit"
+          v-model="frequentlyAddress"
+          dense
+          hide-details
+        ></v-text-field>
       </v-col>
     </v-row>
   </v-form>
@@ -29,6 +57,8 @@
 <script>
 import { mapActions } from 'vuex'
 import DatePicker from '@/components/basic/picker/DateIOSPicker.vue'
+import { moment } from 'moment'
+
 export default {
   components: { DatePicker },
   props: {
@@ -36,6 +66,7 @@ export default {
       type: [Object],
       default: () => {},
     },
+    edit: Boolean,
   },
   data: () => ({
     valid: true,
@@ -44,16 +75,15 @@ export default {
     dob: '',
     ethnic: '',
     frequentlyAddress: '',
-    rules: {
-      required: (value) => !!value || 'Required.',
-      min: (v) => v.length >= 6 || 'Min 8 characters',
-      email: (v) => /.+@.+/.test(v) || 'E-mail must be valid',
-    },
+    genders: [
+      { title: 'Nam', value: 'male' },
+      { title: 'Nữ', value: 'female' },
+    ],
   }),
   created() {
     this.name = this.teacher.name
     this.gender = this.teacher.gender
-    this.dob = this.teacher.metadata.dob
+    this.dob = moment(this.teacher.metadata.dob).format('DD/MM/YYYY')
     this.ethinic = this.teacher.metadata.ethinic
     this.frequentlyAddress = this.teacher.metadata.frequentAddress
   },
@@ -84,5 +114,8 @@ export default {
 <style scoped>
 .v-subheader {
   width: 30%;
+}
+.hide-border fieldset {
+  border-radius: 100px !important;
 }
 </style>

@@ -10,15 +10,24 @@
           item-value="value"
           v-model="type"
           dense
+          hide-details
+          :outlined="edit"
         ></v-autocomplete>
       </v-col>
       <v-col class="d-flex pb-0" cols="12">
         <v-subheader class="px-0">Năm vào trường</v-subheader>
-        <v-text-field v-model="schoolDate" dense></v-text-field>
+        <v-text-field
+          hide-details
+          :outlined="edit"
+          v-model="schoolDate"
+          dense
+        ></v-text-field>
       </v-col>
       <v-col class="d-flex pb-0" cols="12">
         <v-subheader class="px-0">Trạng thái hiện tại</v-subheader>
         <v-select
+          hide-details
+          :outlined="edit"
           auto-select-first
           :items="teacherStatus"
           item-text="title"
@@ -39,6 +48,7 @@ export default {
       type: [Object],
       default: () => {},
     },
+    edit: Boolean,
   },
   data: () => ({
     valid: true,

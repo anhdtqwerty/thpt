@@ -4,19 +4,39 @@
     <v-row class="pr-12">
       <v-col class="d-flex pb-0" cols="12">
         <v-subheader class="px-0">Trình độ</v-subheader>
-        <v-text-field label="Trình độ" dense></v-text-field>
+        <v-text-field
+          hide-details
+          :outlined="edit"
+          v-model="level"
+          dense
+        ></v-text-field>
       </v-col>
       <v-col class="d-flex pb-0" cols="12">
         <v-subheader class="px-0">Lĩnh vực</v-subheader>
-        <v-text-field v-model="subject" dense></v-text-field>
+        <v-text-field
+          hide-details
+          :outlined="edit"
+          v-model="subject"
+          dense
+        ></v-text-field>
       </v-col>
       <v-col class="d-flex pb-0" cols="12">
         <v-subheader class="px-0">Nơi đào tạo</v-subheader>
-        <v-text-field v-model="trainingPlace" dense></v-text-field>
+        <v-text-field
+          hide-details
+          :outlined="edit"
+          v-model="trainingPlace"
+          dense
+        ></v-text-field>
       </v-col>
       <v-col class="d-flex pb-0" cols="12">
         <v-subheader class="px-0">Năm vào ngành</v-subheader>
-        <v-text-field v-model="majorDate" dense></v-text-field>
+        <v-text-field
+          hide-details
+          :outlined="edit"
+          v-model="majorDate"
+          dense
+        ></v-text-field>
       </v-col>
     </v-row>
   </v-form>
@@ -30,6 +50,7 @@ export default {
       type: [Object],
       default: () => {},
     },
+    edit: Boolean
   },
   data: () => ({
     valid: true,
