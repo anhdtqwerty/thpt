@@ -3,12 +3,9 @@
     <div class="pa-4 d-flex justify-space-between align-center">
       <div>
         <Breadcrumbs
-          :headline="student ? `${student.name} - ${formatCode}` : 'Học Sinh'"
+          :headline="student ? `${student.name}` : 'Học Sinh'"
           :link="[{ text: 'Học sinh', href: '../students' }]"
         />
-      </div>
-      <div>
-        <v-btn class="mr-1" dark color="red" @click="remove">Xóa</v-btn>
       </div>
     </div>
 

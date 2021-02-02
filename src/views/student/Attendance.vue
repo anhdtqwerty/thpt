@@ -40,21 +40,12 @@
         </template>
       </v-data-table>
     </v-card>
-
-    <attendance-student-edit-dialog
-      :editClass="editClass"
-      :editStudent="editStudent"
-      :editInClass="editInClass"
-      :editOutClass="editOutClass"
-      :state="editState"
-    />
   </div>
 </template>
 
 <script>
 import Breadcrumbs from '@/components/layout/Breadcrumbs.vue'
 import AttendanceStudentFilter from '@/modules/attendance/AttendanceStudentFilter.vue'
-import AttendanceStudentEditDialog from '@/modules/attendance/AttendanceStudentEditDialog'
 import { mapActions, mapState, mapGetters } from 'vuex'
 import moment from 'moment'
 
@@ -62,7 +53,6 @@ export default {
   components: {
     Breadcrumbs,
     AttendanceStudentFilter,
-    AttendanceStudentEditDialog,
   },
   props: {
     student: Object,
@@ -75,16 +65,24 @@ export default {
           text: 'Giờ đến',
           value: 'checkin.inClass',
           width: 100,
+          align: 'center',
           sortable: false,
         },
         {
           text: 'Giờ về',
           value: 'checkin.outClass',
           width: 100,
+          align: 'center',
           sortable: false,
         },
-        { text: 'Ghi chú', value: 'data', width: 100, sortable: false },
-        { text: 'Hành động', value: 'action', width: 200, sortable: false },
+        {
+          text: 'Ghi chú',
+          value: 'data',
+          width: 300,
+          align: 'center',
+          sortable: false,
+        },
+        { text: 'Hành động', value: 'action', width: 100, sortable: false },
       ],
       isLoading: true,
       editState: false,
@@ -96,7 +94,6 @@ export default {
   },
   computed: {
     ...mapGetters('attendance', ['attendances']),
-    ...mapState('app', ['department']),
   },
   created() {
     this.refresh({})
@@ -105,11 +102,9 @@ export default {
     ...mapActions('attendance', ['fetchAttendances']),
     refresh(query) {
       this.isLoading = true
-      this.fetchAttendances({ ...query, department: this.department.id }).then(
-        () => {
-          this.isLoading = false
-        }
-      )
+      this.fetchAttendances({ ...query }).then(() => {
+        this.isLoading = false
+      })
     },
     formatTime(time, str) {
       return moment(time).format(str)

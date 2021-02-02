@@ -41,7 +41,7 @@
               <time-selector
                 outlined
                 dense
-                v-model="editInClass"
+                :input="formatTime(editInClass, 'LT')"
                 label="Giờ đến lớp"
                 hide-details
               />
@@ -50,7 +50,7 @@
               <time-selector
                 outlined
                 dense
-                v-model="editOutClass"
+                :input="formatTime(editOutClass, 'LT')"
                 label="Giờ về"
                 hide-details
               />
@@ -87,6 +87,7 @@
 
 <script>
 import TimeSelector from '@/components/basic/TimeSelector'
+import moment from 'moment'
 
 export default {
   components: { TimeSelector },
@@ -94,29 +95,27 @@ export default {
     state: Boolean,
     editStudent: Object,
     editClass: Object,
-    editOutClass: Object,
-    editInClass: Object,
+    editOutClass: String,
+    editInClass: String,
   },
   data() {
     return {
       dialog: false,
       checkin: false,
-      note: ''
+      note: '',
     }
   },
   methods: {
     cancel() {
       this.dialog = false
     },
-    changeTime(data) {
-      this.editInClass = data
+    formatTime(time, str) {
+      return moment(time).format(str)
     },
   },
   watch: {
     state(state) {
       this.dialog = true
-      console.log(this.editInClass)
-      console.log(this.editStudent)
     },
   },
 }
