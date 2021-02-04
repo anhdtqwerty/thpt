@@ -10,18 +10,41 @@
       </v-tabs>
     </v-card>
 
-    <!-- <v-card :flat="$vuetify.breakpoint.smAndDown">
+    <v-card :flat="$vuetify.breakpoint.smAndDown">
       <v-tabs-items v-model="tab">
         <v-tab-item :key="1">
-          <student-general-info :student="student" />
+          <v-card>
+            <div class="d-flex align-center">
+              <v-card-title>Danh sách học sinh trong lớp </v-card-title>
+              <v-spacer />
+              <drop-menu class="mr-2" @add-new-student="dialog = !dialog" />
+            </div>
+            <student-table
+              disableSort
+              mobile-breakpoint="0"
+            />
+          </v-card>
+        </v-tab-item>
+        <v-tab-item :key="2">
+          <v-card>
+            <div class="d-flex align-center">
+              <v-card-title>Danh sách phụ huynh </v-card-title>
+              <v-spacer />
+              <drop-menu class="mr-2" @add-new-student="dialog = !dialog" />
+            </div>
+            <student-table
+              disableSort
+              mobile-breakpoint="0"
+            />
+          </v-card>
         </v-tab-item>
       </v-tabs-items>
-    </v-card> -->
+    </v-card>
   </div>
 </template>
 
 <script>
-import StudentGeneralInfo from '@/modules/student/profile/StudentGeneralInfo'
+import StudentTable from '@/modules/class/student/StudentTable.vue'
 
 export default {
   data() {
@@ -30,11 +53,13 @@ export default {
     }
   },
   components: {
-    StudentGeneralInfo,
+    StudentTable,
   },
   props: {
-    student: Object,
+    classData: Object,
   },
+  methods:{
+  }
 }
 </script>
 
