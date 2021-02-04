@@ -1,12 +1,12 @@
 <template>
   <div>
-     <div class="pa-4 d-flex justify-space-between align-center">
+    <div class="pa-4 d-flex justify-space-between align-center">
       <div>
-       <Breadcrumbs
+        <Breadcrumbs
           headline="Khen thưởng kỷ luật"
           :link="[
-             { text: 'Học sinh', href: '../students' },
-             { text: 'KTKL', href: '/complimented' },
+            { text: 'Học sinh', href: '../students' },
+            { text: 'KTKL', href: '/complimented' },
           ]"
         />
       </div>
@@ -26,132 +26,41 @@
     </div>
 
     <v-card class="px-md-6 mx-md-4 elevation-1">
-      <v-data-table
-        :loading="loading"
-        :headers="originHeaders"
-        :items="violations"
-        item-key="id"
-        v-model="selected"
-        mobile-breakpoint="0"
-      >
-        <div slot="top" class="py-md-6">
-            <violation-filter
-              @onFilterChanged="refresh"
-            />
-        </div>
-        <template v-slot:item.action="{ item }">
-          <violation-actions :selected="item"> </violation-actions>
-        </template>
-        <template v-slot:item.createdAt="{ item }">
-          {{ formatDate(item) }}
-        </template>
-        <template v-slot:item.type="{ item }">
-          <span v-if="item.type">
-            {{
-              item.type === 'violation'
-                ? 'Kỷ luật'
-                : item.type === 'commendation'
-                ? 'Khen thưởng'
-                : ''
-            }}
-          </span>
-        </template>
-      </v-data-table>
+      <violation-filter class="py-md-6" @onFilterChanged="refresh" />
+      <violation-data-table :violations="violations"> </violation-data-table>
     </v-card>
     <violation-new-dialog :state="dialog"> </violation-new-dialog>
-    
   </div>
 </template>
 
 <script>
 import { mapActions, mapState } from 'vuex'
-import DropMenu from '@/modules/student/menu/Menu.vue'
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
-import SettingTableHeader from '@/components/basic/table/SettingHeaders'
-import ViolationActions from '@/modules/violation/ViolationListActions.vue'
 import ViolationFilter from '@/modules/violation/ViolationFilter.vue'
-import ViolationDialogFilter from '@/modules/violation/ViolationDialogFilter.vue'
-import ExportExcel from '@/components/basic/ExportExcel'
-import KebapMenu from '@/components/basic/menu/KebapMenu'
 import ViolationNewDialog from '@/modules/violation/ViolationNewDialog.vue'
-import ViolationUpdateDialog from '@/modules/violation/ViolationUpdateDialog.vue'
+import ViolationDataTable from '@/modules/violation/ViolationDataTable.vue'
 
 import moment from 'moment'
 import { get } from 'lodash'
 
-const originHeaders = [
-  {
-    text: 'Họ tên',
-    value: 'student.name',
-    align: 'left',
-    sortable: false,
-    show: true,
-  },
-  {
-    text: 'Ngày',
-    value: 'createdAt',
-    align: 'left',
-    sortable: false,
-    show: true,
-  },
-  {
-    text: 'Mục',
-    value: 'type',
-    align: 'left',
-    sortable: false,
-    show: true,
-  },
-  {
-    text: 'Lớp',
-    value: 'class.title',
-    align: 'left',
-    sortable: false,
-    show: true,
-  },
-  {
-    text: 'Nội dung',
-    value: 'description',
-    align: 'left',
-    sortable: false,
-    show: true,
-  },
-  {
-    text: 'Hành động',
-    value: 'action',
-    align: 'left',
-    sortable: false,
-    show: true,
-  },
-]
-
 export default {
   components: {
     Breadcrumbs,
-    DropMenu,
-    SettingTableHeader,
-    ViolationActions,
     ViolationFilter,
-    ViolationDialogFilter,
-    ExportExcel,
-    KebapMenu,
     ViolationNewDialog,
-    ViolationUpdateDialog,
+    ViolationDataTable,
   },
   data() {
     return {
-      loading: false,
-      headers: [],
-      originHeaders: originHeaders,
       createState: false,
       filterState: false,
       dialog: false,
-      selected: [],
       sendState: false,
     }
   },
   computed: {
     ...mapState('violation', ['violations']),
-     btnTitle() {
+    btnTitle() {
       if (this.$vuetify.breakpoint.smAndDown) {
         return 'Thêm'
       } else {

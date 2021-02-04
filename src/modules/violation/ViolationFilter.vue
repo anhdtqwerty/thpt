@@ -1,5 +1,5 @@
 <template>
-  <v-form ref="form">
+  <v-form ref="form" v-bind="this.$attrs">
     <v-row>
       <v-col cols="12" md="10">
         <v-row>
