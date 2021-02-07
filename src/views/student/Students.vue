@@ -22,7 +22,7 @@
           v-if="$vuetify.breakpoint.mdAndUp"
           class="mr-2"
           outlined
-          color="success"
+          color="primary"
         >
           <v-icon left>mdi-file-excel</v-icon> Xuất Excel
         </v-btn>
@@ -37,7 +37,11 @@
       </div>
     </div>
 
-    <v-card class="px-md-6 mx-md-4 elevation-1">
+    <v-card outlined class="py-md-4 px-md-6 mx-md-4 mb-4 elevation-0">
+      <student-filter @onFilterChanged="refresh" />
+    </v-card>
+
+    <v-card outlined class="px-md-6 mx-md-4 elevation-0">
       <v-data-table
         mobile-breakpoint="0"
         item-key="id"
@@ -51,9 +55,6 @@
         sort-by="name"
         show-select
       >
-        <div slot="top" class="py-md-6">
-          <student-filter @onFilterChanged="refresh"></student-filter>
-        </div>
         <template v-slot:[`item.name`]="{ item }">
           <card-student-name :student="item" link />
         </template>

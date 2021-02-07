@@ -1,10 +1,10 @@
 <template>
-  <v-form ref="form" v-model="valid">
+  <v-form ref="form" v-model="valid" v-bind="this.$attrs">
     <div class="mb-6">
       <p class="text-h5 primary--text mb-0">{{ student.name }}</p>
       <p class="text-subtitle-2">{{ student.code }}</p>
     </div>
-    <v-row>
+    <v-row class="align-bottom">
       <v-col
         v-for="studentDetail in studentDetails"
         :key="studentDetail.title"

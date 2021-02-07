@@ -2,7 +2,7 @@
   <v-form v-model="valid" ref="form" v-bind="this.$attrs">
     <p class="text-subtitle-2 mb-0">4. Thông tin gia đình</p>
     <v-row>
-      <v-col class="pb-0 pr-14" cols="6">
+      <v-col class="pb-0 pr-14" cols="12">
         <v-row>
           <v-col class="d-flex pb-0" cols="12">
             <v-subheader class="px-0">Họ và tên bố</v-subheader>
@@ -26,7 +26,7 @@
           </v-col>
         </v-row>
       </v-col>
-      <v-col class="pb-0 pr-14" cols="6">
+      <v-col class="pb-0 pr-14" cols="12">
         <v-row>
           <v-col class="d-flex pb-0" cols="12">
             <v-subheader class="px-0">Họ và tên mẹ</v-subheader>

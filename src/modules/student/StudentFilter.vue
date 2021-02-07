@@ -1,9 +1,9 @@
 <template>
   <v-form>
-    <v-row no-gutters>
-      <v-col cols="12" md="10" v-if="!advanced">
-        <v-row no-gutters>
-          <v-col class="py-2 pr-4" cols="12" md="3">
+    <v-row class="py-3">
+      <v-col cols="10">
+        <v-row>
+          <v-col cols="4">
             <v-text-field
               v-model="name"
               label="Tên học sinh"
@@ -15,7 +15,7 @@
               hide-details
             />
           </v-col>
-          <v-col class="py-2 pr-4" cols="12" md="3">
+          <v-col cols="4">
             <autocomplete-class
               v-model="classes"
               clear-icon="mdi-close"
@@ -27,7 +27,7 @@
               hide-details
             />
           </v-col>
-          <v-col class="py-2 pr-4" cols="12" md="3">
+          <v-col cols="4">
             <date-picker
               label="Ngày sinh"
               outlined
@@ -37,9 +37,7 @@
               :date.sync="dob"
             ></date-picker>
           </v-col>
-        </v-row>
-        <v-row no-gutters>
-          <v-col class="py-2 pr-4" cols="12" md="3">
+          <v-col cols="4">
             <v-text-field
               v-model="code"
               clear-icon="mdi-close"
@@ -51,7 +49,7 @@
               hide-details
             />
           </v-col>
-          <v-col class="py-2 pr-4" cols="12" md="3">
+          <v-col cols="4">
             <v-select
               v-model="status"
               :items="studentStatus"
@@ -65,7 +63,7 @@
               hide-details
             />
           </v-col>
-          <v-col class="py-2 pr-4" cols="12" md="3">
+          <v-col cols="4">
             <v-select
               :items="genders"
               item-text="title"
@@ -78,20 +76,14 @@
               hide-details
             />
           </v-col>
-          <v-col class="py-2 pr-4" cols="12" md="3">
-            <v-btn
-              v-if="!advanced"
-              height="40"
-              color="#0D47A1"
-              @click="onFilterChanged"
-              outlined
-            >
-              <v-icon left dark>mdi-filter-outline</v-icon>Lọc
-            </v-btn>
-          </v-col>
         </v-row>
       </v-col>
-      <v-col cols="12" md="10" v-else>
+      <v-col class="d-flex align-end" cols="2">
+        <v-btn height="40" color="#0D47A1" @click="onFilterChanged" outlined>
+          Tìm kiếm
+        </v-btn>
+      </v-col>
+      <!-- <v-col cols="12" md="10" v-else>
         <v-row no-gutters>
           <v-col cols="12" md="4" class="pt-md-2">
             <v-text-field
@@ -109,15 +101,15 @@
             />
           </v-col>
         </v-row>
-      </v-col>
-      <v-col class="py-2 d-flex" cols="12" md="2">
+      </v-col> -->
+      <!-- <v-col class="py-2 d-flex" cols="12" md="2">
         <v-spacer />
         <v-checkbox
           class="mt-n1 pt-3"
           v-model="advanced"
           label="Tìm kiếm nhanh"
         ></v-checkbox>
-      </v-col>
+      </v-col> -->
     </v-row>
   </v-form>
 </template>
@@ -148,7 +140,6 @@ export default {
       { title: 'Nữ', value: 'female' },
       { title: 'Khác', value: 'other' },
     ],
-    advanced: false,
     classData: '',
   }),
   computed: {

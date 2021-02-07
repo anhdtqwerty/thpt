@@ -4,7 +4,10 @@
       <div>
         <Breadcrumbs
           :headline="student ? `${student.name}` : 'Học Sinh'"
-          :link="[{ text: 'Học sinh', href: '../students' }]"
+          :link="[
+            { text: 'Học sinh', href: '../students' },
+            { text: 'Dang sách' },
+          ]"
         />
       </div>
     </div>
