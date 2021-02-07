@@ -3,7 +3,7 @@
     <v-menu offset-y>
       <template v-slot:activator="{ on, attrs }">
         <v-btn v-bind="attrs" v-on="on" icon>
-          <v-icon>mdi-dots-vertical</v-icon>
+          <v-icon color="primary">mdi-dots-vertical</v-icon>
         </v-btn>
       </template>
       <v-list>
