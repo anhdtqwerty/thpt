@@ -33,6 +33,14 @@
         <v-list-item-action></v-list-item-action>
         <v-list-item-title>Khen thưởng kỷ luật</v-list-item-title>
       </v-list-item>
+       <v-list-item
+        class="px-0"
+        link
+        to="/diligence"
+      >
+        <v-list-item-action></v-list-item-action>
+        <v-list-item-title>Chuyên cần</v-list-item-title>
+      </v-list-item>
     </v-list>
   </v-list-group>
 </template>

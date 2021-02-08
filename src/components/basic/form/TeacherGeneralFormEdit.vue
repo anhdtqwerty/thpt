@@ -1,53 +1,53 @@
 <template>
   <v-form v-model="valid" ref="form" v-bind="this.$attrs">
-    <v-row>
-      <v-col class="pb-0" cols="12" md="6">
+    <p class="text-subtitle-2 mb-0">1. Thông tin cơ bản</p>
+    <v-row class="pr-12">
+      <v-col class="d-flex pb-0" cols="12">
+        <v-subheader class="px-0">Họ và tên</v-subheader>
         <v-text-field
-          ref="name"
+          hide-details
           v-model="name"
-          label="Tên giáo viên"
-          outlined
+          :outlined="edit"
           dense
         ></v-text-field>
       </v-col>
-      <v-col class="pb-0" cols="12" md="6">
+      <v-col class="d-flex pb-0" cols="12">
+        <v-subheader class="px-0">Ngày sinh</v-subheader>
         <date-picker
+          hide-details
           :date.sync="dob"
-          label="Ngày Sinh"
-          outlined
+          :outlined="edit"
           dense
         ></date-picker>
       </v-col>
-    </v-row>
-    <v-row>
-      <v-col class="pb-0" cols="12" md="6">
+      <v-col class="d-flex pb-0" cols="12">
+        <v-subheader class="px-0">Giới tính</v-subheader>
         <v-select
-          ref="gender"
           v-model="gender"
-          :items="['male', 'female']"
-          label="Giới tính"
-          outlined
+          :items="genders"
+          item-text="title"
+          item-value="value"
+          :outlined="edit"
           dense
+          hide-details
         ></v-select>
       </v-col>
-      <v-col class="pb-0" cols="12" md="6">
+      <v-col class="d-flex pb-0" cols="12">
+        <v-subheader class="px-0">Dân tộc</v-subheader>
         <v-text-field
-          ref="ethinic"
+          hide-details
+          :outlined="edit"
           v-model="ethnic"
-          label="Dân tộc"
-          outlined
           dense
         ></v-text-field>
       </v-col>
-    </v-row>
-    <v-row>
-      <v-col class="pb-0" cols="12">
+      <v-col class="d-flex pb-0" cols="12">
+        <v-subheader class="px-0">Địa chỉ thường trú</v-subheader>
         <v-text-field
-          ref="frequentlyAddress"
+          :outlined="edit"
           v-model="frequentlyAddress"
-          label="Địa chỉ thường trú"
-          outlined
           dense
+          hide-details
         ></v-text-field>
       </v-col>
     </v-row>
@@ -57,6 +57,8 @@
 <script>
 import { mapActions } from 'vuex'
 import DatePicker from '@/components/basic/picker/DateIOSPicker.vue'
+import { moment } from 'moment'
+
 export default {
   components: { DatePicker },
   props: {
@@ -64,6 +66,7 @@ export default {
       type: [Object],
       default: () => {},
     },
+    edit: Boolean,
   },
   data: () => ({
     valid: true,
@@ -72,20 +75,17 @@ export default {
     dob: '',
     ethnic: '',
     frequentlyAddress: '',
-    rules: {
-      required: (value) => !!value || 'Required.',
-      min: (v) => v.length >= 6 || 'Min 8 characters',
-      email: (v) => /.+@.+/.test(v) || 'E-mail must be valid',
-    },
+    genders: [
+      { title: 'Nam', value: 'male' },
+      { title: 'Nữ', value: 'female' },
+    ],
   }),
   created() {
-    if (this.teacher) {
-      this.name = this.teacher.name
-      this.gender = this.teacher.gender
-      this.dob = this.teacher.metadata.dob
-      this.ethinic = this.teacher.metadata.ethinic
-      this.frequentlyAddress = this.teacher.metadata.frequentAddress
-    }
+    this.name = this.teacher.name
+    this.gender = this.teacher.gender
+    this.dob = moment(this.teacher.metadata.dob).format('DD/MM/YYYY')
+    this.ethinic = this.teacher.metadata.ethinic
+    this.frequentlyAddress = this.teacher.metadata.frequentAddress
   },
   methods: {
     ...mapActions('user', ['generateStudentCode', 'validateEmail']),
@@ -108,10 +108,14 @@ export default {
       this.$refs.form.resetValidation()
     },
   },
-  watch: {
-    teacher(teacher) {
-      this.reset()
-    },
-  },
 }
 </script>
+
+<style scoped>
+.v-subheader {
+  width: 30%;
+}
+.hide-border fieldset {
+  border-radius: 100px !important;
+}
+</style>

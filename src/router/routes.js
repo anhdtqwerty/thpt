@@ -30,6 +30,7 @@ import StudentImporter from '@/views/student/StudentImporter.vue'
 import Violation from '@/views/violation/Violations.vue'
 import ContactBook from '@/views/account/ContactBook.vue'
 import ContactBookDetail from '@/views/account/ContactBookDetail.vue'
+import Diligence from "@/views/diligence/Diligence.vue"
 
 // ---------------- DEPARTMENT -------------------------------
 import Department from '@/views/department/Department'
@@ -218,6 +219,15 @@ const routes = [
         name: 'Violation',
         meta: {
           title: 'Khen thưởng kỷ luật',
+          auth: true
+        }
+      },
+      {
+        path: 'diligence',
+        component: Diligence,
+        name: 'Diligence',
+        meta: {
+          title: 'Chuyên cần',
           auth: true
         }
       },

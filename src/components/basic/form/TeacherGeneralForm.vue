@@ -40,7 +40,9 @@
         <v-select
           ref="gender"
           v-model="gender"
-          :items="['male', 'female']"
+          :items="genders"
+          item-text="title"
+          item-value="value"
           label="Giới tính"
           outlined
           dense
@@ -93,6 +95,10 @@ export default {
     dob: '',
     ethnic: '',
     frequentlyAddress: '',
+    genders: [
+      { title: 'Nam', value: 'male' },
+      { title: 'Nữ', value: 'female' },
+    ],
   }),
   created() {
     if (this.teacher) {
