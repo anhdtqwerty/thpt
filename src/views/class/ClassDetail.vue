@@ -10,7 +10,7 @@
       :headline="classData.title"
       :link="[
         { text: 'Danh sách lớp', href: '../classes' },
-        { text: classData.title, id: classData.id }
+        { text: classData.title, id: classData.id },
       ]"
     />
 
@@ -20,17 +20,11 @@
         class="pa-6"
         max-height="178"
       >
-        <v-row no-gutters>
-          <v-btn
-            icon
-            dark
-            style="position: absolute; top: 10px; right: 10px"
-            @click="updateClass"
-            ><v-icon medium>create</v-icon></v-btn
-          >
-          <v-col
+        <div class="d-flex">
+          <div
             class="white--text pa-6 sm-12 xs-12 md-12 lg-6"
             style="
+            width: 99%;
               background: rgba(33, 33, 33, 0.3);
               border-radius: 4px;
               position: relative;
@@ -38,11 +32,11 @@
           >
             <div class="d-flex justify-space-between">
               <div class="">
-                <p>Lớp học:</p>
-                <h3>{{ classData.title }}</h3>
+                <p>Lớp học</p>
+                <h2>{{ classData.title }}</h2>
               </div>
               <div class="">
-                <p>Giáo viên chủ nhiệm:</p>
+                <p>Giáo viên chủ nhiệm</p>
                 <p
                   style="border: 1px solid #fff; border-radius: 4px"
                   class="pa-1"
@@ -51,38 +45,29 @@
                 </p>
               </div>
               <div class="">
-                <p>Niên khóa:</p>
+                <p>Sĩ số</p>
+                <p>{{ getStudentCount }}</p>
+              </div>
+              <div class="">
+                <p>Niên khóa</p>
                 <p>{{ classData.generation | getGeneration }}</p>
               </div>
               <div class="">
-                <p class="">Phân Ban:</p>
-                <p>{{ classData.dvision | getDivision }}</p>
+                <p class="">Ban học</p>
+                <p>{{ classData.division | getDivision }}</p>
               </div>
             </div>
-          </v-col>
-        </v-row>
+          </div>
+          <v-btn icon dark @click="updateClass"
+            ><v-icon medium>create</v-icon></v-btn
+          >
+        </div>
       </v-img>
     </v-card>
-    <v-row no-gutters class="mt-4">
-      <v-col cols="12" :class="{ 'pa-0': $vuetify.breakpoint.smAndDown }">
-        <v-card>
-          <div class="d-flex align-center">
-            <v-card-title>Danh sách học sinh </v-card-title>
-            <v-spacer />
-            <drop-menu class="mr-2" @add-new-student="dialog = !dialog" />
-          </div>
-          <student-table
-            @onCheckAttendance="checkAttendance"
-            disableSort
-            mobile-breakpoint="0"
-          />
-        </v-card>
-      </v-col>
-    </v-row>
+    <ClassTabs class="mt-4" />
     <class-update-dialog
       :state="updateDialogState"
       :classData="classInfo"
-      :slots="classSlots"
     ></class-update-dialog>
   </div>
   <h1 v-else-if="!$loading.active">Class not found</h1>
@@ -94,12 +79,14 @@ import Breadcrumbs from '@/components/layout/Breadcrumbs.vue'
 import ClassUpdateDialog from '@/modules/class/ClassUpdateDialog.vue'
 import StudentTable from '@/modules/class/student/StudentTable.vue'
 import DropMenu from '@/modules/class/student/Menu.vue'
+import ClassTabs from '@/modules/class/ClassTabs.vue'
 export default {
   components: {
     Breadcrumbs,
     ClassUpdateDialog,
     StudentTable,
-    DropMenu
+    DropMenu,
+    ClassTabs,
   },
   data() {
     return {
@@ -107,7 +94,7 @@ export default {
       attendanceDialogState: false,
       updateDialogState: false,
       tab: null,
-      dialog: false
+      dialog: false,
     }
   },
   computed: {
@@ -169,7 +156,7 @@ export default {
       return get(this.classData.students, 'length', 0)
     },
     getCurrentSlot() {
-      const currentSlot = this.slots.filter(slot => {
+      const currentSlot = this.slots.filter((slot) => {
         return new Date(slot.endTime).getTime() < new Date().getTime()
       })
       return currentSlot.length
@@ -180,11 +167,11 @@ export default {
     getPercentageAttendance() {
       const attendanceValues = Object.values(this.attendances)
       const attendanceNum = attendanceValues.filter(
-        attendance =>
+        (attendance) =>
           attendance.status === 'attendance' || attendance.status === 'late'
       )
       return Math.floor((attendanceNum.length / attendanceValues.length) * 100)
-    }
+    },
   },
   methods: {
     ...mapActions('classDetail', ['initClass', 'fetchAttendances']),
@@ -194,7 +181,7 @@ export default {
     },
     updateClass() {
       this.updateDialogState = !this.updateDialogState
-    }
+    },
   },
   async created() {
     const classId = this.$route.params.id
@@ -219,8 +206,8 @@ export default {
     getDivision(division) {
       if (!division) return 'không có'
       else return division.title
-    }
-  }
+    },
+  },
 }
 </script>
 <style scoped>
