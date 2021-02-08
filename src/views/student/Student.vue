@@ -10,9 +10,20 @@
           ]"
         />
       </div>
+      <div>
+        <v-btn
+          @click="edit = !edit"
+          v-if="edit"
+          class="mr-2"
+          color="primary"
+          outlined
+          >Hủy</v-btn
+        >
+        <v-btn @click="save" v-if="edit" depressed color="primary">Lưu</v-btn>
+      </div>
     </div>
 
-    <student-profile v-if="student.id" :student="student" />
+    <student-profile :edit="edit" v-if="student.id" :student="student" />
   </div>
 </template>
 <script>
@@ -34,6 +45,7 @@ export default {
   data() {
     return {
       tab: null,
+      edit: false,
     }
   },
   async created() {

@@ -8,7 +8,7 @@
       <student-profile-header :student="student" />
     </v-col>
     <v-col cols="12">
-      <student-profile-main :student="student" />
+      <student-profile-main :edit="edit" :student="student" />
     </v-col>
   </v-row>
 </template>
@@ -24,11 +24,11 @@ export default {
   },
   props: {
     student: Object,
+    edit: Boolean,
   },
   data() {
     return {
       dialog: true,
-      edit: false,
     }
   },
   methods: {

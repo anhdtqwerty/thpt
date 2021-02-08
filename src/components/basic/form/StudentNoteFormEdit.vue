@@ -4,11 +4,19 @@
     <v-row class="pr-12">
       <v-col class="py-0" cols="12">
         <v-subheader class="pa-0">Ghi chú</v-subheader>
-        <v-text-field class="ma-0" v-model="notes" dense></v-text-field>
+        <v-text-field
+          :outlined="edit"
+          hide-details
+          class="ma-0"
+          v-model="notes"
+          dense
+        ></v-text-field>
       </v-col>
       <v-col class="py-0" cols="12" md="6">
         <v-subheader class="pa-0">Ngày vào đội</v-subheader>
         <date-picker
+          :outlined="edit"
+          hide-details
           class="ma-0"
           :date.sync="youngJoinedDate"
           dense
@@ -17,6 +25,8 @@
       <v-col class="py-0" cols="12" md="6">
         <v-subheader class="pa-0">Ngày vào đoàn</v-subheader>
         <date-picker
+          :outlined="edit"
+          hide-details
           class="ma-0"
           :date.sync="communistJoinedDate"
           dense
@@ -38,6 +48,7 @@ export default {
       type: [Object],
       default: () => {},
     },
+    edit: Boolean,
   },
   data: () => ({
     valid: true,

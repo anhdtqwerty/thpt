@@ -12,7 +12,7 @@
     <v-card elevation="0" outlined>
       <v-tabs-items v-model="tab">
         <v-tab-item :key="1">
-          <student-general-info :student="student" />
+          <student-general-info :edit="edit" :student="student" />
         </v-tab-item>
         <v-tab-item :key="2"> </v-tab-item>
         <v-tab-item :key="3">
@@ -45,6 +45,7 @@ export default {
   },
   props: {
     student: Object,
+    edit: Boolean,
   },
   computed: {
     ...mapState('violation', ['violations']),

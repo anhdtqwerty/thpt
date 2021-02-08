@@ -11,23 +11,48 @@
           </v-col>
           <v-col class="d-flex py-0" cols="12">
             <v-subheader class="px-0">Họ và tên bố</v-subheader>
-            <v-text-field v-model="dadName" dense></v-text-field>
+            <v-text-field
+              :outlined="edit"
+              hide-details
+              v-model="dadName"
+              dense
+            ></v-text-field>
           </v-col>
           <v-col class="d-flex py-0" cols="12">
             <v-subheader class="px-0">Số điện thoại bố</v-subheader>
-            <v-text-field v-model="dadPhone" dense></v-text-field>
+            <v-text-field
+              :outlined="edit"
+              hide-details
+              v-model="dadPhone"
+              dense
+            ></v-text-field>
           </v-col>
           <v-col class="d-flex py-0" cols="12">
             <v-subheader class="px-0">Email bố</v-subheader>
-            <v-text-field v-model="dadEmail" dense></v-text-field>
+            <v-text-field
+              :outlined="edit"
+              hide-details
+              v-model="dadEmail"
+              dense
+            ></v-text-field>
           </v-col>
           <v-col class="d-flex py-0" cols="12">
             <v-subheader class="px-0">Nghề nghiệp bố</v-subheader>
-            <v-text-field v-model="dadJob" dense></v-text-field>
+            <v-text-field
+              :outlined="edit"
+              hide-details
+              v-model="dadJob"
+              dense
+            ></v-text-field>
           </v-col>
           <v-col class="d-flex py-0" cols="12">
             <v-subheader class="px-0">Cơ quan bố</v-subheader>
-            <v-text-field v-model="dadCompany" dense></v-text-field>
+            <v-text-field
+              :outlined="edit"
+              hide-details
+              v-model="dadCompany"
+              dense
+            ></v-text-field>
           </v-col>
         </v-row>
       </v-col>
@@ -40,23 +65,48 @@
           </v-col>
           <v-col class="d-flex py-0" cols="12">
             <v-subheader class="px-0">Họ và tên mẹ</v-subheader>
-            <v-text-field v-model="momName" dense></v-text-field>
+            <v-text-field
+              :outlined="edit"
+              hide-details
+              v-model="momName"
+              dense
+            ></v-text-field>
           </v-col>
           <v-col class="d-flex py-0" cols="12">
             <v-subheader class="px-0">Số điện thoại mẹ</v-subheader>
-            <v-text-field v-model="momPhone" dense></v-text-field>
+            <v-text-field
+              :outlined="edit"
+              hide-details
+              v-model="momPhone"
+              dense
+            ></v-text-field>
           </v-col>
           <v-col class="d-flex py-0" cols="12">
             <v-subheader class="px-0">Email mẹ</v-subheader>
-            <v-text-field v-model="momEmail" dense></v-text-field>
+            <v-text-field
+              :outlined="edit"
+              hide-details
+              v-model="momEmail"
+              dense
+            ></v-text-field>
           </v-col>
           <v-col class="d-flex py-0" cols="12">
             <v-subheader class="px-0">Nghề nghiệp mẹ</v-subheader>
-            <v-text-field v-model="momJob" dense></v-text-field>
+            <v-text-field
+              :outlined="edit"
+              hide-details
+              v-model="momJob"
+              dense
+            ></v-text-field>
           </v-col>
           <v-col class="d-flex py-0" cols="12">
             <v-subheader class="px-0">Cơ quan mẹ</v-subheader>
-            <v-text-field v-model="momCompany" dense></v-text-field>
+            <v-text-field
+              :outlined="edit"
+              hide-details
+              v-model="momCompany"
+              dense
+            ></v-text-field>
           </v-col>
         </v-row>
       </v-col>
@@ -71,6 +121,7 @@ export default {
       type: [Object],
       default: () => {},
     },
+    edit: Boolean,
   },
   data: () => ({
     valid: true,
@@ -119,7 +170,7 @@ export default {
         dadJob: this.dadJob,
         dadCompany: this.dadCompany,
         momJob: this.momJob,
-        momCompany: this.momCompany
+        momCompany: this.momCompany,
       }
     },
     reset() {

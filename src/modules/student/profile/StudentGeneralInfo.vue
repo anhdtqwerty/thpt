@@ -36,7 +36,9 @@
     <v-divider></v-divider>
     <v-row class="pt-6" no-gutters>
       <v-col cols="12">
-        <v-btn @click="edit=!edit" color="primary" outlined>Sửa hồ sơ học sinh</v-btn>
+        <v-btn @click="edit = !edit" color="primary" outlined
+          >Sửa hồ sơ học sinh</v-btn
+        >
       </v-col>
       <v-col cols="12">
         <v-btn class="mt-4" text color="red" left>Xóa học sinh này</v-btn>
@@ -52,11 +54,6 @@ import StudentNoteFormEdit from '@/components/basic/form/StudentNoteFormEdit.vue
 import StudentFamilyFormEdit from '@/components/basic/form/StudentFamilyFormEdit.vue'
 
 export default {
-  data() {
-    return {
-      edit: false,
-    }
-  },
   components: {
     StudentGeneralFormEdit,
     StudentContactFormEdit,
@@ -65,6 +62,7 @@ export default {
   },
   props: {
     student: Object,
+    edit: Boolean,
   },
 }
 </script>
