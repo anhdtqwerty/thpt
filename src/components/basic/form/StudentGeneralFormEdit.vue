@@ -1,33 +1,56 @@
 <template>
   <v-form v-model="valid" ref="form" v-bind="this.$attrs">
-    <p class="text-subtitle-2 mb-0">1. Thông tin cơ bản</p>
+    <p class="text-subtitle-2">1. Thông tin cơ bản</p>
     <v-row class="pr-12">
-      <v-col class="d-flex pb-0" cols="12">
+      <v-col class="d-flex py-0" cols="12">
         <v-subheader class="px-0">Họ và tên</v-subheader>
-        <v-text-field v-model="name" dense regular></v-text-field>
+        <v-text-field
+          :outlined="edit"
+          hide-details
+          v-model="name"
+          dense
+          regular
+        ></v-text-field>
       </v-col>
-      <v-col class="d-flex pb-0" cols="12">
+      <v-col class="d-flex py-0" cols="12">
         <v-subheader class="px-0">Giới tính</v-subheader>
         <v-select
           v-model="gender"
           :items="genders"
           item-text="title"
           item-value="value"
+          :outlined="edit"
+          hide-details
           dense
           regular
         ></v-select>
       </v-col>
-      <v-col class="pb-0 d-flex" cols="12">
+      <v-col class="py-0 d-flex" cols="12">
         <v-subheader class="px-0">Ngày sinh</v-subheader>
-        <date-picker :date.sync="dob" dense></date-picker>
+        <date-picker
+          :outlined="edit"
+          hide-details
+          :date.sync="dob"
+          dense
+        ></date-picker>
       </v-col>
-      <v-col class="pb-0 d-flex" cols="12">
+      <v-col class="py-0 d-flex" cols="12">
         <v-subheader class="px-0">Quê quán</v-subheader>
-        <v-text-field v-model="frequentlyAddress" dense></v-text-field>
+        <v-text-field
+          :outlined="edit"
+          hide-details
+          v-model="frequentlyAddress"
+          dense
+        ></v-text-field>
       </v-col>
-      <v-col class="pb-0 d-flex" cols="12">
+      <v-col class="py-0 d-flex" cols="12">
         <v-subheader class="px-0">Dân tộc</v-subheader>
-        <v-text-field v-model="ethnic" dense></v-text-field>
+        <v-text-field
+          :outlined="edit"
+          hide-details
+          v-model="ethnic"
+          dense
+        ></v-text-field>
       </v-col>
     </v-row>
   </v-form>
@@ -44,6 +67,7 @@ export default {
       type: [Object],
       default: () => {},
     },
+    edit: Boolean,
   },
   data: () => ({
     valid: true,
@@ -101,5 +125,8 @@ export default {
 <style scoped>
 .v-subheader {
   width: 30%;
+}
+.v-text-field > .v-input__control > .v-input__slot:before {
+  border-style: none;
 }
 </style>

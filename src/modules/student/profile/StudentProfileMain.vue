@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card class="mb-1" :flat="$vuetify.breakpoint.smAndDown">
+    <v-card elevation="0" outlined>
       <v-tabs v-model="tab">
         <v-tab :key="1"> Hồ sơ </v-tab>
         <v-tab :key="2"> Học tập </v-tab>
@@ -9,14 +9,12 @@
       </v-tabs>
     </v-card>
 
-    <v-card :flat="$vuetify.breakpoint.smAndDown">
+    <v-card elevation="0" outlined>
       <v-tabs-items v-model="tab">
         <v-tab-item :key="1">
           <student-general-info :student="student" />
         </v-tab-item>
-        <v-tab-item :key="2">
-
-        </v-tab-item>
+        <v-tab-item :key="2"> </v-tab-item>
         <v-tab-item :key="3">
           <attendance-student-data-table :attendances="attendances" />
         </v-tab-item>

@@ -1,12 +1,12 @@
 <template>
   <v-form v-model="valid" ref="form" v-bind="this.$attrs">
-    <p class="text-subtitle-2 mb-0">3. Ghi chú về học sinh</p>
-    <v-row>
-      <v-col class="pb-0 pr-14" cols="6">
+    <p class="text-subtitle-2">3. Ghi chú về học sinh</p>
+    <v-row class="pr-12">
+      <v-col class="py-0" cols="12">
         <v-subheader class="pa-0">Ghi chú</v-subheader>
         <v-text-field class="ma-0" v-model="notes" dense></v-text-field>
       </v-col>
-      <v-col class="pb-0" cols="12" md="3">
+      <v-col class="py-0" cols="12" md="6">
         <v-subheader class="pa-0">Ngày vào đội</v-subheader>
         <date-picker
           class="ma-0"
@@ -14,7 +14,7 @@
           dense
         ></date-picker>
       </v-col>
-      <v-col class="pb-0" cols="12" md="3">
+      <v-col class="py-0" cols="12" md="6">
         <v-subheader class="pa-0">Ngày vào đoàn</v-subheader>
         <date-picker
           class="ma-0"

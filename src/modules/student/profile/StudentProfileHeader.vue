@@ -1,6 +1,6 @@
 <template>
-  <v-card :flat="$vuetify.breakpoint.smAndDown">
-    <v-row class="pa-4">
+  <v-card elevation="0" outlined>
+    <v-row class="pa-6">
       <v-col class="text-center" cols="3">
         <user-avatar-picker :student="student" type="student" />
       </v-col>

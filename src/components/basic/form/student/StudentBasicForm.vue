@@ -6,9 +6,10 @@
     </div>
     <v-row class="align-bottom">
       <v-col
+        class="pt-12"
         v-for="studentDetail in studentDetails"
         :key="studentDetail.title"
-        cols="3"
+        :cols="studentDetail.cols"
       >
         <p class="text-caption mb-0">{{ studentDetail.title }}</p>
         <p class="text-subtitle-2">{{ studentDetail.value }}</p>
@@ -23,10 +24,10 @@ export default {
     return {
       valid: true,
       studentDetails: [
-        { title: 'Lớp', value: this.student.classes[0].title },
-        { title: 'Niên khóa', value: this.student.generation.name },
-        { title: 'Số điện thoại', value: this.student.phone },
-        { title: 'Email', value: this.student.email },
+        { title: 'Lớp', value: this.student.classes[0].title, cols: 1 },
+        { title: 'Niên khóa', value: this.student.generation.name, cols: 3 },
+        { title: 'Số điện thoại', value: this.student.phone, cols: 2 },
+        { title: 'Email', value: this.student.email, cols: 4 },
       ],
     }
   },
