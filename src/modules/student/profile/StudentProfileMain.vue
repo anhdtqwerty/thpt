@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card class="mb-3" :flat="$vuetify.breakpoint.smAndDown">
+    <v-card class="mb-1" :flat="$vuetify.breakpoint.smAndDown">
       <v-tabs v-model="tab">
         <v-tab :key="1"> Hồ sơ </v-tab>
         <v-tab :key="2"> Học tập </v-tab>
