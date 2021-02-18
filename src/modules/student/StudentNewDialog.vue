@@ -6,8 +6,8 @@
     scrollable
   >
     <v-card>
-      <v-card-title class="primary white--text">
-        Thêm Mới Học Sinh
+      <v-card-title class="primary white--text text-uppercase">
+        Thêm học sinh mới
         <v-spacer></v-spacer>
         <v-btn dark icon>
           <v-icon @click="cancel">close</v-icon>

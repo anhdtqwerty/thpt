@@ -1,26 +1,51 @@
 <template>
   <v-form v-model="valid" ref="form" v-bind="this.$attrs">
-    <p class="text-subtitle-2 mb-0">2. Thông tin liên lạc</p>
+    <p class="text-subtitle-2">2. Thông tin liên lạc</p>
     <v-row class="pr-12">
-      <v-col class="d-flex pb-0" cols="12">
+      <v-col class="d-flex py-0" cols="12">
         <v-subheader class="px-0">Địa chỉ</v-subheader>
-        <v-text-field v-model="currentLive" dense></v-text-field>
+        <v-text-field
+          :outlined="edit"
+          hide-details
+          v-model="currentLive"
+          dense
+        ></v-text-field>
       </v-col>
-      <v-col class="pb-0 d-flex" cols="12">
+      <v-col class="py-0 d-flex" cols="12">
         <v-subheader class="px-0">Quận/huyện</v-subheader>
-        <v-text-field v-model="district" dense></v-text-field>
+        <v-text-field
+          :outlined="edit"
+          hide-details
+          v-model="district"
+          dense
+        ></v-text-field>
       </v-col>
-      <v-col class="pb-0 d-flex" cols="12">
+      <v-col class="py-0 d-flex" cols="12">
         <v-subheader class="px-0">Tỉnh/thành phố</v-subheader>
-        <v-text-field v-model="province" dense></v-text-field>
+        <v-text-field
+          :outlined="edit"
+          hide-details
+          v-model="province"
+          dense
+        ></v-text-field>
       </v-col>
-      <v-col class="pb-0 d-flex" cols="12">
+      <v-col class="py-0 d-flex" cols="12">
         <v-subheader class="px-0">Số điện thoại</v-subheader>
-        <v-text-field v-model="phone" dense></v-text-field>
+        <v-text-field
+          :outlined="edit"
+          hide-details
+          v-model="phone"
+          dense
+        ></v-text-field>
       </v-col>
-      <v-col class="pb-0 d-flex" cols="12">
+      <v-col class="py-0 d-flex" cols="12">
         <v-subheader class="px-0">Email</v-subheader>
-        <v-text-field v-model="email" dense></v-text-field>
+        <v-text-field
+          :outlined="edit"
+          hide-details
+          v-model="email"
+          dense
+        ></v-text-field>
       </v-col>
     </v-row>
   </v-form>
@@ -34,6 +59,7 @@ export default {
       type: [Object],
       default: () => {},
     },
+    edit: Boolean,
   },
   data: () => ({
     valid: true,
@@ -67,7 +93,7 @@ export default {
         province: this.province,
         district: this.district,
         phone: this.phone,
-        email: this.email
+        email: this.email,
       }
     },
     reset() {
