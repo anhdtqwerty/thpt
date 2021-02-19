@@ -1,16 +1,15 @@
 <template>
-  <v-list-group :value="false" active-class="black-text">
+  <v-list-group active-class="primary white--text" :value="false">
     <template v-slot:activator>
-      <v-list-item class="px-0">
-        <v-list-item-icon class="mr-4">
-          <v-icon>mdi-library</v-icon>
-        </v-list-item-icon>
-        <v-list-item-title>HỌC SINH</v-list-item-title>
-      </v-list-item>
+      <v-list-item-icon class="mr-4">
+        <v-icon>mdi-library</v-icon>
+      </v-list-item-icon>
+      <v-list-item-title>HỌC SINH</v-list-item-title>
     </template>
     <v-list class="py-0">
       <v-list-item
         class="px-0"
+        active-class="blue lighten-4 primary--text"
         link
         to="/students"
       >
@@ -18,6 +17,7 @@
         <v-list-item-title>Danh sách</v-list-item-title>
       </v-list-item>
       <v-list-item
+        active-class="blue lighten-4 primary--text"
         class="px-0"
         link
         to="/attendances"
@@ -26,6 +26,7 @@
         <v-list-item-title>Điểm danh</v-list-item-title>
       </v-list-item>
       <v-list-item
+        active-class="blue lighten-4 primary--text"
         class="px-0"
         link
         to="/complimented"
@@ -33,7 +34,8 @@
         <v-list-item-action></v-list-item-action>
         <v-list-item-title>Khen thưởng kỷ luật</v-list-item-title>
       </v-list-item>
-       <v-list-item
+      <v-list-item
+        active-class="blue lighten-4 primary--text"
         class="px-0"
         link
         to="/diligence"
@@ -52,9 +54,10 @@ export default {
     return { menu: null }
   },
   computed: {
-    ...mapGetters('auth', ['user', 'role'])
-  }
+    ...mapGetters('auth', ['user', 'role']),
+  },
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+</style>

@@ -1,5 +1,5 @@
 <template>
-  <v-list class="admin-toolbar" v-if="role.name === 'Manager'">
+  <v-list class="admin-toolbar py-0" v-if="role.name === 'Manager'">
     <Dashboard />
     <Students />
     <Teachers />
