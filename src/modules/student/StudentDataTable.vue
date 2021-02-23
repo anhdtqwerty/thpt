@@ -25,7 +25,12 @@
       </span>
     </template>
     <template v-slot:[`item.classes`]="{ item }">
-      <span v-if="item.classes">{{ item.classes | getClasses }}</span>
+      <router-link
+        style="text-decoration: none"
+        :to="'/class/' + item.classes[0].id"
+      >
+        <span v-if="item.classes">{{ item.classes | getClasses }}</span>
+      </router-link>
     </template>
     <template v-slot:[`item.gender`]="{ item }">{{
       item.gender === 'male' ? 'Nam' : item.gender === 'female' ? 'Nữ' : 'Khác'
@@ -35,6 +40,14 @@
     </template>
     <template v-slot:[`item.action`]="{ item }">
       <student-list-actions :item="item"></student-list-actions>
+    </template>
+    <template v-slot:[`item.notes`]="{ item }">
+      <v-tooltip max-width="250px" bottom>
+        <template v-slot:activator="{ on, attrs }">
+          <p v-bind="attrs" v-on="on" class="nowrap ma-0">{{ item.notes }}</p>
+        </template>
+        <span>{{ item.notes }}</span>
+      </v-tooltip>
     </template>
   </v-data-table>
 </template>
@@ -82,6 +95,7 @@ const originHeaders = [
     align: 'left',
     sortable: false,
     show: true,
+    width: '100',
   },
   {
     text: 'Ghi chú',
@@ -193,5 +207,11 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.nowrap {
+  white-space: nowrap;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  width: 230px;
+}
 </style>

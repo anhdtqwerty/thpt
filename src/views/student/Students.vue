@@ -3,8 +3,8 @@
     <div class="pa-4 d-flex justify-space-between align-center">
       <div>
         <Breadcrumbs
-          headline="Danh sách"
-          :link="[{ text: 'Danh sách', href: '../students' }]"
+          headline="Danh sách học sinh"
+          :link="[{ text: 'Học sinh', href: '../students' }]"
         />
       </div>
       <div class="flex-center">
