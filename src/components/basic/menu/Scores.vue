@@ -1,5 +1,5 @@
 <template>
-  <v-list-group :value="false" active-class="black-text">
+  <v-list-group :value="false" active-class="primary white--text">
     <template v-slot:activator>
       <v-list-item-icon class="mr-4">
         <v-icon>mdi-spellcheck</v-icon>
@@ -8,6 +8,7 @@
     </template>
     <v-list class="left-amber-border py-0">
       <v-list-item
+        active-class="blue lighten-4 primary--text"
         class="px-0"
         link
         to="/marks"
@@ -16,6 +17,7 @@
         <v-list-item-title>Số điểm</v-list-item-title>
       </v-list-item>
       <v-list-item
+        active-class="blue lighten-4 primary--text"
         class="px-0"
         link
         to="/marks-input"
