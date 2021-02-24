@@ -9,16 +9,6 @@
       </div>
       <div class="flex-center">
         <v-btn
-          v-if="selected.length"
-          dark
-          depressed
-          color="amber"
-          @click="sendState = !sendState"
-          class="mr-2"
-        >
-          <v-icon left>mdi-message-processing</v-icon>Gửi SMS
-        </v-btn>
-        <v-btn
           v-if="$vuetify.breakpoint.mdAndUp"
           class="mr-2"
           outlined
@@ -38,18 +28,18 @@
     </div>
 
     <v-card outlined class="py-md-4 px-md-6 mx-md-4 mb-6 elevation-0">
-      <student-filter @onFilterChanged="refresh" />
+      <student-filter  @onFilterChanged="refresh" />
     </v-card>
 
     <v-card outlined class="px-md-2 mx-md-4 elevation-0">
-      <student-data-table :selected.sync="selected" />
+      <student-data-table ref="studentDataTable" :selected.sync="selected" />
     </v-card>
 
     <student-new-dialog :state="createState" @done="requestPageSettings({})" />
-    <student-send-s-m-s-dialog
+    <!-- <student-send-s-m-s-dialog
       :data="selected"
       :state="sendState"
-    ></student-send-s-m-s-dialog>
+    ></student-send-s-m-s-dialog> -->
   </div>
 </template>
 <script>
@@ -57,7 +47,7 @@ import { mapActions, mapState } from 'vuex'
 import StudentFilter from '@/modules/student/StudentFilter'
 import StudentNewDialog from '@/modules/student/StudentNewDialog'
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
-import StudentSendSMSDialog from '@/modules/sms/StudentSendSMSDialog'
+// import StudentSendSMSDialog from '@/modules/sms/StudentSendSMSDialog'
 import StudentDataTable from '@/modules/student/StudentDataTable'
 
 export default {
@@ -65,7 +55,7 @@ export default {
     StudentNewDialog,
     StudentFilter,
     Breadcrumbs,
-    StudentSendSMSDialog,
+    // StudentSendSMSDialog,
     StudentDataTable,
   },
   props: {
@@ -75,7 +65,7 @@ export default {
     return {
       createState: false,
       sendState: false,
-      selected: []
+      selected: [],
     }
   },
   computed: {
@@ -96,6 +86,9 @@ export default {
       'removeStudents',
       'fetchStudents',
     ]),
+    refresh(query) {
+      this.$refs.studentDataTable.refresh(query)
+    },
     onRemove() {
       this.$dialog.confirm({
         title: 'Xóa Học Sinh',

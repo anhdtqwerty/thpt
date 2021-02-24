@@ -1,28 +1,66 @@
 <template>
   <v-dialog
-    :fullscreen="$vuetify.breakpoint.mobile"
+    :fullscreen="$vuetify.breakpoint.smAndDown"
     v-model="dialog"
-    width="661"
+    width="581"
+    scrollable
   >
     <v-card>
-      <v-toolbar dense class="elevation-0" color="#0D47A1" dark>
-        <v-toolbar-title>Chuyển lớp cho học sinh</v-toolbar-title>
+      <v-card-title class="primary white--text text-uppercase">
+        Chuyển lớp
         <v-spacer></v-spacer>
-        <v-btn icon>
+        <!-- <v-btn dark icon>
           <v-icon @click="cancel">close</v-icon>
-        </v-btn>
-      </v-toolbar>
+        </v-btn> -->
+      </v-card-title>
       <v-divider />
-
-      <v-form ref="form" class="pa-6">
-        <h4>{{ currentGeneration.description }}</h4>
-        <v-text-field v-model="item.grade" outlined dense></v-text-field>
-        <v-text-field v-model="item.classes[0].title" outlined dense></v-text-field>
-        <v-text-field outlined dense placeholder="Chuyển sang lớp mới"></v-text-field>
-      </v-form>
-      <v-card-actions class="px-4">
+      <v-card-text>
+        <v-form ref="form" class="py-4">
+          <v-row>
+            <v-col cols="6">
+              <p class="text-caption my-0">Học sinh</p>
+              <card-student-name :student="item" />
+            </v-col>
+            <v-col class="d-flex justify-space-between align-center" cols="6">
+              <div>
+                <p class="text-caption my-0">Ngày sinh</p>
+                <span>{{ item.dob }}</span>
+              </div>
+              <div>
+                <p class="text-caption my-0">Mã số</p>
+                <span>{{ item.code }}</span>
+              </div>
+              <div>
+                <p class="text-caption my-0">Lớp</p>
+                <span>{{ item.classes[0].title }}</span>
+              </div>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="6" class="d-flex justify-space-between align-center">
+              <div>
+                <p class="text-caption my-0">Lớp hiện tại</p>
+                <span class="text-subtitle-2 font-weight-black">{{
+                  item.classes[0].title
+                }}</span>
+              </div>
+              <div>
+                <v-icon x-large>mdi_arrow_right_alt</v-icon>
+              </div>
+            </v-col>
+          </v-row>
+        </v-form>
+      </v-card-text>
+      <v-divider></v-divider>
+      <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn dark color="#0D47A1" @click="save" :disabled="isLoading" dense
+        <v-btn
+          class="ma-2"
+          dark
+          depressed
+          color="#0D47A1"
+          @click="save()"
+          :disabled="isLoading"
           >Lưu</v-btn
         >
       </v-card-actions>
@@ -32,46 +70,28 @@
 
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex'
-import { get } from 'lodash'
+import CardStudentName from '@/components/basic/card/CardStudentName'
 
 export default {
+  components: {
+    CardStudentName,
+  },
   data() {
     return {
       dialog: false,
-      loading: 0,
-      name: '',
-      major: '',
-      classes: [],
-      rootMajor: {},
-      generation: '',
-      phone: '',
-      email: '',
-      lastemail: '',
-      username: '',
-      username_indexing: '',
-      username_no: 0,
-      role: '',
-      show: false,
-      password: '',
-      emailError: '',
       rules: {
-        required: (value) => !!value || 'Required.',
-        min: (v) => v.length >= 6 || 'Min 8 characters',
-        email: (v) => /.+@.+/.test(v) || 'E-mail must be valid',
+        required: (value) => !!value || 'Trường này không được để trống',
+        min: (v) => v.length >= 6 || 'Ít nhất 6 ký tự',
+        email: (v) => /.+@.+/.test(v) || 'Email chưa đúng định dạng',
       },
     }
   },
   props: {
     state: Boolean,
-    hideAdvanceOption: Boolean,
-    defaultPhone: String,
-    defaultEmail: String,
-    defaultName: String,
     item: Object,
   },
   computed: {
-    ...mapState('app', ['roles', 'department']),
-    ...mapState('app', ['currentGeneration']),
+    ...mapState('app', ['roles', 'department', 'currentGeneration']),
     ...mapGetters('app', ['roleIdByName', 'roles']),
     isLoading() {
       return this.loading > 0
@@ -80,85 +100,11 @@ export default {
       return this.rootMajor.majors || []
     },
   },
-  methods: {
-    ...mapActions('user', ['generateUserName', 'validateEmail']),
-    ...mapActions('student', ['createStudent']),
-    async save() {
-      if (!this.$refs.form.validate()) return
-      const studentGeneralForm = this.$refs.studentGeneralForm.getData()
-      const studentContactForm = this.$refs.studentContactForm.getData()
-      const studentNoteForm = this.$refs.studentNoteForm.getData()
-      const studentFamilyForm = this.$refs.studentFamilyForm.getData()
-      this.createStudent({
-        data: {
-          name: studentGeneralForm.name,
-          phone: studentContactForm.phone,
-          address: studentContactForm.currentLive,
-          notes: studentNoteForm.notes,
-          email: studentContactForm.email,
-          gender: studentGeneralForm.gender,
-          dob: studentGeneralForm.dob,
-          data: {
-            ...studentGeneralForm,
-            ...studentContactForm,
-            ...studentFamilyForm,
-            ...studentNoteForm,
-          },
-        },
-      })
-      this.dialog = false
-      this.reset()
-    },
-    async nameLostFocus() {
-      const {
-        username,
-        // eslint-disable-next-line
-        username_indexing,
-        // eslint-disable-next-line
-        username_no,
-      } = await this.generateUserName(this.name)
-      this.username = username
-      // eslint-disable-next-line
-      this.username_indexing = username_indexing
-      // eslint-disable-next-line
-      this.username_no = username_no
-    },
-    async emailLostFocus() {
-      try {
-        this.loading += 1
-        if (this.email !== this.lastemail) {
-          this.emailError = await this.validateEmail(this.email)
-        }
-        this.lastemail = this.email
-      } finally {
-        this.loading -= 1
-      }
-    },
-    cancel() {
-      this.dialog = false
-      this.reset()
-      this.$emit('cancel')
-    },
-    reset() {
-      this.name = ''
-      this.username = ''
-      this.phone = ''
-      this.status = 'active'
-      this.password = ''
-      this.email = ''
-    },
-  },
+  methods: {},
   watch: {
     state(state) {
       this.dialog = true
-      this.phone = this.defaultPhone || ''
-      this.email = this.defaultEmail || ''
-      this.name = this.defaultName || ''
-      if (this.defaultName) {
-        this.nameLostFocus()
-      }
     },
-    rootMajor() {},
   },
 }
 </script>

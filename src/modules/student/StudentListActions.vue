@@ -8,7 +8,7 @@
       </template>
       <v-list>
         <v-list-item>
-          <v-list-item-title>Chuyển lớp</v-list-item-title>
+          <v-list-item-title @click="changeClass=!changeClass">Chuyển lớp</v-list-item-title>
         </v-list-item>
         <v-list-item>
           <v-list-item-title>Chuyển trạng thái</v-list-item-title>
@@ -16,7 +16,7 @@
       </v-list>
     </v-menu>
 
-    <!-- <change-class-dialog :item="item" :state="changeState"></change-class-dialog> -->
+    <change-class-dialog :item="item" :state="changeClass"></change-class-dialog>
   </div>
 </template>
 
@@ -40,7 +40,7 @@ export default {
       smsDialogState: false,
       smsEditingState: false,
       sending: null,
-      changeState: false
+      changeClass: false
     }
   },
   computed: {

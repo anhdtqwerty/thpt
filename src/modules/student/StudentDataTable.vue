@@ -7,9 +7,7 @@
     :headers="headers"
     :items="students"
     :items-per-page="10"
-    v-model="selected"
     sort-by="name"
-    show-select
     @change="$emit('update:selected', selected)"
     :footer-props="{
       'items-per-page-text': 'Học sinh mỗi trang',
@@ -118,7 +116,6 @@ export default {
       headers: originHeaders,
       originHeaders: originHeaders,
       studentTableOptions: {},
-      selected: [],
       status: null,
       statuses: [
         { text: 'Active', value: 'false' },
@@ -140,7 +137,7 @@ export default {
       'fetchStudents',
     ]),
     async refresh(query) {
-      await this.searchStudents({ department: this.department.id, ...query })
+      await this.searchStudents({ ...query })
     },
     getTuitionStatus(leads) {
       if (!leads) return ''

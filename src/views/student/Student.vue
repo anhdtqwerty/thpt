@@ -37,7 +37,8 @@ export default {
     }
   },
   async created() {
-    this.refresh()
+    this.setTuitions([])
+    await this.fetchStudent(this.$route.params.id)
   },
   methods: {
     ...mapActions('student', [
@@ -46,10 +47,6 @@ export default {
       'setTuitions',
       'removeStudent',
     ]),
-    async refresh() {
-      this.setTuitions([])
-      await this.fetchStudent(this.$route.params.id)
-    },
     resetValidation() {
       this.$refs.form.resetValidation()
     },
