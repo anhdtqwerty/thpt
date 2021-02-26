@@ -29,15 +29,6 @@
         active-class="blue lighten-4 primary--text"
         class="px-0"
         link
-        to="/complimented"
-      >
-        <v-list-item-action></v-list-item-action>
-        <v-list-item-title>Khen thưởng kỷ luật</v-list-item-title>
-      </v-list-item>
-      <v-list-item
-        active-class="blue lighten-4 primary--text"
-        class="px-0"
-        link
         to="/diligence"
       >
         <v-list-item-action></v-list-item-action>

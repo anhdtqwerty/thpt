@@ -15,7 +15,7 @@
           v-if="$vuetify.breakpoint.mdAndUp"
           class="mr-2"
           outlined
-          color="success"
+          color="primary"
         >
           <v-icon left>mdi-file-excel</v-icon> Xuất Excel
         </v-btn>
@@ -24,7 +24,6 @@
         </v-btn>
       </div>
     </div>
-
     <v-card class="px-md-6 mx-md-4 elevation-1">
       <violation-filter class="py-md-6" @onFilterChanged="refresh" />
       <violation-data-table :violations="violations"> </violation-data-table>

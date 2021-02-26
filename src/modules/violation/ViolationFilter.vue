@@ -49,7 +49,7 @@
           color="primary"
           outlined
         >
-          <v-icon left dark>mdi-filter-outline</v-icon>Lọc
+          Tìm kiếm
         </v-btn>
       </v-col>
     </v-row>
