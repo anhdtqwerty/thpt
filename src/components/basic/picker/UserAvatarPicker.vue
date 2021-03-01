@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-avatar v-bind="this.$attrs" size="215" rounded>
+    <v-avatar v-bind="this.$attrs" size="128" rounded>
       <img :src="avatar" alt="Avatar" style="boder-radius: 4px !important;" />
       <v-file-input
         class="file-input"
