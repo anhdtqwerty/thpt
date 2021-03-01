@@ -31,7 +31,7 @@
       <student-filter  @onFilterChanged="refresh" />
     </v-card>
 
-    <v-card outlined class="px-md-2 mx-md-4 elevation-0">
+    <v-card outlined class="mx-md-4 elevation-0">
       <student-data-table ref="studentDataTable" :selected.sync="selected" />
     </v-card>
 
