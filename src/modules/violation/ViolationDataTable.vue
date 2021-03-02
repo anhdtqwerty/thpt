@@ -7,6 +7,8 @@
     v-model="selected"
     mobile-breakpoint="0"
     back
+    :footer-props="{
+      showFirstLastPage: true,}"
   >
     <template v-slot:[`item.action`]="{ item }">
       <violation-actions :selected="item"> </violation-actions>

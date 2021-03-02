@@ -66,13 +66,6 @@
       <v-radio label="Kỷ luật" hide-details value="violation"></v-radio>
     </v-radio-group>
 
-    <!-- <v-radio-group row class="shrink ml-4 mt-0">
-      <p class="mx-2 my-0">Loại nội dung:</p>
-      <v-radio label="Điểm" hide-details></v-radio>
-      <v-radio label="Nề nếp" hide-details></v-radio>
-      <v-radio label="Khác" hide-details></v-radio>
-    </v-radio-group> -->
-
     <v-textarea
       v-model="description"
       label="Nội dung"
