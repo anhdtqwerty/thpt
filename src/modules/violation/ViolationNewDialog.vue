@@ -7,7 +7,7 @@
   >
     <v-card >
       <v-card-title class="primary white--text "
-        ><v-toolbar-title>THÊM KTKL</v-toolbar-title>
+        ><v-toolbar-title>THÊM KHEN THƯỞNG KỈ LUẬT</v-toolbar-title>
         <v-spacer />
         <v-icon color="white" @click="dialog = false">close</v-icon>
       </v-card-title>
@@ -16,7 +16,7 @@
         ref="form"
       />
       </v-card-text>
-      
+      <v-divider></v-divider>
       <v-card-actions>
         <v-spacer />
         <v-btn
