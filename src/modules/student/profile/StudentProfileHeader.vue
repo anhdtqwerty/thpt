@@ -22,16 +22,29 @@
         </v-row>
       </v-col>
       <v-col class="d-flex align-end" cols="2">
-        <v-btn small color="primary" outlined>Hồ sơ chi tiết</v-btn>
+        <v-btn
+          @click="detailState = !detailState"
+          small
+          color="primary"
+          outlined
+          >Hồ sơ chi tiết</v-btn
+        >
       </v-col>
     </v-row>
+
+    <student-profile-detail-dialog :student="student" :state="detailState" />
   </v-card>
 </template>
 
 <script>
 import UserAvatarPicker from '@/components/basic/picker/UserAvatarPicker'
+import StudentProfileDetailDialog from '@/modules/student/StudentProfileDetailDialog'
 
 export default {
+  components: {
+    StudentProfileDetailDialog,
+    UserAvatarPicker,
+  },
   data() {
     return {
       studentDetails: [
@@ -47,10 +60,8 @@ export default {
           cols: 5,
         },
       ],
+      detailState: false,
     }
-  },
-  components: {
-    UserAvatarPicker,
   },
   props: {
     student: Object,
