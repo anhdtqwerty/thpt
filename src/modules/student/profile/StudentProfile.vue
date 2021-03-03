@@ -3,7 +3,7 @@
     <student-profile-header class="mb-6" :student="student" />
     <student-profile-main class="mb-6" :student="student" />
     <div class="text-center">
-      <v-btn color="red" outlined>Xóa học sinh</v-btn>
+      <v-btn class="mb-4" @click="remove" color="red" outlined>Xóa học sinh</v-btn>
     </div>
   </div>
 </template>
@@ -19,6 +19,11 @@ export default {
   props: {
     student: Object,
   },
+  methods: {
+    remove() {
+      this.$emit('remove')
+    }
+  }
 }
 </script>
 

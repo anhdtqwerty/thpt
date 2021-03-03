@@ -12,7 +12,7 @@
       </div>
     </div>
 
-    <student-profile v-if="student.id" :student="student" />
+    <student-profile @remove="remove" v-if="student.id" :student="student" />
   </div>
 </template>
 <script>
