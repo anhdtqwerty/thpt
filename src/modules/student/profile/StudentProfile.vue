@@ -1,16 +1,11 @@
 <template>
-  <v-row
-    :no-gutters="$vuetify.breakpoint.smAndDown"
-    class="px-md-2 mx-md-0"
-    v-if="student"
-  >
-    <v-col cols="12">
-      <student-profile-header :student="student" />
-    </v-col>
-    <v-col cols="12">
-      <student-profile-main :student="student" />
-    </v-col>
-  </v-row>
+  <div class="mx-4">
+    <student-profile-header class="mb-6" :student="student" />
+    <student-profile-main class="mb-6" :student="student" />
+    <div class="text-center">
+      <v-btn class="mb-4" @click="remove" color="red" outlined>Xóa học sinh</v-btn>
+    </div>
+  </div>
 </template>
 <script>
 import StudentProfileHeader from '@/modules/student/profile/StudentProfileHeader'
@@ -24,11 +19,11 @@ export default {
   props: {
     student: Object,
   },
-  data() {
-    return {
-      dialog: true,
+  methods: {
+    remove() {
+      this.$emit('remove')
     }
-  },
+  }
 }
 </script>
 

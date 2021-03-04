@@ -1,35 +1,65 @@
 <template>
   <div>
-    <v-card elevation="0" outlined>
-      <v-tabs v-model="tab">
-        <v-tab :key="1"> Hồ sơ </v-tab>
-        <v-tab :key="2"> Học tập </v-tab>
-        <v-tab :key="3"> Chuyên cần </v-tab>
-        <v-tab :key="4"> Khen thưởng kỷ luật </v-tab>
-      </v-tabs>
-    </v-card>
-
-    <v-card elevation="0" outlined>
-      <v-tabs-items v-model="tab">
-        <v-tab-item :key="1">
-          <student-general-info :student="student" />
-        </v-tab-item>
-        <v-tab-item :key="2"> </v-tab-item>
-        <v-tab-item :key="3">
-          <attendance-student-data-table :attendances="attendances" />
-        </v-tab-item>
-        <v-tab-item :key="4">
-          <violation-data-table :violations="violations" />
-        </v-tab-item>
-      </v-tabs-items>
-    </v-card>
+    <v-row>
+      <v-col cols="12">
+        <v-card outlined>
+          <v-card-title>
+            <v-icon color="primary">mdi-clipboard-text</v-icon>
+            <span class="ml-2 text-subtitle-2">Học tập</span>
+            <v-spacer></v-spacer>
+            <v-btn color="primary" text>Xem chi tiết</v-btn>
+          </v-card-title>
+        </v-card>
+      </v-col>
+      <v-col cols="6">
+        <v-card outlined>
+          <v-card-title>
+            <v-icon color="primary">mdi-calendar-account</v-icon>
+            <span class="ml-2 text-subtitle-2">Chuyên cần</span>
+            <v-spacer></v-spacer>
+            <v-btn color="primary" text>Xem chi tiết</v-btn>
+          </v-card-title>
+        </v-card>
+      </v-col>
+      <v-col cols="6">
+        <v-card outlined>
+          <v-card-title>
+            <v-icon color="primary">mdi-star</v-icon>
+            <span class="ml-2 text-subtitle-2">Khen thưởng kỷ luật</span>
+            <v-spacer></v-spacer>
+            <v-btn color="primary" text>Xem chi tiết</v-btn>
+          </v-card-title>
+          <v-card-text class="px-0">
+            <violation-data-table :violations="violations" />
+          </v-card-text>
+        </v-card>
+      </v-col>
+      <v-col cols="12">
+        <v-card outlined>
+          <v-card-title>
+            <v-icon color="primary">mdi-bell-ring</v-icon>
+            <span class="ml-2 text-subtitle-2">Tin nhắn, thông báo gần đây</span>
+            <v-spacer></v-spacer>
+            <v-btn color="primary" text>Xem chi tiết</v-btn>
+          </v-card-title>
+        </v-card>
+      </v-col>
+      <v-col cols="12">
+        <v-card outlined>
+          <v-card-title>
+            <v-icon color="primary">mdi-laptop</v-icon>
+            <span class="ml-2 text-subtitle-2">Học tập online</span>
+            <v-spacer></v-spacer>
+            <v-btn color="primary" text>Xem chi tiết</v-btn>
+          </v-card-title>
+        </v-card>
+      </v-col>
+    </v-row>
   </div>
 </template>
 
 <script>
-import StudentGeneralInfo from '@/modules/student/profile/StudentGeneralInfo'
 import ViolationDataTable from '@/modules/violation/ViolationDataTable'
-import AttendanceStudentDataTable from '@/modules/attendance/AttendanceStudentDataTable'
 import { mapActions, mapState, mapGetters } from 'vuex'
 
 export default {
@@ -39,9 +69,7 @@ export default {
     }
   },
   components: {
-    StudentGeneralInfo,
     ViolationDataTable,
-    AttendanceStudentDataTable,
   },
   props: {
     student: Object,

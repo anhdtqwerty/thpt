@@ -12,7 +12,7 @@
       </div>
     </div>
 
-    <student-profile v-if="student.id" :student="student" />
+    <student-profile @remove="remove" v-if="student.id" :student="student" />
   </div>
 </template>
 <script>
@@ -37,7 +37,8 @@ export default {
     }
   },
   async created() {
-    this.refresh()
+    this.setTuitions([])
+    await this.fetchStudent(this.$route.params.id)
   },
   methods: {
     ...mapActions('student', [
@@ -46,10 +47,6 @@ export default {
       'setTuitions',
       'removeStudent',
     ]),
-    async refresh() {
-      this.setTuitions([])
-      await this.fetchStudent(this.$route.params.id)
-    },
     resetValidation() {
       this.$refs.form.resetValidation()
     },

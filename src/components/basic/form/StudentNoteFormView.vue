@@ -1,36 +1,40 @@
 <template>
   <v-form v-model="valid" ref="form" v-bind="this.$attrs">
-    <p class="text-subtitle-2">3. Ghi chú về học sinh</p>
+    <p class="font-weight-black black--text">3. Ghi chú về học sinh</p>
     <v-row class="pr-12">
-      <v-col class="py-0" cols="12">
-        <v-subheader class="pa-0">Ghi chú</v-subheader>
+      <v-col class="py-0 px-0" cols="12">
+        <v-subheader class="px-3">Ghi chú</v-subheader>
         <v-text-field
-          :outlined="edit"
+          class="pt-1"
+          flat
+          solo
           hide-details
-          class="ma-0"
           v-model="notes"
           dense
+          regular
         ></v-text-field>
       </v-col>
       <v-col class="py-0" cols="12" md="6">
         <v-subheader class="pa-0">Ngày vào đội</v-subheader>
-        <date-picker
-          :outlined="edit"
+        <v-text-field
+          flat
+          solo
           hide-details
-          class="ma-0"
-          :date.sync="youngJoinedDate"
+          v-model="youngJoinedDate"
           dense
-        ></date-picker>
+          regular
+        ></v-text-field>
       </v-col>
       <v-col class="py-0" cols="12" md="6">
         <v-subheader class="pa-0">Ngày vào đoàn</v-subheader>
-        <date-picker
-          :outlined="edit"
+        <v-text-field
+          flat
+          solo
           hide-details
-          class="ma-0"
-          :date.sync="communistJoinedDate"
+          v-model="communistJoinedDate"
           dense
-        ></date-picker>
+          regular
+        ></v-text-field>
       </v-col>
     </v-row>
   </v-form>
@@ -38,11 +42,7 @@
 
 <script>
 // import { get } from 'lodash'
-import DatePicker from '@/components/basic/picker/DateIOSPicker.vue'
 export default {
-  components: {
-    DatePicker,
-  },
   props: {
     student: {
       type: [Object],

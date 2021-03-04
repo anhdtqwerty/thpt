@@ -1,5 +1,6 @@
 <template>
   <v-data-table
+    id="studenttable"
     mobile-breakpoint="0"
     item-key="id"
     :options.sync="studentTableOptions"
@@ -7,9 +8,7 @@
     :headers="headers"
     :items="students"
     :items-per-page="10"
-    v-model="selected"
     sort-by="name"
-    show-select
     @change="$emit('update:selected', selected)"
     :footer-props="{
       'items-per-page-text': 'Học sinh mỗi trang',
@@ -20,9 +19,15 @@
       <card-student-name :student="item" link />
     </template>
     <template v-slot:[`item.status`]="{ item }">
-      <span v-if="item.status" :class="getColor(item.status)">
+      <v-chip
+        small
+        class="white--text"
+        v-if="item.status"
+        :color="getColor(item.status)"
+        label
+      >
         {{ item.status | getStatus }}
-      </span>
+      </v-chip>
     </template>
     <template v-slot:[`item.classes`]="{ item }">
       <router-link
@@ -49,6 +54,15 @@
         <span>{{ item.notes }}</span>
       </v-tooltip>
     </template>
+    <template v-slot:top="{ pagination, options, updateOptions }">
+      <v-data-footer
+        :pagination="pagination"
+        :options="options"
+        @update:options="updateOptions"
+        items-per-page-text="Học sinh mỗi trang"
+        items-per-page-all-text="Tất cả"
+      />
+    </template>
   </v-data-table>
 </template>
 
@@ -67,24 +81,24 @@ const originHeaders = [
     show: true,
   },
   {
-    text: 'Lớp',
-    value: 'classes',
-    align: 'center',
-    sortable: false,
-    show: true,
-    width: '10px',
-  },
-  {
     text: 'Ngày sinh',
     value: 'dob',
-    align: 'center',
+    align: 'left',
     sortable: false,
     show: true,
   },
   {
     text: 'Giới tính',
     value: 'gender',
-    align: 'center',
+    align: 'left',
+    sortable: false,
+    show: true,
+    width: '100',
+  },
+  {
+    text: 'Lớp',
+    value: 'classes',
+    align: 'left',
     sortable: false,
     show: true,
     width: '100',
@@ -109,7 +123,7 @@ const originHeaders = [
     align: 'center',
     sortable: false,
     show: true,
-    width: '10px',
+    width: '100',
   },
 ]
 export default {
@@ -118,7 +132,6 @@ export default {
       headers: originHeaders,
       originHeaders: originHeaders,
       studentTableOptions: {},
-      selected: [],
       status: null,
       statuses: [
         { text: 'Active', value: 'false' },
@@ -140,7 +153,7 @@ export default {
       'fetchStudents',
     ]),
     async refresh(query) {
-      await this.searchStudents({ department: this.department.id, ...query })
+      await this.searchStudents({ ...query })
     },
     getTuitionStatus(leads) {
       if (!leads) return ''
@@ -158,15 +171,15 @@ export default {
     getColor(status) {
       switch (status) {
         case 'active':
-          return 'green--text'
+          return '#46BE8A'
         case 'reserved':
-          return 'orange--text'
+          return 'orange'
         case 'graduated':
-          return 'primary--text'
+          return 'primary'
         case 'left':
-          return 'red--text'
+          return 'red'
         default:
-          return 'grey--text'
+          return 'grey'
       }
     },
   },

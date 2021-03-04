@@ -9,8 +9,8 @@ export default {
   components: {},
   computed: {
     ...mapGetters('auth', ['user', 'profile', 'isAuthenticated']),
-    ...mapGetters('app', ['users', 'department', 'roles'])
-  }
+    ...mapGetters('app', ['users', 'department', 'roles']),
+  },
 }
 </script>
 <style>
@@ -24,5 +24,9 @@ input {
 .required label::after {
   content: ' *';
   color: red;
+}
+.v-data-table-header {
+  background-color: #f5f5f5;
+  border-bottom: none;
 }
 </style>

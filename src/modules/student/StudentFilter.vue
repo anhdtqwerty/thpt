@@ -1,5 +1,5 @@
 <template>
-  <v-form>
+  <v-form v-bind="this.$attrs">
     <v-row class="py-3">
       <v-col cols="10">
         <v-row>
@@ -147,8 +147,6 @@ export default {
   },
   methods: {
     onFilterChanged() {
-      console.log(this.classes)
-
       this.$emit('onFilterChanged', {
         name_contains: this.name,
         classes: get(this.classes, 'id', ''),

@@ -1,50 +1,65 @@
 <template>
   <v-form v-model="valid" ref="form" v-bind="this.$attrs">
-    <p class="text-subtitle-2">2. Thông tin liên lạc</p>
+    <p class="font-weight-black black--text">2. Thông tin liên lạc</p>
     <v-row class="pr-12">
       <v-col class="d-flex py-0" cols="12">
         <v-subheader class="px-0">Địa chỉ</v-subheader>
         <v-text-field
-          :outlined="edit"
+          class="pt-1"
+          flat
+          solo
           hide-details
           v-model="currentLive"
           dense
+          regular
         ></v-text-field>
       </v-col>
       <v-col class="py-0 d-flex" cols="12">
         <v-subheader class="px-0">Quận/huyện</v-subheader>
         <v-text-field
-          :outlined="edit"
+          class="pt-1"
+          flat
+          solo
           hide-details
           v-model="district"
           dense
+          regular
         ></v-text-field>
       </v-col>
       <v-col class="py-0 d-flex" cols="12">
         <v-subheader class="px-0">Tỉnh/thành phố</v-subheader>
         <v-text-field
-          :outlined="edit"
+          class="pt-1"
+          flat
+          solo
           hide-details
           v-model="province"
           dense
+          regular
         ></v-text-field>
       </v-col>
       <v-col class="py-0 d-flex" cols="12">
         <v-subheader class="px-0">Số điện thoại</v-subheader>
         <v-text-field
-          :outlined="edit"
+          class="pt-1"
+          flat
+          solo
           hide-details
           v-model="phone"
           dense
+          regular
         ></v-text-field>
       </v-col>
       <v-col class="py-0 d-flex" cols="12">
         <v-subheader class="px-0">Email</v-subheader>
         <v-text-field
-          :outlined="edit"
+          class="pt-1"
+          flat
+          solo
           hide-details
           v-model="email"
           dense
+          regular
         ></v-text-field>
       </v-col>
     </v-row>
@@ -59,7 +74,6 @@ export default {
       type: [Object],
       default: () => {},
     },
-    edit: Boolean,
   },
   data: () => ({
     valid: true,

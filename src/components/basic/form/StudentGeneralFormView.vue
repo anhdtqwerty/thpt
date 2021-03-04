@@ -1,11 +1,13 @@
 <template>
   <v-form v-model="valid" ref="form" v-bind="this.$attrs">
-    <p class="text-subtitle-2">1. Thông tin cơ bản</p>
+    <p class="font-weight-black black--text">1. Thông tin cơ bản</p>
     <v-row class="pr-12">
       <v-col class="d-flex py-0" cols="12">
         <v-subheader class="px-0">Họ và tên</v-subheader>
         <v-text-field
-          :outlined="edit"
+          class="pt-1"
+          flat
+          solo
           hide-details
           v-model="name"
           dense
@@ -14,42 +16,50 @@
       </v-col>
       <v-col class="d-flex py-0" cols="12">
         <v-subheader class="px-0">Giới tính</v-subheader>
-        <v-select
-          v-model="gender"
-          :items="genders"
-          item-text="title"
-          item-value="value"
-          :outlined="edit"
+        <v-text-field
+          class="pt-1"
+          flat
+          solo
           hide-details
+          v-model="gender"
           dense
           regular
-        ></v-select>
+        ></v-text-field>
       </v-col>
       <v-col class="py-0 d-flex" cols="12">
         <v-subheader class="px-0">Ngày sinh</v-subheader>
-        <date-picker
-          :outlined="edit"
+        <v-text-field
+          class="pt-1"
+          flat
+          solo
           hide-details
-          :date.sync="dob"
+          v-model="dob"
           dense
-        ></date-picker>
+          regular
+        ></v-text-field>
       </v-col>
       <v-col class="py-0 d-flex" cols="12">
         <v-subheader class="px-0">Quê quán</v-subheader>
         <v-text-field
-          :outlined="edit"
+          class="pt-1"
+          flat
+          solo
           hide-details
           v-model="frequentlyAddress"
           dense
+          regular
         ></v-text-field>
       </v-col>
       <v-col class="py-0 d-flex" cols="12">
         <v-subheader class="px-0">Dân tộc</v-subheader>
         <v-text-field
-          :outlined="edit"
+          class="pt-1"
+          flat
+          solo
           hide-details
           v-model="ethnic"
           dense
+          regular
         ></v-text-field>
       </v-col>
     </v-row>
@@ -58,16 +68,13 @@
 
 <script>
 // import { get } from 'lodash'
-import DatePicker from '@/components/basic/picker/DateIOSPicker.vue'
 import { mapActions } from 'vuex'
 export default {
-  components: { DatePicker },
   props: {
     student: {
       type: [Object],
       default: () => {},
     },
-    edit: Boolean,
   },
   data: () => ({
     valid: true,
