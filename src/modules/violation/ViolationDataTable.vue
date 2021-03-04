@@ -6,6 +6,9 @@
     item-key="id"
     v-model="selected"
     mobile-breakpoint="0"
+    back
+    :footer-props="{
+      showFirstLastPage: true,}"
   >
     <template v-slot:[`item.action`]="{ item }">
       <violation-actions :selected="item"> </violation-actions>
@@ -32,22 +35,8 @@ import ViolationActions from '@/modules/violation/ViolationListActions.vue'
 
 const originHeaders = [
   {
-    text: 'Họ tên',
-    value: 'student.name',
-    align: 'left',
-    sortable: false,
-    show: true,
-  },
-  {
     text: 'Ngày',
     value: 'createdAt',
-    align: 'left',
-    sortable: false,
-    show: true,
-  },
-  {
-    text: 'Mục',
-    value: 'type',
     align: 'left',
     sortable: false,
     show: true,
@@ -60,6 +49,20 @@ const originHeaders = [
     show: true,
   },
   {
+    text: 'Họ tên',
+    value: 'student.name',
+    align: 'left',
+    sortable: false,
+    show: true,
+  },
+  {
+    text: 'Mục',
+    value: 'type',
+    align: 'left',
+    sortable: false,
+    show: true,
+  },
+  {
     text: 'Nội dung',
     value: 'description',
     align: 'left',
@@ -67,7 +70,7 @@ const originHeaders = [
     show: true,
   },
   {
-    text: 'Hành động',
+    text: '',
     value: 'action',
     align: 'left',
     sortable: false,
@@ -89,7 +92,7 @@ export default {
   },
   props: {
     violations: Array,
-  }
+  },
 }
 </script>
 

@@ -1,33 +1,53 @@
 <template>
   <v-form ref="form" flat class="pt-5">
-    <autocomplete-grade
-      v-model="grade"
-      item-text="title"
-      item-value="id"
-      clear-icon="mdi-close"
-      clearable
-      label="Khối"
-      :rules="ruleRequired"
-      outlined
-      dense
-      deletable-chips
-      :hide-details="$vuetify.breakpoint.smAndDown"
-      :class="{ 'mb-4': $vuetify.breakpoint.smAndDown }"
-    />
-    <autocomplete-class
-      v-model="classData"
-      item-text="title"
-      item-value="id"
-      clear-icon="mdi-close"
-      clearable
-      :rules="ruleRequired"
-      label="Lớp"
-      outlined
-      dense
-      deletable-chips
-      :hide-details="$vuetify.breakpoint.smAndDown"
-      :class="{ 'mb-4': $vuetify.breakpoint.smAndDown }"
-    ></autocomplete-class>
+    <v-row>
+      <v-col>
+        <DateIOSPicker
+          label="Ngày"
+          outlined
+          dense
+          deletable-chips
+          :hide-details="$vuetify.breakpoint.smAndDown"
+          :class="{ 'mb-4': $vuetify.breakpoint.smAndDown }"
+        />
+      </v-col>
+      <v-col></v-col>
+    </v-row>
+
+    <v-row>
+      <v-col>
+        <autocomplete-grade
+          v-model="grade"
+          item-text="title"
+          item-value="id"
+          clear-icon="mdi-close"
+          clearable
+          label="Khối"
+          :rules="ruleRequired"
+          outlined
+          dense
+          deletable-chips
+          :hide-details="$vuetify.breakpoint.smAndDown"
+          :class="{ 'mb-4': $vuetify.breakpoint.smAndDown }"
+        />
+      </v-col>
+      <v-col>
+        <autocomplete-class
+          v-model="classData"
+          item-text="title"
+          item-value="id"
+          clear-icon="mdi-close"
+          clearable
+          :rules="ruleRequired"
+          label="Lớp"
+          outlined
+          dense
+          deletable-chips
+          :hide-details="$vuetify.breakpoint.smAndDown"
+          :class="{ 'mb-4': $vuetify.breakpoint.smAndDown }"
+        ></autocomplete-class>
+      </v-col>
+    </v-row>
     <autocomplete-student
       v-model="student"
       :rules="ruleRequired"
@@ -40,22 +60,15 @@
       :hide-details="$vuetify.breakpoint.smAndDown"
       :class="{ 'mb-4': $vuetify.breakpoint.smAndDown }"
     />
-     <v-radio-group v-model="type" row class="shrink mt-0">
-      <p class="mr-2 my-0">Mục: </p>
-      <v-radio label="Kỷ luật" hide-details value="violation"></v-radio>
+    <v-radio-group v-model="type" row class="shrink mt-0">
+      <p class="mr-2 my-0">Mục:</p>
       <v-radio label="Khen thưởng" hide-details value="commendation"></v-radio>
+      <v-radio label="Kỷ luật" hide-details value="violation"></v-radio>
     </v-radio-group>
-
-    <!-- <v-radio-group row class="shrink ml-4 mt-0">
-      <p class="mx-2 my-0">Loại nội dung:</p>
-      <v-radio label="Điểm" hide-details></v-radio>
-      <v-radio label="Nề nếp" hide-details></v-radio>
-      <v-radio label="Khác" hide-details></v-radio>
-    </v-radio-group> -->
 
     <v-textarea
       v-model="description"
-      label="Ghi chú"
+      label="Nội dung"
       outlined
       dense
     ></v-textarea>
@@ -66,6 +79,7 @@ import TextFieldCode from '@/components/basic/input/TextFieldCode'
 import AutocompleteGrade from '@/components/basic/input/AutocompleteGrade'
 import AutocompleteClass from '@/components/basic/input/AutocompleteClass.vue'
 import AutocompleteStudent from '@/components/basic/input/AutocompleteStudent.vue'
+import DateIOSPicker from '@/components/basic/picker/DateIOSPicker.vue'
 import { mapGetters } from 'vuex'
 export default {
   components: {
@@ -73,6 +87,7 @@ export default {
     AutocompleteGrade,
     AutocompleteClass,
     AutocompleteStudent,
+    DateIOSPicker,
   },
   data: () => ({
     ruleRequired: [(v) => !!v || 'Phần này không được trống'],

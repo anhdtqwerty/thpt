@@ -15,12 +15,12 @@
             icon
             @click="EditViolation = !EditViolation"
           >
-            <v-icon>mdi-pencil</v-icon>
+            Sửa nội dung
           </v-btn>
         </v-list-item>
         <v-list-item>
           <v-btn class="elevation-0" icon @click="onRemove()">
-            <v-icon>mdi-delete</v-icon>
+            Xóa nội dung
           </v-btn>
         </v-list-item>
       </v-list>
