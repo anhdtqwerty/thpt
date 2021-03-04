@@ -3,23 +3,27 @@
     <div class="pa-4 d-flex justify-space-between align-center">
       <div>
         <Breadcrumbs
-          headline="Điểm danh"
-          :link="[{ text: 'Điểm danh', href: '../attendances' }]"
+          headline="Chuyên cần"
+          :link="[{ text: 'Chuyên cần', href: '../attendances' }]"
         />
       </div>
-      <div class="flex-center">
-        <v-btn dark color="#0D47A1">
-          <v-icon left>add</v-icon>Thêm điểm danh
-        </v-btn>
-      </div>
     </div>
+    <v-card outlined class="mx-md-4 elevation-0">
+      <v-tabs grow color="primary" v-model="tab">
+        <v-tab :key="1">Điểm danh</v-tab>
+        <v-tab :key="2">Chuyên cần</v-tab>
+      </v-tabs>
+    </v-card>
 
-    <v-card class="pa-md-2 mx-md-4 elevation-1">
-      <attendance-student-filter @onFilterChanged="refresh" class="pa-4" />
-      <attendance-student-data-table
-        @handleClick="handleClick"
-        :attendances="attendances"
-      />
+    <v-card outlined class="mx-md-4 elevation-0">
+      <v-tabs-items v-model="tab">
+        <v-tab-item :key="1">
+          <attendance-info :attendances="attendances" @refresh="refresh()" />
+        </v-tab-item>
+        <v-tab-item :key="2">
+          <diligence-info />
+        </v-tab-item>
+      </v-tabs-items>
     </v-card>
 
     <attendance-student-edit-dialog
@@ -34,17 +38,15 @@
 
 <script>
 import Breadcrumbs from '@/components/layout/Breadcrumbs.vue'
-import AttendanceStudentFilter from '@/modules/attendance/AttendanceStudentFilter.vue'
+import AttendanceInfo from '@/views/student/AttendanceInfo.vue'
 import AttendanceStudentEditDialog from '@/modules/attendance/AttendanceStudentEditDialog'
-import AttendanceStudentDataTable from '@/modules/attendance/AttendanceStudentDataTable'
 import { mapActions, mapState, mapGetters } from 'vuex'
 
 export default {
   components: {
     Breadcrumbs,
-    AttendanceStudentFilter,
     AttendanceStudentEditDialog,
-    AttendanceStudentDataTable,
+    AttendanceInfo,
   },
   data() {
     return {
@@ -54,6 +56,7 @@ export default {
       editClass: { title: '' },
       editInClass: '',
       editOutClass: '',
+      tab: null,
     }
   },
   computed: {

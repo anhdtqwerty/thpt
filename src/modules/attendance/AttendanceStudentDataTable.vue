@@ -9,7 +9,20 @@
     loading-text="Đang Tải"
     show-select
     @click:row="handleClick"
+    :footer-props="{
+      'items-per-page-text': 'Học sinh mỗi trang',
+      'items-per-page-all-text': 'Tất cả',
+    }"
   >
+    <template v-slot:top="{ pagination, options, updateOptions }">
+      <v-data-footer
+        :pagination="pagination"
+        :options="options"
+        @update:options="updateOptions"
+        items-per-page-text="Học sinh mỗi trang"
+        items-per-page-all-text="Tất cả"
+      />
+    </template>
     <template v-slot:[`item.time`]="{ item }">
       {{ formatTime(item.checkin[0], 'DD/MM/YYYY') }}
     </template>

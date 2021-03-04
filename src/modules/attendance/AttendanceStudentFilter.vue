@@ -1,7 +1,7 @@
 <template>
   <v-form>
-    <v-row>
-      <v-col cols="12" md="9">
+    <v-row class="pa-2">
+      <v-col cols="12" md="10">
         <v-row>
           <v-col cols="12" md="4" v-bind="$attrs">
             <autocomplete-class
@@ -10,6 +10,7 @@
               dense
               outlined
               label="Lớp"
+              hide-details
             />
           </v-col>
           <v-col cols="12" md="4">
@@ -21,24 +22,25 @@
               dense
               outlined
               label="Trạng thái"
+              hide-details
               clearable
             />
           </v-col>
           <v-col cols="12" md="4">
-            <autocomplete-student
+            <autocomplete-grade
               clearable
-              v-model="student"
+              v-model="grade"
               dense
               outlined
-              label="Tên học sinh"
-              @change="change"
+              label="Khối"
+              hide-details
             />
           </v-col>
         </v-row>
       </v-col>
-      <v-col cols="12" md="3">
+      <v-col cols="12" md="2">
         <v-btn height="40" color="#0D47A1" outlined @click="onFilterChanged">
-          <v-icon left dark>mdi-filter-outline</v-icon>Lọc
+          Tìm kiếm
         </v-btn>
       </v-col>
     </v-row>
@@ -46,17 +48,17 @@
 </template>
 
 <script>
-import AutocompleteStudent from '@/components/basic/input/AutocompleteStudent'
+import AutocompleteGrade from '@/components/basic/input/AutocompleteGrade'
 import AutocompleteClass from '@/components/basic/input/AutocompleteClass'
 import { mapState } from 'vuex'
 
 export default {
-  components: { AutocompleteClass, AutocompleteStudent },
+  components: { AutocompleteClass, AutocompleteGrade },
   data() {
     return {
       classes: '',
       status: '',
-      student: '',
+      grade: ''
     }
   },
   computed: {
@@ -65,7 +67,7 @@ export default {
   methods: {
     onFilterChanged() {
       this.$emit('onFilterChanged', {
-        student: this.student ? this.student.id : '',
+        grade: this.grade ? this.grade.id : '',
         status: this.status,
         class: this.classes ? this.classes.id : '',
       })

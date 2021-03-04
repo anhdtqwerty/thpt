@@ -1,6 +1,5 @@
 <template>
   <v-data-table
-    id="studenttable"
     mobile-breakpoint="0"
     item-key="id"
     :options.sync="studentTableOptions"
