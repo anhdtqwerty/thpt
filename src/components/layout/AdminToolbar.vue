@@ -3,11 +3,12 @@
     <Dashboard />
     <Students />
     <Teachers />
-    <Classes /> 
+    <Classes />
     <Violation />
     <Scores />
     <AdvanceSetting />
     <System />
+    <Posts />
   </v-list>
 </template>
 <script>
@@ -18,6 +19,7 @@ import Dashboard from '@/components/basic/menu/Dashboard'
 import Scores from '@/components/basic/menu/Scores.vue'
 import AdvanceSetting from '@/components/basic/menu/AdvanceSetting.vue'
 import System from '@/components/basic/menu/System.vue'
+import Posts from '@/components/basic/menu/Posts.vue'
 import Violation from '@/components/basic/menu/Violation.vue'
 import { mapState } from 'vuex'
 export default {
@@ -29,7 +31,8 @@ export default {
     Scores,
     AdvanceSetting,
     System,
-    Violation
+    Violation,
+    Posts
   },
   computed: {
     ...mapState('auth', ['profile', 'role']),
