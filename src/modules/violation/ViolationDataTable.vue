@@ -7,7 +7,7 @@
     v-model="selected"
     mobile-breakpoint="0"
     :footer-props="{
-      'items-per-page-text': 'Học sinh mỗi trang',
+      'items-per-page-text': '',
       'items-per-page-all-text': 'Tất cả',
     }"
   >
@@ -35,7 +35,7 @@
         :pagination="pagination"
         :options="options"
         @update:options="updateOptions"
-        items-per-page-text="Học sinh mỗi trang"
+        items-per-page-text=""
         items-per-page-all-text="Tất cả"
       />
     </template>
