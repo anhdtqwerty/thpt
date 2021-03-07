@@ -24,8 +24,11 @@
         </v-btn>
       </div>
     </div>
-    <v-card class="px-md-6 mx-md-4 elevation-1">
-      <violation-filter class="py-md-6" @onFilterChanged="refresh" />
+    <v-card class="mx-md-4 my-md-4 elevation-1"
+      ><violation-filter class="pa-4" @onFilterChanged="refresh" />
+    </v-card>
+
+    <v-card class="mx-md-4 elevation-1">
       <violation-data-table :violations="violations"> </violation-data-table>
     </v-card>
     <violation-new-dialog :state="dialog"> </violation-new-dialog>
@@ -38,9 +41,6 @@ import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import ViolationFilter from '@/modules/violation/ViolationFilter.vue'
 import ViolationNewDialog from '@/modules/violation/ViolationNewDialog.vue'
 import ViolationDataTable from '@/modules/violation/ViolationDataTable.vue'
-
-import moment from 'moment'
-import { get } from 'lodash'
 
 export default {
   components: {
@@ -75,11 +75,6 @@ export default {
     updateDraw(draw) {
       this.draw = draw
     },
-    formatDate(item) {
-      return get(item, 'createdAt', '')
-        ? moment(item.createdAt).format('DD/MM/YYYY')
-        : ''
-    },
     async refresh(query) {
       this.loading = true
       try {
@@ -97,3 +92,4 @@ export default {
   },
 }
 </script>
+<style lang="stylus"></style>
