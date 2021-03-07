@@ -6,9 +6,10 @@
     item-key="id"
     v-model="selected"
     mobile-breakpoint="0"
-    back
     :footer-props="{
-      showFirstLastPage: true,}"
+      'items-per-page-text': 'Học sinh mỗi trang',
+      'items-per-page-all-text': 'Tất cả',
+    }"
   >
     <template v-slot:[`item.action`]="{ item }">
       <violation-actions :selected="item"> </violation-actions>
@@ -17,21 +18,34 @@
       {{ formatDate(item) }}
     </template>
     <template v-slot:[`item.type`]="{ item }">
-      <span v-if="item.type">
-        {{
-          item.type === 'violation'
-            ? 'Kỷ luật'
-            : item.type === 'commendation'
-            ? 'Khen thưởng'
-            : ''
-        }}
-      </span>
+      <v-chip :color="getColor(item.type)" dark
+        ><span v-if="item.type">
+          {{
+            item.type === 'violation'
+              ? 'Kỷ luật'
+              : item.type === 'commendation'
+              ? 'Khen thưởng'
+              : ''
+          }}
+        </span>
+      </v-chip>
+    </template>
+    <template v-slot:top="{ pagination, options, updateOptions }">
+      <v-data-footer
+        :pagination="pagination"
+        :options="options"
+        @update:options="updateOptions"
+        items-per-page-text="Học sinh mỗi trang"
+        items-per-page-all-text="Tất cả"
+      />
     </template>
   </v-data-table>
 </template>
 
 <script>
 import ViolationActions from '@/modules/violation/ViolationListActions.vue'
+import moment from 'moment'
+import { get } from 'lodash'
 
 const originHeaders = [
   {
@@ -92,6 +106,17 @@ export default {
   },
   props: {
     violations: Array,
+  },
+  methods: {
+    formatDate(item) {
+      return get(item, 'createdAt', '')
+        ? moment(item.createdAt).format('DD/MM/YYYY')
+        : ''
+    },
+    getColor(s) {
+      if (s === 'violation') return 'orange'
+      else return 'green'
+    },
   },
 }
 </script>
