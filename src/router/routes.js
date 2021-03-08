@@ -30,7 +30,7 @@ import StudentImporter from '@/views/student/StudentImporter.vue'
 import Violation from '@/views/violation/Violations.vue'
 import ContactBook from '@/views/account/ContactBook.vue'
 import ContactBookDetail from '@/views/account/ContactBookDetail.vue'
-import Diligence from "@/views/diligence/Diligence.vue"
+import Diligence from '@/views/diligence/Diligence.vue'
 
 // ---------------- DEPARTMENT -------------------------------
 import Department from '@/views/department/Department'
@@ -54,6 +54,8 @@ import Subjects from '@/views/subject/Subjects.vue'
 import Subject from '@/views/subject/Subject.vue'
 import Classes from '@/views/class/Classes'
 import TimeTableConfig from '@/views/timetable/TimeTableConfig.vue'
+// -----------------------Advanced Setting---------------------------------
+import PostCreate from '@/views/post/PostCreate.vue'
 
 const routes = [
   {
@@ -423,6 +425,15 @@ const routes = [
         component: ContactBookDetail,
         meta: {
           title: 'Sổ liên lạc',
+          auth: true
+        }
+      },
+      {
+        path: 'post-send',
+        name: 'Gửi tin nhắn',
+        component: PostCreate,
+        meta: {
+          title: 'Gửi tin nhắn',
           auth: true
         }
       },

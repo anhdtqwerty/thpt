@@ -58,6 +58,8 @@ import view from './view'
 import user from './app/user'
 import factor from './factor/factor'
 
+import postCreate from './post/post-create'
+
 Vue.use(Vuex)
 
 export default createStore(Vuex.Store, {
@@ -110,7 +112,8 @@ export default createStore(Vuex.Store, {
     factor,
     subjects,
     violation,
-    search
+    search,
+    postCreate
   },
   mixins: {
     mutations: {

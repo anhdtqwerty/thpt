@@ -9,6 +9,7 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'comma-dangle': 'off',
     'vue/valid-v-slot': 'off',
+    'camelcase': ["error", {properties: "never"}],
     'space-before-function-paren': [
       'error',
       {

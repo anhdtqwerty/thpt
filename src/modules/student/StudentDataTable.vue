@@ -8,11 +8,12 @@
     :items="students"
     :items-per-page="10"
     sort-by="name"
-    @change="$emit('update:selected', selected)"
+    @input="$emit('update:selected', $event)"
     :footer-props="{
       'items-per-page-text': 'Học sinh mỗi trang',
       'items-per-page-all-text': 'Tất cả',
     }"
+    v-bind="this.$attrs"
   >
     <template v-slot:[`item.name`]="{ item }">
       <card-student-name :student="item" link />
@@ -131,6 +132,7 @@ export default {
       headers: originHeaders,
       originHeaders: originHeaders,
       studentTableOptions: {},
+      selected: [],
       status: null,
       statuses: [
         { text: 'Active', value: 'false' },
