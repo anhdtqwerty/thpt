@@ -49,7 +49,7 @@ export default {
     }
   },
   watch: {
-    filters(filters) {
+    filter(filters) {
       this.fetchClass()
     }
   }
