@@ -23,15 +23,6 @@
         to="/attendances"
       >
         <v-list-item-action></v-list-item-action>
-        <v-list-item-title>Điểm danh</v-list-item-title>
-      </v-list-item>
-      <v-list-item
-        active-class="blue lighten-4 primary--text"
-        class="px-0"
-        link
-        to="/diligence"
-      >
-        <v-list-item-action></v-list-item-action>
         <v-list-item-title>Chuyên cần</v-list-item-title>
       </v-list-item>
     </v-list>

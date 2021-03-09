@@ -21,7 +21,7 @@
           <attendance-info :attendances="attendances" @refresh="refresh()" />
         </v-tab-item>
         <v-tab-item :key="2">
-          <diligence-info />
+          <diligence-info :attendances="attendences"/>
         </v-tab-item>
       </v-tabs-items>
     </v-card>
@@ -39,6 +39,7 @@
 <script>
 import Breadcrumbs from '@/components/layout/Breadcrumbs.vue'
 import AttendanceInfo from '@/views/student/AttendanceInfo.vue'
+import DiligenceInfo from '@/views/student/DiligenceInfo'
 import AttendanceStudentEditDialog from '@/modules/attendance/AttendanceStudentEditDialog'
 import { mapActions, mapState, mapGetters } from 'vuex'
 
@@ -47,6 +48,7 @@ export default {
     Breadcrumbs,
     AttendanceStudentEditDialog,
     AttendanceInfo,
+    DiligenceInfo,
   },
   data() {
     return {

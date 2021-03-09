@@ -75,14 +75,14 @@ const originHeaders = [
 export default {
   components: {
     DiligenceFilter,
-    Breadcrumbs
-    },
+    Breadcrumbs,
+  },
   props: {
     role: String,
   },
   data() {
     return {
-      headers : originHeaders,
+      headers: originHeaders,
     }
   },
   computed: {
@@ -96,11 +96,9 @@ export default {
     ...mapActions('attendance', ['fetchAttendances']),
     refresh(query) {
       this.isLoading = true
-      this.fetchAttendances().then(
-        () => {
-          this.isLoading = false
-        }
-      )
+      this.fetchAttendances().then(() => {
+        this.isLoading = false
+      })
     },
     formatTime(time, str) {
       return moment(time).format(str)
@@ -112,7 +110,7 @@ export default {
       this.editInClass = data.inClass
       this.editOutClass = data.outClass
     },
-  }
+  },
 }
 </script>
 <style scoped>

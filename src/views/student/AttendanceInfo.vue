@@ -1,7 +1,7 @@
 <template>
   <v-card>
-    <div class="d-flex justify-space-between pa-4">
-      <div class="">Ngày hôm nay</div>
+    <div class="d-flex justify-space-between align-center pa-4">
+      <div class="font-weight-bold">Ngày {{currentDate}}</div>
       <div>
         <v-btn @click="checkinState=!checkinState" dark color="#0D47A1">
           <v-icon left>add</v-icon>Thêm điểm danh
@@ -36,10 +36,12 @@ export default {
   props: {
     attendances: Array,
   },
+  computed: {
+    currentDate() {
+      return moment().format('DD/MM/YYYY')
+    }
+  },
   methods: {
-    getCurrentDate() {
-      return moment()
-    },
     refresh() {
       this.$emit('refresh')
     },
