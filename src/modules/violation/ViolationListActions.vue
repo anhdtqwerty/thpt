@@ -9,19 +9,11 @@
         <v-icon v-bind="attrs" v-on="on">mdi-dots-vertical</v-icon>
       </template>
       <v-list class="pa-0">
-        <v-list-item>
-          <v-btn
-            class="elevation-0"
-            icon
-            @click="EditViolation = !EditViolation"
-          >
-            Sửa nội dung
-          </v-btn>
+        <v-list-item @click="EditViolation = !EditViolation">
+          Sửa nội dung
         </v-list-item>
-        <v-list-item>
-          <v-btn class="elevation-0" icon @click="onRemove()">
-            Xóa nội dung
-          </v-btn>
+        <v-list-item class="elevation-0" @click="onRemove()">
+          Xóa nội dung
         </v-list-item>
       </v-list>
     </v-menu>
