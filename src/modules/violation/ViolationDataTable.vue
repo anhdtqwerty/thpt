@@ -1,7 +1,8 @@
 <template>
   <v-data-table
+    :hide-default-footer="hideFooter"
     :loading="loading"
-    :headers="originHeaders"
+    :headers="headers ? headers : originHeaders"
     :items="violations"
     item-key="id"
     v-model="selected"
@@ -18,7 +19,7 @@
       {{ formatDate(item) }}
     </template>
     <template v-slot:[`item.type`]="{ item }">
-      <v-chip :color="getColor(item.type)" dark
+      <v-chip small label :color="getColor(item.type)" dark
         ><span v-if="item.type">
           {{
             item.type === 'violation'
@@ -30,7 +31,7 @@
         </span>
       </v-chip>
     </template>
-    <template v-slot:top="{ pagination, options, updateOptions }">
+    <template v-if="!hideFooter" v-slot:top="{ pagination, options, updateOptions }">
       <v-data-footer
         :pagination="pagination"
         :options="options"
@@ -95,7 +96,6 @@ const originHeaders = [
 export default {
   data() {
     return {
-      headers: [],
       originHeaders: originHeaders,
       selected: [],
       loading: false,
@@ -105,7 +105,9 @@ export default {
     ViolationActions,
   },
   props: {
+    headers: { type: Array, default: () => null },
     violations: Array,
+    hideFooter: { type: Boolean, default: () => false }
   },
   methods: {
     formatDate(item) {
@@ -115,7 +117,7 @@ export default {
     },
     getColor(s) {
       if (s === 'violation') return 'orange'
-      else return 'green'
+      else return '#46BE8A'
     },
   },
 }
