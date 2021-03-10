@@ -42,7 +42,7 @@
       <v-divider></v-divider>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn class="ma-2" outlined color="#0D47A1">Sửa học sinh</v-btn>
+        <v-btn @click="editState" class="ma-2" outlined color="#0D47A1">Sửa học sinh</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -74,6 +74,10 @@ export default {
     cancel() {
       this.dialog = false
     },
+    editState() {
+      this.$emit('edit')
+      this.dialog = false
+    }
   },
   watch: {
     state(state) {

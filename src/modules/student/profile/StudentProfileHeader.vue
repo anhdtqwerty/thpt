@@ -32,17 +32,20 @@
       </v-col>
     </v-row>
 
-    <student-profile-detail-dialog :student="student" :state="detailState" />
+    <student-profile-detail-dialog @edit="editState=!editState" :student="student" :state="detailState" />
+    <student-edit-dialog :student="student" :state="editState"/>
   </v-card>
 </template>
 
 <script>
 import UserAvatarPicker from '@/components/basic/picker/UserAvatarPicker'
 import StudentProfileDetailDialog from '@/modules/student/StudentProfileDetailDialog'
+import StudentEditDialog from '@/modules/student/StudentEditDialog'
 
 export default {
   components: {
     StudentProfileDetailDialog,
+    StudentEditDialog,
     UserAvatarPicker,
   },
   data() {
@@ -61,6 +64,7 @@ export default {
         },
       ],
       detailState: false,
+      editState: false
     }
   },
   props: {
