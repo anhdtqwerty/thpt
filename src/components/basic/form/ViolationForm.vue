@@ -1,6 +1,6 @@
 <template>
   <v-form ref="form" flat class="pt-5">
-    <p class="font-weight-regular">Ngày: {{ formatDate(this.violation) }}</p>
+    <p class="font-weight-regular">Ngày: {{ this.violation.data.Date}}</p>
     <v-row class="pb-3">
       <v-col cols="6">
         <card-student-name :student="this.student" link />
