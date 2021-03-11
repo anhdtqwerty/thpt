@@ -1,7 +1,7 @@
 <template>
   <v-form ref="form" flat class="pt-5">
     <p class="font-weight-regular">Ngày: {{ formatDate(this.violation) }}</p>
-    <v-row class="py-3">
+    <v-row class="pb-3">
       <v-col cols="6">
         <card-student-name :student="this.student" link />
       </v-col>
