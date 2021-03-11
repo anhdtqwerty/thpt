@@ -97,7 +97,7 @@ export default {
     student: '',
     description: '',
     type: '',
-    time:''
+    time:'',
   }),
   computed: {
     ...mapGetters('app', ['department']),
@@ -137,12 +137,10 @@ export default {
         this.student = ''
         this.classData = ''
         this.type = ''
-        this.data =''
+        this.time =''
+        this.data = ''
       }
     },
-  },
-  created() {
-    this.resetDefault()
   },
 }
 </script>
