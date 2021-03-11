@@ -4,7 +4,15 @@
       <v-col class="pb-0" cols="12">
         <v-text-field
           v-model="currentLive"
-          label="Địa chỉ liên lạc"
+          label="Địa chỉ hiện tại"
+          outlined
+          dense
+        ></v-text-field>
+      </v-col>
+      <v-col>
+        <v-text-field
+          v-model="province"
+          label="Tỉnh/Thành phố"
           outlined
           dense
         ></v-text-field>
@@ -17,10 +25,18 @@
           dense
         ></v-text-field>
       </v-col>
-      <v-col>
+      <v-col class="pb-0" cols="12" md="6">
         <v-text-field
-          v-model="province"
-          label="Tỉnh/Thành phố"
+          v-model="phone"
+          label="Số điẹn thoại"
+          outlined
+          dense
+        ></v-text-field>
+      </v-col>
+      <v-col class="pb-0" cols="12" md="6">
+        <v-text-field
+          v-model="email"
+          label="Email"
           outlined
           dense
         ></v-text-field>
@@ -43,6 +59,8 @@ export default {
     currentLive: '',
     province: '',
     district: '',
+    phone: '',
+    email: '',
     rules: {
       required: (value) => !!value || 'Required.',
       min: (v) => v.length >= 6 || 'Min 8 characters',
@@ -54,6 +72,8 @@ export default {
       this.currentLive = this.student.data.currentLive
       this.province = this.student.data.province
       this.district = this.student.data.district
+      this.phone = this.student.phone
+      this.email = this.student.email
     }
   },
   methods: {
@@ -65,6 +85,8 @@ export default {
         currentLive: this.currentLive,
         province: this.province,
         district: this.district,
+        phone: this.phone,
+        email: this.email,
       }
     },
     reset() {

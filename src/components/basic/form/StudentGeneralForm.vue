@@ -107,7 +107,7 @@ export default {
       this.dob = this.student.dob
       this.ethnic = this.student.data.ethnic
       this.frequentlyAddress = this.student.data.frequentlyAddress
-      this.classes = this.student.classes[0].title
+      this.classes = this.student.classes[0]
     }
   },
   methods: {
@@ -147,11 +147,6 @@ export default {
     },
     resetValidation() {
       this.$refs.form.resetValidation()
-    },
-  },
-  watch: {
-    student(student) {
-      this.reset()
     },
   },
 }
