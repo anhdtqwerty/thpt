@@ -7,7 +7,7 @@
   >
     <v-card>
       <v-card-title class="primary white--text text-uppercase">
-        Chuyển lớp
+        Chuyển trạng thái
         <v-spacer></v-spacer>
         <!-- <v-btn dark icon>
           <v-icon @click="cancel">close</v-icon>
@@ -39,9 +39,9 @@
           <v-row>
             <v-col cols="6" class="d-flex justify-space-between align-center">
               <div>
-                <p class="text-caption my-0">Lớp hiện tại</p>
+                <p class="text-caption my-0">Trạng thái hiện tại</p>
                 <span class="text-subtitle-2 font-weight-black">{{
-                  item.classes[0].title
+                  item.status | getStatus
                 }}</span>
               </div>
               <div>
@@ -49,11 +49,14 @@
               </div>
             </v-col>
             <v-col cols="6">
-              <autocomplete-class
-                v-model="classes"
+              <v-select
+                v-model="status"
+                :items="studentStatus"
+                item-text="title"
+                item-value="status"
                 dense
                 outlined
-                label="Lớp mới"
+                label="Trạng thái mới"
                 hide-details
               />
             </v-col>
@@ -74,17 +77,15 @@
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex'
 import CardStudentName from '@/components/basic/card/CardStudentName'
-import AutocompleteClass from '@/components/basic/input/AutocompleteClass'
 
 export default {
   components: {
     CardStudentName,
-    AutocompleteClass,
   },
   data() {
     return {
       dialog: false,
-      classes: []
+      status: ''
     }
   },
   props: {
@@ -93,6 +94,7 @@ export default {
   },
   computed: {
     ...mapState('app', ['roles', 'department', 'currentGeneration']),
+    ...mapState('constant', ['studentStatus']),
     ...mapGetters('app', ['roleIdByName', 'roles']),
     isLoading() {
       return this.loading > 0
@@ -106,9 +108,23 @@ export default {
     async save() {
       await this.updateStudent({
         id: this.item.id,
-        classes: [this.classes],
+        status: this.status
       })
       this.dialog = false
+    },
+  },
+  filters: {
+    getStatus(status) {
+      switch (status) {
+        case 'active':
+          return 'Đang học'
+        case 'reserved':
+          return 'Bảo lưu'
+        case 'graduated':
+          return 'Đã tốt nghiệp'
+        case 'left':
+          return 'Đã chuyển trường'
+      }
     },
   },
   watch: {

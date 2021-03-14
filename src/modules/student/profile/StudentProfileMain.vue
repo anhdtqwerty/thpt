@@ -52,7 +52,7 @@
               </v-col>
             </v-row>
             <violation-data-table
-              hideFooter="true"
+              :hideFooter="true"
               :headers="violationHeader"
               :violations="violations"
             />
