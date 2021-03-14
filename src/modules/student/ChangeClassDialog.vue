@@ -48,19 +48,22 @@
                 <v-icon x-large>mdi_arrow_right_alt</v-icon>
               </div>
             </v-col>
+            <v-col cols="6">
+              <autocomplete-class
+                v-model="classes"
+                dense
+                outlined
+                label="Lớp mới"
+                hide-details
+              />
+            </v-col>
           </v-row>
         </v-form>
       </v-card-text>
       <v-divider></v-divider>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn
-          class="ma-2"
-          dark
-          depressed
-          color="#0D47A1"
-          @click="save()"
-          :disabled="isLoading"
+        <v-btn class="ma-2" dark depressed color="#0D47A1" @click="save()"
           >Lưu</v-btn
         >
       </v-card-actions>
@@ -71,10 +74,12 @@
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex'
 import CardStudentName from '@/components/basic/card/CardStudentName'
+import AutocompleteClass from '@/components/basic/input/AutocompleteClass'
 
 export default {
   components: {
     CardStudentName,
+    AutocompleteClass,
   },
   data() {
     return {
@@ -100,7 +105,16 @@ export default {
       return this.rootMajor.majors || []
     },
   },
-  methods: {},
+  methods: {
+    ...mapActions('students', ['updateStudent']),
+    async save() {
+      await this.updateStudent({
+        id: this.item.id,
+        classes: [this.classes],
+      })
+      this.dialog = false
+    },
+  },
   watch: {
     state(state) {
       this.dialog = true
