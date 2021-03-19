@@ -1,56 +1,25 @@
 <template>
   <v-form ref="form" flat class="pt-5">
-    <autocomplete-grade
-      v-model="grade"
-      item-text="title"
-      item-value="id"
-      clear-icon="mdi-close"
-      clearable
-      label="Khối"
-      :rules="ruleRequired"
-      outlined
-      dense
-      deletable-chips
-      :hide-details="$vuetify.breakpoint.smAndDown"
-      :class="{ 'mb-4': $vuetify.breakpoint.smAndDown }"
-    />
-    <autocomplete-class
-      v-model="classData"
-      :defaultClasses = [classData]
-      clear-icon="mdi-close"
-      clearable
-      :rules="ruleRequired"
-      label="Lớp"
-      outlined
-      dense
-      deletable-chips
-      :hide-details="$vuetify.breakpoint.smAndDown"
-      :class="{ 'mb-4': $vuetify.breakpoint.smAndDown }"
-    ></autocomplete-class>
-    <autocomplete-student
-      v-model="student"
-      :defaultStudent = "student"
-      :rules="ruleRequired"
-      clearable
-      clear-icon="mdi-close"
-      outlined
-      label="Tên học sinh"
-      dense
-      deletable-chips
-      :hide-details="$vuetify.breakpoint.smAndDown"
-      :class="{ 'mb-4': $vuetify.breakpoint.smAndDown }"
-    />
+    <p class="font-weight-regular">Ngày: {{ this.violation.data.Date}}</p>
+    <v-row class="pb-3">
+      <v-col cols="6">
+        <card-student-name :student="this.student" link />
+      </v-col>
+      <v-col cols="4">
+        <div>Ngày sinh</div>
+        <h4>{{ this.student.dob }}</h4 >
+      </v-col>
+      <v-col cols="2">
+        <div>Lớp</div>
+        <h4>{{ this.classData.title }}</h4>
+      </v-col>
+    </v-row>
+
     <v-radio-group v-model="type" row class="shrink mt-0">
-      <p class="mr-2 my-0">Mục: </p>
+      <p class="mr-2 my-0">Mục:</p>
       <v-radio label="Kỷ luật" hide-details value="violation"></v-radio>
       <v-radio label="Khen thưởng" hide-details value="commendation"></v-radio>
     </v-radio-group>
-    <!-- <v-radio-group >
-      <p >Loại nội dung:</p>
-      <v-radio label="Điểm" hide-details></v-radio>
-      <v-radio label="Nề nếp" hide-details></v-radio>
-      <v-radio label="Khác" hide-details></v-radio>
-    </v-radio-group> -->
 
     <v-textarea
       v-model="description"
@@ -66,12 +35,17 @@ import AutocompleteGrade from '@/components/basic/input/AutocompleteGrade'
 import AutocompleteClass from '@/components/basic/input/AutocompleteClass.vue'
 import AutocompleteStudent from '@/components/basic/input/AutocompleteStudent.vue'
 import { mapGetters } from 'vuex'
+import moment from 'moment'
+import { get } from 'lodash'
+import CardStudentName from '@/components/basic/card/CardStudentName.vue'
+
 export default {
   components: {
     TextFieldCode,
     AutocompleteGrade,
     AutocompleteClass,
     AutocompleteStudent,
+    CardStudentName,
   },
   data: () => ({
     options: [
@@ -84,9 +58,13 @@ export default {
     student: '',
     description: '',
     type: '',
+    createdAt: '',
   }),
   computed: {
     ...mapGetters('app', ['department']),
+    avatar() {
+      return _.get(this.student, 'avatar.url', '/default-avatar.png')
+    },
   },
   props: {
     violation: { type: Object, default: () => {} },
@@ -113,7 +91,6 @@ export default {
       }
     },
     resetDefault() {
-      console.log(this.violation)
       if (this.violation) {
         this.grade = this.violation.grade
         this.description = this.violation.description
@@ -127,6 +104,11 @@ export default {
         this.classData = ''
         this.type = ''
       }
+    },
+    formatDate(item) {
+      return get(item, 'createdAt', '')
+        ? moment(item.createdAt).format('DD/MM/YYYY')
+        : ''
     },
   },
   created() {

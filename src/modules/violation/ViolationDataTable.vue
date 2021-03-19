@@ -51,7 +51,7 @@ import { get } from 'lodash'
 const originHeaders = [
   {
     text: 'Ngày',
-    value: 'createdAt',
+    value: 'data.Date',
     align: 'left',
     sortable: false,
     show: true,

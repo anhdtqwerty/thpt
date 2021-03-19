@@ -10,10 +10,10 @@
       </template>
       <v-list class="pa-0">
         <v-list-item @click="EditViolation = !EditViolation">
-          Sửa nội dung
+          Sửa KTKL
         </v-list-item>
         <v-list-item class="elevation-0" @click="onRemove()">
-          Xóa nội dung
+          Xóa KTKL
         </v-list-item>
       </v-list>
     </v-menu>

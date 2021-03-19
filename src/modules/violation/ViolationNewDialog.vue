@@ -60,6 +60,7 @@ export default {
       const data = this.$refs.form.getData()
       await this.createViolation({ ...data, class: data.classData })
       this.$alert.success('Tạo mới thành công')
+      this.$refs.form.resetDefault()
       this.loading = false
       this.dialog = false
     }

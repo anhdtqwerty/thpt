@@ -4,6 +4,7 @@
       <v-col>
         <DateIOSPicker
           label="Ngày"
+          v-model="time"
           outlined
           dense
           deletable-chips
@@ -96,6 +97,7 @@ export default {
     student: '',
     description: '',
     type: '',
+    time:'',
   }),
   computed: {
     ...mapGetters('app', ['department']),
@@ -117,6 +119,7 @@ export default {
           student: this.student,
           classData: this.classData,
           type: this.type,
+          data: {"Date": this.time},
         }
       }
     },
@@ -127,17 +130,17 @@ export default {
         this.student = this.violation.student
         this.classData = this.violation.classData
         this.type = this.violation.type
+        this.data = this.violation.data
       } else {
         this.grade = ''
         this.description = ''
         this.student = ''
         this.classData = ''
         this.type = ''
+        this.time =''
+        this.data = ''
       }
     },
-  },
-  created() {
-    this.resetDefault()
   },
 }
 </script>
