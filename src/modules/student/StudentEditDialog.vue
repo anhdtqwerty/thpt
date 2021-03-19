@@ -103,48 +103,31 @@ export default {
     }
   },
   methods: {
-    ...mapActions('students', ['createStudent']),
+    ...mapActions('students', ['updateStudent']),
     async save() {
-      if (
-        !this.$refs.studentGeneralForm.validate() ||
-        !this.$refs.studentContactForm.validate()
-      ) {
-        return
-      }
       const studentGeneralForm = this.$refs.studentGeneralForm.getData()
       const studentContactForm = this.$refs.studentContactForm.getData()
       const studentNoteForm = this.$refs.studentNoteForm.getData()
       const studentFamilyForm = this.$refs.studentFamilyForm.getData()
-      this.classes.push(studentGeneralForm.classes)
-      const overide = this.defaultOveride || {}
-      const student = await this.createStudent({
-        generation: this.currentGeneration.id,
-        department: this.department.id,
-        classes: this.classes,
+      await this.updateStudent({
+        id: this.student.id,
         name: studentGeneralForm.name,
-        username: studentGeneralForm.username,
-        username_indexing: studentGeneralForm.username_indexing,
-        username_no: studentGeneralForm.username_no,
-        password: '123123',
-        status: 'active',
+        phone: studentContactForm.phone,
         address: studentContactForm.currentLive,
         notes: studentNoteForm.notes,
-        email: `${studentGeneralForm.username}@ltvhn.edu.vn`,
+        email: studentContactForm.email,
         gender: studentGeneralForm.gender,
         dob: studentGeneralForm.dob,
         data: {
+          ...this.student.data,
           ...studentGeneralForm,
           ...studentContactForm,
           ...studentFamilyForm,
-          ...studentNoteForm
+          ...studentNoteForm,
         },
-        ...overide,
-        type: 'student'
       })
       this.dialog = false
       this.reset()
-      this.$router.push(`/student/${student.id}`)
-      this.$emit('done', student)
     },
     cancel() {
       this.dialog = false

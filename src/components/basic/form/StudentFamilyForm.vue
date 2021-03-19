@@ -10,6 +10,24 @@
           dense
         ></v-text-field>
       </v-col>
+    </v-row>
+    <v-row>
+      <v-col class="pb-0" cols="12" md="6">
+        <v-text-field
+          v-model="dadJob"
+          label="Nghề nghiệp"
+          outlined
+          dense
+        ></v-text-field>
+      </v-col>
+      <v-col class="pb-0" cols="12" md="6">
+        <v-text-field
+          v-model="dadCompany"
+          label="Cơ quan công tác"
+          outlined
+          dense
+        ></v-text-field>
+      </v-col>
       <v-col class="pb-0" cols="12" md="6">
         <v-text-field
           ref="dadPhone"
@@ -19,7 +37,7 @@
           dense
         ></v-text-field>
       </v-col>
-      <v-col class="py-0" cols="12" md="6">
+      <v-col class="pb-0" cols="12" md="6">
         <v-text-field
           ref="dadEmail"
           v-model="dadEmail"
@@ -30,7 +48,7 @@
       </v-col>
     </v-row>
     <v-divider></v-divider>
-    <v-row class="mt-1">
+    <v-row class="mt-2">
       <v-col class="pb-0" cols="12" md="6">
         <v-text-field
           ref="momName"
@@ -40,22 +58,38 @@
           dense
         ></v-text-field>
       </v-col>
+    </v-row>
+    <v-row>
       <v-col class="pb-0" cols="12" md="6">
         <v-text-field
-          ref="momPhone"
-          v-model="momPhone"
-          label="Số Điện Thoại Mẹ"
+          v-model="momJob"
+          label="Nghề nghiệp"
           outlined
           dense
         ></v-text-field>
       </v-col>
-      <v-col class="py-0" cols="12" md="6">
+      <v-col class="pb-0" cols="12" md="6">
         <v-text-field
-          ref="momEmail"
-          v-model="momEmail"
-          label="Email Mẹ"
+          v-model="momCompany"
+          label="Cơ quan công tác"
           outlined
           dense
+        ></v-text-field>
+      </v-col>
+      <v-col class="pb-0" cols="12" md="6">
+        <v-text-field
+          v-model="momPhone"
+          label="Số điện thoại mẹ"
+          outlined
+          dense
+        ></v-text-field>
+      </v-col>
+      <v-col class="pb-0" cols="12" md="6">
+        <v-text-field
+          v-model="momEmail"
+          label="Email Mẹ"
+          dense
+          outlined
         ></v-text-field>
       </v-col>
     </v-row>
@@ -89,9 +123,13 @@ export default {
       this.dadName = this.student.data.dadName
       this.dadEmail = this.student.data.dadEmail
       this.dadPhone = this.student.data.dadPhone
+      this.dadJob = this.student.data.dadJob
+      this.dadCompany = this.student.data.dadCompany
       this.momName = this.student.data.momName
       this.momEmail = this.student.data.momEmail
       this.momPhone = this.student.data.momPhone
+      this.momJob = this.student.data.momJob
+      this.momCompany = this.student.data.momCompany
     }
   },
   methods: {
@@ -103,9 +141,13 @@ export default {
         dadName: this.dadName,
         dadEmail: this.dadEmail,
         dadPhone: this.dadPhone,
+        dadJob: this.dadJob,
+        dadCompany: this.dadCompany,
         momPhone: this.momPhone,
         momName: this.momName,
         momEmail: this.momEmail,
+        momJob: this.momJob,
+        momCompany: this.momCompany,
       }
     },
     reset() {

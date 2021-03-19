@@ -11,23 +11,25 @@
           <v-list-item-title @click="changeClass=!changeClass">Chuyển lớp</v-list-item-title>
         </v-list-item>
         <v-list-item>
-          <v-list-item-title>Chuyển trạng thái</v-list-item-title>
+          <v-list-item-title @click="changeStatus=!changeStatus">Chuyển trạng thái</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-menu>
 
-    <change-class-dialog :item="item" :state="changeClass"></change-class-dialog>
+    <change-class-dialog :item="item" :state="changeClass" />
+    <change-status-dialog :item="item" :state="changeStatus" />
   </div>
 </template>
 
 <script>
 import { mapActions, mapState } from 'vuex'
 import ChangeClassDialog from '@/modules/student/ChangeClassDialog.vue'
+import ChangeStatusDialog from '@/modules/student/ChangeStatusDialog'
 import _ from 'lodash'
 
 export default {
   components: {
-    ChangeClassDialog
+    ChangeClassDialog, ChangeStatusDialog
   },
   props: {
     disabled: Boolean,
@@ -40,7 +42,8 @@ export default {
       smsDialogState: false,
       smsEditingState: false,
       sending: null,
-      changeClass: false
+      changeClass: false,
+      changeStatus: false
     }
   },
   computed: {
