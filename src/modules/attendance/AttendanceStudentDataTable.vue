@@ -27,6 +27,12 @@
     <template v-slot:[`item.action`]="{ item }">
       <attendance-list-actions :item="item" />
     </template>
+    <template v-slot:[`item.checkin`]="{ item }">
+      <span>{{ formatTime(item.checkin[0], 'LT') }}</span>
+    </template>
+    <template v-slot:[`item.student.dob`]="{ item }">
+      <span>{{ formatTime(item.student.dob, 'DD/MM/YYYY') }}</span>
+    </template>
   </v-data-table>
 </template>
 
@@ -40,11 +46,16 @@ export default {
     return {
       headers: [
         { text: 'Học sinh', value: 'student.name', sortable: true },
-        { text: 'Ngày sinh', value: 'student.dob', width: 200, sortable: false },
+        {
+          text: 'Ngày sinh',
+          value: 'student.dob',
+          width: 200,
+          sortable: false,
+        },
         { text: 'Lớp', value: 'class.title', width: 100, sortable: false },
         {
           text: 'Giờ đến',
-          value: 'checkin.onTime',
+          value: 'checkin',
           width: 100,
           sortable: false,
         },
