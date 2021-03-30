@@ -3,13 +3,12 @@
     <v-menu offset-y>
       <template v-slot:activator="{ on, attrs }">
         <v-btn v-bind="attrs" v-on="on" icon>
-          <v-icon>mdi-dots-vertical</v-icon>
+          <v-icon class="primary--text">mdi-dots-vertical</v-icon>
         </v-btn>
       </template>
       <v-list>
-        <v-list-item @click="remove">
-          <v-icon left>mdi-delete</v-icon>
-          <v-list-item-title>Xóa</v-list-item-title>
+        <v-list-item @click="changeState">
+          <v-list-item-title>Chuyển trạng thái</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-menu>
@@ -26,7 +25,6 @@
 import { mapActions, mapState } from 'vuex'
 import SendEmailDialog from '@/modules/email/SendEmailDialog'
 import SendSMSDialog from '@/modules/sms/SendSMSDialog'
-import moment from 'moment'
 
 export default {
   components: {
