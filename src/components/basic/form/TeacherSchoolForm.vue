@@ -1,40 +1,44 @@
 <template>
   <v-form v-model="valid" ref="form" v-bind="this.$attrs">
     <v-row>
-      <v-col class="pb-0" cols="12" md="4">
+      <v-col class="pb-0" cols="6">
         <v-autocomplete
           :items="typeList"
           item-text="title"
           item-value="value"
-          ref="type"
           v-model="type"
           label="Loại cán bộ"
           outlined
+          class="required"
+          :rules="[rules.required]"
           dense
         ></v-autocomplete>
       </v-col>
-      <v-col class="pb-0" cols="12" md="4">
+      <v-col class="pb-0" cols="6">
         <v-text-field
-          ref="schoolDate"
           v-model="schoolDate"
           label="Năm vào trường"
           outlined
           dense
+          class="required"
+          :rules="[rules.required]"
         ></v-text-field>
       </v-col>
-      <v-col class="pb-0" cols="12" md="4">
+      <v-col class="pb-0" cols="6">
         <v-select
           auto-select-first
           :items="teacherStatus"
           item-text="title"
           item-value="value"
-          ref="status"
           v-model="status"
           label="Trạng thái hiện tại"
           outlined
           dense
+          class="required"
+          :rules="[rules.required]"
         ></v-select>
       </v-col>
+      <v-col cols="6" class="pb-0"> </v-col>
     </v-row>
   </v-form>
 </template>

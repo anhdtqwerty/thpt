@@ -1,9 +1,8 @@
 <template>
   <v-form v-model="valid" ref="form" v-bind="this.$attrs">
     <v-row>
-      <v-col class="pb-0" cols="12" md="6">
+      <v-col class="pb-0" cols="6">
         <v-text-field
-          ref="name"
           v-model="name"
           label="Tên giáo viên"
           @blur="nameLostFocus()"
@@ -13,20 +12,8 @@
           dense
         ></v-text-field>
       </v-col>
-      <v-col class="pb-0" cols="12" md="6">
-        <v-text-field
-          v-model="username"
-          outlined
-          dense
-          label="Mã giáo viên"
-          disabled
-          class="required"
-          :rules="[rules.required]"
-        ></v-text-field>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col class="pb-0" cols="12" md="6">
+      <v-col class="pb-0" cols="6"></v-col>
+      <v-col class="pb-0" cols="6">
         <date-picker
           :date.sync="dob"
           label="Ngày Sinh"
@@ -36,7 +23,7 @@
           dense
         ></date-picker>
       </v-col>
-      <v-col class="pb-0" cols="12" md="6">
+      <v-col class="pb-0" cols="6">
         <v-select
           ref="gender"
           v-model="gender"
@@ -52,8 +39,9 @@
     <v-row>
       <v-col class="pb-0" cols="12" md="6">
         <v-text-field
-          ref="frequentlyAddress"
           v-model="frequentlyAddress"
+          class="required"
+          :rules="[rules.required]"
           label="Địa chỉ thường trú"
           outlined
           dense
@@ -61,8 +49,9 @@
       </v-col>
       <v-col class="pb-0" cols="12" md="6">
         <v-text-field
-          ref="ethinic"
           v-model="ethnic"
+          class="required"
+          :rules="[rules.required]"
           label="Dân tộc"
           outlined
           dense
