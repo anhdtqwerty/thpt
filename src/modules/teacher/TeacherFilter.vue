@@ -43,13 +43,8 @@
         </v-row>
       </v-col>
       <v-col cols="2">
-        <v-btn
-          height="40"
-          color="#0D47A1"
-          @click="onFilterChanged"
-          outlined
-        >
-          <v-icon left dark>mdi-filter-outline</v-icon>Lọc
+        <v-btn height="40" color="#0D47A1" @click="onFilterChanged" outlined>
+          Tìm kiếm
         </v-btn>
       </v-col>
     </v-row>

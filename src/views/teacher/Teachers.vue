@@ -32,7 +32,7 @@
     </v-card>
 
     <v-card outlined class="mx-md-4 elevation-0">
-      <teacher-data-table />
+      <teacher-data-table ref="teacherDataTable" />
     </v-card>
     <new-teacher-dialog :state="createState" />
   </div>
@@ -71,5 +71,10 @@ export default {
       }
     },
   },
+  methods: {
+    refresh(query) {
+      this.$refs.teacherDataTable.refresh(query)
+    },
+  }
 }
 </script>

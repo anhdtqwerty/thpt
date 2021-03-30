@@ -168,12 +168,7 @@ export default {
       return moment(date).format('DD/MM/YYYY')
     },
     refresh(query) {
-      this.isLoading = true
-      this.fetchTeachers({ ...query, department: this.department.id }).then(
-        () => {
-          this.isLoading = false
-        }
-      )
+      this.fetchTeachers({ ...query, department: this.department.id })
     },
     classesCount(classes) {
       return get(classes, classes.length, '- -')
