@@ -155,6 +155,7 @@ export default {
     ]),
     async refresh(query) {
       await this.searchStudents({ ...query })
+      console.log(this.students)
     },
     getTuitionStatus(leads) {
       if (!leads) return ''

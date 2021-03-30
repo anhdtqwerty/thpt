@@ -44,6 +44,7 @@
 
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex'
+import moment from 'moment'
 
 import StudentGeneralForm from '@/components/basic/form/StudentGeneralForm.vue'
 import StudentContactForm from '@/components/basic/form/StudentContactForm.vue'
@@ -130,7 +131,7 @@ export default {
         notes: studentNoteForm.notes,
         email: `${studentGeneralForm.username}@ltvhn.edu.vn`,
         gender: studentGeneralForm.gender,
-        dob: studentGeneralForm.dob,
+        dob: moment(studentGeneralForm.dob).add(1, 'days'),
         data: {
           ...studentGeneralForm,
           ...studentContactForm,
@@ -140,6 +141,7 @@ export default {
         ...overide,
         type: 'student'
       })
+      console.log(studentGeneralForm.dob)
       this.dialog = false
       this.reset()
       this.$router.push(`/student/${student.id}`)

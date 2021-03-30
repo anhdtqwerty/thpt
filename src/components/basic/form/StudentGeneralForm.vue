@@ -52,6 +52,8 @@
         <v-text-field
           v-model="frequentlyAddress"
           label="Quê quán"
+          class="required"
+          :rules="[rules.required]"
           outlined
           dense
         ></v-text-field>
@@ -59,6 +61,8 @@
       <v-col class="pb-0" cols="12" md="6">
         <v-text-field
           v-model="ethnic"
+          class="required"
+          :rules="[rules.required]"
           label="Dân tộc"
           outlined
           dense
