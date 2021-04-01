@@ -17,13 +17,26 @@
       <v-card-text>
         <v-form ref="form" class="py-4">
           <h3 class="mb-2">1. Thông tin cơ bản</h3>
-          <student-general-form :student="student" :rules="rules" ref="studentGeneralForm"></student-general-form>
+          <student-general-form
+            :student="student"
+            :rules="rules"
+            ref="studentGeneralForm"
+          ></student-general-form>
           <h3 class="mb-2">2. Thông tin liên lạc</h3>
-          <student-contact-form :student="student" ref="studentContactForm"></student-contact-form>
+          <student-contact-form
+            :student="student"
+            ref="studentContactForm"
+          ></student-contact-form>
           <h3 class="mb-2">3. Ghi chú về học sinh</h3>
-          <student-note-form :student="student" ref="studentNoteForm"></student-note-form>
+          <student-note-form
+            :student="student"
+            ref="studentNoteForm"
+          ></student-note-form>
           <h3 class="mb-2">4. Thông tin gia đình</h3>
-          <student-family-form :student="student" ref="studentFamilyForm"></student-family-form>
+          <student-family-form
+            :student="student"
+            ref="studentFamilyForm"
+          ></student-family-form>
         </v-form>
       </v-card-text>
       <v-card-actions>
@@ -55,7 +68,7 @@ export default {
     StudentGeneralForm,
     StudentContactForm,
     StudentNoteForm,
-    StudentFamilyForm
+    StudentFamilyForm,
   },
   data() {
     return {
@@ -77,10 +90,14 @@ export default {
       password: '',
       emailError: '',
       rules: {
-        required: value => !!value || 'Trường này không được để trống',
-        min: v => v.length >= 6 || 'Ít nhất 6 ký tự',
-        email: v => /.+@.+/.test(v) || 'Email chưa đúng định dạng'
-      }
+        required: (value) => !!value || 'Trường này không được để trống',
+        min: (v) => v.length >= 6 || 'Ít nhất 6 ký tự',
+        email: (v) => /.+@.+/.test(v) || 'Email chưa đúng định dạng',
+        dob: (v) =>
+          /^(?:0[1-9]|[12]\d|3[01])([/.-])(?:0[1-9]|1[012])\1(?:19|20)\d\d$/.test(
+            v
+          ) || 'Ngày sinh chưa đúng định dạng',
+      },
     }
   },
   props: {
@@ -90,7 +107,7 @@ export default {
     defaultEmail: String,
     defaultName: String,
     defaultOveride: Object,
-    student: Object
+    student: Object,
   },
   computed: {
     ...mapState('app', ['roles', 'department', 'currentGeneration']),
@@ -100,10 +117,10 @@ export default {
     },
     majors() {
       return this.rootMajor.majors || []
-    }
+    },
   },
   methods: {
-    ...mapActions('students', ['updateStudent']),
+    ...mapActions('student', ['updateStudent']),
     async save() {
       const studentGeneralForm = this.$refs.studentGeneralForm.getData()
       const studentContactForm = this.$refs.studentContactForm.getData()
@@ -137,7 +154,7 @@ export default {
     state(state) {
       this.dialog = true
     },
-    rootMajor() {}
-  }
+    rootMajor() {},
+  },
 }
 </script>

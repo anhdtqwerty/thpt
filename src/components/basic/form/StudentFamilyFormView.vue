@@ -180,7 +180,7 @@ export default {
       this.momPhone = this.student.data.momPhone
       this.dadJob = this.student.data.dadJob
       this.dadCompany = this.student.data.dadCompany
-      this.momjob = this.student.data.momJob
+      this.momJob = this.student.data.momJob
       this.momCompany = this.student.data.momCompany
     }
   },
