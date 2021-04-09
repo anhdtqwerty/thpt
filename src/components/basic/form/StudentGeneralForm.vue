@@ -43,7 +43,7 @@
           dense
           outlined
           class="required"
-          :rules="[rules.required]"
+          :rules="[rules.required, rules.date]"
         ></date-picker>
       </v-col>
     </v-row>
@@ -54,6 +54,8 @@
           label="Quê quán"
           outlined
           dense
+          class="required"
+          :rules="[rules.required]"
         ></v-text-field>
       </v-col>
       <v-col class="pb-0" cols="12" md="6">
@@ -62,6 +64,8 @@
           label="Dân tộc"
           outlined
           dense
+          class="required"
+          :rules="[rules.required]"
         ></v-text-field>
       </v-col>
     </v-row>
@@ -78,7 +82,7 @@ export default {
   props: {
     student: {
       type: [Object],
-      default: () => {},
+      default: () => {}
     },
     rules: Object
   },
@@ -96,8 +100,8 @@ export default {
     genders: [
       { title: 'Nam', value: 'male' },
       { title: 'Nữ', value: 'female' },
-      { title: 'Khác', value: 'other' },
-    ],
+      { title: 'Khác', value: 'other' }
+    ]
   }),
   created() {
     if (this.student) {
@@ -118,7 +122,7 @@ export default {
         // eslint-disable-next-line
         username_indexing,
         // eslint-disable-next-line
-        username_no,
+        username_no
       } = await this.generateStudentCode(this.name)
       this.username = username
       // eslint-disable-next-line
@@ -136,7 +140,7 @@ export default {
         dob: this.dob,
         ethnic: this.ethnic,
         frequentlyAddress: this.frequentlyAddress,
-        classes: this.classes,
+        classes: this.classes
       }
     },
     validate() {
@@ -147,7 +151,7 @@ export default {
     },
     resetValidation() {
       this.$refs.form.resetValidation()
-    },
-  },
+    }
+  }
 }
 </script>

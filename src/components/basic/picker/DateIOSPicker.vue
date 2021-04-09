@@ -26,10 +26,14 @@ export default {
   }),
 
   methods: {
-
     updated(value) {
       if (value) {
-        this.$emit('update:date', moment(this.data, 'DD/MM/YYYY').toISOString())
+        this.$emit(
+          'update:date',
+          moment(this.data, 'DD/MM/YYYY')
+            .endOf('day')
+            .toISOString()
+        )
       } else {
         this.$emit('update:date', '')
       }

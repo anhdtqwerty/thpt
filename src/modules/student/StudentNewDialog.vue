@@ -17,7 +17,10 @@
       <v-card-text>
         <v-form ref="form" class="py-4">
           <h3 class="mb-2">1. Thông tin cơ bản</h3>
-          <student-general-form :rules="rules" ref="studentGeneralForm"></student-general-form>
+          <student-general-form
+            :rules="rules"
+            ref="studentGeneralForm"
+          ></student-general-form>
           <h3 class="mb-2">2. Thông tin liên lạc</h3>
           <student-contact-form ref="studentContactForm"></student-contact-form>
           <h3 class="mb-2">3. Ghi chú về học sinh</h3>
@@ -49,6 +52,7 @@ import StudentGeneralForm from '@/components/basic/form/StudentGeneralForm.vue'
 import StudentContactForm from '@/components/basic/form/StudentContactForm.vue'
 import StudentNoteForm from '@/components/basic/form/StudentNoteForm.vue'
 import StudentFamilyForm from '@/components/basic/form/StudentFamilyForm.vue'
+import moment from 'moment'
 
 export default {
   components: {
@@ -79,7 +83,9 @@ export default {
       rules: {
         required: value => !!value || 'Trường này không được để trống',
         min: v => v.length >= 6 || 'Ít nhất 6 ký tự',
-        email: v => /.+@.+/.test(v) || 'Email chưa đúng định dạng'
+        email: v => /.+@.+/.test(v) || 'Email chưa đúng định dạng',
+        date: v =>
+          moment(v, 'DD/MM/YYYY', true).isValid() || 'Ngày sinh không hợp lệ'
       }
     }
   },
@@ -128,6 +134,7 @@ export default {
         status: 'active',
         address: studentContactForm.currentLive,
         notes: studentNoteForm.notes,
+        phone: studentContactForm.phone,
         email: `${studentGeneralForm.username}@ltvhn.edu.vn`,
         gender: studentGeneralForm.gender,
         dob: studentGeneralForm.dob,
