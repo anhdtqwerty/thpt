@@ -101,12 +101,14 @@ export default {
   props: {
     student: {
       type: [Object],
-      default: () => {},
-    },
+      default: () => {}
+    }
   },
   data: () => ({
     valid: true,
     dadName: '',
+    dadJob: '',
+    dadCompany: '',
     dadEmail: '',
     dadPhone: '',
     dadJob: '',
@@ -117,10 +119,10 @@ export default {
     momJob: '',
     momCompany: '',
     rules: {
-      required: (value) => !!value || 'Required.',
-      min: (v) => v.length >= 6 || 'Min 8 characters',
-      email: (v) => /.+@.+/.test(v) || 'E-mail must be valid',
-    },
+      required: value => !!value || 'Required.',
+      min: v => v.length >= 6 || 'Min 8 characters',
+      email: v => /.+@.+/.test(v) || 'E-mail must be valid'
+    }
   }),
   created() {
     if (this.student) {
@@ -151,7 +153,7 @@ export default {
         momName: this.momName,
         momEmail: this.momEmail,
         momJob: this.momJob,
-        momCompany: this.momCompany,
+        momCompany: this.momCompany
       }
     },
     reset() {
@@ -159,10 +161,9 @@ export default {
     },
     resetValidation() {
       this.$refs.form.resetValidation()
-    },
-  },
+    }
+  }
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

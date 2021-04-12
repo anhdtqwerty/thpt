@@ -6,7 +6,7 @@
           :headline="student ? `${student.name}` : 'Học Sinh'"
           :link="[
             { text: 'Học sinh', href: '../students' },
-            { text: 'Danh sách' },
+            { text: 'Danh sách' }
           ]"
         />
       </div>
@@ -23,17 +23,17 @@ import Breadcrumbs from '@/components/layout/Breadcrumbs'
 export default {
   components: {
     StudentProfile,
-    Breadcrumbs,
+    Breadcrumbs
   },
   computed: {
     ...mapGetters('student', ['student']),
     formatCode() {
       return this.student.code.substring(this.student.code.length - 5)
-    },
+    }
   },
   data() {
     return {
-      tab: null,
+      tab: null
     }
   },
   async created() {
@@ -45,7 +45,7 @@ export default {
       'updateStudent',
       'fetchStudent',
       'setTuitions',
-      'removeStudent',
+      'removeStudent'
     ]),
     resetValidation() {
       this.$refs.form.resetValidation()
@@ -63,9 +63,9 @@ export default {
         done: async () => {
           await this.removeStudent(this.student)
           this.$router.push(`/students/`)
-        },
+        }
       })
-    },
-  },
+    }
+  }
 }
 </script>

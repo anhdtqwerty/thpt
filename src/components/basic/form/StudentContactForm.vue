@@ -28,7 +28,7 @@
       <v-col class="pb-0" cols="12" md="6">
         <v-text-field
           v-model="phone"
-          label="Số điẹn thoại"
+          label="Số điện thoại"
           outlined
           dense
         ></v-text-field>
@@ -51,8 +51,8 @@ export default {
   props: {
     student: {
       type: [Object],
-      default: () => {},
-    },
+      default: () => {}
+    }
   },
   data: () => ({
     valid: true,
@@ -62,10 +62,10 @@ export default {
     phone: '',
     email: '',
     rules: {
-      required: (value) => !!value || 'Required.',
-      min: (v) => v.length >= 6 || 'Min 8 characters',
-      email: (v) => /.+@.+/.test(v) || 'E-mail must be valid',
-    },
+      required: value => !!value || 'Required.',
+      min: v => v.length >= 6 || 'Min 8 characters',
+      email: v => /.+@.+/.test(v) || 'E-mail must be valid'
+    }
   }),
   created() {
     if (this.student) {
@@ -86,7 +86,7 @@ export default {
         province: this.province,
         district: this.district,
         phone: this.phone,
-        email: this.email,
+        email: this.email
       }
     },
     reset() {
@@ -94,10 +94,9 @@ export default {
     },
     resetValidation() {
       this.$refs.form.resetValidation()
-    },
-  },
+    }
+  }
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

@@ -44,7 +44,7 @@
           dense
           outlined
           class="required"
-          :rules="[rules.required, rules.dob]"
+          :rules="[rules.required, rules.date]"
         ></date-picker>
       </v-col>
     </v-row>
@@ -53,20 +53,20 @@
         <v-text-field
           v-model="frequentlyAddress"
           label="Quê quán"
-          class="required"
-          :rules="[rules.required]"
           outlined
           dense
+          class="required"
+          :rules="[rules.required]"
         ></v-text-field>
       </v-col>
       <v-col class="pb-0" cols="12" md="6">
         <v-text-field
           v-model="ethnic"
-          class="required"
-          :rules="[rules.required]"
           label="Dân tộc"
           outlined
           dense
+          class="required"
+          :rules="[rules.required]"
         ></v-text-field>
       </v-col>
     </v-row>
@@ -96,9 +96,9 @@ export default {
   props: {
     student: {
       type: [Object],
-      default: () => {},
+      default: () => {}
     },
-    rules: Object,
+    rules: Object
   },
   data: () => ({
     valid: true,
@@ -115,8 +115,8 @@ export default {
     genders: [
       { title: 'Nam', value: 'male' },
       { title: 'Nữ', value: 'female' },
-      { title: 'Khác', value: 'other' },
-    ],
+      { title: 'Khác', value: 'other' }
+    ]
   }),
   created() {
     if (this.student) {
@@ -127,8 +127,6 @@ export default {
       this.ethnic = this.student.data.ethnic
       this.frequentlyAddress = this.student.data.frequentlyAddress
       this.classes = this.student.classes[0]
-      console.log(this.student.dob)
-      console.log(this.dob)
     }
   },
   methods: {
@@ -139,7 +137,7 @@ export default {
         // eslint-disable-next-line
         username_indexing,
         // eslint-disable-next-line
-        username_no,
+        username_no
       } = await this.generateStudentCode(this.name)
       this.username = username
       // eslint-disable-next-line
@@ -157,7 +155,7 @@ export default {
         dob: this.dob,
         ethnic: this.ethnic,
         frequentlyAddress: this.frequentlyAddress,
-        classes: this.classes,
+        classes: this.classes
       }
     },
     validate() {
@@ -168,7 +166,7 @@ export default {
     },
     resetValidation() {
       this.$refs.form.resetValidation()
-    },
-  },
+    }
+  }
 }
 </script>
