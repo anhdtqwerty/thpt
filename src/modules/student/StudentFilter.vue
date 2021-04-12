@@ -149,7 +149,7 @@ export default {
     onFilterChanged() {
       this.$emit('onFilterChanged', {
         name_contains: this.name,
-        classes: get(this.classes, 'id', ''),
+        classes_in: get(this.classes, 'id', ''),
         dob_gt: moment(this.dob).startOf('month').toISOString(),
         dob_lt: moment(this.dob).endOf('month').toISOString(),
         code_contains: this.code,

@@ -116,24 +116,21 @@ export default {
   },
   computed: {
     ...mapState('app', ['department']),
+    ...mapState('auth', ['user', 'jwt']),
     getCurrentDate() {
       return moment().format('DD/MM/YYYY')
     },
   },
   methods: {
-    ...mapActions('attendance', ['createAttendance']),
+    ...mapActions('attendance', ['checkinAttendance']),
     timeChange(data) {
-      this.time = data
+      this.time = moment(data, 'hh:mm').add(7, 'hours').toISOString()
     },
     async save() {
       if (this.$refs.form.validate()) {
-        await this.createAttendance({
-          grade: this.grade,
-          class: this.classes.id,
+        await this.checkinAttendance({
           student: this.student.id,
-          department: this.department.id,
-          checkin: { onTime: this.time },
-          time: moment()
+          time: this.time
         })
       }
     },

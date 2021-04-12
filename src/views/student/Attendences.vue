@@ -21,7 +21,7 @@
           <attendance-info :attendances="attendances" @refresh="refresh()" />
         </v-tab-item>
         <v-tab-item :key="2">
-          <diligence-info :attendances="attendences"/>
+          <!-- <diligence-info :attendances="attendences"/> -->
         </v-tab-item>
       </v-tabs-items>
     </v-card>
@@ -72,7 +72,7 @@ export default {
     ...mapActions('attendance', ['fetchAttendances']),
     refresh(query) {
       this.isLoading = true
-      this.fetchAttendances({ ...query, department: this.department.id }).then(
+      this.fetchAttendances({ ...query }).then(
         () => {
           this.isLoading = false
         }
