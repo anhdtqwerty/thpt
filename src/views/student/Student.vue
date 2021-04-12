@@ -6,7 +6,7 @@
           :headline="student ? `${student.name}` : 'Học Sinh'"
           :link="[
             { text: 'Học sinh', href: '../students' },
-            { text: 'Dang sách' },
+            { text: 'Danh sách' },
           ]"
         />
       </div>

@@ -17,7 +17,10 @@
       <v-card-text>
         <v-form ref="form" class="py-4">
           <h3 class="mb-2">1. Thông tin cơ bản</h3>
-          <student-general-form :rules="rules" ref="studentGeneralForm"></student-general-form>
+          <student-general-form
+            :rules="rules"
+            ref="studentGeneralForm"
+          ></student-general-form>
           <h3 class="mb-2">2. Thông tin liên lạc</h3>
           <student-contact-form ref="studentContactForm"></student-contact-form>
           <h3 class="mb-2">3. Ghi chú về học sinh</h3>
@@ -44,6 +47,7 @@
 
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex'
+import moment from 'moment'
 
 import StudentGeneralForm from '@/components/basic/form/StudentGeneralForm.vue'
 import StudentContactForm from '@/components/basic/form/StudentContactForm.vue'
@@ -55,7 +59,7 @@ export default {
     StudentGeneralForm,
     StudentContactForm,
     StudentNoteForm,
-    StudentFamilyForm
+    StudentFamilyForm,
   },
   data() {
     return {
@@ -77,10 +81,14 @@ export default {
       password: '',
       emailError: '',
       rules: {
-        required: value => !!value || 'Trường này không được để trống',
-        min: v => v.length >= 6 || 'Ít nhất 6 ký tự',
-        email: v => /.+@.+/.test(v) || 'Email chưa đúng định dạng'
-      }
+        required: (value) => !!value || 'Trường này không được để trống',
+        min: (v) => v.length >= 6 || 'Ít nhất 6 ký tự',
+        email: (v) => /.+@.+/.test(v) || 'Email chưa đúng định dạng',
+        dob: (v) =>
+          /^(?:0[1-9]|[12]\d|3[01])([/.-])(?:0[1-9]|1[012])\1(?:19|20)\d\d$/.test(
+            v
+          ) || 'Ngày sinh chưa đúng định dạng',
+      },
     }
   },
   props: {
@@ -89,7 +97,7 @@ export default {
     defaultPhone: String,
     defaultEmail: String,
     defaultName: String,
-    defaultOveride: Object
+    defaultOveride: Object,
   },
   computed: {
     ...mapState('app', ['roles', 'department', 'currentGeneration']),
@@ -99,7 +107,7 @@ export default {
     },
     majors() {
       return this.rootMajor.majors || []
-    }
+    },
   },
   methods: {
     ...mapActions('students', ['createStudent']),
@@ -127,18 +135,19 @@ export default {
         password: '123123',
         status: 'active',
         address: studentContactForm.currentLive,
+        phone: studentContactForm.phone,
         notes: studentNoteForm.notes,
-        email: `${studentGeneralForm.username}@ltvhn.edu.vn`,
+        email: studentContactForm.email,
         gender: studentGeneralForm.gender,
-        dob: studentGeneralForm.dob,
+        dob: moment(studentGeneralForm.dob).add(1, 'days'),
         data: {
           ...studentGeneralForm,
           ...studentContactForm,
           ...studentFamilyForm,
-          ...studentNoteForm
+          ...studentNoteForm,
         },
         ...overide,
-        type: 'student'
+        type: 'student',
       })
       this.dialog = false
       this.reset()
@@ -155,7 +164,7 @@ export default {
       this.$refs.studentContactForm.reset()
       this.$refs.studentNoteForm.reset()
       this.$refs.studentFamilyForm.reset()
-    }
+    },
   },
   watch: {
     state(state) {
@@ -167,7 +176,7 @@ export default {
         this.nameLostFocus()
       }
     },
-    rootMajor() {}
-  }
+    rootMajor() {},
+  },
 }
 </script>

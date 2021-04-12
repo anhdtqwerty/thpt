@@ -109,9 +109,13 @@ export default {
     dadName: '',
     dadEmail: '',
     dadPhone: '',
+    dadJob: '',
+    dadCompany: '',
     momName: '',
     momEmail: '',
     momPhone: '',
+    momJob: '',
+    momCompany: '',
     rules: {
       required: (value) => !!value || 'Required.',
       min: (v) => v.length >= 6 || 'Min 8 characters',
