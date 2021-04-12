@@ -13,22 +13,24 @@
         <v-list-item>
           <v-list-item-title>Gửi tin nhắn</v-list-item-title>
         </v-list-item>
-        <v-list-item>
+        <v-list-item :to="'/attendance/'+this.item.id">
           <v-list-item-title>Xem chi tiết</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-menu>
   </div>
+
 </template>
 
 <script>
 export default {
-  components: {},
   props: {
     item: Object,
   },
   data() {
-    return {}
+    return {
+      detailState: false
+    }
   },
   computed: {},
   methods: {},
