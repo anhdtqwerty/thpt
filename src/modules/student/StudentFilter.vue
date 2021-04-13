@@ -124,7 +124,7 @@ import moment from 'moment'
 export default {
   components: {
     DatePicker,
-    AutocompleteClass,
+    AutocompleteClass
   },
   data: () => ({
     show: false,
@@ -138,26 +138,30 @@ export default {
     genders: [
       { title: 'Nam', value: 'male' },
       { title: 'Nữ', value: 'female' },
-      { title: 'Khác', value: 'other' },
+      { title: 'Khác', value: 'other' }
     ],
-    classData: '',
+    classData: ''
   }),
   computed: {
-    ...mapState('constant', ['studentStatus']),
+    ...mapState('constant', ['studentStatus'])
   },
   methods: {
     onFilterChanged() {
       this.$emit('onFilterChanged', {
         name_contains: this.name,
-        classes_in: get(this.classes, 'id', ''),
-        dob_gt: moment(this.dob).startOf('month').toISOString(),
-        dob_lt: moment(this.dob).endOf('month').toISOString(),
+        currentClass: get(this.classes, 'id', ''),
+        dob_gt: moment(this.dob)
+          .startOf('month')
+          .toISOString(),
+        dob_lt: moment(this.dob)
+          .endOf('month')
+          .toISOString(),
         code_contains: this.code,
         status: this.status,
         gender: this.gender,
-        _sort: 'createdAt:desc',
+        _sort: 'createdAt:desc'
       })
-    },
-  },
+    }
+  }
 }
 </script>
