@@ -41,6 +41,8 @@ export default {
     },
     reset() {
       if (this.date) {
+        this.data = moment(this.date).format('DD/MM/YYYY')
+      } else {
         this.data = ''
       }
     }

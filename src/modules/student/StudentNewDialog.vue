@@ -120,12 +120,13 @@ export default {
       const studentContactForm = this.$refs.studentContactForm.getData()
       const studentNoteForm = this.$refs.studentNoteForm.getData()
       const studentFamilyForm = this.$refs.studentFamilyForm.getData()
-      this.classes.push(studentGeneralForm.classes)
+      this.classes.push(studentGeneralForm.class)
       const overide = this.defaultOveride || {}
       const student = await this.createStudent({
         generation: this.currentGeneration.id,
         department: this.department.id,
         classes: this.classes,
+        currentClass: studentGeneralForm.class,
         name: studentGeneralForm.name,
         username: studentGeneralForm.username,
         username_indexing: studentGeneralForm.username_indexing,
@@ -137,7 +138,7 @@ export default {
         phone: studentContactForm.phone,
         email: `${studentGeneralForm.username}@ltvhn.edu.vn`,
         gender: studentGeneralForm.gender,
-        dob: studentGeneralForm.dob,
+        dob: moment(studentGeneralForm.dob).endOf('day'),
         data: {
           ...studentGeneralForm,
           ...studentContactForm,

@@ -71,10 +71,7 @@
 import { mapActions } from 'vuex'
 export default {
   props: {
-    student: {
-      type: [Object],
-      default: () => {},
-    },
+    student: Object
   },
   data: () => ({
     valid: true,
@@ -85,14 +82,14 @@ export default {
     frequentlyAddress: '',
     classes: [],
     rules: {
-      required: (value) => !!value || 'Required.',
-      min: (v) => v.length >= 6 || 'Min 8 characters',
-      email: (v) => /.+@.+/.test(v) || 'E-mail must be valid',
+      required: value => !!value || 'Required.',
+      min: v => v.length >= 6 || 'Min 8 characters',
+      email: v => /.+@.+/.test(v) || 'E-mail must be valid'
     },
     genderList: [
       { value: 'male', title: 'Nam' },
-      { value: 'female', title: 'Nữ' },
-    ],
+      { value: 'female', title: 'Nữ' }
+    ]
   }),
   created() {
     if (this.student) {
@@ -113,7 +110,7 @@ export default {
         dob: this.dob,
         ethnic: this.ethnic,
         frequentlyAddress: this.frequentlyAddress,
-        classes: this.classes,
+        classes: this.classes
       }
     },
     validate() {
@@ -124,8 +121,8 @@ export default {
     },
     resetValidation() {
       this.$refs.form.resetValidation()
-    },
-  },
+    }
+  }
 }
 </script>
 
