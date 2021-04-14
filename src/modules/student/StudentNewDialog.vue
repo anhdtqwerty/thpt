@@ -138,7 +138,7 @@ export default {
         phone: studentContactForm.phone,
         email: `${studentGeneralForm.username}@ltvhn.edu.vn`,
         gender: studentGeneralForm.gender,
-        dob: moment(studentGeneralForm.dob).endOf('day'),
+        dob: studentGeneralForm.dob,
         data: {
           ...studentGeneralForm,
           ...studentContactForm,

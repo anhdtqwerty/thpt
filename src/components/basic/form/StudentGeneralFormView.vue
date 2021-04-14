@@ -28,15 +28,9 @@
       </v-col>
       <v-col class="py-0 d-flex" cols="12">
         <v-subheader class="px-0">Ngày sinh</v-subheader>
-        <v-text-field
-          class="pt-1"
-          flat
-          solo
-          hide-details
-          v-model="dob"
-          dense
-          regular
-        ></v-text-field>
+        <p>
+          {{ dob | isoToDate }}
+        </p>
       </v-col>
       <v-col class="py-0 d-flex" cols="12">
         <v-subheader class="px-0">Quê quán</v-subheader>
@@ -67,6 +61,7 @@
 </template>
 
 <script>
+import moment from 'moment'
 // import { get } from 'lodash'
 import { mapActions } from 'vuex'
 export default {
@@ -99,6 +94,11 @@ export default {
       this.ethnic = this.student.data.ethnic
       this.frequentlyAddress = this.student.data.frequentlyAddress
       this.classes = this.student.classes
+    }
+  },
+  filters: {
+    isoToDate(iso) {
+      return moment(iso).format('DD/MM/YYYY')
     }
   },
   methods: {

@@ -4,7 +4,6 @@
     ref="code"
     v-mask="mask"
     placeholder="--/--/----"
-    v-on:input="$emit('input', $event)"
     v-model="data"
   ></v-text-field>
 </template>
@@ -28,14 +27,11 @@ export default {
   methods: {
     updated(value) {
       if (value) {
-        this.$emit(
-          'update:date',
-          moment(this.data, 'DD/MM/YYYY')
-            .endOf('day')
-            .toISOString()
-        )
+        this.$emit('update:date', moment(this.data, 'DD/MM/YYYY').toISOString())
+        this.$emit('input', moment(this.data, 'DD/MM/YYYY').toISOString())
       } else {
         this.$emit('update:date', '')
+        this.$emit('input', '')
       }
       this.menu = false
     },

@@ -37,15 +37,14 @@
         ></v-select>
       </v-col>
       <v-col class="pb-0" cols="12" md="6">
-        <date-picker
-          :date.sync="dob"
+        <DateIOSPicker
           v-model="dob"
           label="Ngày Sinh"
           dense
           outlined
           class="required"
           :rules="[$rules.required, $rules.date]"
-        ></date-picker>
+        ></DateIOSPicker>
       </v-col>
     </v-row>
     <v-row>
@@ -85,14 +84,13 @@
 
 <script>
 // import { get } from 'lodash'
-import DatePicker from '@/components/basic/picker/DateIOSPicker.vue'
+import DateIOSPicker from '@/components/basic/picker/DateIOSPicker.vue'
 import AutocompleteClass from '@/components/basic/input/AutocompleteClass'
 import VImageInput from 'vuetify-image-input'
 import { mapActions } from 'vuex'
-import moment from 'moment'
 
 export default {
-  components: { DatePicker, AutocompleteClass, VImageInput },
+  components: { DateIOSPicker, AutocompleteClass, VImageInput },
   props: {
     student: {
       type: [Object],
@@ -123,7 +121,6 @@ export default {
       this.name = this.student.name
       this.username = this.student.username
       this.gender = this.student.gender
-      this.dob = moment(this.student.dob).format('DD/MM/YYYY')
       this.ethnic = this.student.data.ethnic
       this.frequentlyAddress = this.student.data.frequentlyAddress
       this.classData = this.student.classes[0]
