@@ -38,7 +38,7 @@
       </v-col>
       <v-col class="pb-0" cols="12" md="6">
         <DateIOSPicker
-          v-model="dob"
+          :date.sync="dob"
           label="Ngày Sinh"
           dense
           outlined
@@ -121,6 +121,7 @@ export default {
       this.name = this.student.name
       this.username = this.student.username
       this.gender = this.student.gender
+      this.dob = this.student.dob
       this.ethnic = this.student.data.ethnic
       this.frequentlyAddress = this.student.data.frequentlyAddress
       this.classData = this.student.classes[0]

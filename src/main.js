@@ -6,6 +6,7 @@ import { inputRules } from '@/plugins/rule'
 import App from './App.vue'
 import PluginHelper from '@/helpers/PluginHelper'
 import utils from '@/plugins/utils'
+import { vueFilterRegister } from '@/plugins/filters'
 import rxwatcher from './plugins/rxwatcher'
 import dialog from '@/plugins/dialog'
 import alert from '@/plugins/alert'
@@ -20,16 +21,20 @@ Vue.use(VueApexCharts)
 Vue.use(rxwatcher)
 Vue.component('apex-chart', VueApexCharts)
 
-Vue.use(PluginHelper.create({
-  $utils: utils,
-  $rules: inputRules,
-  $dialog: dialog,
-  $alert: alert,
-  $loading: loading,
-  $baseUrl: process.env.VUE_APP_API_ENDPOINT,
-  $snapshot: snapshot,
-  $moment: moment
-}))
+Vue.use(
+  PluginHelper.create({
+    $utils: utils,
+    $rules: inputRules,
+    $dialog: dialog,
+    $alert: alert,
+    $loading: loading,
+    $baseUrl: process.env.VUE_APP_API_ENDPOINT,
+    $snapshot: snapshot,
+    $moment: moment
+  })
+)
+
+vueFilterRegister()
 
 sync(store, router, { moduleName: '$route' })
 

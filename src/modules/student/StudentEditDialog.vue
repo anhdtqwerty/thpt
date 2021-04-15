@@ -57,8 +57,6 @@
 
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex'
-import alert from '../../plugins/alert'
-import moment from 'moment'
 
 import StudentGeneralForm from '@/components/basic/form/StudentGeneralForm.vue'
 import StudentContactForm from '@/components/basic/form/StudentContactForm.vue'
@@ -92,14 +90,14 @@ export default {
       password: '',
       emailError: '',
       rules: {
-        required: (value) => !!value || 'Trường này không được để trống',
-        min: (v) => v.length >= 6 || 'Ít nhất 6 ký tự',
-        email: (v) => /.+@.+/.test(v) || 'Email chưa đúng định dạng',
-        dob: (v) =>
+        required: value => !!value || 'Trường này không được để trống',
+        min: v => v.length >= 6 || 'Ít nhất 6 ký tự',
+        email: v => /.+@.+/.test(v) || 'Email chưa đúng định dạng',
+        dob: v =>
           /^(?:0[1-9]|[12]\d|3[01])([/.-])(?:0[1-9]|1[012])\1(?:19|20)\d\d$/.test(
             v
-          ) || 'Ngày sinh chưa đúng định dạng',
-      },
+          ) || 'Ngày sinh chưa đúng định dạng'
+      }
     }
   },
   props: {
@@ -142,7 +140,7 @@ export default {
           notes: studentNoteForm.notes,
           email: studentContactForm.email,
           gender: studentGeneralForm.gender,
-          dob: moment(studentGeneralForm.dob).endOf('day'),
+          dob: studentGeneralForm.dob,
           data: {
             ...this.student.data,
             ...studentGeneralForm,
@@ -152,9 +150,9 @@ export default {
           }
         })
         this.dialog = false
-        alert.success('Cập nhật học sinh thành công')
+        this.$alert.success('Cập nhật học sinh thành công')
       } catch (error) {
-        alert.error('Cập nhật học sinh thất bại')
+        this.$alert.error('Cập nhật học sinh thất bại')
       }
     },
     cancel() {

@@ -29,7 +29,7 @@
       <v-col class="py-0 d-flex" cols="12">
         <v-subheader class="px-0">Ngày sinh</v-subheader>
         <p>
-          {{ dob | isoToDate }}
+          {{ dob | ddmmyyyy }}
         </p>
       </v-col>
       <v-col class="py-0 d-flex" cols="12">
@@ -61,8 +61,6 @@
 </template>
 
 <script>
-import moment from 'moment'
-// import { get } from 'lodash'
 import { mapActions } from 'vuex'
 export default {
   props: {
@@ -96,11 +94,6 @@ export default {
       this.classes = this.student.classes
     }
   },
-  filters: {
-    isoToDate(iso) {
-      return moment(iso).format('DD/MM/YYYY')
-    }
-  },
   methods: {
     ...mapActions('user', ['generateStudentCode', 'validateEmail']),
     getData() {
@@ -121,6 +114,18 @@ export default {
     },
     resetValidation() {
       this.$refs.form.resetValidation()
+    }
+  },
+  watch: {
+    student(val) {
+      if (val) {
+        this.name = val.name
+        this.gender = val.gender
+        this.dob = val.dob
+        this.ethnic = val.data.ethnic
+        this.frequentlyAddress = val.data.frequentlyAddress
+        this.classes = val.classes
+      }
     }
   }
 }
