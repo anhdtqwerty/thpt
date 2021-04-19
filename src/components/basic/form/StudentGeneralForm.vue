@@ -9,13 +9,13 @@
           class="required"
           dense
           @blur="nameLostFocus()"
-          :rules="[rules.required]"
+          :rules="[$rules.required]"
         ></v-text-field>
       </v-col>
       <v-col class="pb-0" cols="12" md="6">
         <autocomplete-class
-          :rules="[rules.required]"
-          v-model="classes"
+          :rules="[$rules.required]"
+          v-model="classData"
           return-object
           label="Chọn lớp"
           outlined
@@ -37,15 +37,14 @@
         ></v-select>
       </v-col>
       <v-col class="pb-0" cols="12" md="6">
-        <date-picker
+        <DateIOSPicker
           :date.sync="dob"
-          v-model="dob"
           label="Ngày Sinh"
           dense
           outlined
           class="required"
-          :rules="[rules.required, rules.date]"
-        ></date-picker>
+          :rules="[$rules.required, $rules.date]"
+        ></DateIOSPicker>
       </v-col>
     </v-row>
     <v-row>
@@ -56,7 +55,7 @@
           outlined
           dense
           class="required"
-          :rules="[rules.required]"
+          :rules="[$rules.required]"
         ></v-text-field>
       </v-col>
       <v-col class="pb-0" cols="12" md="6">
@@ -66,7 +65,7 @@
           outlined
           dense
           class="required"
-          :rules="[rules.required]"
+          :rules="[$rules.required]"
         ></v-text-field>
       </v-col>
     </v-row>
@@ -85,14 +84,13 @@
 
 <script>
 // import { get } from 'lodash'
-import DatePicker from '@/components/basic/picker/DateIOSPicker.vue'
+import DateIOSPicker from '@/components/basic/picker/DateIOSPicker.vue'
 import AutocompleteClass from '@/components/basic/input/AutocompleteClass'
 import VImageInput from 'vuetify-image-input'
 import { mapActions } from 'vuex'
-import moment from 'moment'
 
 export default {
-  components: { DatePicker, AutocompleteClass, VImageInput },
+  components: { DateIOSPicker, AutocompleteClass, VImageInput },
   props: {
     student: {
       type: [Object],
@@ -111,7 +109,7 @@ export default {
     dob: '',
     ethnic: '',
     frequentlyAddress: '',
-    classes: {},
+    classData: {},
     genders: [
       { title: 'Nam', value: 'male' },
       { title: 'Nữ', value: 'female' },
@@ -123,10 +121,10 @@ export default {
       this.name = this.student.name
       this.username = this.student.username
       this.gender = this.student.gender
-      this.dob = moment(this.student.dob, 'YYYY-MM-DD').toISOString()
+      this.dob = this.student.dob
       this.ethnic = this.student.data.ethnic
       this.frequentlyAddress = this.student.data.frequentlyAddress
-      this.classes = this.student.classes[0]
+      this.classData = this.student.classes[0]
     }
   },
   methods: {
@@ -155,7 +153,7 @@ export default {
         dob: this.dob,
         ethnic: this.ethnic,
         frequentlyAddress: this.frequentlyAddress,
-        classes: this.classes
+        class: this.classData.id
       }
     },
     validate() {

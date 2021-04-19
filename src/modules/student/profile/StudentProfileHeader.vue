@@ -10,14 +10,27 @@
           <p class="text-subtitle-2">{{ student.code }}</p>
         </v-row>
         <v-row>
-          <v-col
-            v-for="studentDetail in studentDetails"
-            :key="studentDetail.title"
-            :cols="studentDetail.cols"
-            class="py-2 d-flex flex-column justify-end"
-          >
-            <p class="text-caption mb-0">{{ studentDetail.title }}</p>
-            <p class="text-subtitle-2 mb-0">{{ studentDetail.value }}</p>
+          <v-col cols="2" class="py-2 d-flex flex-column justify-end">
+            <p class="text-caption mb-0">Lớp</p>
+            <p class="text-subtitle-2 mb-0">
+              {{ this.student.currentClass.title }}
+            </p>
+          </v-col>
+          <v-col cols="5" class="py-2 d-flex flex-column justify-end">
+            <p class="text-caption mb-0">Bố / Người giám hộ</p>
+            <p class="text-subtitle-2 mb-0">
+              {{
+                `${this.student.data.dadName} / ${this.student.data.dadPhone}`
+              }}
+            </p>
+          </v-col>
+          <v-col cols="5" class="py-2 d-flex flex-column justify-end">
+            <p class="text-caption mb-0">Mẹ / Người giám hộ</p>
+            <p class="text-subtitle-2 mb-0">
+              {{
+                `${this.student.data.momName} / ${this.student.data.momPhone}`
+              }}
+            </p>
           </v-col>
         </v-row>
       </v-col>
@@ -32,8 +45,12 @@
       </v-col>
     </v-row>
 
-    <student-profile-detail-dialog @edit="editState=!editState" :student="student" :state="detailState" />
-    <student-edit-dialog :student="student" :state="editState"/>
+    <student-profile-detail-dialog
+      @edit="editState = !editState"
+      :student="student"
+      :state="detailState"
+    />
+    <student-edit-dialog :student="student" :state="editState" />
   </v-card>
 </template>
 
@@ -46,32 +63,19 @@ export default {
   components: {
     StudentProfileDetailDialog,
     StudentEditDialog,
-    UserAvatarPicker,
+    UserAvatarPicker
   },
   data() {
     return {
-      studentDetails: [
-        { title: 'Lớp', value: this.student.classes[0].title, cols: 2 },
-        {
-          title: 'Bố / Người giám hộ',
-          value: `${this.student.data.dadName} / ${this.student.data.dadPhone}`,
-          cols: 5,
-        },
-        {
-          title: 'Mẹ / Người giám hộ',
-          value: `${this.student.data.momName} / ${this.student.data.momPhone}`,
-          cols: 5,
-        },
-      ],
       detailState: false,
       editState: false
     }
   },
+
   props: {
-    student: Object,
-  },
+    student: Object
+  }
 }
 </script>
 
-<style lang="css" scoped>
-</style>
+<style lang="css" scoped></style>

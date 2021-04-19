@@ -114,7 +114,7 @@ export default {
       const studentContactForm = this.$refs.studentContactForm.getData()
       const studentNoteForm = this.$refs.studentNoteForm.getData()
       const studentFamilyForm = this.$refs.studentFamilyForm.getData()
-      this.classes.push(studentGeneralForm.classes)
+      this.classes.push(studentGeneralForm.class)
       const overide = this.defaultOveride || {}
       const student = await this.createStudent({
         generation: this.currentGeneration.id,

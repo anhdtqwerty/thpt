@@ -111,8 +111,6 @@ export default {
     dadCompany: '',
     dadEmail: '',
     dadPhone: '',
-    dadJob: '',
-    dadCompany: '',
     momName: '',
     momEmail: '',
     momPhone: '',

@@ -68,7 +68,7 @@ export default {
     StudentGeneralForm,
     StudentContactForm,
     StudentNoteForm,
-    StudentFamilyForm,
+    StudentFamilyForm
   },
   data() {
     return {
@@ -90,14 +90,14 @@ export default {
       password: '',
       emailError: '',
       rules: {
-        required: (value) => !!value || 'Trường này không được để trống',
-        min: (v) => v.length >= 6 || 'Ít nhất 6 ký tự',
-        email: (v) => /.+@.+/.test(v) || 'Email chưa đúng định dạng',
-        dob: (v) =>
+        required: value => !!value || 'Trường này không được để trống',
+        min: v => v.length >= 6 || 'Ít nhất 6 ký tự',
+        email: v => /.+@.+/.test(v) || 'Email chưa đúng định dạng',
+        dob: v =>
           /^(?:0[1-9]|[12]\d|3[01])([/.-])(?:0[1-9]|1[012])\1(?:19|20)\d\d$/.test(
             v
-          ) || 'Ngày sinh chưa đúng định dạng',
-      },
+          ) || 'Ngày sinh chưa đúng định dạng'
+      }
     }
   },
   props: {
@@ -107,7 +107,7 @@ export default {
     defaultEmail: String,
     defaultName: String,
     defaultOveride: Object,
-    student: Object,
+    student: Object
   },
   computed: {
     ...mapState('app', ['roles', 'department', 'currentGeneration']),
@@ -117,7 +117,7 @@ export default {
     },
     majors() {
       return this.rootMajor.majors || []
-    },
+    }
   },
   methods: {
     ...mapActions('student', ['updateStudent']),
@@ -126,35 +126,44 @@ export default {
       const studentContactForm = this.$refs.studentContactForm.getData()
       const studentNoteForm = this.$refs.studentNoteForm.getData()
       const studentFamilyForm = this.$refs.studentFamilyForm.getData()
-      await this.updateStudent({
-        id: this.student.id,
-        name: studentGeneralForm.name,
-        phone: studentContactForm.phone,
-        address: studentContactForm.currentLive,
-        notes: studentNoteForm.notes,
-        email: studentContactForm.email,
-        gender: studentGeneralForm.gender,
-        dob: studentGeneralForm.dob,
-        data: {
-          ...this.student.data,
-          ...studentGeneralForm,
-          ...studentContactForm,
-          ...studentFamilyForm,
-          ...studentNoteForm,
-        },
-      })
-      this.dialog = false
-      this.reset()
+      const classIds = this.student.classes.map(c => c.id)
+      classIds[0] = studentGeneralForm.class
+
+      try {
+        await this.updateStudent({
+          id: this.student.id,
+          name: studentGeneralForm.name,
+          classes: classIds,
+          currentClass: studentGeneralForm.class,
+          phone: studentContactForm.phone,
+          address: studentContactForm.currentLive,
+          notes: studentNoteForm.notes,
+          email: studentContactForm.email,
+          gender: studentGeneralForm.gender,
+          dob: studentGeneralForm.dob,
+          data: {
+            ...this.student.data,
+            ...studentGeneralForm,
+            ...studentContactForm,
+            ...studentFamilyForm,
+            ...studentNoteForm
+          }
+        })
+        this.dialog = false
+        this.$alert.success('Cập nhật học sinh thành công')
+      } catch (error) {
+        this.$alert.error('Cập nhật học sinh thất bại')
+      }
     },
     cancel() {
       this.dialog = false
-    },
+    }
   },
   watch: {
     state(state) {
       this.dialog = true
     },
-    rootMajor() {},
-  },
+    rootMajor() {}
+  }
 }
 </script>
