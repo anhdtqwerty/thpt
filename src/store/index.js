@@ -20,6 +20,11 @@ import log from './other/log'
 import event from './learning/event'
 import mark from './learning/mark'
 /**
+ * MARK
+ */
+
+import MarkInput from './mark/MarkInput'
+/**
  * STUDENT
  */
 import { axiosPlugin } from '@/plugins/axios'
@@ -113,7 +118,8 @@ export default createStore(Vuex.Store, {
     subjects,
     violation,
     search,
-    postCreate
+    postCreate,
+    MarkInput
   },
   mixins: {
     mutations: {

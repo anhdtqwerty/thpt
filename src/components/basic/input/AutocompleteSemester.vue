@@ -7,6 +7,7 @@
     @change="onChange"
     return-object
     v-on:input="$emit('input', $event)"
+    :loading="loading"
   ></v-autocomplete>
 </template>
 
@@ -14,27 +15,31 @@
 import { Semester } from '@/plugins/api'
 
 export default {
+  props: {
+    filter: Object
+  },
   data: () => ({
     semesters: [],
+    semester: {},
+    loading: false
   }),
-  props: {
-    filters: Object,
-    defaultSemesters: Array,
-    options: Object,
-  },
+
   created() {
-    if (this.defaultSemesters) {
-      this.semesters = this.defaultSemesters
-    }
     this.fetchAllSemesters()
   },
   methods: {
     async fetchAllSemesters() {
-      this.semesters = await Semester.fetch({})
+      this.loading = true
+      if (this.filter && this.filter.generation) {
+        this.semesters = await Semester.fetch({ generation: this.filter.generation })
+      } else {
+        this.semesters = await Semester.fetch({})
+      }
+      this.loading = false
     },
     onChange(data) {
       this.$emit('change', data)
-    },
-  },
+    }
+  }
 }
 </script>

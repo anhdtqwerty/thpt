@@ -7,7 +7,6 @@
     clearable
     @change="onChange"
     return-object
-    :rules="[v => !!v || 'Item is required']"
     v-on:input="$emit('input', $event)"
   ></v-autocomplete>
 </template>
@@ -21,31 +20,27 @@ export default {
     factors: []
   }),
   props: {
-    filter: Object,
-    defaultFactors: Array
+    filter: Object
   },
   computed: {
     ...mapGetters('app', ['department', 'roles', 'roleIdByName']),
-    factorList () {
+    factorList() {
       return this.factors.map(c => ({ ...c, title: `${c.title}` }))
     }
   },
-  created () {
-    this.factors = this.defaultFactors || []
-    this.fetchFactor()
-  },
+  created() {},
   methods: {
     async fetchFactor() {
       this.factors = await Factor.fetch({
         ...this.filter
       })
     },
-    onChange (data) {
+    onChange(data) {
       this.$emit('change', data)
     }
   },
   watch: {
-    filters (filters) {
+    filter(filters) {
       this.fetchFactor()
     }
   }

@@ -7,6 +7,7 @@
     @change="onChange"
     v-on:input="$emit('input', $event)"
     @update:search-input="update"
+    :loading="loading"
   ></v-autocomplete>
 </template>
 
@@ -16,10 +17,11 @@ import { Subject } from '@/plugins/api'
 
 export default {
   data: () => ({
-    subjects: []
+    subjects: [],
+    loading: false
   }),
   props: {
-    filters: Object,
+    filter: Object,
     defaultSubjects: Array,
     options: Object
   },
@@ -35,13 +37,23 @@ export default {
   },
   methods: {
     async fetchAllSubjects() {
+      this.loading = true
       this.subjects = await Subject.fetch({
-        ...this.filters
+        ...this.filter
       })
+      this.loading = false
     },
     async update(data) {},
     onChange(data) {
       this.$emit('change', data)
+    }
+  },
+  watch: {
+    filter(filter) {
+      this.fetchAllSubjects(filter)
+    },
+    defaultSubjects(subjects) {
+      this.subjects = subjects
     }
   }
 }

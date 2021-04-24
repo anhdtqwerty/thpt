@@ -35,8 +35,11 @@ import Diligence from '@/views/diligence/Diligence.vue'
 // ---------------- DEPARTMENT -------------------------------
 import Department from '@/views/department/Department'
 // ---------------- Score -------------------------------
-import InputScore from '@/views/score/InputScore.vue'
-import ViewScore from '@/views/score/ViewScore.vue'
+// import InputScore from '@/views/score/InputScore.vue'
+
+// ---------------- MARK-------------------------------
+import Mark from '@/views/mark/Marks.vue'
+import InputMark from '@/views/mark/InputMarks.vue'
 
 import DashBoard from '@/views/dashboard/Dashboard.vue'
 // ---------------- LEARNING -----------------------------
@@ -395,7 +398,7 @@ const routes = [
       {
         path: 'marks-input',
         name: 'Nhập điểm',
-        component: InputScore,
+        component: InputMark,
         meta: {
           title: 'Nhâp điểm',
           auth: true
@@ -404,7 +407,7 @@ const routes = [
       {
         path: 'marks',
         name: 'Sổ điểm',
-        component: ViewScore,
+        component: Mark,
         meta: {
           title: 'Sổ điểm',
           auth: true
