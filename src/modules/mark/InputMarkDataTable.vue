@@ -6,7 +6,7 @@
           <div>
             <v-btn color="success" @click="$emit('saveMarks', studentMarks)">Lưu</v-btn>
           </div>
-          <div class="d-flex table-container">
+          <div class="d-flex table-container pt-4">
             <table class="mark-table">
               <thead>
                 <tr>
@@ -42,6 +42,7 @@
                       v-model="mark.value"
                       outlined
                       dense
+                      hide-details
                     ></v-select>
                   </td>
                 </tr>
@@ -62,10 +63,7 @@ export default {
   },
   data() {
     return {
-      updatedMarks: [],
-      addedMarks: [],
-      displayMarks: [],
-      studentMarks: {}
+      studentMarks: []
     }
   },
   props: {
@@ -75,19 +73,7 @@ export default {
   methods: {
     onDataChanged() {
       if (this.marks && this.factor) {
-        this.studentMarks = this.marks.map(({ student, mark: markArr }) => {
-          const marks = []
-          for (let index = 0; index < this.factor.quantity; index++) {
-            marks.push({ index, value: undefined, id: undefined })
-          }
-          for (let index = 0; index < (markArr || []).length; index++) {
-            marks[index].id = markArr[index].id
-            marks[index].value = markArr[index].value
-            marks[index].rawValue = markArr[index].value
-          }
-
-          return { student, marks }
-        })
+        this.studentMarks = this.marks
       }
     }
   },

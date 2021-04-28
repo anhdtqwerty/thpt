@@ -22,7 +22,7 @@ import mark from './learning/mark'
 /**
  * MARK
  */
-
+import Mark from './mark/Mark'
 import MarkInput from './mark/MarkInput'
 /**
  * STUDENT
@@ -71,13 +71,7 @@ export default createStore(Vuex.Store, {
   plugins: [
     createPersistedState({
       key: 'lms',
-      paths: [
-        'auth.user',
-        'auth.isAuthenticated',
-        'auth.jwt',
-        'app.currentGeneration',
-        'app.currentSemester'
-      ]
+      paths: ['auth.user', 'auth.isAuthenticated', 'auth.jwt', 'app.currentGeneration', 'app.currentSemester']
     }),
     axiosPlugin
   ],
@@ -119,7 +113,8 @@ export default createStore(Vuex.Store, {
     violation,
     search,
     postCreate,
-    MarkInput
+    MarkInput,
+    Mark
   },
   mixins: {
     mutations: {

@@ -15,5 +15,5 @@ export const inputRules = {
   nospace: v => !v || !/ /.test(v.trim()) || 'Space is not allowed',
   notEmpty: v => !Array.isArray(v) || !!v.length || 'Required',
   date: v => moment(v, 'DD/MM/YYYY', true).isValid() || 'Ngày sinh không hợp lệ',
-  markInput: v => (parseFloat(v) >= 0 && parseFloat(v) <= 10) || 'Điểm phải trong khoảng từ 0 đến 10'
+  markInput: v => !v || (parseFloat(v) >= 0 && parseFloat(v) <= 10) || 'Điểm phải trong khoảng từ 0 đến 10'
 }

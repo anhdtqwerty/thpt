@@ -39,24 +39,26 @@ export default {
     ...mapState('app', ['currentGeneration', 'currentSemester'])
   },
   methods: {
-    ...mapActions('MarkInput', ['fetchMarks', 'updateMark', 'setStudents', 'createMark']),
+    ...mapActions('MarkInput', ['fetchMarks', 'updateMark', 'setStudents', 'createMark', 'setFactor']),
     async onFilterChanged(params) {
       this.setStudents(get(params, 'class.students'))
+      this.setFactor(get(params, 'factor'))
 
       this.filterParam = params
       await this.fetchMarks({
         class: get(params, 'class.id'),
         semester: get(params, 'semester.id'),
         subject: get(params, 'subject'),
-        factor: get(params, 'factor.id'),
-        _sort: 'createdAt:desc'
+        factor: get(params, 'factor.id')
       })
     },
-    getMarkReq(studentMarks) {
+
+    async getMarkReq(studentMarks) {
+      console.log('savemarks', studentMarks)
       this.$loading.active = true
 
       try {
-        this.onSaveMarks(studentMarks)
+        await this.onSaveMarks(studentMarks)
         this.$alert.success('Cập nhật điểm thành công')
       } catch (e) {
         this.$alert.error('Cập nhật điểm không thành công')
@@ -67,12 +69,12 @@ export default {
 
     async onSaveMarks(studentMarks) {
       const promises = studentMarks.reduce((acc, cur) => {
-        const markPromies = cur.marks.map(({ id, value, rawValue }) => {
+        const markPromies = cur.marks.map(({ index, id, value, rawValue }) => {
           if (id) {
             if (rawValue !== value) return this.updateMark({ id, value })
             else Promise.resolve()
           } else {
-            if (value) {
+            if (value !== undefined) {
               return this.createMark({
                 student: cur.student.id,
                 value: value,
@@ -82,7 +84,8 @@ export default {
                 grade: get(this.filterParam, 'class.grade.id'),
                 generation: this.currentGeneration,
                 semester: get(this.filterParam, 'semester.id'),
-                factor: get(this.filterParam, 'factor.id')
+                factor: get(this.filterParam, 'factor.id'),
+                data: { index }
               })
             } else {
               Promise.resolve()

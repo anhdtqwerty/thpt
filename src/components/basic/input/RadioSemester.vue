@@ -1,10 +1,5 @@
 <template>
-  <v-radio-group
-    @change="onChange"
-    v-model="semesterData"
-    row
-    class="shrink mt-0"
-  >
+  <v-radio-group @change="onChange" v-model="semesterData" row class="shrink mt-0">
     <v-radio label="Học kỳ I" hide-details value="semester-1"></v-radio>
     <v-radio label="Học kỳ II" hide-details value="semester-2"></v-radio>
     <v-radio label="Cả năm" hide-details value="year"></v-radio>
@@ -35,7 +30,7 @@ export default {
     onChange(data) {
       if (data === 'semester-1') this.semesterFilter = this.semesters[0]
       else if (data === 'semester-2') this.semesterFilter = this.semesters[1]
-      else this.semesterFilter = ''
+      else this.semesterFilter = { semesters: this.semesters, type: 'year' }
 
       this.$emit('change', this.semesterFilter)
     }

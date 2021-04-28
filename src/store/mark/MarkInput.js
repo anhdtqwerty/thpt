@@ -4,7 +4,8 @@ export default {
   namespaced: true,
   state: {
     marks: [],
-    students: []
+    students: [],
+    factor: {}
   },
   actions: {
     async fetchMarks({ commit }, options) {
@@ -38,6 +39,9 @@ export default {
     },
     setStudents({ commit }, students) {
       commit('setStudents', students)
+    },
+    setFactor({ commit }, factor) {
+      commit('setFactor', factor)
     }
   },
   mutations: {
@@ -58,6 +62,9 @@ export default {
     },
     removeMark(state, id) {
       state.marks = state.marks.filter(mark => mark.id !== id)
+    },
+    setFactor(state, factor) {
+      state.factor = factor
     }
   },
   getters: {
@@ -67,7 +74,28 @@ export default {
         .reduce((acc, cur) => {
           return { ...acc, [cur.student.id]: [...(acc[cur.student.id] || []), cur] }
         }, {})
-      return state.students.map(s => ({ student: s, mark: markObj[s.id] }))
+      let studentMarks = state.students.map(s => ({ student: s, marks: markObj[s.id] }))
+
+      studentMarks = studentMarks.map(({ student, marks: markArr }) => {
+        const marks = []
+        markArr = markArr || []
+        const factorMarks = []
+        for (let index = 0; index < state.factor.quantity; index++) {
+          factorMarks.push({ index, value: undefined, id: undefined })
+        }
+
+        markArr.forEach(m => {
+          factorMarks[m.data.index].id = m.id
+          factorMarks[m.data.index].value = m.value
+          factorMarks[m.data.index].rawValue = m.value
+        })
+
+        marks.push(...factorMarks)
+
+        return { student, marks }
+      })
+
+      return studentMarks
     },
     students: state => {
       return state.students
