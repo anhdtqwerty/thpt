@@ -47,13 +47,7 @@ export default {
   },
   mutations: {
     setMarks(state, marks) {
-      state.marks = marks.reduce(
-        (accumulator, currentValue) => ({
-          ...accumulator,
-          [currentValue.id]: currentValue
-        }),
-        {}
-      )
+      state.marks = marks
     },
     setMark(state, mark) {
       state.marks = {

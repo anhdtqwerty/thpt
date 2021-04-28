@@ -14,5 +14,6 @@ export const inputRules = {
   phone: v => !v || (v.length >= 10 && /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s./0-9]*$/gi.test(v)) || 'Invalid phone number',
   nospace: v => !v || !/ /.test(v.trim()) || 'Space is not allowed',
   notEmpty: v => !Array.isArray(v) || !!v.length || 'Required',
-  date: v => moment(v, 'DD/MM/YYYY', true).isValid() || 'Ngày sinh không hợp lệ'
+  date: v => moment(v, 'DD/MM/YYYY', true).isValid() || 'Ngày sinh không hợp lệ',
+  markInput: v => !v || (parseFloat(v) >= 0 && parseFloat(v) <= 10) || 'Điểm phải trong khoảng từ 0 đến 10'
 }
