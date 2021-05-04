@@ -1,10 +1,5 @@
 <template>
-  <v-dialog
-    :fullscreen="$vuetify.breakpoint.smAndDown"
-    v-model="dialog"
-    width="581"
-    scrollable
-  >
+  <v-dialog :fullscreen="$vuetify.breakpoint.smAndDown" v-model="dialog" width="581" scrollable>
     <v-card>
       <v-card-title class="primary white--text text-uppercase">
         Chuyển trạng thái
@@ -24,7 +19,7 @@
             <v-col class="d-flex justify-space-between align-center" cols="6">
               <div>
                 <p class="text-caption my-0">Ngày sinh</p>
-                <span>{{ item.dob }}</span>
+                <span>{{ item.dob | ddmmyyyy }}</span>
               </div>
               <div>
                 <p class="text-caption my-0">Mã số</p>
@@ -32,7 +27,7 @@
               </div>
               <div>
                 <p class="text-caption my-0">Lớp</p>
-                <span>{{ item.classes[0].title }}</span>
+                <span>{{ item.currentClass.title }}</span>
               </div>
             </v-col>
           </v-row>
@@ -40,9 +35,7 @@
             <v-col cols="6" class="d-flex justify-space-between align-center">
               <div>
                 <p class="text-caption my-0">Trạng thái hiện tại</p>
-                <span class="text-subtitle-2 font-weight-black">{{
-                  item.status | getStatus
-                }}</span>
+                <span class="text-subtitle-2 font-weight-black">{{ item.status | getStatus }}</span>
               </div>
               <div>
                 <v-icon x-large>mdi_arrow_right_alt</v-icon>
@@ -66,9 +59,7 @@
       <v-divider></v-divider>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn class="ma-2" dark depressed color="#0D47A1" @click="save()"
-          >Lưu</v-btn
-        >
+        <v-btn class="ma-2" dark depressed color="#0D47A1" @click="save()">Lưu</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -80,7 +71,7 @@ import CardStudentName from '@/components/basic/card/CardStudentName'
 
 export default {
   components: {
-    CardStudentName,
+    CardStudentName
   },
   data() {
     return {
@@ -90,7 +81,7 @@ export default {
   },
   props: {
     state: Boolean,
-    item: Object,
+    item: Object
   },
   computed: {
     ...mapState('app', ['roles', 'department', 'currentGeneration']),
@@ -101,7 +92,7 @@ export default {
     },
     majors() {
       return this.rootMajor.majors || []
-    },
+    }
   },
   methods: {
     ...mapActions('students', ['updateStudent']),
@@ -111,7 +102,7 @@ export default {
         status: this.status
       })
       this.dialog = false
-    },
+    }
   },
   filters: {
     getStatus(status) {
@@ -125,12 +116,12 @@ export default {
         case 'left':
           return 'Đã chuyển trường'
       }
-    },
+    }
   },
   watch: {
     state(state) {
       this.dialog = true
-    },
-  },
+    }
+  }
 }
 </script>
