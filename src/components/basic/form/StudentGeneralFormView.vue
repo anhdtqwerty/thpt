@@ -4,57 +4,23 @@
     <v-row class="pr-12">
       <v-col class="d-flex py-0" cols="12">
         <v-subheader class="px-0">Họ và tên</v-subheader>
-        <v-text-field
-          class="pt-1"
-          flat
-          solo
-          hide-details
-          v-model="name"
-          dense
-          regular
-        ></v-text-field>
+        <v-text-field class="pt-1" flat solo hide-details v-model="name" dense regular></v-text-field>
       </v-col>
       <v-col class="d-flex py-0" cols="12">
         <v-subheader class="px-0">Giới tính</v-subheader>
-        <v-text-field
-          class="pt-1"
-          flat
-          solo
-          hide-details
-          v-model="gender"
-          dense
-          regular
-        ></v-text-field>
+        <v-text-field class="pt-1" flat solo hide-details v-model="gender" dense regular></v-text-field>
       </v-col>
       <v-col class="py-0 d-flex" cols="12">
         <v-subheader class="px-0">Ngày sinh</v-subheader>
-        <p>
-          {{ dob | ddmmyyyy }}
-        </p>
+        <v-text-field class="pt-1" flat solo hide-details v-model="dobDisplay" dense regular />
       </v-col>
       <v-col class="py-0 d-flex" cols="12">
         <v-subheader class="px-0">Quê quán</v-subheader>
-        <v-text-field
-          class="pt-1"
-          flat
-          solo
-          hide-details
-          v-model="frequentlyAddress"
-          dense
-          regular
-        ></v-text-field>
+        <v-text-field class="pt-1" flat solo hide-details v-model="frequentlyAddress" dense regular></v-text-field>
       </v-col>
       <v-col class="py-0 d-flex" cols="12">
         <v-subheader class="px-0">Dân tộc</v-subheader>
-        <v-text-field
-          class="pt-1"
-          flat
-          solo
-          hide-details
-          v-model="ethnic"
-          dense
-          regular
-        ></v-text-field>
+        <v-text-field class="pt-1" flat solo hide-details v-model="ethnic" dense regular></v-text-field>
       </v-col>
     </v-row>
   </v-form>
@@ -62,6 +28,8 @@
 
 <script>
 import { mapActions } from 'vuex'
+import moment from 'moment'
+
 export default {
   props: {
     student: Object
@@ -126,6 +94,11 @@ export default {
         this.frequentlyAddress = val.data.frequentlyAddress
         this.classes = val.classes
       }
+    }
+  },
+  computed: {
+    dobDisplay() {
+      return moment(this.dob).format('DD/MM/YYYY')
     }
   }
 }
