@@ -1,17 +1,12 @@
 <template>
-  <v-dialog
-    :fullscreen="$vuetify.breakpoint.smAndDown"
-    v-model="dialog"
-    width="581"
-    scrollable
-  >
+  <v-dialog :fullscreen="$vuetify.breakpoint.smAndDown" v-model="dialog" width="581" scrollable>
     <v-card>
       <v-card-title class="primary white--text text-uppercase">
         Chuyển lớp
         <v-spacer></v-spacer>
-        <!-- <v-btn dark icon>
+        <v-btn dark icon>
           <v-icon @click="cancel">close</v-icon>
-        </v-btn> -->
+        </v-btn>
       </v-card-title>
       <v-divider />
       <v-card-text>
@@ -24,7 +19,7 @@
             <v-col class="d-flex justify-space-between align-center" cols="6">
               <div>
                 <p class="text-caption my-0">Ngày sinh</p>
-                <span>{{ item.dob }}</span>
+                <span>{{ item.dob | ddmmyyyy }}</span>
               </div>
               <div>
                 <p class="text-caption my-0">Mã số</p>
@@ -32,7 +27,7 @@
               </div>
               <div>
                 <p class="text-caption my-0">Lớp</p>
-                <span>{{ item.classes[0].title }}</span>
+                <span>{{ item.currentClass.title }}</span>
               </div>
             </v-col>
           </v-row>
@@ -40,22 +35,14 @@
             <v-col cols="6" class="d-flex justify-space-between align-center">
               <div>
                 <p class="text-caption my-0">Lớp hiện tại</p>
-                <span class="text-subtitle-2 font-weight-black">{{
-                  item.classes[0].title
-                }}</span>
+                <span class="text-subtitle-2 font-weight-black">{{ item.currentClass.title }}</span>
               </div>
               <div>
                 <v-icon x-large>mdi_arrow_right_alt</v-icon>
               </div>
             </v-col>
             <v-col cols="6">
-              <autocomplete-class
-                v-model="classes"
-                dense
-                outlined
-                label="Lớp mới"
-                hide-details
-              />
+              <autocomplete-class v-model="currentClass" dense outlined label="Lớp mới" hide-details />
             </v-col>
           </v-row>
         </v-form>
@@ -63,9 +50,7 @@
       <v-divider></v-divider>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn class="ma-2" dark depressed color="#0D47A1" @click="save()"
-          >Lưu</v-btn
-        >
+        <v-btn class="ma-2" dark depressed color="#0D47A1" @click="save()">Lưu</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -79,17 +64,17 @@ import AutocompleteClass from '@/components/basic/input/AutocompleteClass'
 export default {
   components: {
     CardStudentName,
-    AutocompleteClass,
+    AutocompleteClass
   },
   data() {
     return {
       dialog: false,
-      classes: []
+      currentClass: {}
     }
   },
   props: {
     state: Boolean,
-    item: Object,
+    item: Object
   },
   computed: {
     ...mapState('app', ['roles', 'department', 'currentGeneration']),
@@ -99,22 +84,30 @@ export default {
     },
     majors() {
       return this.rootMajor.majors || []
-    },
+    }
   },
   methods: {
     ...mapActions('students', ['updateStudent']),
     async save() {
       await this.updateStudent({
         id: this.item.id,
-        classes: [this.classes],
+        classes: [this.currentClass],
+        currentClass: this.currentClass
       })
       this.dialog = false
     },
+    reset() {
+      this.$refs.form.reset()
+    },
+    cancel() {
+      this.dialog = false
+      this.reset()
+    }
   },
   watch: {
     state(state) {
       this.dialog = true
-    },
-  },
+    }
+  }
 }
 </script>

@@ -11,7 +11,7 @@
     @input="$emit('update:selected', $event)"
     :footer-props="{
       'items-per-page-text': 'Học sinh mỗi trang',
-      'items-per-page-all-text': 'Tất cả',
+      'items-per-page-all-text': 'Tất cả'
     }"
     v-bind="this.$attrs"
   >
@@ -19,22 +19,13 @@
       <card-student-name :student="item" link />
     </template>
     <template v-slot:[`item.status`]="{ item }">
-      <v-chip
-        small
-        class="white--text"
-        v-if="item.status"
-        :color="getColor(item.status)"
-        label
-      >
+      <v-chip small class="white--text" v-if="item.status" :color="getColor(item.status)" label>
         {{ item.status | getStatus }}
       </v-chip>
     </template>
-    <template v-slot:[`item.classes`]="{ item }">
-      <router-link
-        style="text-decoration: none"
-        :to="'/class/' + item.classes[0].id"
-      >
-        <span v-if="item.classes">{{ item.classes | getClasses }}</span>
+    <template v-slot:[`item.currentClass`]="{ item }">
+      <router-link style="text-decoration: none" :to="'/class/' + item.currentClass.id">
+        <span v-if="item.classes">{{ item.currentClass.title }}</span>
       </router-link>
     </template>
     <template v-slot:[`item.gender`]="{ item }">{{
@@ -78,14 +69,14 @@ const originHeaders = [
     value: 'name',
     align: 'left',
     sortable: true,
-    show: true,
+    show: true
   },
   {
     text: 'Ngày sinh',
     value: 'dob',
     align: 'left',
     sortable: false,
-    show: true,
+    show: true
   },
   {
     text: 'Giới tính',
@@ -93,15 +84,15 @@ const originHeaders = [
     align: 'left',
     sortable: false,
     show: true,
-    width: '100',
+    width: '100'
   },
   {
     text: 'Lớp',
-    value: 'classes',
+    value: 'currentClass',
     align: 'left',
     sortable: false,
     show: true,
-    width: '100',
+    width: '100'
   },
   {
     text: 'Trạng thái',
@@ -109,22 +100,22 @@ const originHeaders = [
     align: 'left',
     sortable: false,
     show: true,
-    width: '100',
+    width: '100'
   },
   {
     text: 'Ghi chú',
     value: 'notes',
     align: 'left',
     sortable: false,
-    show: true,
+    show: true
   },
   {
     value: 'action',
     align: 'center',
     sortable: false,
     show: true,
-    width: '100',
-  },
+    width: '100'
+  }
 ]
 export default {
   data() {
@@ -136,30 +127,26 @@ export default {
       status: null,
       statuses: [
         { text: 'Active', value: 'false' },
-        { text: 'Blocked', value: 'true' },
-      ],
+        { text: 'Blocked', value: 'true' }
+      ]
     }
   },
   components: {
     CardStudentName,
-    StudentListActions,
+    StudentListActions
   },
   computed: {
-    ...mapState('students', ['totalItems', 'students']),
+    ...mapState('students', ['totalItems', 'students'])
   },
   methods: {
-    ...mapActions('students', [
-      'requestPageSettings',
-      'searchStudents',
-      'fetchStudents',
-    ]),
+    ...mapActions('students', ['requestPageSettings', 'searchStudents', 'fetchStudents']),
     async refresh(query) {
       await this.searchStudents({ ...query })
     },
     getTuitionStatus(leads) {
       if (!leads) return ''
       return leads
-        .map((lead) => {
+        .map(lead => {
           return lead.liabilities
         })
         .reduce((a, b) => a + b, 0) >= 0
@@ -182,7 +169,7 @@ export default {
         default:
           return 'grey'
       }
-    },
+    }
   },
   async created() {
     await this.refresh({})
@@ -198,26 +185,25 @@ export default {
     },
     getClasses(classes) {
       if (classes && classes.length > 0) {
-        return classes.map((c) => c.title).join(' ,')
+        return classes.map(c => c.title).join(' ,')
       } else return ''
-    },
+    }
   },
   watch: {
     studentTableOptions: {
       handler(newOptions, oldOptions) {
-        const itemPerPageChanged =
-          newOptions.itemsPerPage !== oldOptions.itemsPerPage
+        const itemPerPageChanged = newOptions.itemsPerPage !== oldOptions.itemsPerPage
         const pageChanged = newOptions.page !== oldOptions.page
         if (pageChanged || itemPerPageChanged) {
           this.requestPageSettings({
             page: newOptions.page,
-            itemsPerPage: newOptions.itemsPerPage,
+            itemsPerPage: newOptions.itemsPerPage
           })
         }
       },
-      deep: true,
-    },
-  },
+      deep: true
+    }
+  }
 }
 </script>
 
