@@ -8,10 +8,12 @@
       </template>
       <v-list>
         <v-list-item>
-          <v-list-item-title @click="changeClass=!changeClass">Chuyển lớp</v-list-item-title>
+          <v-list-item-title style="cursor: pointer" @click="changeClass = !changeClass">Chuyển lớp</v-list-item-title>
         </v-list-item>
         <v-list-item>
-          <v-list-item-title @click="changeStatus=!changeStatus">Chuyển trạng thái</v-list-item-title>
+          <v-list-item-title style="cursor: pointer" @click="changeStatus = !changeStatus"
+            >Chuyển trạng thái</v-list-item-title
+          >
         </v-list-item>
       </v-list>
     </v-menu>
@@ -29,7 +31,8 @@ import _ from 'lodash'
 
 export default {
   components: {
-    ChangeClassDialog, ChangeStatusDialog
+    ChangeClassDialog,
+    ChangeStatusDialog
   },
   props: {
     disabled: Boolean,
@@ -49,9 +52,7 @@ export default {
   computed: {
     ...mapState('student', ['students']),
     sendingName() {
-      const { name } = this.students.find(
-        student => student.phone === this.sending
-      )
+      const { name } = this.students.find(student => student.phone === this.sending)
       return name
     },
     multipleAction() {
@@ -95,9 +96,7 @@ export default {
         okText: 'Có',
         cancelText: 'Không',
         done: async () => {
-          await this.updateStudents(
-            this.selected.map(s => ({ id: s.id, status: 'reserved' }))
-          )
+          await this.updateStudents(this.selected.map(s => ({ id: s.id, status: 'reserved' })))
           this.$emit('removed')
         }
       })
@@ -113,9 +112,7 @@ export default {
         okText: 'Có',
         cancelText: 'Không',
         done: async () => {
-          await this.updateStudents(
-            this.selected.map(s => ({ id: s.id, status: 'active' }))
-          )
+          await this.updateStudents(this.selected.map(s => ({ id: s.id, status: 'active' })))
           this.$emit('removed')
         }
       })

@@ -11,63 +11,23 @@
           </v-col>
           <v-col class="d-flex py-0" cols="12">
             <v-subheader class="px-0">Họ và tên bố</v-subheader>
-            <v-text-field
-              class="pt-1"
-              flat
-              solo
-              hide-details
-              v-model="dadName"
-              dense
-              regular
-            ></v-text-field>
+            <v-text-field class="pt-1" flat solo hide-details v-model="dadName" dense regular></v-text-field>
           </v-col>
           <v-col class="d-flex py-0" cols="12">
             <v-subheader class="px-0">Số điện thoại bố</v-subheader>
-            <v-text-field
-              class="pt-1"
-              flat
-              solo
-              hide-details
-              v-model="dadPhone"
-              dense
-              regular
-            ></v-text-field>
+            <v-text-field class="pt-1" flat solo hide-details v-model="dadPhone" dense regular></v-text-field>
           </v-col>
           <v-col class="d-flex py-0" cols="12">
             <v-subheader class="px-0">Email bố</v-subheader>
-            <v-text-field
-              class="pt-1"
-              flat
-              solo
-              hide-details
-              v-model="dadEmail"
-              dense
-              regular
-            ></v-text-field>
+            <v-text-field class="pt-1" flat solo hide-details v-model="dadEmail" dense regular></v-text-field>
           </v-col>
           <v-col class="d-flex py-0" cols="12">
             <v-subheader class="px-0">Nghề nghiệp bố</v-subheader>
-            <v-text-field
-              class="pt-1"
-              flat
-              solo
-              hide-details
-              v-model="dadJob"
-              dense
-              regular
-            ></v-text-field>
+            <v-text-field class="pt-1" flat solo hide-details v-model="dadJob" dense regular></v-text-field>
           </v-col>
           <v-col class="d-flex py-0" cols="12">
-            <v-subheader class="px-0">Cơ quan bố</v-subheader>
-            <v-text-field
-              class="pt-1"
-              flat
-              solo
-              hide-details
-              v-model="dadCompany"
-              dense
-              regular
-            ></v-text-field>
+            <v-subheader class="px-0">Cơ quan công tác</v-subheader>
+            <v-text-field class="pt-1" flat solo hide-details v-model="dadCompany" dense regular></v-text-field>
           </v-col>
         </v-row>
       </v-col>
@@ -80,63 +40,23 @@
           </v-col>
           <v-col class="d-flex py-0" cols="12">
             <v-subheader class="px-0">Họ và tên mẹ</v-subheader>
-            <v-text-field
-              class="pt-1"
-              flat
-              solo
-              hide-details
-              v-model="momName"
-              dense
-              regular
-            ></v-text-field>
+            <v-text-field class="pt-1" flat solo hide-details v-model="momName" dense regular></v-text-field>
           </v-col>
           <v-col class="d-flex py-0" cols="12">
             <v-subheader class="px-0">Số điện thoại mẹ</v-subheader>
-            <v-text-field
-              class="pt-1"
-              flat
-              solo
-              hide-details
-              v-model="momPhone"
-              dense
-              regular
-            ></v-text-field>
+            <v-text-field class="pt-1" flat solo hide-details v-model="momPhone" dense regular></v-text-field>
           </v-col>
           <v-col class="d-flex py-0" cols="12">
             <v-subheader class="px-0">Email mẹ</v-subheader>
-            <v-text-field
-              class="pt-1"
-              flat
-              solo
-              hide-details
-              v-model="momEmail"
-              dense
-              regular
-            ></v-text-field>
+            <v-text-field class="pt-1" flat solo hide-details v-model="momEmail" dense regular></v-text-field>
           </v-col>
           <v-col class="d-flex py-0" cols="12">
             <v-subheader class="px-0">Nghề nghiệp mẹ</v-subheader>
-            <v-text-field
-              class="pt-1"
-              flat
-              solo
-              hide-details
-              v-model="momJob"
-              dense
-              regular
-            ></v-text-field>
+            <v-text-field class="pt-1" flat solo hide-details v-model="momJob" dense regular></v-text-field>
           </v-col>
           <v-col class="d-flex py-0" cols="12">
-            <v-subheader class="px-0">Cơ quan mẹ</v-subheader>
-            <v-text-field
-              class="pt-1"
-              flat
-              solo
-              hide-details
-              v-model="momCompany"
-              dense
-              regular
-            ></v-text-field>
+            <v-subheader class="px-0">Cơ quan công tác</v-subheader>
+            <v-text-field class="pt-1" flat solo hide-details v-model="momCompany" dense regular></v-text-field>
           </v-col>
         </v-row>
       </v-col>
@@ -149,8 +69,8 @@ export default {
   props: {
     student: {
       type: [Object],
-      default: () => {},
-    },
+      default: () => {}
+    }
   },
   data: () => ({
     valid: true,
@@ -165,10 +85,10 @@ export default {
     momJob: '',
     momCompany: '',
     rules: {
-      required: (value) => !!value || 'Required.',
-      min: (v) => v.length >= 6 || 'Min 8 characters',
-      email: (v) => /.+@.+/.test(v) || 'E-mail must be valid',
-    },
+      required: value => !!value || 'Required.',
+      min: v => v.length >= 6 || 'Min 8 characters',
+      email: v => /.+@.+/.test(v) || 'E-mail must be valid'
+    }
   }),
   created() {
     if (this.student) {
@@ -199,7 +119,7 @@ export default {
         dadJob: this.dadJob,
         dadCompany: this.dadCompany,
         momJob: this.momJob,
-        momCompany: this.momCompany,
+        momCompany: this.momCompany
       }
     },
     reset() {
@@ -207,8 +127,8 @@ export default {
     },
     resetValidation() {
       this.$refs.form.resetValidation()
-    },
-  },
+    }
+  }
 }
 </script>
 
