@@ -36,47 +36,17 @@ export default {
   },
   getters: {
     marks: state => {
-      const markObj = state.marks
-        .filter(m => !!m.student && !!m.student.id)
-        .reduce((acc, cur) => {
-          return { ...acc, [cur.student.id]: [...(acc[cur.student.id] || []), cur] }
-        }, {})
-      let studentMarks = state.students.map(s => ({ student: s, marks: markObj[s.id] }))
+      return state.students.reduce((acc, student) => {
+        const marks = state.factors.reduce((acc, factor) => {
+          const markObject = state.marks
+            .filter(m => m.factor.id === factor.id && m.student.id === student.id) // tìm điểm theo factor và student tương ứng
+            .reduce((acc, mark) => ({ ...acc, [mark.data.index]: mark }), {}) // đánh dấu diểm theo index
+          const markByFactor = Array.from(Array(factor.quantity).keys()).map(index => markObject[index] || {}) // khớp điểm
+          return [...acc, ...markByFactor]
+        }, []) // build factor schema
 
-      studentMarks = studentMarks.map(({ student, marks: markArr }) => {
-        const marks = []
-        const avgFactorMarks = []
-        markArr = markArr || []
-        state.factors.forEach(f => {
-          const factorMarks = []
-          let marksByFactor = markArr.filter(m => m.factor.id === f.id)
-          for (let index = 0; index < f.quantity; index++) {
-            factorMarks.push({ index, value: undefined, id: undefined })
-          }
-
-          marksByFactor.forEach(m => {
-            factorMarks[m.data.index].id = m.id
-            factorMarks[m.data.index].value = m.value
-          })
-
-          marks.push(...factorMarks)
-
-          // avg mark
-          let sumMark = 0
-          marksByFactor.forEach(mark => {
-            sumMark += f.multiply * (mark.value || 0)
-          })
-          let avgByFactor = sumMark / f.quantity
-          avgFactorMarks.push(avgByFactor)
-        })
-        const sumAvgSemesterMark = sum(avgFactorMarks)
-        let avgSemester = sumAvgSemesterMark / avgFactorMarks.length
-        avgSemester = Math.floor(avgSemester * 100) / 100
-
-        return { student, marks, avgSemester }
-      })
-
-      return studentMarks
+        return [...acc, { student, marks }]
+      }, [])
     },
     students: state => {
       return state.students

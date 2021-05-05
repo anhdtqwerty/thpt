@@ -38,7 +38,6 @@ import MarkDataTable from '@/modules/mark/MarkDataTable'
 import { orderBy, get } from 'lodash'
 
 import { mapState, mapActions, mapGetters } from 'vuex'
-// import { Semester, Factor, Subject } from '@/plugins/api'
 
 export default {
   components: {
@@ -48,7 +47,6 @@ export default {
   },
   data() {
     return {
-      // factors: [],
       semester: {},
       studentMarks: {},
       avgMarkYear: []
@@ -95,33 +93,8 @@ export default {
     },
 
     async getAvgMark(classId, subjectId, semseters) {
-      let factors = this.subject.factors.filter(x => x.semesterType === semseters[0].type)
-      this.setFactors(factors)
-
-      await this.fetchMarks({
-        class: classId,
-        semester: semseters[0].id,
-        subject: subjectId
-      })
-      const mark1 = this.marks
-
-      factors = this.subject.factors.filter(x => x.semesterType === semseters[1].type)
-      this.setFactors(factors)
-
-      await this.fetchMarks({
-        class: classId,
-        semester: semseters[1].id,
-        subject: subjectId
-      })
-      const mark2 = this.marks
-
       this.avgMarkYear = this.students.map((s, index) => {
-        const avg1 = mark1[index].avgSemester
-        const avg2 = mark2[index].avgSemester
-        let avgYear = (avg1 + avg2) / 2
-        avgYear = Math.floor(avgYear * 100) / 100
-
-        return { student: s, marks: [{ value: avg1 }, { value: avg2 }, { value: avgYear }] }
+        return { student: s, marks: [{ value: undefined }, { value: undefined }, { value: undefined }] }
       })
 
       let yearFactors = [{ title: 'TB HK I' }, { title: 'TB HK II' }, { title: 'Cả Năm' }]

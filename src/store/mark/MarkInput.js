@@ -69,33 +69,23 @@ export default {
   },
   getters: {
     marks: state => {
-      const markObj = state.marks
-        .filter(m => !!m.student && !!m.student.id)
-        .reduce((acc, cur) => {
-          return { ...acc, [cur.student.id]: [...(acc[cur.student.id] || []), cur] }
-        }, {})
-      let studentMarks = state.students.map(s => ({ student: s, marks: markObj[s.id] }))
+      return state.students.reduce((acc, student) => {
+        const markObject = state.marks
+          .filter(m => m.factor.id === state.factor.id && m.student.id === student.id) // tìm điểm theo factor và student tương ứng
+          .reduce((acc, mark) => ({ ...acc, [mark.data.index]: mark }), {}) // đánh dấu diểm theo index
+        let markByFactor = Array.from(Array(state.factor.quantity).keys()).map(
+          index => markObject[index] || { index, value: undefined }
+        ) // khớp điểm
 
-      studentMarks = studentMarks.map(({ student, marks: markArr }) => {
-        const marks = []
-        markArr = markArr || []
-        const factorMarks = []
-        for (let index = 0; index < state.factor.quantity; index++) {
-          factorMarks.push({ index, value: undefined, id: undefined })
-        }
-
-        markArr.forEach(m => {
-          factorMarks[m.data.index].id = m.id
-          factorMarks[m.data.index].value = m.value
-          factorMarks[m.data.index].rawValue = m.value
+        markByFactor = markByFactor.map(m => {
+          if (!!m && m.id) {
+            m.rawvalue = m.value // rawvalue for update mark
+          }
+          return m
         })
 
-        marks.push(...factorMarks)
-
-        return { student, marks }
-      })
-
-      return studentMarks
+        return [...acc, { student, marks: markByFactor }]
+      }, [])
     },
     students: state => {
       return state.students

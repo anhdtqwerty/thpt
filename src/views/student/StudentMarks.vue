@@ -63,6 +63,8 @@ export default {
       this.setSubjects(this.subjects)
 
       if (query.semester.type !== 'year') {
+        this.setSemester(query.semester)
+        this.semesterData = this.semester
         await this.getSemesterMark(query)
       } else {
         this.semesterData = query.semester
@@ -72,9 +74,6 @@ export default {
       this.$loading.active = false
     },
     async getSemesterMark(query) {
-      this.setSemester(query.semester)
-      this.semesterData = this.semester
-
       await this.fetchMarks({
         class: get(query, 'class.id'),
         semester: get(query, 'semester.id'),
@@ -83,7 +82,7 @@ export default {
 
       let factors = first(this.subjects).factors.filter(x => x.semesterType === query.semester.type)
       factors = orderBy(factors, ['index'], ['asc'])
-      factors.push({ title: 'TBM' })
+      // factors.push({ title: 'TBM' })
       this.factors = factors
     },
     async getAvgMark(classId, studentId, semseters) {

@@ -16,7 +16,7 @@
         <tr v-for="item in subjectMarks" :key="item.id">
           <td>{{ item.subject.title }}</td>
 
-          <td v-for="mark in item.marks" :key="mark.id">
+          <td v-for="(mark, index) in item.marks" :key="index">
             <span v-if="item.subject.markType === 'mark'">
               {{ mark.value }}
             </span>

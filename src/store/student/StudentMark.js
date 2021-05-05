@@ -44,52 +44,21 @@ export default {
   },
   getters: {
     marks: state => {
-      const markObj = state.marks
-        .filter(m => !!m.subject && !!m.subject.id)
-        .reduce((acc, cur) => {
-          return { ...acc, [cur.subject.id]: [...(acc[cur.subject.id] || []), cur] }
-        }, {})
-      let subjectMarks = state.subjects.map(s => ({ subject: s, marks: markObj[s.id] }))
+      return state.subjects.reduce((acc, subject) => {
+        const marks = subject.factors
+          .filter(f => f.semesterType === state.semester.type) // Lọc cho đúng học kỳ
+          .sort((a, b) => a.index - b.index) // sắp xếp các cột đúng thứ tự. (miệng - 15 phút -....)
+          .reduce((acc, factor) => {
+            const markObject = state.marks
+              .filter(m => m.factor.id === factor.id) // tìm điểm theo factor tương ứng
+              .reduce((acc, mark) => ({ ...acc, [mark.data.index]: mark }), {}) // đánh dấu diểm theo index
 
-      subjectMarks = subjectMarks.map(({ subject, marks: markArr }) => {
-        const marks = []
-        markArr = markArr || []
-        const avgFactorMarks = []
+            const markByFactor = Array.from(Array(factor.quantity).keys()).map(index => markObject[index] || {}) // khớp điểm
+            return [...acc, ...markByFactor]
+          }, []) // build factor schema
 
-        let factors = subject.factors.filter(f => f.semesterType === state.semester.type)
-        factors = orderBy(factors, ['index'], ['asc'])
-
-        factors.forEach(f => {
-          const factorMarks = []
-          let marksByFactor = markArr.filter(m => m.factor.id === f.id)
-          for (let index = 0; index < f.quantity; index++) {
-            factorMarks.push({ index, value: undefined, id: undefined })
-          }
-
-          marksByFactor.forEach(m => {
-            factorMarks[m.data.index].id = m.id
-            factorMarks[m.data.index].value = m.value
-          })
-
-          marks.push(...factorMarks)
-
-          let sumMark = 0
-          marksByFactor.forEach(mark => {
-            sumMark += f.multiply * (mark.value || 0)
-          })
-          let avgByFactor = sumMark / f.quantity
-          avgFactorMarks.push(avgByFactor)
-        })
-
-        const sumAvgSemesterMark = sum(avgFactorMarks)
-        let avgSubjectMark = sumAvgSemesterMark / avgFactorMarks.length
-        avgSubjectMark = Math.floor(avgSubjectMark * 100) / 100
-        marks.push({ value: avgSubjectMark })
-
-        return { subject, marks }
-      })
-
-      return subjectMarks
+        return [...acc, { subject: subject, marks }]
+      }, [])
     },
     students: state => {
       return state.students
