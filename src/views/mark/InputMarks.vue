@@ -54,7 +54,6 @@ export default {
     },
 
     async getMarkReq(studentMarks) {
-      console.log('savemarks', studentMarks)
       this.$loading.active = true
 
       try {

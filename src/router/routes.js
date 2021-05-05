@@ -31,6 +31,7 @@ import Violation from '@/views/violation/Violations.vue'
 import ContactBook from '@/views/account/ContactBook.vue'
 import ContactBookDetail from '@/views/account/ContactBookDetail.vue'
 import Diligence from '@/views/diligence/Diligence.vue'
+import StudentMarks from '@/views/student/StudentMarks.vue'
 
 // ---------------- DEPARTMENT -------------------------------
 import Department from '@/views/department/Department'
@@ -410,6 +411,15 @@ const routes = [
         component: Mark,
         meta: {
           title: 'Sổ điểm',
+          auth: true
+        }
+      },
+      {
+        path: 'student-mark',
+        name: 'Sổ điểm',
+        component: StudentMarks,
+        meta: {
+          title: 'Sổ điểm học sinh',
           auth: true
         }
       },

@@ -72,25 +72,26 @@ export default {
       await this.fetchSubject(query.subject)
 
       if (query.semester.type !== 'year') {
-        await this.fetchSubject(query.subject)
-        let factors = this.subject.factors.filter(x => x.semesterType === query.semester.type)
-        factors = orderBy(factors, ['index'], ['asc'])
-        this.setFactors(factors)
-
-        await this.fetchMarks({
-          class: get(query, 'class.id'),
-          semester: get(query, 'semester.id'),
-          subject: get(query, 'subject')
-        })
-        this.semester = query.semester
+        await this.getSemesterMark(query)
       } else {
         await this.getAvgMark(get(query, 'class.id'), get(query, 'subject'), get(query, 'semester.semesters'))
-        let factors = [{ title: 'TB HK I' }, { title: 'TB HK II' }, { title: 'Cả Năm' }]
-        this.setFactors(factors)
-        this.semester = { title: 'Cả năm', type: 'year' }
       }
 
       this.$loading.active = false
+    },
+
+    async getSemesterMark(query) {
+      await this.fetchSubject(query.subject)
+      let factors = this.subject.factors.filter(x => x.semesterType === query.semester.type)
+      factors = orderBy(factors, ['index'], ['asc'])
+      this.setFactors(factors)
+
+      await this.fetchMarks({
+        class: get(query, 'class.id'),
+        semester: get(query, 'semester.id'),
+        subject: get(query, 'subject')
+      })
+      this.semester = query.semester
     },
 
     async getAvgMark(classId, subjectId, semseters) {
@@ -122,6 +123,10 @@ export default {
 
         return { student: s, marks: [{ value: avg1 }, { value: avg2 }, { value: avgYear }] }
       })
+
+      let yearFactors = [{ title: 'TB HK I' }, { title: 'TB HK II' }, { title: 'Cả Năm' }]
+      this.setFactors(yearFactors)
+      this.semester = { title: 'Cả năm', type: 'year' }
     }
   },
   created() {}
