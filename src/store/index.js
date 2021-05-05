@@ -24,6 +24,7 @@ import mark from './learning/mark'
  */
 import Mark from './mark/Mark'
 import MarkInput from './mark/MarkInput'
+import StudentMark from './student/StudentMark'
 /**
  * STUDENT
  */
@@ -114,7 +115,8 @@ export default createStore(Vuex.Store, {
     search,
     postCreate,
     MarkInput,
-    Mark
+    Mark,
+    StudentMark
   },
   mixins: {
     mutations: {

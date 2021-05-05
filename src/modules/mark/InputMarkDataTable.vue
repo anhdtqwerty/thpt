@@ -24,7 +24,7 @@
                   </td>
                   <td>{{ item.student.dob | ddmmyyyy }}</td>
 
-                  <td v-for="mark in item.marks" :key="mark.index">
+                  <td v-for="(mark, order) in item.marks" :key="order">
                     <v-text-field
                       v-if="factor.subject.markType === 'mark'"
                       outlined

@@ -8,6 +8,7 @@
     @change="onChange"
     :search-input.sync="inputValue"
     clearable
+    :loading="loading"
   ></v-autocomplete>
 </template>
 
@@ -15,23 +16,35 @@
 import api from '../../../plugins/api'
 import { debounce } from 'lodash'
 import utils from '@/plugins/utils.js'
+import { Student } from '@/plugins/api'
+
 export default {
   data: () => ({
     students: [],
     inputValue: '',
-    // loading: false
+    loading: false
   }),
   props: {
-    filters: Object,
+    filter: Object,
     options: Object,
     defaultStudent: Object
   },
   watch: {
     async inputValue(search) {
       this.debounce(search, this)
+    },
+    filter(filter) {
+      this.fetchStudents(filter)
     }
   },
   methods: {
+    async fetchStudents() {
+      this.loading = true
+      this.students = await Student.fetch({
+        ...this.filter
+      })
+      this.loading = false
+    },
     onChange(data) {
       this.$emit('change', data)
       this.$emit('input', data)
