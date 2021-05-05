@@ -54,13 +54,6 @@ export default {
     semester: Object
   },
   methods: {},
-  watch: {
-    subjectMarks(val) {
-      console.log('this.subjectMarks', val)
-
-      this.subjectMarks = val
-    }
-  },
   created() {
     if (this.subjectMarks) this.colspan = first(this.subjectMarks).marks.length
   }
