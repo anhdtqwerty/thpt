@@ -51,11 +51,7 @@
                 <span class="text-subtitle">Kỷ luật</span>
               </v-col>
             </v-row>
-            <violation-data-table
-              :hideFooter="true"
-              :headers="violationHeader"
-              :violations="violations"
-            />
+            <violation-data-table :hideFooter="true" :headers="violationHeader" :violations="violations" />
           </v-card-text>
         </v-card>
       </v-col>
@@ -63,9 +59,7 @@
         <v-card outlined>
           <v-card-title>
             <v-icon color="primary">mdi-bell-ring</v-icon>
-            <span class="ml-2 text-subtitle-2"
-              >Tin nhắn, thông báo gần đây</span
-            >
+            <span class="ml-2 text-subtitle-2">Tin nhắn, thông báo gần đây</span>
             <v-spacer></v-spacer>
             <v-btn color="primary" text>Xem chi tiết</v-btn>
           </v-card-title>
@@ -98,28 +92,28 @@ export default {
       violationHeader: [
         {
           text: 'Ngày',
-          value: 'createdAt',
-          sortable: false,
+          value: 'data.Date',
+          sortable: false
         },
         {
           text: 'Mục',
           value: 'type',
-          sortable: false,
+          sortable: false
         },
         {
           text: 'Nội dung',
           value: 'description',
-          sortable: false,
-        },
-      ],
+          sortable: false
+        }
+      ]
     }
   },
   components: {
     ViolationDataTable,
-    AttendanceStudentDataTable,
+    AttendanceStudentDataTable
   },
   props: {
-    student: Object,
+    student: Object
   },
   computed: {
     ...mapState('violation', ['violations']),
@@ -141,7 +135,7 @@ export default {
         }
       }
       return count
-    },
+    }
   },
   async created() {
     await this.fetchViolation({ student: this.student.id })
@@ -149,8 +143,8 @@ export default {
   },
   methods: {
     ...mapActions('violation', ['fetchViolation']),
-    ...mapActions('attendance', ['fetchAttendances']),
-  },
+    ...mapActions('attendance', ['fetchAttendances'])
+  }
 }
 </script>
 

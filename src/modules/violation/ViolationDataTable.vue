@@ -9,25 +9,19 @@
     mobile-breakpoint="0"
     :footer-props="{
       'items-per-page-text': '',
-      'items-per-page-all-text': 'Tất cả',
+      'items-per-page-all-text': 'Tất cả'
     }"
   >
     <template v-slot:[`item.action`]="{ item }">
       <violation-actions :selected="item"> </violation-actions>
     </template>
-    <template v-slot:[`item.createdAt`]="{ item }">
-      {{ formatDate(item) }}
+    <template v-slot:[`item.data.Date`]="{ item }">
+      {{ item.data.Date | ddmmyyyy }}
     </template>
     <template v-slot:[`item.type`]="{ item }">
       <v-chip small label :color="getColor(item.type)" dark
         ><span v-if="item.type">
-          {{
-            item.type === 'violation'
-              ? 'Kỷ luật'
-              : item.type === 'commendation'
-              ? 'Khen thưởng'
-              : ''
-          }}
+          {{ item.type === 'violation' ? 'Kỷ luật' : item.type === 'commendation' ? 'Khen thưởng' : '' }}
         </span>
       </v-chip>
     </template>
@@ -54,43 +48,43 @@ const originHeaders = [
     value: 'data.Date',
     align: 'left',
     sortable: false,
-    show: true,
+    show: true
   },
   {
     text: 'Lớp',
     value: 'class.title',
     align: 'left',
     sortable: false,
-    show: true,
+    show: true
   },
   {
     text: 'Họ tên',
     value: 'student.name',
     align: 'left',
     sortable: false,
-    show: true,
+    show: true
   },
   {
     text: 'Mục',
     value: 'type',
     align: 'left',
     sortable: false,
-    show: true,
+    show: true
   },
   {
     text: 'Nội dung',
     value: 'description',
     align: 'left',
     sortable: false,
-    show: true,
+    show: true
   },
   {
     text: '',
     value: 'action',
     align: 'left',
     sortable: false,
-    show: true,
-  },
+    show: true
+  }
 ]
 
 export default {
@@ -98,11 +92,11 @@ export default {
     return {
       originHeaders: originHeaders,
       selected: [],
-      loading: false,
+      loading: false
     }
   },
   components: {
-    ViolationActions,
+    ViolationActions
   },
   props: {
     headers: { type: Array, default: () => null },
@@ -110,18 +104,12 @@ export default {
     hideFooter: { type: Boolean, default: () => false }
   },
   methods: {
-    formatDate(item) {
-      return get(item, 'createdAt', '')
-        ? moment(item.createdAt).format('DD/MM/YYYY')
-        : ''
-    },
     getColor(s) {
       if (s === 'violation') return 'orange'
       else return '#46BE8A'
-    },
-  },
+    }
+  }
 }
 </script>
 
-<style>
-</style>
+<style></style>
