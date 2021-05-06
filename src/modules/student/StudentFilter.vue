@@ -28,14 +28,7 @@
             />
           </v-col>
           <v-col cols="4">
-            <date-picker
-              label="Ngày sinh"
-              outlined
-              dense
-              hide-details
-              outline
-              :date.sync="dob"
-            ></date-picker>
+            <date-picker label="Ngày sinh" outlined dense hide-details outline :date.sync="dob"></date-picker>
           </v-col>
           <v-col cols="4">
             <v-text-field
@@ -150,11 +143,11 @@ export default {
       this.$emit('onFilterChanged', {
         name_contains: this.name,
         currentClass: get(this.classes, 'id', ''),
-        dob_gt: moment(this.dob)
-          .startOf('month')
+        dob_gte: moment(this.dob)
+          .startOf('day')
           .toISOString(),
-        dob_lt: moment(this.dob)
-          .endOf('month')
+        dob_lte: moment(this.dob)
+          .endOf('day')
           .toISOString(),
         code_contains: this.code,
         status: this.status,
