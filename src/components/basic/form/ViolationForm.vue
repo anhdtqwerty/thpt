@@ -1,73 +1,61 @@
 <template>
   <v-form ref="form" flat class="pt-5">
-    <p class="font-weight-regular">Ngày: {{ this.violation.data.Date}}</p>
+    <p class="font-weight-regular">Ngày: {{ violation.data.Date | ddmmyyyy }}</p>
     <v-row class="pb-3">
       <v-col cols="6">
         <card-student-name :student="this.student" link />
       </v-col>
       <v-col cols="4">
         <div>Ngày sinh</div>
-        <h4>{{ this.student.dob }}</h4 >
+        <h4>{{ student.dob | ddmmyyyy }}</h4>
       </v-col>
       <v-col cols="2">
         <div>Lớp</div>
-        <h4>{{ this.classData.title }}</h4>
+        <h4>{{ classData.title }}</h4>
       </v-col>
     </v-row>
-
-    <v-radio-group v-model="type" row class="shrink mt-0">
-      <p class="mr-2 my-0">Mục:</p>
-      <v-radio label="Kỷ luật" hide-details value="violation"></v-radio>
-      <v-radio label="Khen thưởng" hide-details value="commendation"></v-radio>
-    </v-radio-group>
-
+    <RadioViolation :violation="violation.type" @change="type = $event" />
     <v-textarea
       v-model="description"
-      label="Ghi chú"
+      label="Nội dung"
+      class="required"
+      :rules="[$rules.required]"
       outlined
       dense
     ></v-textarea>
   </v-form>
 </template>
 <script>
-import TextFieldCode from '@/components/basic/input/TextFieldCode'
-import AutocompleteGrade from '@/components/basic/input/AutocompleteGrade'
-import AutocompleteClass from '@/components/basic/input/AutocompleteClass.vue'
-import AutocompleteStudent from '@/components/basic/input/AutocompleteStudent.vue'
 import { mapGetters } from 'vuex'
-import moment from 'moment'
-import { get } from 'lodash'
 import CardStudentName from '@/components/basic/card/CardStudentName.vue'
+import RadioViolation from '@/modules/violation/RadioViolation.vue'
 
 export default {
   components: {
-    TextFieldCode,
-    AutocompleteGrade,
-    AutocompleteClass,
-    AutocompleteStudent,
     CardStudentName,
+    RadioViolation
   },
   data: () => ({
     options: [
       { text: 'Kỷ luật', value: 'violation' },
-      { text: 'Khen thưởng', value: 'commendation' },
+      { text: 'Khen thưởng', value: 'commendation' }
     ],
-    ruleRequired: [(v) => !!v || 'Phần này không được trống'],
+    ruleRequired: [v => !!v || 'Phần này không được trống'],
     grade: '',
     classData: '',
     student: '',
     description: '',
     type: '',
-    createdAt: '',
+    createdAt: ''
   }),
   computed: {
-    ...mapGetters('app', ['department']),
-    avatar() {
-      return _.get(this.student, 'avatar.url', '/default-avatar.png')
-    },
+    ...mapGetters('app', ['department'])
+    // avatar() {
+    //   return _.get(this.student, 'avatar.url', '/default-avatar.png')
+    // }
   },
   props: {
-    violation: { type: Object, default: () => {} },
+    violation: { type: Object, default: () => {} }
   },
   methods: {
     reset() {
@@ -86,7 +74,7 @@ export default {
           description: this.description,
           student: this.student,
           classData: this.class,
-          type: this.type,
+          type: this.type
         }
       }
     },
@@ -104,15 +92,10 @@ export default {
         this.classData = ''
         this.type = ''
       }
-    },
-    formatDate(item) {
-      return get(item, 'createdAt', '')
-        ? moment(item.createdAt).format('DD/MM/YYYY')
-        : ''
-    },
+    }
   },
   created() {
     this.resetDefault()
-  },
+  }
 }
 </script>

@@ -6,68 +6,55 @@
           label="Ngày"
           v-model="time"
           outlined
+          class="required"
+          :rules="[$rules.required, $rules.date]"
           dense
-          deletable-chips
-          :hide-details="$vuetify.breakpoint.smAndDown"
-          :class="{ 'mb-4': $vuetify.breakpoint.smAndDown }"
         />
       </v-col>
       <v-col></v-col>
     </v-row>
-
     <v-row>
       <v-col>
-        <autocomplete-grade
-          v-model="grade"
-          item-text="title"
-          item-value="id"
-          clear-icon="mdi-close"
-          clearable
+        <AutocompleteGrade
+          return-object
           label="Khối"
-          :rules="ruleRequired"
+          class="required"
+          :rules="[$rules.required]"
           outlined
           dense
-          deletable-chips
-          :hide-details="$vuetify.breakpoint.smAndDown"
-          :class="{ 'mb-4': $vuetify.breakpoint.smAndDown }"
+          clearable
+          @change="grade = $event"
         />
       </v-col>
       <v-col>
-        <autocomplete-class
-          v-model="classData"
-          item-text="title"
-          item-value="id"
-          clear-icon="mdi-close"
-          clearable
-          :rules="ruleRequired"
+        <AutocompleteClass
+          return-object
           label="Lớp"
+          class="required"
+          :rules="[$rules.required]"
           outlined
           dense
-          deletable-chips
-          :hide-details="$vuetify.breakpoint.smAndDown"
-          :class="{ 'mb-4': $vuetify.breakpoint.smAndDown }"
-        ></autocomplete-class>
+          clearable
+          :filter="{ grade: grade.id }"
+          @change="classData = $event"
+        />
       </v-col>
     </v-row>
-    <autocomplete-student
-      v-model="student"
-      :rules="ruleRequired"
-      clearable
-      clear-icon="mdi-close"
+    <AutocompleteStudent
+      return-object
+      label="Học sinh"
+      class="required"
+      :rules="[$rules.required]"
       outlined
-      label="Tên học sinh"
       dense
-      deletable-chips
-      :hide-details="$vuetify.breakpoint.smAndDown"
-      :class="{ 'mb-4': $vuetify.breakpoint.smAndDown }"
+      clearable
+      :filter="{ currentClass: classData.id }"
+      @change="student = $event"
     />
-    <v-radio-group v-model="type" row class="shrink mt-0">
-      <p class="mr-2 my-0">Mục:</p>
-      <v-radio label="Khen thưởng" hide-details value="commendation"></v-radio>
-      <v-radio label="Kỷ luật" hide-details value="violation"></v-radio>
-    </v-radio-group>
-
+    <RadioViolation @change="type = $event" />
     <v-textarea
+      class="required"
+      :rules="[$rules.required]"
       v-model="description"
       label="Nội dung"
       outlined
@@ -76,31 +63,30 @@
   </v-form>
 </template>
 <script>
-import TextFieldCode from '@/components/basic/input/TextFieldCode'
 import AutocompleteGrade from '@/components/basic/input/AutocompleteGrade'
 import AutocompleteClass from '@/components/basic/input/AutocompleteClass.vue'
 import AutocompleteStudent from '@/components/basic/input/AutocompleteStudent.vue'
 import DateIOSPicker from '@/components/basic/picker/DateIOSPicker.vue'
+import RadioViolation from '@/modules/violation/RadioViolation.vue'
 import { mapGetters } from 'vuex'
 export default {
   components: {
-    TextFieldCode,
     AutocompleteGrade,
     AutocompleteClass,
     AutocompleteStudent,
     DateIOSPicker,
+    RadioViolation
   },
   data: () => ({
-    ruleRequired: [(v) => !!v || 'Phần này không được trống'],
     grade: '',
     classData: '',
     student: '',
     description: '',
     type: '',
-    time:'',
+    time: ''
   }),
   computed: {
-    ...mapGetters('app', ['department']),
+    ...mapGetters('app', ['department'])
   },
   props: {},
   methods: {
@@ -119,7 +105,7 @@ export default {
           student: this.student,
           classData: this.classData,
           type: this.type,
-          data: {"Date": this.time},
+          data: { Date: this.time }
         }
       }
     },
@@ -137,13 +123,11 @@ export default {
         this.student = ''
         this.classData = ''
         this.type = ''
-        this.time =''
+        this.time = ''
         this.data = ''
       }
-    },
-  },
+    }
+  }
 }
 </script>
-<style scoped>
-</style>>
-
+<style scoped></style>>
