@@ -9,25 +9,25 @@
               Thông tin về bố (Người giám hộ)
             </p>
           </v-col>
-          <v-col class="d-flex py-0" cols="12">
+          <v-col class="d-flex align-center py-0" cols="12">
             <v-subheader class="px-0">Họ và tên bố</v-subheader>
-            <v-text-field class="pt-1" flat solo hide-details v-model="dadName" dense regular></v-text-field>
+            <p class="mb-0">{{ student.data.dadName }}</p>
           </v-col>
-          <v-col class="d-flex py-0" cols="12">
+          <v-col class="d-flex align-center py-0" cols="12">
             <v-subheader class="px-0">Số điện thoại bố</v-subheader>
-            <v-text-field class="pt-1" flat solo hide-details v-model="dadPhone" dense regular></v-text-field>
+            <p class="mb-0">{{ student.data.dadPhone }}</p>
           </v-col>
-          <v-col class="d-flex py-0" cols="12">
+          <v-col class="d-flex align-center py-0" cols="12">
             <v-subheader class="px-0">Email bố</v-subheader>
-            <v-text-field class="pt-1" flat solo hide-details v-model="dadEmail" dense regular></v-text-field>
+            <p class="mb-0">{{ student.data.dadEmail }}</p>
           </v-col>
-          <v-col class="d-flex py-0" cols="12">
+          <v-col class="d-flex align-center py-0" cols="12">
             <v-subheader class="px-0">Nghề nghiệp bố</v-subheader>
-            <v-text-field class="pt-1" flat solo hide-details v-model="dadJob" dense regular></v-text-field>
+            <p class="mb-0">{{ student.data.dadJob }}</p>
           </v-col>
-          <v-col class="d-flex py-0" cols="12">
+          <v-col class="d-flex align-center py-0" cols="12">
             <v-subheader class="px-0">Cơ quan công tác</v-subheader>
-            <v-text-field class="pt-1" flat solo hide-details v-model="dadCompany" dense regular></v-text-field>
+            <p class="mb-0">{{ student.data.dadCompany }}</p>
           </v-col>
         </v-row>
       </v-col>
@@ -38,25 +38,25 @@
               Thông tin về mẹ (Người giám hộ)
             </p>
           </v-col>
-          <v-col class="d-flex py-0" cols="12">
+          <v-col class="d-flex align-center py-0" cols="12">
             <v-subheader class="px-0">Họ và tên mẹ</v-subheader>
-            <v-text-field class="pt-1" flat solo hide-details v-model="momName" dense regular></v-text-field>
+            <p class="mb-0">{{ student.data.momName }}</p>
           </v-col>
-          <v-col class="d-flex py-0" cols="12">
+          <v-col class="d-flex align-center py-0" cols="12">
             <v-subheader class="px-0">Số điện thoại mẹ</v-subheader>
-            <v-text-field class="pt-1" flat solo hide-details v-model="momPhone" dense regular></v-text-field>
+            <p class="mb-0">{{ student.data.momPhone }}</p>
           </v-col>
-          <v-col class="d-flex py-0" cols="12">
+          <v-col class="d-flex align-center py-0" cols="12">
             <v-subheader class="px-0">Email mẹ</v-subheader>
-            <v-text-field class="pt-1" flat solo hide-details v-model="momEmail" dense regular></v-text-field>
+            <p class="mb-0">{{ student.data.momEmail }}</p>
           </v-col>
-          <v-col class="d-flex py-0" cols="12">
+          <v-col class="d-flex align-center py-0" cols="12">
             <v-subheader class="px-0">Nghề nghiệp mẹ</v-subheader>
-            <v-text-field class="pt-1" flat solo hide-details v-model="momJob" dense regular></v-text-field>
+            <p class="mb-0">{{ student.data.momJob }}</p>
           </v-col>
-          <v-col class="d-flex py-0" cols="12">
+          <v-col class="d-flex align-center py-0" cols="12">
             <v-subheader class="px-0">Cơ quan công tác</v-subheader>
-            <v-text-field class="pt-1" flat solo hide-details v-model="momCompany" dense regular></v-text-field>
+            <p class="mb-0">{{ student.data.momCompany }}</p>
           </v-col>
         </v-row>
       </v-col>
@@ -74,53 +74,15 @@ export default {
   },
   data: () => ({
     valid: true,
-    dadName: '',
-    dadEmail: '',
-    dadPhone: '',
-    momName: '',
-    momEmail: '',
-    momPhone: '',
-    dadJob: '',
-    dadCompany: '',
-    momJob: '',
-    momCompany: '',
     rules: {
       required: value => !!value || 'Required.',
       min: v => v.length >= 6 || 'Min 8 characters',
       email: v => /.+@.+/.test(v) || 'E-mail must be valid'
     }
   }),
-  created() {
-    if (this.student) {
-      this.dadName = this.student.data.dadName
-      this.dadEmail = this.student.data.dadEmail
-      this.dadPhone = this.student.data.dadPhone
-      this.momName = this.student.data.momName
-      this.momEmail = this.student.data.momEmail
-      this.momPhone = this.student.data.momPhone
-      this.dadJob = this.student.data.dadJob
-      this.dadCompany = this.student.data.dadCompany
-      this.momJob = this.student.data.momJob
-      this.momCompany = this.student.data.momCompany
-    }
-  },
   methods: {
     validate() {
       this.$refs.form.validate()
-    },
-    getData() {
-      return {
-        dadName: this.dadName,
-        dadEmail: this.dadEmail,
-        dadPhone: this.dadPhone,
-        momPhone: this.momPhone,
-        momName: this.momName,
-        momEmail: this.momEmail,
-        dadJob: this.dadJob,
-        dadCompany: this.dadCompany,
-        momJob: this.momJob,
-        momCompany: this.momCompany
-      }
     },
     reset() {
       this.$refs.form.reset()
@@ -133,6 +95,9 @@ export default {
 </script>
 
 <style scoped>
+p {
+  color: black;
+}
 .v-subheader {
   width: 30%;
 }
