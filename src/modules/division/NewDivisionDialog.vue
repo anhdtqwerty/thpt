@@ -47,14 +47,18 @@ export default {
     ...mapActions('division', ['createDivision']),
     async save() {
       if (!this.$refs.form.validate()) return
-      this.loading = true
-      const data = this.$refs.form.getData()
-      console.log(data)
-      await this.createDivision({ ...data })
-      this.$alert.success('Tạo phân ban mới thành công')
-      this.$refs.form.reset()
-      this.loading = false
-      this.dialog = false
+      try {
+        this.loading = true
+        const data = this.$refs.form.getData()
+        await this.createDivision({ ...data })
+        this.$alert.addSuccess()
+        this.$refs.form.reset()
+        this.dialog = false
+      } catch (error) {
+        this.$alert.addError()
+      } finally {
+        this.loading = false
+      }
     },
     cancel() {
       this.$refs.form.reset()
