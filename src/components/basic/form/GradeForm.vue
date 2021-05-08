@@ -5,15 +5,10 @@
       v-model="title"
       dense
       outlined
-      required
+      class="required"
+      :rules="[$rules.required]"
     ></v-text-field>
-    <v-textarea
-      ref="description"
-      v-model="description"
-      label="Ghi chú"
-      outlined
-      dense
-    ></v-textarea>
+    <v-textarea ref="description" v-model="description" label="Ghi chú" outlined dense></v-textarea>
   </v-form>
 </template>
 <script>
@@ -40,14 +35,12 @@ export default {
       this.$refs.form.resetValidation()
     },
     validate() {
-      this.$refs.form.validate()
+      return this.$refs.form.validate()
     },
     getData() {
-      if (this.$refs.form.validate()) {
-        return {
-          title: this.title,
-          description: this.description
-        }
+      return {
+        title: this.title,
+        description: this.description
       }
     },
     resetDefault() {
@@ -63,10 +56,10 @@ export default {
   created() {
     this.resetDefault()
   },
-   watch: {
+  watch: {
     grade() {
       this.resetDefault()
-    },
-  },
+    }
+  }
 }
 </script>

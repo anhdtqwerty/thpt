@@ -6,16 +6,18 @@
       dense
       outlined
       required
+      class="required"
+      :rules="[$rules.required]"
     ></v-text-field>
     <autocomplete-grade
-      v-model="grade"
       clear-icon="mdi-close"
       clearable
       label="Khối"
       outlined
       dense
-      :hide-details="$vuetify.breakpoint.smAndDown"
-      :class="{ 'mb-4': $vuetify.breakpoint.smAndDown }"
+      class="required"
+      :rules="[$rules.required]"
+      @change="onGradeChanged"
     />
     <autocomplete-subject
       v-model="subjects"
@@ -25,16 +27,9 @@
       label="Môn học"
       multiple
       dense
-      :hide-details="$vuetify.breakpoint.smAndDown"
-      :class="{ 'mb-4': $vuetify.breakpoint.smAndDown }"
+      :filter="gradeId"
     />
-    <v-textarea
-      ref="description"
-      v-model="description"
-      label="Ghi chú"
-      outlined
-      dense
-    ></v-textarea>
+    <v-textarea ref="description" v-model="description" label="Ghi chú" outlined dense></v-textarea>
   </v-form>
 </template>
 <script>
@@ -46,50 +41,42 @@ export default {
   components: {
     TextFieldCode,
     AutocompleteGrade,
-    AutocompleteSubject,
+    AutocompleteSubject
   },
   data: () => ({
     subjects: '',
     description: '',
     title: '',
-    grade: '',
+    grade: ''
   }),
   computed: {
     ...mapGetters('app', ['department']),
+    gradeId() {
+      return { grade: this.grade }
+    }
   },
   methods: {
     reset() {
       this.$refs.form.reset()
     },
+    validate() {
+      return this.$refs.form.validate()
+    },
     resetValidation() {
       this.$refs.form.resetValidation()
     },
     getData() {
-      if (this.$refs.form.validate()) {
-        return {
-          title: this.title,
-          description: this.description,
-          grade: this.grade,
-          subjects: this.subjects,
-        }
+      return {
+        title: this.title,
+        description: this.description,
+        grade: this.grade,
+        subjects: this.subjects
       }
     },
-    resetDefault() {
-      if (this.division) {
-        this.grade = this.division.grade
-        this.description = this.division.description
-        this.title = this.division.title
-        this.subjects = this.division.subjects
-      } else {
-        this.title = ''
-        this.description = ''
-        this.grade = ''
-        this.subjects = ''
-      }
-    },
-  },
-  created() {
-    this.resetDefault()
-  },
+    onGradeChanged(grade) {
+      this.grade = grade
+      this.subjects = []
+    }
+  }
 }
 </script>

@@ -1,10 +1,5 @@
 <template>
-  <v-dialog
-    v-model="dialog"
-    width="600px"
-    :fullscreen="$vuetify.breakpoint.smAndDown"
-    scrollable
-  >
+  <v-dialog v-model="dialog" width="600px" :fullscreen="$vuetify.breakpoint.smAndDown" scrollable>
     <v-card>
       <v-card-title class="blue darken-4 white--text"
         ><v-toolbar-title>THÊM KHỐI MỚI</v-toolbar-title>
@@ -13,23 +8,16 @@
       </v-card-title>
       <v-card-text>
         <v-divider></v-divider>
-      <create-grade-form ref="form" :editCode="true" />
+        <CreateGradeForm ref="form" :editCode="true" />
       </v-card-text>
       <v-card-actions>
         <v-row class="pa-2" no-gutters>
-        <v-spacer></v-spacer>
-        <v-btn
-          class="px-6"
-          dark
-          depressed
-          color="#0D47A1"
-          :loading="loading"
-          @click="save"
-          ><v-icon left>add</v-icon>Thêm</v-btn
-        >
-      </v-row>
+          <v-spacer></v-spacer>
+          <v-btn class="px-6" dark depressed color="#0D47A1" :loading="loading" @click="save"
+            ><v-icon left>add</v-icon>Thêm</v-btn
+          >
+        </v-row>
       </v-card-actions>
-      
     </v-card>
   </v-dialog>
 </template>
@@ -58,12 +46,18 @@ export default {
     ...mapActions('grade', ['createGrade']),
     async save() {
       if (!this.$refs.form.validate()) return
-      this.loading = true
-      const data = this.$refs.form.getData()
-      await this.createGrade({ ...data })
-      this.$alert.success('Tạo phân ban mới thành công')
-      this.loading = false
-      this.dialog = false
+      try {
+        this.loading = true
+        const data = this.$refs.form.getData()
+        await this.createGrade({ ...data })
+        this.$alert.addSuccess()
+        this.$refs.form.reset()
+        this.dialog = false
+      } catch (error) {
+        this.$alert.addError()
+      } finally {
+        this.loading = false
+      }
     }
   },
   watch: {

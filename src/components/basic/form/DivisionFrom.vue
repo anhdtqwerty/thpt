@@ -5,7 +5,8 @@
       v-model="title"
       dense
       outlined
-      required
+      class="required"
+      :rules="[$rules.required]"
     ></v-text-field>
     <autocomplete-grade
       v-model="grade"
@@ -16,8 +17,9 @@
       label="Khối"
       outlined
       dense
-      :hide-details="$vuetify.breakpoint.smAndDown"
-      :class="{ 'mb-4': $vuetify.breakpoint.smAndDown }"
+      class="required"
+      :rules="[$rules.required]"
+      @change="onGradeChanged"
     />
     <autocomplete-subject
       v-model="subjects"
@@ -28,42 +30,36 @@
       label="Môn học"
       multiple
       dense
-      :hide-details="$vuetify.breakpoint.smAndDown"
-      :class="{ 'mb-4': $vuetify.breakpoint.smAndDown }"
+      :filter="gradeId"
     />
-    <v-textarea
-      ref="description"
-      v-model="description"
-      label="Ghi chú"
-      outlined
-      dense
-    ></v-textarea>
+    <v-textarea ref="description" v-model="description" label="Ghi chú" outlined dense></v-textarea>
   </v-form>
 </template>
 <script>
-import TextFieldCode from '@/components/basic/input/TextFieldCode'
 import AutocompleteGrade from '@/components/basic/input/AutocompleteGrade'
 import AutocompleteSubject from '@/components/basic/input/AutocompleteSubject.vue'
 import { mapGetters } from 'vuex'
 export default {
   components: {
-    TextFieldCode,
     AutocompleteGrade,
-    AutocompleteSubject,
+    AutocompleteSubject
   },
   data: () => ({
     valid: true,
     subjects: '',
     description: '',
     title: '',
-    grade: '',
+    grade: ''
   }),
   computed: {
     ...mapGetters('app', ['department']),
+    gradeId() {
+      return { grade: this.grade }
+    }
   },
   props: {
     division: { type: Object, default: () => {} },
-    editCode: { type: Boolean, default: false },
+    editCode: { type: Boolean, default: false }
   },
   methods: {
     reset() {
@@ -72,14 +68,15 @@ export default {
     resetValidation() {
       this.$refs.form.resetValidation()
     },
+    validate() {
+      return this.$refs.form.validate()
+    },
     getData() {
-      if (this.$refs.form.validate()) {
-        return {
-          title: this.title,
-          description: this.description,
-          grade: this.grade,
-          subjects: this.subjects,
-        }
+      return {
+        title: this.title,
+        description: this.description,
+        grade: this.grade,
+        subjects: this.subjects
       }
     },
     resetDefault() {
@@ -95,9 +92,13 @@ export default {
         this.subjects = ''
       }
     },
+    onGradeChanged(grade) {
+      this.grade = grade
+      this.subjects = []
+    }
   },
   created() {
     this.resetDefault()
-  },
+  }
 }
 </script>
