@@ -35,7 +35,7 @@
           outlined
           dense
           clearable
-          :filter="{ grade: grade.id }"
+          :filter="gradeId"
           @change="classData = $event"
         />
       </v-col>
@@ -48,7 +48,7 @@
       outlined
       dense
       clearable
-      :filter="{ currentClass: classData.id }"
+      :filter="currentClasId"
       @change="student = $event"
     />
     <RadioViolation @change="type = $event" />
@@ -69,6 +69,8 @@ import AutocompleteStudent from '@/components/basic/input/AutocompleteStudent.vu
 import DateIOSPicker from '@/components/basic/picker/DateIOSPicker.vue'
 import RadioViolation from '@/modules/violation/RadioViolation.vue'
 import { mapGetters } from 'vuex'
+import { get } from 'lodash'
+
 export default {
   components: {
     AutocompleteGrade,
@@ -86,7 +88,13 @@ export default {
     time: ''
   }),
   computed: {
-    ...mapGetters('app', ['department'])
+    ...mapGetters('app', ['department']),
+    gradeId() {
+      return { grade: get(this.grade, 'id') }
+    },
+    currentClasId() {
+      return { currentClass: get(this.classData, 'id') }
+    }
   },
   props: {},
   methods: {
@@ -105,7 +113,7 @@ export default {
           student: this.student,
           classData: this.classData,
           type: this.type,
-          data: { Date: this.time }
+          date: this.time
         }
       }
     },
@@ -118,13 +126,7 @@ export default {
         this.type = this.violation.type
         this.data = this.violation.data
       } else {
-        this.grade = ''
-        this.description = ''
-        this.student = ''
-        this.classData = ''
-        this.type = ''
-        this.time = ''
-        this.data = ''
+        this.$refs.form.reset()
       }
     }
   }

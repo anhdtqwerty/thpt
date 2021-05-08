@@ -4,26 +4,7 @@
       <v-col cols="12" md="10">
         <v-row>
           <v-col cols="12" md="4">
-            <autocomplete-student
-              v-model="student"
-              item-text="name"
-              clearable
-              clear-icon="mdi-close"
-              outlined
-              placeholder="Tên học sinh"
-              item-value="id"
-              dense
-              deletable-chips
-              hide-details
-            />
-          </v-col>
-          <v-col cols="12" md="4">
-            <DateRangeIOSPicker
-              :date-range.sync="dateRange"
-              placeholder="Ngày"
-              outlined
-              hide-details
-            />
+            <DateRangeIOSPicker :date-range.sync="dateRange" placeholder="Ngày" outlined hide-details />
           </v-col>
           <v-col cols="12" md="4">
             <autocomplete-class
@@ -38,17 +19,24 @@
               hide-details
             />
           </v-col>
+          <v-col cols="12" md="4">
+            <autocomplete-student
+              v-model="student"
+              clearable
+              clear-icon="mdi-close"
+              outlined
+              placeholder="Tên học sinh"
+              dense
+              deletable-chips
+              :filter="currentClassId"
+              hide-details
+            />
+          </v-col>
         </v-row>
       </v-col>
 
       <v-col cols="12" md="2">
-        <v-btn
-          height="40"
-          dark
-          @click="onFilterChanged"
-          color="primary"
-          outlined
-        >
+        <v-btn height="40" dark @click="onFilterChanged" color="primary" outlined>
           Tìm kiếm
         </v-btn>
       </v-col>
@@ -62,12 +50,13 @@ import moment from 'moment'
 import AutocompleteStudent from '@/components/basic/input/AutocompleteStudent.vue'
 import AutocompleteClass from '@/components/basic/input/AutocompleteClass.vue'
 import DateRangeIOSPicker from '@/components/basic/picker/DateRangeIOSPicker.vue'
+import { get } from 'lodash'
 
 export default {
   components: {
     AutocompleteClass,
     AutocompleteStudent,
-    DateRangeIOSPicker,
+    DateRangeIOSPicker
   },
   data: () => ({
     student: {},
@@ -75,12 +64,15 @@ export default {
     tags: '',
     query: '',
     time: null,
-    createdAt_gt: '',
-    createdAt_lt: '',
-    dateRange: [],
+    dateData_gte: '',
+    dateData_lte: '',
+    dateRange: []
   }),
   computed: {
     ...mapState('constant', ['classStatus']),
+    currentClassId() {
+      return { currentClass: get(this.classData, 'id') }
+    }
   },
   methods: {
     onFilterChanged() {
@@ -88,42 +80,31 @@ export default {
         class: this.classData,
         student: this.student,
         dateRange: this.dateRange,
-        _sort: 'createdAt:desc',
+        _sort: 'createdAt:desc'
       })
-      this.createdAt_gt = ''
-      this.createdAt_lt = ''
+      this.dateData_gte = ''
+      this.dateData_lte = ''
       if (this.dateRange.length > 1) {
-        this.createdAt_gt = moment(
-          this.dateRange[0],
-          'DD/MM/YYYY'
-        ).toISOString()
-        this.createdAt_lt = moment(this.dateRange[1], 'DD/MM/YYYY')
-          .add(1, 'd')
-          .toISOString()
+        this.dateData_gte = moment(this.dateRange[0], 'DD/MM/YYYY').toISOString()
+        this.dateData_lte = moment(this.dateRange[1], 'DD/MM/YYYY').toISOString()
       } else if (this.dateRange.length > 0) {
-        this.createdAt_gt = moment(
-          this.dateRange[0],
-          'DD/MM/YYYY'
-        ).toISOString()
-        this.createdAt_lt = moment(this.dateRange[0], 'DD/MM/YYYY')
-          .add(1, 'd')
-          .toISOString()
+        this.dateData_gte = moment(this.dateRange[0], 'DD/MM/YYYY').toISOString()
+        this.dateData_lte = moment(this.dateRange[0], 'DD/MM/YYYY').toISOString()
       }
       this.$emit('onFilterChanged', {
         class: this.classData.id,
         student: this.student.id,
-        createdAt_gt: this.createdAt_gt,
-        createdAt_lt: this.createdAt_lt,
-        _sort: 'createdAt:desc',
+        date_gte: this.dateData_gte,
+        date_lte: this.dateData_lte,
+        _sort: 'createdAt:desc'
       })
-      this.reset()
     },
     reset() {
       this.classData = ''
       this.student = ''
       this.dateRange = []
-    },
-  },
+    }
+  }
 }
 </script>
 

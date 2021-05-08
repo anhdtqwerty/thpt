@@ -92,7 +92,7 @@ export default {
       violationHeader: [
         {
           text: 'Ngày',
-          value: 'data.Date',
+          value: 'date',
           sortable: false
         },
         {
