@@ -5,16 +5,10 @@
       v-model="title"
       dense
       outlined
-      required
-      :rules="ruleRequired"
+      class="required"
+      :rules="[$rules.required]"
     ></v-text-field>
-    <v-textarea
-      ref="description"
-      v-model="description"
-      label="Ghi chú"
-      outlined
-      dense
-    ></v-textarea>
+    <v-textarea ref="description" v-model="description" label="Ghi chú" outlined dense></v-textarea>
   </v-form>
 </template>
 <script>
@@ -30,8 +24,7 @@ export default {
   computed: {
     ...mapGetters('app', ['department'])
   },
-  props: {
-  },
+  props: {},
   methods: {
     reset() {
       this.$refs.form.reset()
@@ -47,16 +40,7 @@ export default {
         title: this.title,
         description: this.description
       }
-    },
-    refresh() {
-      if (this.division) {
-        this.description = this.division.description
-        this.title = this.division.title
-      }
     }
-  },
-  created() {
-    this.reset()
   }
 }
 </script>

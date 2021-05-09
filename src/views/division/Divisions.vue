@@ -6,38 +6,28 @@
           headline="Quản lý phân ban"
           :link="[
             { text: 'Nâng cao', href: '../divisions' },
-            { text: 'QL Phân Ban', href: '../divisions' },
+            { text: 'QL Phân Ban', href: '../divisions' }
           ]"
         />
       </div>
       <div class="flex-center">
-        <v-btn
-          v-if="$vuetify.breakpoint.mdAndUp"
-          class="mr-2"
-          outlined
-          color="success"
-        >
+        <v-btn v-if="$vuetify.breakpoint.mdAndUp" class="mr-2" outlined color="success">
           <v-icon left>mdi-file-excel</v-icon> Xuất Excel
         </v-btn>
-        <v-btn
-          @click="createStateDialog = !createStateDialog"
-          dark
-          color="#0D47A1"
-        >
+        <v-btn @click="createStateDialog = !createStateDialog" dark color="#0D47A1">
           <v-icon left>add</v-icon>{{ addButtonText }}
         </v-btn>
       </div>
     </div>
     <v-card class="px-md-6 mx-md-4 elevation-1">
       <v-data-table :headers="headers" :items="divisions">
-        <div slot="top" class="py-md-3">
-        </div>
+        <div slot="top" class="py-md-3"></div>
         <template v-slot:item.subjects="{ item }">
           <v-tooltip max-width="200px" bottom>
             <template v-slot:activator="{ on, attrs }">
-               <p v-bind="attrs" v-on="on" class="shortenContent ma-0">{{ item | getSubject }}</p>
+              <p v-bind="attrs" v-on="on" class="shortenContent ma-0">{{ item | getSubject }}</p>
             </template>
-            <span>{{item | getSubject}}</span>
+            <span>{{ item | getSubject }}</span>
           </v-tooltip>
         </template>
         <template v-slot:item.actions="{ item }">
@@ -61,10 +51,10 @@ export default {
     NewDivisionDialog,
     Breadcrumbs,
     DivisionActions,
-    DropMenu,
+    DropMenu
   },
   props: {
-    role: String,
+    role: String
   },
   data() {
     return {
@@ -74,32 +64,32 @@ export default {
           value: 'title',
           align: 'left',
           sortable: false,
-          show: true,
+          show: true
         },
         {
           text: 'Khối',
           value: 'grade.title',
           align: 'left',
           sortable: false,
-          show: true,
+          show: true
         },
         {
           text: 'Các môn học',
           value: 'subjects',
           align: 'left',
           sortable: false,
-          show: true,
+          show: true
         },
         {
           text: 'Hành động',
           value: 'actions',
           align: 'center',
           sortable: false,
-          show: true,
-        },
+          show: true
+        }
       ],
       createStateDialog: false,
-      selected: {},
+      selected: {}
     }
   },
 
@@ -114,7 +104,7 @@ export default {
         default:
           return 'Thêm ban'
       }
-    },
+    }
   },
   async created() {
     await this.refresh({})
@@ -126,21 +116,21 @@ export default {
       this.draw = draw
     },
     refresh() {
-      this.fetchDivision()
+      this.fetchDivision({ _sort: 'createdAt:desc' })
     },
     onDivisionSelected(division) {
       this.setDivision(division)
-    },
+    }
   },
   filters: {
     getSubject(division) {
       return division.subjects
-        .map((value) => {
+        .map(value => {
           return value.title
         })
         .join(' - ')
-    },
-  },
+    }
+  }
 }
 </script>
 

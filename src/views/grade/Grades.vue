@@ -4,16 +4,14 @@
       <div>
         <Breadcrumbs
           headline="Quản lý khối"
-          :link="[{ text: 'Nâng cao', href: '../divisions' },{ text: 'QL Khối', href: '../grades' }]"
+          :link="[
+            { text: 'Nâng cao', href: '../divisions' },
+            { text: 'QL Khối', href: '../grades' }
+          ]"
         />
       </div>
       <div class="flex-center">
-         <v-btn
-          v-if="$vuetify.breakpoint.mdAndUp"
-          class="mr-2"
-          outlined
-          color="success"
-        >
+        <v-btn v-if="$vuetify.breakpoint.mdAndUp" class="mr-2" outlined color="success">
           <v-icon left>mdi-file-excel</v-icon> Xuất Excel
         </v-btn>
         <v-btn @click="createGrade = !createGrade" dark color="#0D47A1">
@@ -24,10 +22,8 @@
     <new-grade-dialog :state="createGrade" />
 
     <v-card class="px-md-6 mx-md-4 elevation-1">
-
       <v-data-table :headers="headers" :items="grades">
-      <div slot="top" class="py-md-3">
-      </div>
+        <div slot="top" class="py-md-3"></div>
         <template v-slot:item.actions="{ item }">
           <grade-list-actions :selected="item"> </grade-list-actions>
         </template>
@@ -51,7 +47,7 @@ export default {
     DropMenu
   },
   props: {
-    role: String,
+    role: String
   },
   data() {
     return {
@@ -61,25 +57,25 @@ export default {
           value: 'title',
           align: 'left',
           sortable: false,
-          show: true,
+          show: true
         },
         {
           text: 'Ghi chú',
           value: 'description',
           align: 'left',
           sortable: false,
-          show: true,
+          show: true
         },
         {
           text: 'Hành động',
           value: 'actions',
           align: 'center',
           sortable: false,
-          show: true,
-        },
+          show: true
+        }
       ],
       createGrade: false,
-      selected: {},
+      selected: {}
     }
   },
 
@@ -94,7 +90,7 @@ export default {
         default:
           return 'Thêm khối'
       }
-    },
+    }
   },
   async created() {
     await this.refresh({})
@@ -105,12 +101,12 @@ export default {
       this.draw = draw
     },
     refresh() {
-      this.fetchGrades()
+      this.fetchGrades({ _sort: 'createdAt:desc' })
     },
     onGradeSelected(grade) {
       this.setGrade(grade)
-    },
+    }
   },
-  filters: {},
+  filters: {}
 }
 </script>

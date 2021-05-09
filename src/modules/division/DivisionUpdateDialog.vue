@@ -1,87 +1,72 @@
 <template>
-  <v-dialog
-    v-model="dialog"
-    width="600px"
-    scrollable
-    :fullscreen="$vuetify.breakpoint.smAndDown"
-  >
+  <v-dialog v-model="dialog" width="600px" scrollable :fullscreen="$vuetify.breakpoint.smAndDown">
     <v-card>
-      <v-card-title class="blue darken-4 white--text text-uppercase"
-        > <v-toolbar-title>Sửa {{division.title}}</v-toolbar-title>
+      <v-card-title class="blue darken-4 white--text text-uppercase">
+        <v-toolbar-title>Sửa {{ division.title }}</v-toolbar-title>
         <v-spacer />
         <v-icon color="white" @click="cancel">close</v-icon>
       </v-card-title>
       <v-card-text>
         <v-divider></v-divider>
-      <division-info-form v-bind:division=division ref="form" />
+        <DivisionFrom :division="division" ref="form" />
       </v-card-text>
       <v-card-actions>
-         <v-row class="pa-2" no-gutters>
-        <v-spacer></v-spacer>
-        <v-btn
-          class="px-6 mx-4 blue--text"
-          color="#E3F2FD"
-          dark
-          depressed
-          @click="cancel"
-          >Hủy</v-btn
-        >
-        <v-btn
-          class="px-6"
-          dark
-          depressed
-          color="#0D47A1"
-          :loading="loading"
-          @click="save"
-          >Lưu</v-btn
-        >
-      </v-row>
+        <v-row class="pa-2" no-gutters>
+          <v-spacer></v-spacer>
+          <v-btn class="px-6 mx-4 blue--text" color="#E3F2FD" dark depressed @click="cancel">Hủy</v-btn>
+          <v-btn class="px-6" dark depressed color="#0D47A1" :loading="loading" @click="save">Lưu</v-btn>
+        </v-row>
       </v-card-actions>
-     
     </v-card>
   </v-dialog>
 </template>
 <script>
-import DivisionInfoForm from '@/components/basic/form/DivisionFrom.vue'
+import DivisionFrom from '@/components/basic/form/DivisionFrom.vue'
 import { mapActions, mapState } from 'vuex'
 
 export default {
   components: {
-    DivisionInfoForm,
+    DivisionFrom
   },
   props: {
     state: Boolean,
-    division: { type: Object, default: () => {} },
+    division: { type: Object, default: () => {} }
   },
   data() {
     return {
       dialog: false,
-      loading: false,
+      loading: false
     }
   },
   computed: {
     ...mapState('app', ['roles', 'department']),
-    ...mapState('auth', ['user']),
+    ...mapState('auth', ['user'])
   },
   methods: {
-    ...mapActions('division', ['updateDivision','fetchDivision']),
+    ...mapActions('division', ['updateDivision', 'fetchDivision']),
     async save() {
-      this.loading = true
-      const data = this.$refs.form.getData()
-      await this.updateDivision({id:this.division.id, ...data })
-      this.$alert.success('Cập nhật thành công')
-      this.loading = false
-      this.dialog = false
+      if (!this.$refs.form.validate()) return
+      try {
+        this.loading = true
+        const data = this.$refs.form.getData()
+        await this.updateDivision({ id: this.division.id, ...data })
+        this.$alert.updateSuccess()
+        this.dialog = false
+      } catch (error) {
+        this.$alert.updateError()
+      } finally {
+        this.loading = false
+      }
     },
     cancel() {
       this.dialog = false
       this.$refs.form.resetDefault()
-    },
+    }
   },
   watch: {
     state(state) {
       this.dialog = true
-    },
-  },
+    }
+  }
 }
 </script>
