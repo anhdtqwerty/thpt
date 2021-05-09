@@ -15,8 +15,8 @@
     <template v-slot:[`item.action`]="{ item }">
       <violation-actions :selected="item"> </violation-actions>
     </template>
-    <template v-slot:[`item.data.Date`]="{ item }">
-      {{ item.data.Date | ddmmyyyy }}
+    <template v-slot:[`item.date`]="{ item }">
+      {{ item.date | ddmmyyyy }}
     </template>
     <template v-slot:[`item.type`]="{ item }">
       <v-chip small label :color="getColor(item.type)" dark
@@ -39,13 +39,11 @@
 
 <script>
 import ViolationActions from '@/modules/violation/ViolationListActions.vue'
-import moment from 'moment'
-import { get } from 'lodash'
 
 const originHeaders = [
   {
     text: 'Ngày',
-    value: 'data.Date',
+    value: 'date',
     align: 'left',
     sortable: false,
     show: true
