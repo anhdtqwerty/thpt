@@ -1,9 +1,5 @@
 <template>
-  <v-dialog
-    v-model="dialog"
-    width="600px"
-    :fullscreen="$vuetify.breakpoint.smAndDown"
-  >
+  <v-dialog v-model="dialog" width="600px" :fullscreen="$vuetify.breakpoint.smAndDown">
     <v-card>
       <v-card-title class="white--text primary"
         >{{ classData.title }}
@@ -11,22 +7,10 @@
         <v-icon color="white" @click="cancel">close</v-icon>
       </v-card-title>
       <v-divider></v-divider>
-      <class-info-form
-        v-if="classData.id"
-        :classData="classData"
-        ref="form"
-        @save="save"
-      ></class-info-form>
+      <ClassInfoForm v-if="classData.id" :classData="classData" ref="form" @save="save" />
       <v-row class="pr-6 pb-6 mt-n7" no-gutters>
         <v-spacer></v-spacer>
-        <v-btn
-          class="px-6"
-          depressed
-          color="primary"
-          :loading="loading"
-          @click="save"
-          >Lưu</v-btn
-        >
+        <v-btn class="px-6" depressed color="primary" :loading="loading" @click="save">Lưu</v-btn>
       </v-row>
     </v-card>
   </v-dialog>
@@ -58,12 +42,18 @@ export default {
   methods: {
     ...mapActions('class', ['updateClass']),
     async save() {
-      this.loading = true
-      const data = this.$refs.form.getData()
-      await this.updateClass({ id: this.classData.id, ...data })
-      this.loading = false
-      this.dialog = false
-      this.$alert.success('Cập nhật thành công!')
+      if (!this.$refs.form.validate()) return
+      try {
+        this.loading = true
+        const data = this.$refs.form.getData()
+        await this.updateClass({ id: this.classData.id, ...data })
+        this.dialog = false
+        this.$alert.updateSuccess()
+      } catch (error) {
+        this.$alert.updateError()
+      } finally {
+        this.loading = false
+      }
     },
     cancel() {
       this.dialog = false

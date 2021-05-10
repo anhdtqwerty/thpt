@@ -1,29 +1,16 @@
 <template>
-  <v-dialog
-    v-model="dialog"
-    width="800px"
-    :fullscreen="$vuetify.breakpoint.smAndDown"
-  >
+  <v-dialog v-model="dialog" width="800px" :fullscreen="$vuetify.breakpoint.smAndDown">
     <v-card>
-      <v-card-title class="primary white--text "
+      <v-card-title class="primary white--text"
         ><v-toolbar-title>THÊM LỚP HỌC</v-toolbar-title>
         <v-spacer />
         <v-icon color="white" @click="cancel">close</v-icon>
       </v-card-title>
       <v-divider></v-divider>
-      <class-new-form
-        ref="form"
-        :classData="{}"
-        :major="major"
-        :course="course"
-      />
+      <ClassNewForm ref="form" :classData="{}" :major="major" :course="course" />
       <v-card-actions>
         <v-spacer />
-        <v-btn
-          depressed
-          color="primary"
-          class="mr-4 mt-n4 mb-2 white--text"
-          @click="save"
+        <v-btn depressed color="primary" class="mr-4 mt-n4 mb-2 white--text" @click="save"
           ><v-icon color="white" left> mdi-plus </v-icon>Lưu</v-btn
         >
       </v-card-actions>
@@ -33,7 +20,7 @@
 
 <script>
 import ClassNewForm from '@/components/basic/form/ClassNewForm.vue'
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState, mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -51,18 +38,32 @@ export default {
   },
   computed: {
     ...mapState('app', ['roles', 'department']),
-    ...mapState('auth', ['user'])
+    ...mapState('auth', ['user']),
+    ...mapState('app', ['currentGeneration']),
+    ...mapGetters('class', ['classes'])
   },
   methods: {
     ...mapActions('class', ['createClass']),
     async save() {
-      const data = this.$refs.form.getData()
-      await this.createClass({
-        ...data,
-        department: this.department.id,
-        status: 'opened'
-      })
-      this.dialog = false
+      if (!this.$refs.form.validate()) return
+      try {
+        this.$loading.active = true
+        const data = this.$refs.form.getData()
+        await this.createClass({
+          ...data,
+          department: this.department.id,
+          generation: this.currentGeneration.id,
+          status: 'opened'
+        })
+        console.log('this.classes', this.classes)
+        this.$alert.addSuccess()
+        this.$refs.form.reset()
+        this.dialog = false
+      } catch (error) {
+        this.$alert.addError()
+      } finally {
+        this.$loading.active = false
+      }
     },
     cancel() {
       this.$refs.form.reset()

@@ -7,6 +7,8 @@
     @change="onChange"
     v-on:input="$emit('input', $event)"
     @update:search-input="update"
+    v-model="value"
+    :loading="loading"
   ></v-autocomplete>
 </template>
 
@@ -16,10 +18,12 @@ import { Division } from '@/plugins/api'
 
 export default {
   data: () => ({
-    divisions: []
+    divisions: [],
+    loading: false,
+    value: null
   }),
   props: {
-    filters: Object,
+    filter: Object,
     defaultDivisions: Object,
     options: Object,
     grade: String
@@ -39,9 +43,11 @@ export default {
   },
   methods: {
     async fetchAllDivisions() {
+      this.loading = true
       this.divisions = await Division.fetch({
-        ...this.filters
+        ...this.filter
       })
+      this.loading = false
     },
     async update(data) {},
     onChange(data) {
@@ -51,6 +57,10 @@ export default {
   watch: {
     grade() {
       console.log(this.grade)
+    },
+    filter(filter) {
+      this.value = null
+      this.fetchAllDivisions()
     }
   }
 }
