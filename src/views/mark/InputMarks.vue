@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="height: 100%">
     <div class="pa-4 d-flex justify-space-between align-center">
       <Breadcrumbs
         headline="Nhập điểm"
@@ -10,8 +10,9 @@
       />
     </div>
 
-    <InputMarkFilter class="px-md-6 mx-md-4 elevation-1 mb-2" @onFilterChanged="onFilterChanged" />
-    <InputMarkDataTable :marks="marks" :factor="filterParam.factor" @saveMarks="getMarkReq" />
+    <InputMarkFilter class="md-6 mx-md-4 elevation-1 mb-2" @onFilterChanged="onFilterChanged" />
+    <InputMarkDataTable v-if="students.length" :marks="marks" :factor="filterParam.factor" @saveMarks="getMarkReq" />
+    <MarkBlankView v-else :markView="false" />
   </div>
 </template>
 
@@ -20,12 +21,14 @@ import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import { get } from 'lodash'
 import InputMarkFilter from '@/modules/mark/InputMarkFilter.vue'
 import InputMarkDataTable from '@/modules/mark/InputMarkDataTable.vue'
+import MarkBlankView from '@/modules/mark/MarkBlankView.vue'
 import { mapState, mapActions, mapGetters } from 'vuex'
 export default {
   components: {
     Breadcrumbs,
     InputMarkFilter,
-    InputMarkDataTable
+    InputMarkDataTable,
+    MarkBlankView
   },
   data() {
     return {

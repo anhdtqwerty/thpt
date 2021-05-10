@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="height: 100%">
     <div class="pa-4 d-flex justify-space-between align-center">
       <Breadcrumbs
         headline="Sổ điểm"
@@ -28,6 +28,7 @@
         class="pa-4"
       />
     </v-card>
+    <MarkBlankView v-else />
   </div>
 </template>
 
@@ -36,6 +37,7 @@ import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import MarkFilter from '@/modules/mark/MarkFilter'
 import MarkDataTable from '@/modules/mark/MarkDataTable'
 import { orderBy, get } from 'lodash'
+import MarkBlankView from '@/modules/mark/MarkBlankView.vue'
 
 import { mapState, mapActions, mapGetters } from 'vuex'
 
@@ -43,7 +45,8 @@ export default {
   components: {
     Breadcrumbs,
     MarkFilter,
-    MarkDataTable
+    MarkDataTable,
+    MarkBlankView
   },
   data() {
     return {

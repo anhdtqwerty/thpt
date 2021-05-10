@@ -3,8 +3,8 @@
     <v-card-text>
       <template>
         <div>
-          <div>
-            <v-btn color="success" @click="$emit('saveMarks', studentMarks)">Lưu</v-btn>
+          <div class="d-flex justify-end">
+            <v-btn style="padding: 0 50px" color="primary" @click="$emit('saveMarks', studentMarks)">Lưu</v-btn>
           </div>
           <div class="d-flex table-container pt-4">
             <table class="mark-table">
@@ -48,6 +48,9 @@
                 </tr>
               </tbody>
             </table>
+          </div>
+          <div class="d-flex justify-end mt-4">
+            <v-btn style="padding: 0 50px" color="primary" @click="$emit('saveMarks', studentMarks)">Lưu</v-btn>
           </div>
         </div>
       </template>

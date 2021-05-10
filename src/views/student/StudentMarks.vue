@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="height: 100%">
     <div class="pa-4 d-flex justify-space-between align-center">
       <div>
         <Breadcrumbs headline="Sổ điểm" :link="[{ text: 'Sổ điểm', href: '../student-mark' }]" />
@@ -24,6 +24,7 @@
         class="pa-4"
       />
     </v-card>
+    <MarkBlankView v-else />
   </div>
 </template>
 
@@ -33,12 +34,14 @@ import { mapActions, mapState, mapGetters } from 'vuex'
 import StudentMarkFilter from '@/modules/student/mark/StudentMarkFilter.vue'
 import { get, orderBy, first } from 'lodash'
 import StudentMarkDataTable from '@/modules/student/mark/StudentMarkDataTable.vue'
+import MarkBlankView from '@/modules/mark/MarkBlankView.vue'
 
 export default {
   components: {
     Breadcrumbs,
     StudentMarkFilter,
-    StudentMarkDataTable
+    StudentMarkDataTable,
+    MarkBlankView
   },
   data() {
     return {

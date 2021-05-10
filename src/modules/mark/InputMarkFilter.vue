@@ -1,7 +1,7 @@
 <template>
   <v-form ref="form" flat>
     <v-card flat>
-      <v-card-text class="px-2">
+      <v-card-text class="px-6">
         <v-row no-gutters>
           <v-col cols="12">
             <v-row>
