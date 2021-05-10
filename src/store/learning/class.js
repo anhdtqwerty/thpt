@@ -18,10 +18,7 @@ export default {
     classes: {}
   },
   actions: {
-    async searchClasses(
-      { commit, getters, dispatch },
-      { keywords, skip, limit, status }
-    ) {
+    async searchClasses({ commit, getters, dispatch }, { keywords, skip, limit, status }) {
       if (!keywords) return
       return axios
         .get(CLASS_API, {
@@ -39,7 +36,7 @@ export default {
         .catch(e => alert.error(e))
     },
     async fetchClasses({ commit }, params) {
-      const classes = await Class.fetch({ ...params, _sort: 'startTime:DESC' })
+      const classes = await Class.fetch({ ...params })
       commit('setClasses', classes)
     },
     async countClasses({ commit }, params) {
@@ -57,7 +54,7 @@ export default {
       }
     },
     async updateClass({ commit, state }, { id, ...classData }) {
-      commit('setClass', await Class.update(id, classData))
+      commit('updateClass', await Class.update(id, classData))
     },
     async removeClasses({ dispatch }, items = []) {
       for (let item of items) {
@@ -92,9 +89,16 @@ export default {
     },
     setClass(state, classData) {
       state.classes = {
-        ...state.classes,
-        [classData.id]: classData
+        [classData.id]: classData,
+        ...state.classes
       }
+    },
+    updateClass(state, classData) {
+      const classes = Object.values(state.classes).map(c => {
+        if (classData.id === c.id) return classData
+        else return c
+      })
+      state.classes = _.keyBy(classes, 'id')
     },
     countClasses(state, count) {
       state.count = count

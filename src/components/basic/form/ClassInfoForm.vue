@@ -6,11 +6,11 @@
       label="Tên lớp"
       placeholder="Nhập tên lớp"
       outlined
-      required
+      class="required"
+      :rules="[$rules.required]"
       dense
     />
     <autocomplete-grade
-      v-model="grade"
       :defaultGrades="[grade]"
       item-text="title"
       item-value="id"
@@ -19,7 +19,10 @@
       required
       dense
       outlined
-    ></autocomplete-grade>
+      class="required"
+      :rules="[$rules.required]"
+      @change="grade = $event"
+    />
     <autocomplete-division
       v-model="division"
       :defaultDivision="[division]"
@@ -30,6 +33,9 @@
       required
       dense
       outlined
+      class="required"
+      :rules="[$rules.required]"
+      :filter="gradeId"
     />
     <autocomplete-teacher
       v-model="teachers"
@@ -43,13 +49,8 @@
       multiple
       dense
       outlined
-    ></autocomplete-teacher>
-    <v-textarea
-      ref="description"
-      v-model="description"
-      label="Mô Tả"
-      outlined
-    ></v-textarea>
+    />
+    <v-textarea ref="description" v-model="description" label="Mô Tả" outlined></v-textarea>
   </v-form>
 </template>
 <script>
@@ -89,11 +90,17 @@ export default {
   computed: {
     getCourseItems() {
       return this.grade ? this.grade.courses : []
+    },
+    gradeId() {
+      return { grade: this.grade }
     }
   },
   methods: {
     getCourseFilter() {
       return { grade: get(this.grade, 'id', null) }
+    },
+    validate() {
+      return this.$refs.form.validate()
     },
     resetDefault() {
       if (this.classData) {
@@ -123,16 +130,14 @@ export default {
       }
     },
     getData() {
-      if (this.$refs.form.validate()) {
-        return {
-          teachers: this.teachers,
-          description: this.description,
-          grade: get(this.grade, 'id'),
-          division: get(this.division, 'id'),
-          code: this.code,
-          title: this.title,
-          mentors: this.mentors
-        }
+      return {
+        teachers: this.teachers,
+        description: this.description,
+        grade: get(this.grade, 'id'),
+        division: get(this.division, 'id'),
+        code: this.code,
+        title: this.title,
+        mentors: this.mentors
       }
     }
   },

@@ -2,8 +2,7 @@
   <v-form ref="form" flat class="pa-6">
     <div class="d-flex">
       <autocomplete-grade
-        class="mr-2"
-        v-model="grade"
+        class="required mr-2"
         item-text="title"
         item-value="id"
         label="Khối"
@@ -11,9 +10,11 @@
         dense
         outlined
         auto-select-first
-      ></autocomplete-grade>
+        :rules="[$rules.required]"
+        @change="grade = $event"
+      />
       <autocomplete-division
-        class="mr-2"
+        class="required mr-2"
         v-model="division"
         item-text="title"
         item-value="id"
@@ -22,17 +23,8 @@
         dense
         outlined
         auto-select-first
-      />
-
-      <autocomplete-generation
-        v-model="generation"
-        item-text="title"
-        item-value="id"
-        label="năm học"
-        required
-        dense
-        outlined
-        auto-select-first
+        :rules="[$rules.required]"
+        :filter="gradeId"
       />
     </div>
     <v-text-field
@@ -43,6 +35,8 @@
       outlined
       required
       dense
+      class="required"
+      :rules="[$rules.required]"
     />
     <autocomplete-teacher
       v-model="teachers"
@@ -55,13 +49,8 @@
       multiple
       dense
       outlined
-    ></autocomplete-teacher>
-    <v-textarea
-      ref="description"
-      v-model="description"
-      label="Mô Tả"
-      outlined
-    ></v-textarea>
+    />
+    <v-textarea ref="description" v-model="description" label="Mô Tả" hide-details outlined />
   </v-form>
 </template>
 <script>
@@ -69,13 +58,12 @@ import { get } from 'lodash'
 import AutocompleteTeacher from '@/components/basic/input/AutocompleteTeacher'
 import AutocompleteGrade from '@/components/basic/input/AutocompleteGrade'
 import AutocompleteDivision from '@/components/basic/input/AutocompleteDivision'
-import AutocompleteGeneration from '@/components/basic/input/AutocompleteGeneration'
+
 export default {
   components: {
     AutocompleteTeacher,
     AutocompleteGrade,
-    AutocompleteDivision,
-    AutocompleteGeneration
+    AutocompleteDivision
   },
   props: {
     classData: {
@@ -93,12 +81,14 @@ export default {
     division: '',
     title: '',
     description: '',
-    teachers: [],
-    generation: {}
+    teachers: []
   }),
   computed: {
     getCourseItems() {
       return this.grade ? this.grade.courses : []
+    },
+    gradeId() {
+      return { grade: this.grade }
     }
   },
   methods: {
@@ -108,6 +98,9 @@ export default {
     reset() {
       this.$refs.form.reset()
     },
+    validate() {
+      return this.$refs.form.validate()
+    },
     resetDefault() {
       if (this.classData) {
         this.teachers = this.classData.teachers
@@ -116,7 +109,6 @@ export default {
         this.course = this.courseData || this.classData.course
         this.grade = this.gradeData || this.classData.grade
         this.description = this.classData.description
-        this.generation = get(this.classData, 'generation.id', null)
       } else {
         this.teachers = []
         this.code = ''
@@ -124,20 +116,16 @@ export default {
         this.course = null
         this.grade = null
         this.description = ''
-        this.generation = ''
       }
     },
     getData() {
-      if (this.$refs.form.validate()) {
-        return {
-          teachers: this.teachers,
-          description: this.description,
-          generation: this.generation,
-          division: this.division,
-          grade: this.grade,
-          code: this.code,
-          title: this.title
-        }
+      return {
+        teachers: this.teachers,
+        description: this.description,
+        division: this.division,
+        grade: this.grade,
+        code: this.code,
+        title: this.title
       }
     }
   },
