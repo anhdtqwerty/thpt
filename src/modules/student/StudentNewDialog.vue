@@ -107,6 +107,7 @@ export default {
         department: this.department.id,
         classes: this.classes,
         currentClass: studentGeneralForm.class,
+        grade: studentGeneralForm.grade,
         name: studentGeneralForm.name,
         username: studentGeneralForm.username,
         username_indexing: studentGeneralForm.username_indexing,

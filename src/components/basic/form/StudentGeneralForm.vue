@@ -153,7 +153,8 @@ export default {
         dob: this.dob,
         ethnic: this.ethnic,
         frequentlyAddress: this.frequentlyAddress,
-        class: this.classData.id
+        class: this.classData.id,
+        grade: this.classData.grade.id
       }
     },
     validate() {
