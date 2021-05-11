@@ -15,7 +15,6 @@
       item-text="title"
       item-value="id"
       label="Khối"
-      return-object
       required
       dense
       outlined
