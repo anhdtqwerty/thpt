@@ -1,10 +1,5 @@
 <template>
-  <v-dialog
-    :fullscreen="$vuetify.breakpoint.smAndDown"
-    v-model="dialog"
-    width="600"
-    scrollable
-  >
+  <v-dialog :fullscreen="$vuetify.breakpoint.smAndDown" v-model="dialog" width="600" scrollable>
     <v-card>
       <v-card-title class="primary white--text text-uppercase">
         Thêm học sinh mới
@@ -17,10 +12,7 @@
       <v-card-text>
         <v-form ref="form" class="py-4">
           <h3 class="mb-2">1. Thông tin cơ bản</h3>
-          <student-general-form
-            :rules="rules"
-            ref="studentGeneralForm"
-          ></student-general-form>
+          <student-general-form :rules="rules" ref="studentGeneralForm"></student-general-form>
           <h3 class="mb-2">2. Thông tin liên lạc</h3>
           <student-contact-form ref="studentContactForm"></student-contact-form>
           <h3 class="mb-2">3. Ghi chú về học sinh</h3>
@@ -31,15 +23,7 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn
-          class="ma-2"
-          dark
-          depressed
-          color="#0D47A1"
-          @click="save()"
-          :disabled="isLoading"
-          >Lưu</v-btn
-        >
+        <v-btn class="ma-2" dark depressed color="#0D47A1" @click="save()" :disabled="isLoading">Lưu</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -84,8 +68,7 @@ export default {
         required: value => !!value || 'Trường này không được để trống',
         min: v => v.length >= 6 || 'Ít nhất 6 ký tự',
         email: v => /.+@.+/.test(v) || 'Email chưa đúng định dạng',
-        date: v =>
-          moment(v, 'DD/MM/YYYY', true).isValid() || 'Ngày sinh không hợp lệ'
+        date: v => moment(v, 'DD/MM/YYYY', true).isValid() || 'Ngày sinh không hợp lệ'
       }
     }
   },
@@ -110,10 +93,7 @@ export default {
   methods: {
     ...mapActions('students', ['createStudent']),
     async save() {
-      if (
-        !this.$refs.studentGeneralForm.validate() ||
-        !this.$refs.studentContactForm.validate()
-      ) {
+      if (!this.$refs.studentGeneralForm.validate() || !this.$refs.studentContactForm.validate()) {
         return
       }
       const studentGeneralForm = this.$refs.studentGeneralForm.getData()
@@ -146,7 +126,8 @@ export default {
           ...studentNoteForm
         },
         ...overide,
-        type: 'student'
+        type: 'student',
+        role: this.roleIdByName('Student')
       })
       this.dialog = false
       this.reset()
