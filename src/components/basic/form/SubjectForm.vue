@@ -2,36 +2,43 @@
   <v-form ref="form" flat class="pt-5">
     <p class="caption">Thông tin môn học</p>
     <v-text-field
-      label="Tên Môn *"
+      label="Tên Môn"
+      class="required"
+      :rules="[$rules.required]"
       v-model="title"
       dense
       outlined
       required
     ></v-text-field>
     <v-text-field
-      label="Nhóm môn học *"
+      label="Nhóm môn học"
+      class="required"
+      :rules="[$rules.required]"
       v-model="type"
       dense
       outlined
       required
     ></v-text-field>
     <div class="d-flex">
-      <autocomplete-grade
+      <AutocompleteGrade
         v-model="grade"
-        class="mr-4"
         item-text="title"
         item-value="id"
-        label="Khối *"
-        return-object
+        label="Khối"
+        class="required mr-4"
+        :rules="[$rules.required]"
         required
         dense
         outlined
-      ></autocomplete-grade>
-      <autocomplete-division
+      />
+      <AutocompleteDivision
         v-model="divisions"
         item-text="title"
         item-value="id"
-        label="Ban *"
+        label="Ban"
+        class="required"
+        :rules="[$rules.required]"
+        :filter="gradeId"
         return-object
         chip
         clearable
@@ -51,14 +58,7 @@
         outlined
         required
       ></v-text-field>
-      <v-text-field
-        label="Số tiết / năm"
-        v-model="anualyLesson"
-        dense
-        type="number"
-        outlined
-        required
-      ></v-text-field>
+      <v-text-field label="Số tiết / năm" v-model="anualyLesson" dense type="number" outlined required></v-text-field>
     </div>
     <div class="d-flex">
       <v-text-field
@@ -84,13 +84,7 @@
         required
       ></v-select>
     </div>
-    <v-textarea
-      ref="description"
-      v-model="description"
-      label="Ghi chú"
-      outlined
-      dense
-    ></v-textarea>
+    <v-textarea ref="description" v-model="description" label="Ghi chú" outlined dense></v-textarea>
   </v-form>
 </template>
 <script>
@@ -117,7 +111,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('app', ['department'])
+    ...mapGetters('app', ['department']),
+    gradeId() {
+      return { grade: this.grade }
+    }
   },
   props: {
     subject: { type: Object, default: () => {} },
@@ -126,6 +123,9 @@ export default {
   methods: {
     reset() {
       this.$refs.form.reset()
+    },
+    validate() {
+      return this.$refs.form.validate()
     },
     resetValidation() {
       this.$refs.form.resetValidation()

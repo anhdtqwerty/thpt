@@ -6,17 +6,12 @@
           headline="Quản lý môn"
           :link="[
             { text: 'Nâng cao', href: '../divisions' },
-            { text: 'Môn học', href: '../subjects' },
+            { text: 'Môn học', href: '../subjects' }
           ]"
         />
       </div>
       <div class="flex-center">
-        <v-btn
-          v-if="$vuetify.breakpoint.mdAndUp"
-          class="mr-2"
-          outlined
-          color="success"
-        >
+        <v-btn v-if="$vuetify.breakpoint.mdAndUp" class="mr-2" outlined color="success">
           <v-icon left>mdi-file-excel</v-icon> Xuất Excel
         </v-btn>
         <v-btn @click="createSubject = !createSubject" dark color="primary">
@@ -27,11 +22,7 @@
     <SubjectNewDialog :state="createSubject" />
 
     <v-card class="px-md-6 mx-md-4 elevation-1">
-      <v-data-table
-        :headers="headers"
-        :items="subjects"
-        @click:row="onSelected"
-      >
+      <v-data-table :headers="headers" :items="subjects" @click:row="onSelected">
         <div slot="top" class="py-md-6">
           <SubjectFilter @onFilterChanged="refresh" />
         </div>
@@ -61,10 +52,10 @@ export default {
     SubjectNewDialog,
     Breadcrumbs,
     DropMenu,
-    SubjectFilter,
+    SubjectFilter
   },
   props: {
-    role: String,
+    role: String
   },
   data() {
     return {
@@ -75,7 +66,7 @@ export default {
           value: 'title',
           align: 'left',
           sortable: false,
-          show: true,
+          show: true
         },
         { text: 'Nhóm môn học', value: 'type', show: true },
         { text: 'Khối', value: 'grade', show: true },
@@ -84,18 +75,18 @@ export default {
           text: 'Hệ số tổng kết',
           value: 'multiply',
           show: true,
-          align: 'center',
+          align: 'center'
         },
         { text: 'Loại đánh giá', value: 'markType', show: true },
         {
           text: 'Số tiết/tuần',
           value: 'data.weeklyLesson',
           show: true,
-          align: 'center',
-        },
+          align: 'center'
+        }
       ],
       createSubject: false,
-      selected: {},
+      selected: {}
     }
   },
 
@@ -110,7 +101,7 @@ export default {
         default:
           return 'Thêm môn'
       }
-    },
+    }
   },
   async created() {
     await this.refresh({})
@@ -127,6 +118,7 @@ export default {
         await this.fetchSubjects({
           ...query,
           _limit: 9999,
+          _sort: 'createdAt:DESC'
         })
       } catch (err) {
         console.log(err)
@@ -148,14 +140,14 @@ export default {
         cancelText: 'Không',
         done: async () => {
           await this.removeSubject(id)
-        },
+        }
       })
-    },
+    }
   },
   filters: {
     getDivision(divisions) {
       if (!divisions || !divisions.length) return ''
-      return divisions.map((d) => d.title).join(', ')
+      return divisions.map(d => d.title).join(', ')
     },
     getGrade(grade) {
       if (!grade) return ''
@@ -169,7 +161,7 @@ export default {
         return 'Đánh giá'
       }
       return ''
-    },
-  },
+    }
+  }
 }
 </script>
