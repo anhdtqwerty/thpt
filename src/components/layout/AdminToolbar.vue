@@ -5,7 +5,6 @@
     <Teachers />
     <Classes />
     <Violation />
-    <Scores />
     <AdvanceSetting />
     <System />
     <Posts />
@@ -16,7 +15,6 @@ import Classes from '@/components/basic/menu/Classes'
 import Students from '@/components/basic/menu/Students.vue'
 import Teachers from '@/components/basic/menu/Teachers.vue'
 import Dashboard from '@/components/basic/menu/Dashboard'
-import Scores from '@/components/basic/menu/Scores.vue'
 import AdvanceSetting from '@/components/basic/menu/AdvanceSetting.vue'
 import System from '@/components/basic/menu/System.vue'
 import Posts from '@/components/basic/menu/Posts.vue'
@@ -28,7 +26,6 @@ export default {
     Classes,
     Students,
     Teachers,
-    Scores,
     AdvanceSetting,
     System,
     Violation,
