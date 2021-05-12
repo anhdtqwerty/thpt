@@ -27,6 +27,22 @@
             <v-spacer></v-spacer>
             <v-btn color="primary" text>Xem chi tiết</v-btn>
           </v-card-title>
+          <v-divider></v-divider>
+          <v-card-text class="pa-0">
+            <v-row class="py-6">
+              <v-col class="text-center" cols="4">
+                <span class="col-1">{{ commendCount }}</span>
+                <br />
+                <span class="text-subtitle">Số ngày nghỉ</span>
+              </v-col>
+              <v-divider class="my-2" vertical></v-divider>
+              <v-col class="text-center" cols="4">
+                <span class="col-2">{{ violationCount }}</span> <br />
+                <span class="text-subtitle">Số ngày nghỉ không phép</span>
+              </v-col>
+            </v-row>
+            <AttendanceStudentDataTable :hide-footer="true" :headers="attendanceHeaders" />
+          </v-card-text>
         </v-card>
       </v-col>
       <v-col cols="6">
@@ -103,6 +119,23 @@ export default {
         {
           text: 'Nội dung',
           value: 'description',
+          sortable: false
+        }
+      ],
+      attendanceHeaders: [
+        {
+          text: 'Ngày',
+          value: 'date',
+          sortable: false
+        },
+        {
+          text: 'Giờ đến / Giờ về',
+          value: 'time',
+          sortable: false
+        },
+        {
+          text: 'Trạng thái',
+          value: 'type',
           sortable: false
         }
       ]
