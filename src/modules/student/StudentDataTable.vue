@@ -24,8 +24,8 @@
       </v-chip>
     </template>
     <template v-slot:[`item.currentClass`]="{ item }">
-      <router-link style="text-decoration: none" :to="'/class/' + item.currentClass.id">
-        <span v-if="item.classes">{{ item.currentClass.title }}</span>
+      <router-link style="text-decoration: none" :to="'/class/' + (item.currentClass && item.currentClass.id)">
+        <span v-if="item.currentClass">{{ item.currentClass && item.currentClass.title }}</span>
       </router-link>
     </template>
     <template v-slot:[`item.gender`]="{ item }">{{

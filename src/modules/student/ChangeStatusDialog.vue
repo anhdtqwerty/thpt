@@ -27,7 +27,7 @@
               </div>
               <div>
                 <p class="text-caption my-0">Lớp</p>
-                <span>{{ item.currentClass.title }}</span>
+                <span>{{ item.currentClass && item.currentClass.title }}</span>
               </div>
             </v-col>
           </v-row>
