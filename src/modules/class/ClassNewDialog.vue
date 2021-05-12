@@ -55,7 +55,6 @@ export default {
           generation: this.currentGeneration.id,
           status: 'opened'
         })
-        console.log('this.classes', this.classes)
         this.$alert.addSuccess()
         this.$refs.form.reset()
         this.dialog = false
