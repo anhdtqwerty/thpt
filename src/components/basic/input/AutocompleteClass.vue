@@ -24,7 +24,12 @@ export default {
   }),
   props: {
     filter: Object,
-    defaultClasses: Array
+    defaultClasses: Array,
+    changeClass: {
+      type: Boolean,
+      default: false
+    },
+    currentClass: null
   },
   computed: {
     ...mapGetters('app', ['department', 'roles', 'roleIdByName'])
@@ -42,6 +47,9 @@ export default {
         department: this.department.id,
         status_in: ['opened', 'running']
       })
+      if (this.changeClass && this.currentClass) {
+        this.classes = this.classes.filter(c => c.id !== this.currentClass.id)
+      }
       this.loading = false
     },
     onChange(data) {

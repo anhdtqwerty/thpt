@@ -22,17 +22,12 @@ export default {
     type: String
   },
   data: () => ({
-    rules: [
-      value =>
-        !value ||
-        value.size < 2000000 ||
-        'Ảnh đại diện cần có dung lượng nhỏ hơn 2 MB!'
-    ],
+    rules: [value => !value || value.size < 2000000 || 'Ảnh đại diện cần có dung lượng nhỏ hơn 2 MB!'],
     url: '/default-avatar.png'
   }),
   computed: {
     avatar() {
-      if (this.student.avatar) {
+      if (this.student && this.student.avatar) {
         return this.student.avatar.url
       }
       return this.url

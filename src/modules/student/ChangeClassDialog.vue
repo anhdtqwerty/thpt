@@ -42,7 +42,15 @@
               </div>
             </v-col>
             <v-col cols="6">
-              <autocomplete-class v-model="currentClass" dense outlined label="Lớp mới" hide-details />
+              <autocomplete-class
+                v-model="currentClass"
+                :changeClass="true"
+                :currentClass="item.currentClass"
+                dense
+                outlined
+                label="Lớp mới"
+                hide-details
+              />
             </v-col>
           </v-row>
         </v-form>
@@ -50,7 +58,7 @@
       <v-divider></v-divider>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn class="ma-2" dark depressed color="#0D47A1" @click="save()">Lưu</v-btn>
+        <v-btn class="ma-2" dark depressed color="#0D47A1" @click="save">Lưu</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -89,11 +97,18 @@ export default {
   methods: {
     ...mapActions('students', ['updateStudent']),
     async save() {
-      await this.updateStudent({
-        id: this.item.id,
-        classes: [this.currentClass],
-        currentClass: this.currentClass
-      })
+      if (!this.currentClass.id) return
+      try {
+        await this.updateStudent({
+          id: this.item.id,
+          classes: [this.currentClass],
+          currentClass: this.currentClass
+        })
+        this.$alert.updateSuccess()
+      } catch (error) {
+        this.$alert.updateError()
+      }
+
       this.dialog = false
     },
     reset() {

@@ -9,6 +9,10 @@
     :items-per-page="-1"
     :headers="headers"
     :items="students"
+    :footer-props="{
+      'items-per-page-text': 'Học sinh mỗi trang',
+      'items-per-page-all-text': 'Tất cả'
+    }"
     class="mt-3"
   >
     <template v-slot:item.status="{ item }">
@@ -66,20 +70,10 @@ export default {
   computed: {
     ...mapState('app', ['department']),
     ...mapState('classDetail', ['marks']),
-    ...mapGetters('classDetail', [
-      'classData',
-      'slots',
-      'classList',
-      'students'
-    ])
+    ...mapGetters('classDetail', ['classData', 'slots', 'classList', 'students'])
   },
   methods: {
-    ...mapActions('classDetail', [
-      'fetchClass',
-      'updateClass',
-      'createAttendance',
-      'initClass'
-    ]),
+    ...mapActions('classDetail', ['fetchClass', 'updateClass', 'createAttendance', 'initClass']),
 
     getColor(status) {
       if (status === 'active') return 'green'

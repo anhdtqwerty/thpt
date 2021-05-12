@@ -113,6 +113,7 @@ import { get } from 'lodash'
 import DatePicker from '@/components/basic/picker/DateIOSPicker'
 import AutocompleteClass from '@/components/basic/input/AutocompleteClass'
 import moment from 'moment'
+import { textHelpers } from '@/helpers/TextHelper'
 
 export default {
   components: {
@@ -141,7 +142,7 @@ export default {
   methods: {
     onFilterChanged() {
       this.$emit('onFilterChanged', {
-        name_contains: this.name,
+        name_contains: textHelpers.removeSpaces(this.name),
         currentClass: get(this.classes, 'id', ''),
         dob_gte: moment(this.dob)
           .startOf('day')
@@ -149,7 +150,7 @@ export default {
         dob_lte: moment(this.dob)
           .endOf('day')
           .toISOString(),
-        code_contains: this.code,
+        code_contains: textHelpers.removeSpaces(this.code),
         status: this.status,
         gender: this.gender,
         _sort: 'createdAt:desc'

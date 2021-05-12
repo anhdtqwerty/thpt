@@ -13,11 +13,13 @@
         <v-form ref="form" class="py-4">
           <h3 class="mb-2">1. Thông tin cơ bản</h3>
           <student-general-form :rules="rules" ref="studentGeneralForm"></student-general-form>
-          <h3 class="mb-2">2. Thông tin liên lạc</h3>
+          <h3 class="mb-2">2. Thông tin lớp học</h3>
+          <StudentClassForm ref="studentClassForm" />
+          <h3 class="mb-2">3. Thông tin liên lạc</h3>
           <student-contact-form ref="studentContactForm"></student-contact-form>
-          <h3 class="mb-2">3. Ghi chú về học sinh</h3>
+          <h3 class="mb-2">4. Ghi chú về học sinh</h3>
           <student-note-form ref="studentNoteForm"></student-note-form>
-          <h3 class="mb-2">4. Thông tin gia đình</h3>
+          <h3 class="mb-2">5. Thông tin gia đình</h3>
           <student-family-form ref="studentFamilyForm"></student-family-form>
         </v-form>
       </v-card-text>
@@ -36,6 +38,7 @@ import StudentGeneralForm from '@/components/basic/form/StudentGeneralForm.vue'
 import StudentContactForm from '@/components/basic/form/StudentContactForm.vue'
 import StudentNoteForm from '@/components/basic/form/StudentNoteForm.vue'
 import StudentFamilyForm from '@/components/basic/form/StudentFamilyForm.vue'
+import StudentClassForm from '@/components/basic/form/StudentClassForm.vue'
 import moment from 'moment'
 
 export default {
@@ -43,7 +46,8 @@ export default {
     StudentGeneralForm,
     StudentContactForm,
     StudentNoteForm,
-    StudentFamilyForm
+    StudentFamilyForm,
+    StudentClassForm
   },
   data() {
     return {
@@ -93,21 +97,26 @@ export default {
   methods: {
     ...mapActions('students', ['createStudent']),
     async save() {
-      if (!this.$refs.studentGeneralForm.validate() || !this.$refs.studentContactForm.validate()) {
+      if (
+        !this.$refs.studentGeneralForm.validate() ||
+        !this.$refs.studentClassForm.validate() ||
+        !this.$refs.studentContactForm.validate()
+      ) {
         return
       }
       const studentGeneralForm = this.$refs.studentGeneralForm.getData()
+      const studentClassForm = this.$refs.studentClassForm.getData()
       const studentContactForm = this.$refs.studentContactForm.getData()
       const studentNoteForm = this.$refs.studentNoteForm.getData()
       const studentFamilyForm = this.$refs.studentFamilyForm.getData()
-      this.classes.push(studentGeneralForm.class)
+      this.classes.push(studentClassForm.class)
       const overide = this.defaultOveride || {}
       const student = await this.createStudent({
         generation: this.currentGeneration.id,
         department: this.department.id,
         classes: this.classes,
-        currentClass: studentGeneralForm.class,
-        grade: studentGeneralForm.grade,
+        currentClass: studentClassForm.class,
+        grade: studentClassForm.grade,
         name: studentGeneralForm.name,
         username: studentGeneralForm.username,
         username_indexing: studentGeneralForm.username_indexing,
@@ -142,6 +151,7 @@ export default {
     },
     reset() {
       this.$refs.studentGeneralForm.reset()
+      this.$refs.studentClassForm.reset()
       this.$refs.studentContactForm.reset()
       this.$refs.studentNoteForm.reset()
       this.$refs.studentFamilyForm.reset()

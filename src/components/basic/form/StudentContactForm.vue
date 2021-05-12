@@ -2,44 +2,19 @@
   <v-form v-model="valid" ref="form" v-bind="this.$attrs">
     <v-row>
       <v-col class="pb-0" cols="12">
-        <v-text-field
-          v-model="currentLive"
-          label="Địa chỉ hiện tại"
-          outlined
-          dense
-        ></v-text-field>
-      </v-col>
-      <v-col>
-        <v-text-field
-          v-model="province"
-          label="Tỉnh/Thành phố"
-          outlined
-          dense
-        ></v-text-field>
+        <v-text-field v-model="currentLive" label="Địa chỉ hiện tại" outlined hide-details dense></v-text-field>
       </v-col>
       <v-col class="pb-0" cols="12" md="6">
-        <v-text-field
-          v-model="district"
-          label="Quận/Huyện"
-          outlined
-          dense
-        ></v-text-field>
+        <v-text-field v-model="province" label="Tỉnh/Thành phố" outlined dense hide-details></v-text-field>
       </v-col>
       <v-col class="pb-0" cols="12" md="6">
-        <v-text-field
-          v-model="phone"
-          label="Số điện thoại"
-          outlined
-          dense
-        ></v-text-field>
+        <v-text-field v-model="district" label="Quận/Huyện" outlined hide-details dense></v-text-field>
       </v-col>
       <v-col class="pb-0" cols="12" md="6">
-        <v-text-field
-          v-model="email"
-          label="Email"
-          outlined
-          dense
-        ></v-text-field>
+        <v-text-field v-model="phone" label="Số điện thoại" outlined dense></v-text-field>
+      </v-col>
+      <v-col class="pb-0" cols="12" md="6">
+        <v-text-field v-model="email" label="Email" outlined dense></v-text-field>
       </v-col>
     </v-row>
   </v-form>
