@@ -113,13 +113,14 @@ export default {
   methods: {
     ...mapActions('students', ['updateStudent']),
     async save() {
-      if (!status) return
+      if (!this.status) return
       try {
         await this.updateStudent({
           id: this.item.id,
           status: this.status
         })
         this.$alert.updateSuccess()
+        this.$refs.form.reset()
       } catch (error) {
         this.$alert.updateError()
       }

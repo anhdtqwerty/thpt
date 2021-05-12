@@ -176,9 +176,16 @@ export default {
   },
   filters: {
     getStatus(status) {
-      if (status === 'reserved') return 'Bảo Lưu'
-      if (status === 'active') return 'Đang học'
-      return status
+      switch (status) {
+        case 'active':
+          return 'Đang học'
+        case 'reserved':
+          return 'Bảo lưu'
+        case 'graduated':
+          return 'Đã tốt nghiệp'
+        case 'left':
+          return 'Đã nghỉ'
+      }
     },
     getClassCount(classes) {
       return classes ? classes.length : 0

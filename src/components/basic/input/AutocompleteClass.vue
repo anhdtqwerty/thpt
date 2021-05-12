@@ -61,6 +61,9 @@ export default {
   watch: {
     filter(filters) {
       this.fetchClass()
+    },
+    currentClass() {
+      this.fetchClass()
     }
   }
 }

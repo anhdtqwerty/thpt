@@ -68,6 +68,7 @@
 import { mapActions, mapState, mapGetters } from 'vuex'
 import CardStudentName from '@/components/basic/card/CardStudentName'
 import AutocompleteClass from '@/components/basic/input/AutocompleteClass'
+import { get } from 'lodash'
 
 export default {
   components: {
@@ -97,7 +98,7 @@ export default {
   methods: {
     ...mapActions('students', ['updateStudent']),
     async save() {
-      if (!this.currentClass.id) return
+      if (!get(this.currentClass, 'id')) return
       try {
         await this.updateStudent({
           id: this.item.id,
@@ -105,6 +106,7 @@ export default {
           currentClass: this.currentClass
         })
         this.$alert.updateSuccess()
+        this.reset()
       } catch (error) {
         this.$alert.updateError()
       }
