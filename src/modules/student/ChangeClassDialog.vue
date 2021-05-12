@@ -32,14 +32,14 @@
             </v-col>
           </v-row>
           <v-row>
-            <v-col cols="6" class="d-flex justify-space-between align-center">
+            <v-col cols="3">
               <div>
                 <p class="text-caption my-0">Lớp hiện tại</p>
                 <span class="text-subtitle-2 font-weight-black">{{ item.currentClass.title }}</span>
               </div>
-              <div>
-                <v-icon x-large>mdi_arrow_right_alt</v-icon>
-              </div>
+            </v-col>
+            <v-col cols="3" class="d-flex justify-center align-center">
+              <v-icon large>mdi-arrow-right</v-icon>
             </v-col>
             <v-col cols="6">
               <autocomplete-class

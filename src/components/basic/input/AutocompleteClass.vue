@@ -16,6 +16,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { Class } from '@/plugins/api'
+import { get } from 'lodash'
 
 export default {
   data: () => ({
@@ -48,6 +49,7 @@ export default {
         status_in: ['opened', 'running']
       })
       if (this.changeClass && this.currentClass) {
+        this.classes = this.classes.filter(c => get(c.grade, 'id') === this.currentClass.grade)
         this.classes = this.classes.filter(c => c.id !== this.currentClass.id)
       }
       this.loading = false
