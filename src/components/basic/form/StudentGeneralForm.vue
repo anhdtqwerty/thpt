@@ -81,7 +81,7 @@ export default {
     username: '',
     username_indexing: '',
     username_no: '',
-    gender: '',
+    gender: 'male',
     dob: '',
     ethnic: '',
     frequentlyAddress: ''

@@ -9,7 +9,7 @@
     :headers="headers"
     :items="students"
     :footer-props="{
-      'items-per-page-text': 'Học sinh mỗi trang',
+      'items-per-page-text': 'Phụ huynh mỗi trang',
       'items-per-page-all-text': 'Tất cả'
     }"
     class="mt-3"
@@ -18,21 +18,12 @@
       {{ students.indexOf(item) + 1 }}
     </template>
     <template v-slot:[`item.status`]="{ item }">
-      <v-chip :color="item.status | statusColor" dark>{{ item.status | status }}</v-chip>
+      <v-chip :color="getColor(item.status)" dark>{{ item.status }}</v-chip>
     </template>
-    <template v-slot:[`item.dob`]="{ item }">{{ item.dob | ddmmyyyy }}</template>
     <template v-slot:[`item.name`]="{ item }">
       <user-item :student="item" link></user-item>
     </template>
-    <template v-slot:[`item.gender`]="{ item }">{{ item.gender | gender }}</template>
-    <template v-slot:[`item.notes`]="{ item }">
-      <v-tooltip max-width="250px" bottom>
-        <template v-slot:activator="{ on, attrs }">
-          <p v-bind="attrs" v-on="on" class="nowrap ma-0">{{ item.notes }}</p>
-        </template>
-        <span>{{ item.notes }}</span>
-      </v-tooltip>
-    </template>
+    <template v-slot:[`item.dob`]="{ item }">{{ item.dob | ddmmyyyy }}</template>
   </v-data-table>
 </template>
 <script>
@@ -40,22 +31,24 @@ import { mapState, mapGetters, mapActions } from 'vuex'
 import UserItem from '@/components/basic/card/CardStudentName.vue'
 const defaultHeaders = [
   { text: 'STT', value: 'index', align: 'center', sortable: false },
-  { text: 'Tên', value: 'name', align: 'left', sortable: false },
+  { text: 'Học sinh', value: 'name', align: 'left', sortable: false },
   { text: 'Ngày sinh', value: 'dob', align: 'left', sortable: false },
-  { text: 'Giới tính', value: 'gender', align: 'left', sortable: false },
   {
-    text: 'Trạng thái',
-    value: 'status',
+    text: 'Họ tên bố (người giám hộ)',
+    value: 'data.dadName',
     align: 'left',
     sortable: false
   },
+  { text: 'SĐT bố', value: 'data.dadPhone', align: 'left', sortable: false },
+  { text: 'Email bố', value: 'data.dadEmail', align: 'left', sortable: false },
   {
-    text: 'Ghi chú',
-    value: 'notes',
+    text: 'Họ tên mẹ (người giám hộ)',
+    value: 'data.momName',
     align: 'left',
-    sortable: false,
-    show: true
-  }
+    sortable: false
+  },
+  { text: 'SĐT mẹ', value: 'data.momPhone', align: 'left', sortable: false },
+  { text: 'Email mẹ', value: 'data.momEmail', align: 'left', sortable: false }
 ]
 export default {
   components: {
@@ -84,8 +77,14 @@ export default {
     ...mapState('classDetail', ['marks']),
     ...mapGetters('classDetail', ['classData', 'slots', 'classList', 'students'])
   },
+  created() {},
   methods: {
-    ...mapActions('classDetail', ['fetchClass', 'updateClass', 'createAttendance', 'initClass'])
+    ...mapActions('classDetail', ['fetchClass', 'updateClass', 'createAttendance', 'initClass']),
+
+    getColor(status) {
+      if (status === 'active') return 'green'
+      else return 'red'
+    }
   }
 }
 </script>

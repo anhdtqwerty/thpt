@@ -31,6 +31,10 @@
         :loading="loading"
         show-select
         :disable-sort="$vuetify.breakpoint.smAndDown"
+        :footer-props="{
+          'items-per-page-text': 'Lớp mỗi trang',
+          'items-per-page-all-text': 'Tất cả'
+        }"
       >
         <div slot="top" class="py-md-6">
           <class-filter @onFilterChanged="refresh" />

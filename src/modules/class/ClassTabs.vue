@@ -4,9 +4,8 @@
       <v-tabs v-model="tab">
         <v-tab :key="1"> Học sinh</v-tab>
         <v-tab :key="2"> Phụ huynh </v-tab>
-        <v-tab :key="3"> Các môn học </v-tab>
-        <v-tab :key="4"> Học phí </v-tab>
-        <v-tab :key="5"> Thống kê báo cáo </v-tab>
+        <v-tab :key="3"> Giáo viên </v-tab>
+        <v-tab :key="4"> Thống kê báo cáo </v-tab>
       </v-tabs>
     </v-card>
 
@@ -17,12 +16,9 @@
             <div class="d-flex align-center">
               <v-card-title>Danh sách học sinh trong lớp </v-card-title>
               <v-spacer />
-              <drop-menu class="mr-2" @add-new-student="dialog = !dialog" />
+              <!-- <drop-menu class="mr-2" @add-new-student="dialog = !dialog" /> -->
             </div>
-            <student-table
-              disableSort
-              mobile-breakpoint="0"
-            />
+            <student-table disableSort mobile-breakpoint="0" />
           </v-card>
         </v-tab-item>
         <v-tab-item :key="2">
@@ -30,12 +26,8 @@
             <div class="d-flex align-center">
               <v-card-title>Danh sách phụ huynh </v-card-title>
               <v-spacer />
-              <drop-menu class="mr-2" @add-new-student="dialog = !dialog" />
             </div>
-            <student-table
-              disableSort
-              mobile-breakpoint="0"
-            />
+            <ParentDataTable disableSort mobile-breakpoint="0" />
           </v-card>
         </v-tab-item>
       </v-tabs-items>
@@ -45,23 +37,22 @@
 
 <script>
 import StudentTable from '@/modules/class/student/StudentTable.vue'
-
+import ParentDataTable from '@/modules/class/ParentDataTable.vue'
 export default {
   data() {
     return {
-      tab: null,
+      tab: null
     }
   },
   components: {
     StudentTable,
+    ParentDataTable
   },
   props: {
-    classData: Object,
+    classData: Object
   },
-  methods:{
-  }
+  methods: {}
 }
 </script>
 
-<style>
-</style>
+<style></style>
