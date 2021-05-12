@@ -87,7 +87,7 @@ export default {
           status: 'reserved'
         },
         {
-          title: 'Đã chuyển trường',
+          title: 'Đã nghỉ',
           status: 'left'
         }
       ]
@@ -99,7 +99,6 @@ export default {
   },
   computed: {
     ...mapState('app', ['roles', 'department', 'currentGeneration']),
-    // ...mapState('constant', ['studentStatus']),
     ...mapGetters('app', ['roleIdByName', 'roles']),
     isLoading() {
       return this.loading > 0
@@ -142,7 +141,7 @@ export default {
         case 'graduated':
           return 'Đã tốt nghiệp'
         case 'left':
-          return 'Đã chuyển trường'
+          return 'Đã nghỉ'
       }
     }
   },
