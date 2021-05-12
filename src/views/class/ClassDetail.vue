@@ -1,25 +1,17 @@
 <template>
-  <div
-    v-if="classData"
-    class="pt-2"
-    :class="{ 'px-3': $vuetify.breakpoint.mdAndUp }"
-  >
+  <div v-if="classData" class="pt-2" :class="{ 'px-3': $vuetify.breakpoint.mdAndUp }">
     <Breadcrumbs
       :class="{ 'px-5 mt-2': $vuetify.breakpoint.smAndDown }"
       data="classData.title"
       :headline="classData.title"
       :link="[
         { text: 'Danh sách lớp', href: '../classes' },
-        { text: classData.title, id: classData.id },
+        { text: classData.title, id: classData.id }
       ]"
     />
 
     <v-card class="mt-6">
-      <v-img
-        src="../../assets/class-default-img.png"
-        class="pa-6"
-        max-height="178"
-      >
+      <v-img src="../../assets/class-default-img.png" class="pa-6" max-height="178">
         <div class="d-flex">
           <div
             class="white--text pa-6 sm-12 xs-12 md-12 lg-6"
@@ -37,10 +29,7 @@
               </div>
               <div class="">
                 <p>Giáo viên chủ nhiệm</p>
-                <p
-                  style="border: 1px solid #fff; border-radius: 4px"
-                  class="pa-1"
-                >
+                <p style="border: 1px solid #fff; border-radius: 4px" class="pa-1">
                   {{ classData.teachers | getTeacher }}
                 </p>
               </div>
@@ -58,17 +47,15 @@
               </div>
             </div>
           </div>
-          <v-btn icon dark @click="updateClass"
-            ><v-icon medium>create</v-icon></v-btn
-          >
+          <v-btn icon dark @click="updateClass"><v-icon medium>create</v-icon></v-btn>
         </div>
       </v-img>
     </v-card>
     <ClassTabs class="mt-4" />
-    <class-update-dialog
-      :state="updateDialogState"
-      :classData="classInfo"
-    ></class-update-dialog>
+    <div class="text-center">
+      <v-btn class="ma-4" @click="remove" color="red" outlined>Xóa lớp</v-btn>
+    </div>
+    <class-update-dialog :state="updateDialogState" :classData="classInfo"></class-update-dialog>
   </div>
   <h1 v-else-if="!$loading.active">Class not found</h1>
 </template>
@@ -86,7 +73,7 @@ export default {
     ClassUpdateDialog,
     StudentTable,
     DropMenu,
-    ClassTabs,
+    ClassTabs
   },
   data() {
     return {
@@ -94,7 +81,7 @@ export default {
       attendanceDialogState: false,
       updateDialogState: false,
       tab: null,
-      dialog: false,
+      dialog: false
     }
   },
   computed: {
@@ -156,7 +143,7 @@ export default {
       return get(this.classData.students, 'length', 0)
     },
     getCurrentSlot() {
-      const currentSlot = this.slots.filter((slot) => {
+      const currentSlot = this.slots.filter(slot => {
         return new Date(slot.endTime).getTime() < new Date().getTime()
       })
       return currentSlot.length
@@ -167,14 +154,15 @@ export default {
     getPercentageAttendance() {
       const attendanceValues = Object.values(this.attendances)
       const attendanceNum = attendanceValues.filter(
-        (attendance) =>
-          attendance.status === 'attendance' || attendance.status === 'late'
+        attendance => attendance.status === 'attendance' || attendance.status === 'late'
       )
       return Math.floor((attendanceNum.length / attendanceValues.length) * 100)
-    },
+    }
   },
   methods: {
     ...mapActions('classDetail', ['initClass', 'fetchAttendances']),
+    ...mapActions('class', ['removeClass']),
+
     checkAttendance(selected) {
       this.selectedSlot = selected
       this.attendanceDialogState = !this.attendanceDialogState
@@ -182,11 +170,30 @@ export default {
     updateClass() {
       this.updateDialogState = !this.updateDialogState
     },
+    remove() {
+      this.$dialog.confirm({
+        title: 'Thông báo xác nhận',
+        text: 'Bạn có chắc muốn xóa lớp học này? Bạn không thể hoàn tác hành động.',
+        okText: 'OK',
+        cancelText: 'Hủy',
+        done: async () => {
+          try {
+            this.$loading.active = true
+            await this.removeClass(this.classData.id)
+            this.$alert.success('Xóa lớp học thành công!')
+            this.$router.push(`/classes/`)
+          } catch (error) {
+            this.$alert.deleteError()
+          } finally {
+            this.$loading.active = false
+          }
+        }
+      })
+    }
   },
   async created() {
     const classId = this.$route.params.id
     await this.initClass({ id: classId })
-    console.log(this.classData)
   },
   filters: {
     getMajorName(data) {
@@ -206,8 +213,8 @@ export default {
     getDivision(division) {
       if (!division) return 'không có'
       else return division.title
-    },
-  },
+    }
+  }
 }
 </script>
 <style scoped>

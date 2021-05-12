@@ -26,7 +26,8 @@ export default {
     filter: Object,
     defaultDivisions: Object,
     options: Object,
-    grade: String
+    grade: String,
+    div: Object
   },
   computed: {
     ...mapGetters('app', ['department']),
@@ -51,6 +52,7 @@ export default {
     },
     async update(data) {},
     onChange(data) {
+      this.$emit('update:div', data)
       this.$emit('change', data)
     }
   },
@@ -59,7 +61,7 @@ export default {
       console.log(this.grade)
     },
     filter(filter) {
-      this.value = null
+      // this.value = null
       this.fetchAllDivisions()
     }
   }
