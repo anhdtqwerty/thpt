@@ -15,6 +15,7 @@ const LESSON_API = '/lessons/'
 const STAFF_API = '/staff/'
 const TEACHER_API = '/teachers/'
 const USER_API = '/users/'
+const USER_META_API = '/user-meta/'
 const BILL_API = '/bills/'
 const PRODUCT_API = '/products/'
 const AUTH_API = '/auth/local'
@@ -33,19 +34,13 @@ const VIOLATION_API = '/violations/'
 const FACTOR_API = '/factors/'
 const POST_API = '/posts/'
 const APIHelper = api => ({
-  search: (params, option) =>
-    axios.get(api, { params: utils.filterObject(params) }, option),
-  count: (params, option) =>
-    axios.get(api + 'count', { params: utils.filterObject(params) }, option),
-  fetch: (params, option) =>
-    axios.get(api, { params: utils.filterObject(params) }, option),
+  search: (params, option) => axios.get(api, { params: utils.filterObject(params) }, option),
+  count: (params, option) => axios.get(api + 'count', { params: utils.filterObject(params) }, option),
+  fetch: (params, option) => axios.get(api, { params: utils.filterObject(params) }, option),
   fetchOne: (id, option) => axios.get(api + id, option),
-  create: (params, options) =>
-    axios.post(api, utils.filterObject(params), options),
-  checkin: (params, options) =>
-    axios.post(api + 'checkin', utils.filterObject(params), options),
-  update: (id, params, option) =>
-    axios.put(api + id, utils.filterObject(params), option),
+  create: (params, options) => axios.post(api, utils.filterObject(params), options),
+  checkin: (params, options) => axios.post(api + 'checkin', utils.filterObject(params), options),
+  update: (id, params, option) => axios.put(api + id, utils.filterObject(params), option),
   remove: (id, option) => axios.delete(api + id, option)
 })
 export const APIRespository = APIHelper
@@ -73,6 +68,7 @@ export const Lesson = APIHelper(LESSON_API)
 export const Staff = APIHelper(STAFF_API)
 export const Teacher = APIHelper(TEACHER_API)
 export const User = APIHelper(USER_API)
+export const UserMeta = APIHelper(USER_META_API)
 export const Bill = APIHelper(BILL_API)
 export const Product = APIHelper(PRODUCT_API)
 export const Mark = APIHelper(MARK_API)
@@ -109,6 +105,7 @@ export default {
   Generation,
   Major,
   User,
+  UserMeta,
   Mark,
   Facility,
   Lead,

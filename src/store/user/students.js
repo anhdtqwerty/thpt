@@ -14,10 +14,7 @@ export default {
     classes: []
   },
   actions: {
-    async requestPageSettings(
-      { state, commit, dispatch },
-      { page, itemsPerPage }
-    ) {
+    async requestPageSettings({ state, commit, dispatch }, { page, itemsPerPage }) {
       if (!page) page = 1
       if (!itemsPerPage) itemsPerPage = state.itemsPerPage
       if (state.studentSearchParams) {
@@ -89,15 +86,15 @@ export default {
       await Promise.all(items.map(item => dispatch('updateStudent', item)))
     },
     async createStudent({ state, dispatch }, userData) {
-      let user = {}
-      try {
-        user = await api.User.create({ ...userData, type: 'student' })
-        userData.user = user.id
-      } catch (error) {
-        alert.error('Tạo tài khoản thất bại')
-        console.error(error)
-        return
-      }
+      // let user = {}
+      // try {
+      //   user = await api.User.create({ ...userData, type: 'student' })
+      //   userData.user = user.id
+      // } catch (error) {
+      //   alert.error('Tạo tài khoản thất bại')
+      //   console.error(error)
+      //   return
+      // }
       try {
         const student = await api.Student.create({
           ...userData,
@@ -107,7 +104,7 @@ export default {
         alert.success('Tạo học sinh thành công')
         return student
       } catch (error) {
-        user = await api.User.remove(user.id)
+        // user = await api.User.remove(user.id)
         alert.error('Tạo học sinh thất bại')
         console.error(error)
       }
