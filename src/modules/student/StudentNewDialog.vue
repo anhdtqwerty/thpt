@@ -96,6 +96,8 @@ export default {
   },
   methods: {
     ...mapActions('students', ['createStudent']),
+    ...mapActions('student', ['uploadAvatar']),
+
     async save() {
       if (
         !this.$refs.studentGeneralForm.validate() ||
@@ -139,6 +141,15 @@ export default {
         type: 'student',
         role: this.roleIdByName('Student')
       })
+      if (studentGeneralForm.avatar) {
+        let formData = new FormData()
+        formData.append('files', studentGeneralForm.avatar)
+        formData.append('refId', student.id)
+        formData.append('ref', 'student')
+        formData.append('field', 'avatar')
+        this.uploadAvatar(formData)
+      }
+
       this.dialog = false
       this.reset()
       this.$router.push(`/student/${student.id}`)
