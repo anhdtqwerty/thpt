@@ -1,16 +1,16 @@
 <template>
-  <v-form v-model="valid" ref="form">
-    <autocomplete-class
-      v-model="classes"
-      item-text="name"
-      item-value="id"
-      label="Lớp"
-      placeholder="Chọn Lớp Học"
-      required
-      dense
-      multiple
-      outlined
-    ></autocomplete-class>
+  <v-form v-model="valid" ref="form" v-bind="this.$attrs">
+    <v-col class="pb-0 pl-0" cols="12" md="6">
+      <autocomplete-class
+        v-model="classData"
+        return-object
+        label="Lớp"
+        outlined
+        dense
+        :rules="[$rules.required]"
+        class="required"
+      />
+    </v-col>
   </v-form>
 </template>
 
@@ -23,36 +23,38 @@ export default {
   props: {
     student: {
       type: [Object],
-      required: true,
       default: () => {}
     }
   },
   data: () => ({
     valid: true,
-    classes: []
+    classData: null
   }),
   created() {
-    this.reset()
+    if (this.student) {
+      this.classData = this.student.currentClass
+    }
   },
   methods: {
     validate() {
       return this.$refs.form.validate()
     },
     reset() {
-      this.classes = this.student.classes
+      this.$refs.form.reset()
     },
     resetValidation() {
       this.$refs.form.resetValidation()
     },
     getData() {
       return {
-        classes: this.classes.map(c => c.id)
+        class: this.classData.id,
+        grade: this.classData.grade.id
       }
     }
   },
   watch: {
     student(student) {
-      this.reset()
+      this.classData = student.currentClass
     }
   }
 }

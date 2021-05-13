@@ -27,22 +27,32 @@
               </div>
               <div>
                 <p class="text-caption my-0">Lớp</p>
-                <span>{{ item.currentClass.title }}</span>
+                <span>{{ item.currentClass && item.currentClass.title }}</span>
               </div>
             </v-col>
           </v-row>
           <v-row>
-            <v-col cols="6" class="d-flex justify-space-between align-center">
+            <v-col cols="3">
               <div>
                 <p class="text-caption my-0">Lớp hiện tại</p>
-                <span class="text-subtitle-2 font-weight-black">{{ item.currentClass.title }}</span>
-              </div>
-              <div>
-                <v-icon x-large>mdi_arrow_right_alt</v-icon>
+                <span class="text-subtitle-2 font-weight-black">{{
+                  item.currentClass && item.currentClass.title
+                }}</span>
               </div>
             </v-col>
+            <v-col cols="3" class="d-flex justify-center align-center">
+              <v-icon large>mdi-arrow-right</v-icon>
+            </v-col>
             <v-col cols="6">
-              <autocomplete-class v-model="currentClass" dense outlined label="Lớp mới" hide-details />
+              <autocomplete-class
+                v-model="currentClass"
+                :changeClass="true"
+                :currentClass="item.currentClass"
+                dense
+                outlined
+                label="Lớp mới"
+                hide-details
+              />
             </v-col>
           </v-row>
         </v-form>
@@ -50,7 +60,7 @@
       <v-divider></v-divider>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn class="ma-2" dark depressed color="#0D47A1" @click="save()">Lưu</v-btn>
+        <v-btn class="ma-2" dark depressed color="#0D47A1" @click="save">Lưu</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -60,6 +70,7 @@
 import { mapActions, mapState, mapGetters } from 'vuex'
 import CardStudentName from '@/components/basic/card/CardStudentName'
 import AutocompleteClass from '@/components/basic/input/AutocompleteClass'
+import { get } from 'lodash'
 
 export default {
   components: {
@@ -89,11 +100,19 @@ export default {
   methods: {
     ...mapActions('students', ['updateStudent']),
     async save() {
-      await this.updateStudent({
-        id: this.item.id,
-        classes: [this.currentClass],
-        currentClass: this.currentClass
-      })
+      if (!get(this.currentClass, 'id')) return
+      try {
+        await this.updateStudent({
+          id: this.item.id,
+          classes: [this.currentClass],
+          currentClass: this.currentClass
+        })
+        this.$alert.updateSuccess()
+        this.reset()
+      } catch (error) {
+        this.$alert.updateError()
+      }
+
       this.dialog = false
     },
     reset() {

@@ -16,6 +16,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { Class } from '@/plugins/api'
+import { get } from 'lodash'
 
 export default {
   data: () => ({
@@ -24,7 +25,12 @@ export default {
   }),
   props: {
     filter: Object,
-    defaultClasses: Array
+    defaultClasses: Array,
+    changeClass: {
+      type: Boolean,
+      default: false
+    },
+    currentClass: null
   },
   computed: {
     ...mapGetters('app', ['department', 'roles', 'roleIdByName'])
@@ -40,8 +46,12 @@ export default {
         ...this.filter,
 
         department: this.department.id,
-        status_in: ['opened', 'running']
+        status: 'running'
       })
+      if (this.changeClass && this.currentClass) {
+        this.classes = this.classes.filter(c => get(c.grade, 'id') === this.currentClass.grade)
+        this.classes = this.classes.filter(c => c.id !== this.currentClass.id)
+      }
       this.loading = false
     },
     onChange(data) {
@@ -50,6 +60,9 @@ export default {
   },
   watch: {
     filter(filters) {
+      this.fetchClass()
+    },
+    currentClass() {
       this.fetchClass()
     }
   }

@@ -4,7 +4,10 @@
       <div>
         <Breadcrumbs
           headline="Quản lý môn"
-          :link="[{ text: 'Nâng cao', href: '../divisions' },{ text: 'Danh sách môn', href: '../subjects' }]"
+          :link="[
+            { text: 'Nâng cao', href: '../divisions' },
+            { text: 'Danh sách môn', href: '../subjects' }
+          ]"
         />
       </div>
     </div>
@@ -38,12 +41,12 @@
           <table class="table">
             <tr>
               <td class="gray--text">Loại đánh giá</td>
-              <td>{{ subject.markType }}</td>
+              <td>{{ subject.markType | getMarkType }}</td>
             </tr>
             <tr>
               <td class="gray--text">Số tiết / tuần</td>
               <td v-if="subject.data">
-                {{ subject.data.WeeklyLesson }}
+                {{ subject.data.weeklyLesson }}
               </td>
             </tr>
             <tr>
@@ -61,10 +64,7 @@
           <p>{{ subject.description }}</p>
         </v-col>
       </v-row>
-      <v-btn
-        style="position: absolute; top: 8px; right: 8px"
-        icon
-        @click="state = !state"
+      <v-btn style="position: absolute; top: 8px; right: 8px" icon @click="state = !state"
         ><v-icon small>mdi-pencil</v-icon></v-btn
       >
     </v-card>
@@ -72,11 +72,7 @@
       <div class="d-flex justify-space-center align-center">
         <div class="caption">Cấu Hình Điểm</div>
         <v-spacer></v-spacer>
-        <v-btn
-          color="primary"
-          depressed
-          small
-          @click="factorStateNewDialog = !factorStateNewDialog"
+        <v-btn color="primary" depressed small @click="factorStateNewDialog = !factorStateNewDialog"
           ><v-icon>mdi-plus</v-icon> Thêm</v-btn
         >
       </div>
@@ -135,6 +131,10 @@ export default {
     getDivision(divisions) {
       if (!divisions || !divisions.length) return ''
       return divisions.map(d => d.title).join(', ')
+    },
+    getMarkType(type) {
+      if (type === 'mark') return 'Điểm số'
+      return 'Đánh giá'
     }
   }
 }

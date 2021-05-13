@@ -4,7 +4,7 @@
       <v-col class="pb-0" cols="12" md="6">
         <v-text-field
           v-model="name"
-          label="Họ và tên"
+          label="Họ tên"
           outlined
           class="required"
           dense
@@ -12,39 +12,20 @@
           :rules="[$rules.required]"
         ></v-text-field>
       </v-col>
-      <v-col class="pb-0" cols="12" md="6">
-        <autocomplete-class
-          :rules="[$rules.required]"
-          v-model="classData"
-          return-object
-          label="Chọn lớp"
-          outlined
-          dense
-          class="required"
-        ></autocomplete-class>
-      </v-col>
     </v-row>
     <v-row>
       <v-col class="pb-0" cols="12" md="6">
-        <v-select
-          v-model="gender"
-          :items="genders"
-          item-text="title"
-          item-value="value"
-          label="Giới Tính"
-          dense
-          outlined
-        ></v-select>
-      </v-col>
-      <v-col class="pb-0" cols="12" md="6">
         <DateIOSPicker
           :date.sync="dob"
-          label="Ngày Sinh"
+          label="Ngày sinh"
           dense
           outlined
           class="required"
           :rules="[$rules.required, $rules.date]"
-        ></DateIOSPicker>
+        />
+      </v-col>
+      <v-col class="pb-0" cols="12" md="6">
+        <RadioGender :defaultGender="gender" @change="gender = $event" />
       </v-col>
     </v-row>
     <v-row>
@@ -69,15 +50,10 @@
         ></v-text-field>
       </v-col>
     </v-row>
-    <v-row class="mx-1">
-      <v-image-input
-        :imageWidth="80"
-        :imageHeight="80"
-        v-model="imageData"
-        :image-quality="0.85"
-        clearable
-        image-format="jpeg"
-      />
+    <v-row class="ma-2">
+      <v-col class="d-flex align-center justify-center ml-3" cols="2">
+        <UserAvatarPicker :student="student" type="student" />
+      </v-col>
     </v-row>
   </v-form>
 </template>
@@ -85,12 +61,12 @@
 <script>
 // import { get } from 'lodash'
 import DateIOSPicker from '@/components/basic/picker/DateIOSPicker.vue'
-import AutocompleteClass from '@/components/basic/input/AutocompleteClass'
-import VImageInput from 'vuetify-image-input'
 import { mapActions } from 'vuex'
+import RadioGender from '@/modules/class/student/RadioGender.vue'
+import UserAvatarPicker from '@/components/basic/picker/UserAvatarPicker'
 
 export default {
-  components: { DateIOSPicker, AutocompleteClass, VImageInput },
+  components: { DateIOSPicker, RadioGender, UserAvatarPicker },
   props: {
     student: {
       type: [Object],
@@ -105,16 +81,10 @@ export default {
     username: '',
     username_indexing: '',
     username_no: '',
-    gender: '',
+    gender: 'male',
     dob: '',
     ethnic: '',
-    frequentlyAddress: '',
-    classData: {},
-    genders: [
-      { title: 'Nam', value: 'male' },
-      { title: 'Nữ', value: 'female' },
-      { title: 'Khác', value: 'other' }
-    ]
+    frequentlyAddress: ''
   }),
   created() {
     if (this.student) {
@@ -124,7 +94,6 @@ export default {
       this.dob = this.student.dob
       this.ethnic = this.student.data.ethnic
       this.frequentlyAddress = this.student.data.frequentlyAddress
-      this.classData = this.student.classes[0]
     }
   },
   methods: {
@@ -152,8 +121,7 @@ export default {
         gender: this.gender,
         dob: this.dob,
         ethnic: this.ethnic,
-        frequentlyAddress: this.frequentlyAddress,
-        class: this.classData.id
+        frequentlyAddress: this.frequentlyAddress
       }
     },
     validate() {

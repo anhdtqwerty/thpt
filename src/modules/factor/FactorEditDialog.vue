@@ -1,31 +1,16 @@
 <template>
-  <v-dialog
-    v-model="dialog"
-    width="600px"
-    :fullscreen="$vuetify.breakpoint.smAndDown"
-  >
+  <v-dialog v-model="dialog" width="600px" :fullscreen="$vuetify.breakpoint.smAndDown">
     <v-card>
       <v-card-title class="blue darken-4 white--text"
-        >Thêm Đầu điểm
+        >Sửa Đầu điểm
         <v-spacer />
         <v-icon color="white" @click="cancel">close</v-icon>
       </v-card-title>
       <v-divider></v-divider>
-      <factor-form
-        v-if="subject"
-        :subject="subject"
-        :factor="factor"
-        ref="form"
-      />
+      <factor-form v-if="subject" :subject="subject" :factor="factor" ref="form" />
       <v-row class="pr-6 pb-6 mt-n7" no-gutters>
         <v-spacer></v-spacer>
-        <v-btn
-          class="px-6"
-          dark
-          depressed
-          color="#0D47A1"
-          :loading="loading"
-          @click="save"
+        <v-btn class="px-6" dark depressed color="#0D47A1" :loading="loading" @click="save"
           ><v-icon left>mdi-content-save</v-icon>Lưu</v-btn
         >
       </v-row>

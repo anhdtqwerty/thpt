@@ -1,10 +1,5 @@
 <template>
-  <v-dialog
-    :fullscreen="$vuetify.breakpoint.smAndDown"
-    v-model="dialog"
-    width="600"
-    scrollable
-  >
+  <v-dialog :fullscreen="$vuetify.breakpoint.smAndDown" v-model="dialog" width="600" scrollable>
     <v-card>
       <v-card-title class="primary white--text text-uppercase">
         Thêm học sinh mới
@@ -17,29 +12,20 @@
       <v-card-text>
         <v-form ref="form" class="py-4">
           <h3 class="mb-2">1. Thông tin cơ bản</h3>
-          <student-general-form
-            :rules="rules"
-            ref="studentGeneralForm"
-          ></student-general-form>
-          <h3 class="mb-2">2. Thông tin liên lạc</h3>
+          <student-general-form :rules="rules" ref="studentGeneralForm"></student-general-form>
+          <h3 class="mb-2">2. Thông tin lớp học</h3>
+          <StudentClassForm ref="studentClassForm" />
+          <h3 class="mb-2">3. Thông tin liên lạc</h3>
           <student-contact-form ref="studentContactForm"></student-contact-form>
-          <h3 class="mb-2">3. Ghi chú về học sinh</h3>
+          <h3 class="mb-2">4. Ghi chú về học sinh</h3>
           <student-note-form ref="studentNoteForm"></student-note-form>
-          <h3 class="mb-2">4. Thông tin gia đình</h3>
+          <h3 class="mb-2">5. Thông tin gia đình</h3>
           <student-family-form ref="studentFamilyForm"></student-family-form>
         </v-form>
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn
-          class="ma-2"
-          dark
-          depressed
-          color="#0D47A1"
-          @click="save()"
-          :disabled="isLoading"
-          >Lưu</v-btn
-        >
+        <v-btn class="ma-2" dark depressed color="#0D47A1" @click="save()" :disabled="isLoading">Lưu</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -52,6 +38,7 @@ import StudentGeneralForm from '@/components/basic/form/StudentGeneralForm.vue'
 import StudentContactForm from '@/components/basic/form/StudentContactForm.vue'
 import StudentNoteForm from '@/components/basic/form/StudentNoteForm.vue'
 import StudentFamilyForm from '@/components/basic/form/StudentFamilyForm.vue'
+import StudentClassForm from '@/components/basic/form/StudentClassForm.vue'
 import moment from 'moment'
 
 export default {
@@ -59,7 +46,8 @@ export default {
     StudentGeneralForm,
     StudentContactForm,
     StudentNoteForm,
-    StudentFamilyForm
+    StudentFamilyForm,
+    StudentClassForm
   },
   data() {
     return {
@@ -84,8 +72,7 @@ export default {
         required: value => !!value || 'Trường này không được để trống',
         min: v => v.length >= 6 || 'Ít nhất 6 ký tự',
         email: v => /.+@.+/.test(v) || 'Email chưa đúng định dạng',
-        date: v =>
-          moment(v, 'DD/MM/YYYY', true).isValid() || 'Ngày sinh không hợp lệ'
+        date: v => moment(v, 'DD/MM/YYYY', true).isValid() || 'Ngày sinh không hợp lệ'
       }
     }
   },
@@ -112,21 +99,24 @@ export default {
     async save() {
       if (
         !this.$refs.studentGeneralForm.validate() ||
+        !this.$refs.studentClassForm.validate() ||
         !this.$refs.studentContactForm.validate()
       ) {
         return
       }
       const studentGeneralForm = this.$refs.studentGeneralForm.getData()
+      const studentClassForm = this.$refs.studentClassForm.getData()
       const studentContactForm = this.$refs.studentContactForm.getData()
       const studentNoteForm = this.$refs.studentNoteForm.getData()
       const studentFamilyForm = this.$refs.studentFamilyForm.getData()
-      this.classes.push(studentGeneralForm.class)
+      this.classes.push(studentClassForm.class)
       const overide = this.defaultOveride || {}
       const student = await this.createStudent({
         generation: this.currentGeneration.id,
         department: this.department.id,
         classes: this.classes,
-        currentClass: studentGeneralForm.class,
+        currentClass: studentClassForm.class,
+        grade: studentClassForm.grade,
         name: studentGeneralForm.name,
         username: studentGeneralForm.username,
         username_indexing: studentGeneralForm.username_indexing,
@@ -146,7 +136,8 @@ export default {
           ...studentNoteForm
         },
         ...overide,
-        type: 'student'
+        type: 'student',
+        role: this.roleIdByName('Student')
       })
       this.dialog = false
       this.reset()
@@ -160,6 +151,7 @@ export default {
     },
     reset() {
       this.$refs.studentGeneralForm.reset()
+      this.$refs.studentClassForm.reset()
       this.$refs.studentContactForm.reset()
       this.$refs.studentNoteForm.reset()
       this.$refs.studentFamilyForm.reset()

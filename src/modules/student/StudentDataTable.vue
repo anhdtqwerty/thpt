@@ -24,8 +24,8 @@
       </v-chip>
     </template>
     <template v-slot:[`item.currentClass`]="{ item }">
-      <router-link style="text-decoration: none" :to="'/class/' + item.currentClass.id">
-        <span v-if="item.classes">{{ item.currentClass.title }}</span>
+      <router-link style="text-decoration: none" :to="'/class/' + (item.currentClass && item.currentClass.id)">
+        <span v-if="item.currentClass">{{ item.currentClass && item.currentClass.title }}</span>
       </router-link>
     </template>
     <template v-slot:[`item.gender`]="{ item }">{{
@@ -176,9 +176,16 @@ export default {
   },
   filters: {
     getStatus(status) {
-      if (status === 'reserved') return 'Bảo Lưu'
-      if (status === 'active') return 'Đang học'
-      return status
+      switch (status) {
+        case 'active':
+          return 'Đang học'
+        case 'reserved':
+          return 'Bảo lưu'
+        case 'graduated':
+          return 'Đã tốt nghiệp'
+        case 'left':
+          return 'Đã nghỉ'
+      }
     },
     getClassCount(classes) {
       return classes ? classes.length : 0

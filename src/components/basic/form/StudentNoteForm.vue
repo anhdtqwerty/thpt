@@ -2,27 +2,18 @@
   <v-form v-model="valid" ref="form" v-bind="this.$attrs">
     <v-row>
       <v-col class="pb-0" cols="12">
-        <v-text-field
-          v-model="notes"
-          label="Ghi chú"
-          outlined
-          dense
-        ></v-text-field>
+        <v-textarea v-model="notes" label="Ghi chú" outlined dense rows="3"></v-textarea>
       </v-col>
     </v-row>
     <v-row>
       <v-col class="py-0 pt-4" cols="12" md="3">
-        <v-checkbox
-          class="pa-0 ma-0"
-          v-model="isYoung"
-          label="Đội viên"
-          hide-details
-        ></v-checkbox>
+        <v-checkbox class="pa-0 ma-0" v-model="isYoung" label="Đội viên" hide-details></v-checkbox>
       </v-col>
       <v-col class="pb-0" cols="12" md="6">
         <date-picker
           :disabled="!isYoung"
           :date.sync="youngJoinedDate"
+          :rules="[$rules.date]"
           label="Ngày vào Đội"
           outlined
           dense
@@ -31,17 +22,13 @@
     </v-row>
     <v-row>
       <v-col class="py-0 pt-4" cols="12" md="3">
-        <v-checkbox
-          class="pa-0 ma-0"
-          v-model="isCommunist"
-          label="Đoàn viên"
-          hide-details
-        ></v-checkbox>
+        <v-checkbox class="pa-0 ma-0" v-model="isCommunist" label="Đoàn viên" hide-details></v-checkbox>
       </v-col>
-      <v-col class="pb-0" cols="12" md="6">
+      <v-col cols="12" md="6">
         <date-picker
           :disabled="!isCommunist"
           :date.sync="communistJoinedDate"
+          :rules="[$rules.date]"
           label="Ngày vào Đoàn"
           dense
           outlined
@@ -56,13 +43,13 @@
 import DatePicker from '@/components/basic/picker/DateIOSPicker.vue'
 export default {
   components: {
-    DatePicker,
+    DatePicker
   },
   props: {
     student: {
       type: [Object],
-      default: () => {},
-    },
+      default: () => {}
+    }
   },
   data: () => ({
     valid: true,
@@ -70,7 +57,7 @@ export default {
     youngJoinedDate: '',
     communistJoinedDate: '',
     isCommunist: false,
-    isYoung: false,
+    isYoung: false
   }),
   created() {
     if (this.student) {
@@ -87,7 +74,7 @@ export default {
       return {
         notes: this.notes,
         youngJoinedDate: this.youngJoinedDate,
-        communistJoinedDate: this.communistJoinedDate,
+        communistJoinedDate: this.communistJoinedDate
       }
     },
     reset() {
@@ -95,10 +82,9 @@ export default {
     },
     resetValidation() {
       this.$refs.form.resetValidation()
-    },
-  },
+    }
+  }
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

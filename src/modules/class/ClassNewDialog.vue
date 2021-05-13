@@ -21,6 +21,7 @@
 <script>
 import ClassNewForm from '@/components/basic/form/ClassNewForm.vue'
 import { mapActions, mapState, mapGetters } from 'vuex'
+import { Class } from '@/plugins/api'
 
 export default {
   components: {
@@ -46,16 +47,21 @@ export default {
     ...mapActions('class', ['createClass']),
     async save() {
       if (!this.$refs.form.validate()) return
+
+      const data = this.$refs.form.getData()
+      if (await Class.count({ title: data.title })) {
+        this.$alert.error('Tên lớp đã tồn tại')
+        return
+      }
+
       try {
         this.$loading.active = true
-        const data = this.$refs.form.getData()
         await this.createClass({
           ...data,
           department: this.department.id,
           generation: this.currentGeneration.id,
-          status: 'opened'
+          status: 'running'
         })
-        console.log('this.classes', this.classes)
         this.$alert.addSuccess()
         this.$refs.form.reset()
         this.dialog = false

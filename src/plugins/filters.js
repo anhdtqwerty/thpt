@@ -8,4 +8,30 @@ export const vueFilterRegister = () => {
     else if (gender === 'female') return 'Nữ'
     return 'Khác'
   })
+  Vue.filter('status', status => {
+    switch (status) {
+      case 'active':
+        return 'Đang học'
+      case 'reserved':
+        return 'Bảo lưu'
+      case 'graduated':
+        return 'Đã tốt nghiệp'
+      case 'left':
+        return 'Đã nghỉ'
+    }
+  })
+  Vue.filter('statusColor', status => {
+    switch (status) {
+      case 'active':
+        return '#46BE8A'
+      case 'reserved':
+        return 'orange'
+      case 'graduated':
+        return 'primary'
+      case 'left':
+        return 'red'
+      default:
+        return 'grey'
+    }
+  })
 }

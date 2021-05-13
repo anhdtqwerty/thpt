@@ -2,20 +2,22 @@
   <v-form ref="form" flat class="pa-6">
     <v-text-field
       ref="title"
-      v-model="title"
+      v-model="className"
       label="Tên lớp"
       placeholder="Nhập tên lớp"
       outlined
       class="required"
       :rules="[$rules.required]"
       dense
-    />
+    >
+      <span slot="prepend-inner" class="mt-1">{{ gradeText }}</span>
+    </v-text-field>
     <autocomplete-grade
-      :defaultGrades="[grade]"
+      return-object
+      v-model="grade"
       item-text="title"
       item-value="id"
       label="Khối"
-      return-object
       required
       dense
       outlined
@@ -24,8 +26,8 @@
       @change="grade = $event"
     />
     <autocomplete-division
+      :div.sync="division"
       v-model="division"
-      :defaultDivision="[division]"
       item-text="title"
       item-value="id"
       label="Ban"
@@ -59,6 +61,8 @@ import AutocompleteTeacher from '@/components/basic/input/AutocompleteTeacher'
 import AutocompleteGrade from '@/components/basic/input/AutocompleteGrade'
 import AutocompleteDivision from '@/components/basic/input/AutocompleteDivision'
 import { mapActions, mapGetters } from 'vuex'
+import { textHelpers } from '@/helpers/TextHelper.js'
+
 export default {
   components: {
     AutocompleteTeacher,
@@ -85,14 +89,18 @@ export default {
     description: '',
     teachers: [],
     mentors: [],
-    staff: {}
+    staff: {},
+    className: ''
   }),
   computed: {
     getCourseItems() {
       return this.grade ? this.grade.courses : []
     },
     gradeId() {
-      return { grade: this.grade }
+      return { grade: this.grade.id }
+    },
+    gradeText() {
+      return textHelpers.getNumber(get(this.grade, 'title', ''))
     }
   },
   methods: {
@@ -108,8 +116,9 @@ export default {
         this.mentors = this.classData.mentors
         this.code = this.classData.code
         this.title = this.classData.title
+        this.grade = this.classData.grade
+        this.className = this.title.replace(this.gradeText, '')
         this.course = this.courseData || this.classData.course
-        this.grade = this.gradeData || this.classData.grade
         this.division = this.classData.division
         this.startTime = this.classData.startTime
         this.description = this.classData.description
@@ -136,7 +145,7 @@ export default {
         grade: get(this.grade, 'id'),
         division: get(this.division, 'id'),
         code: this.code,
-        title: this.title,
+        title: this.gradeText + this.className,
         mentors: this.mentors
       }
     }

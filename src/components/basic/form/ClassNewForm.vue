@@ -2,6 +2,7 @@
   <v-form ref="form" flat class="pa-6">
     <div class="d-flex">
       <autocomplete-grade
+        return-object
         class="required mr-2"
         item-text="title"
         item-value="id"
@@ -37,7 +38,9 @@
       dense
       class="required"
       :rules="[$rules.required]"
-    />
+    >
+      <span slot="prepend-inner" class="mt-1">{{ gradeText }}</span>
+    </v-text-field>
     <autocomplete-teacher
       v-model="teachers"
       item-text="name"
@@ -58,6 +61,7 @@ import { get } from 'lodash'
 import AutocompleteTeacher from '@/components/basic/input/AutocompleteTeacher'
 import AutocompleteGrade from '@/components/basic/input/AutocompleteGrade'
 import AutocompleteDivision from '@/components/basic/input/AutocompleteDivision'
+import { textHelpers } from '@/helpers/TextHelper.js'
 
 export default {
   components: {
@@ -88,7 +92,10 @@ export default {
       return this.grade ? this.grade.courses : []
     },
     gradeId() {
-      return { grade: this.grade }
+      return { grade: get(this.grade, 'id') }
+    },
+    gradeText() {
+      return textHelpers.getNumber(get(this.grade, 'title', ''))
     }
   },
   methods: {
@@ -125,7 +132,7 @@ export default {
         division: this.division,
         grade: this.grade,
         code: this.code,
-        title: this.title
+        title: this.gradeText + this.title
       }
     }
   },

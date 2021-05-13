@@ -258,7 +258,7 @@ export default {
       {
         title: 'Vắng',
         status: 'absent'
-      },
+      }
     ],
     diligenceStatus: [
       {
@@ -270,7 +270,7 @@ export default {
         status: 'no'
       }
     ],
-    
+
     attendanceStates: [
       {
         title: 'Từ Chối',
@@ -335,7 +335,7 @@ export default {
         status: 'graduated'
       },
       {
-        title: 'Đã chuyển trường',
+        title: 'Đã nghỉ',
         status: 'left'
       }
     ],

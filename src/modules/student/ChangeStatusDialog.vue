@@ -4,9 +4,9 @@
       <v-card-title class="primary white--text text-uppercase">
         Chuyển trạng thái
         <v-spacer></v-spacer>
-        <!-- <v-btn dark icon>
+        <v-btn dark icon>
           <v-icon @click="cancel">close</v-icon>
-        </v-btn> -->
+        </v-btn>
       </v-card-title>
       <v-divider />
       <v-card-text>
@@ -27,24 +27,24 @@
               </div>
               <div>
                 <p class="text-caption my-0">Lớp</p>
-                <span>{{ item.currentClass.title }}</span>
+                <span>{{ item.currentClass && item.currentClass.title }}</span>
               </div>
             </v-col>
           </v-row>
           <v-row>
-            <v-col cols="6" class="d-flex justify-space-between align-center">
+            <v-col cols="3">
               <div>
                 <p class="text-caption my-0">Trạng thái hiện tại</p>
                 <span class="text-subtitle-2 font-weight-black">{{ item.status | getStatus }}</span>
               </div>
-              <div>
-                <v-icon x-large>mdi_arrow_right_alt</v-icon>
-              </div>
+            </v-col>
+            <v-col cols="3" class="d-flex justify-center align-center">
+              <v-icon large>mdi-arrow-right</v-icon>
             </v-col>
             <v-col cols="6">
               <v-select
                 v-model="status"
-                :items="studentStatus"
+                :items="statusFilter"
                 item-text="title"
                 item-value="status"
                 dense
@@ -76,7 +76,21 @@ export default {
   data() {
     return {
       dialog: false,
-      status: ''
+      status: '',
+      studentStatus: [
+        {
+          title: 'Đang học',
+          status: 'active'
+        },
+        {
+          title: 'Bảo lưu',
+          status: 'reserved'
+        },
+        {
+          title: 'Đã nghỉ',
+          status: 'left'
+        }
+      ]
     }
   },
   props: {
@@ -85,23 +99,37 @@ export default {
   },
   computed: {
     ...mapState('app', ['roles', 'department', 'currentGeneration']),
-    ...mapState('constant', ['studentStatus']),
     ...mapGetters('app', ['roleIdByName', 'roles']),
     isLoading() {
       return this.loading > 0
     },
     majors() {
       return this.rootMajor.majors || []
+    },
+    statusFilter() {
+      return this.studentStatus.filter(s => this.item.status !== s.status)
     }
   },
   methods: {
     ...mapActions('students', ['updateStudent']),
     async save() {
-      await this.updateStudent({
-        id: this.item.id,
-        status: this.status
-      })
+      if (!this.status) return
+      try {
+        await this.updateStudent({
+          id: this.item.id,
+          status: this.status
+        })
+        this.$alert.updateSuccess()
+        this.$refs.form.reset()
+      } catch (error) {
+        this.$alert.updateError()
+      }
+
       this.dialog = false
+    },
+    cancel() {
+      this.dialog = false
+      this.$refs.form.reset()
     }
   },
   filters: {
@@ -114,7 +142,7 @@ export default {
         case 'graduated':
           return 'Đã tốt nghiệp'
         case 'left':
-          return 'Đã chuyển trường'
+          return 'Đã nghỉ'
       }
     }
   },

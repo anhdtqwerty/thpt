@@ -1,96 +1,41 @@
 <template>
   <v-form v-model="valid" ref="form" v-bind="this.$attrs">
     <v-row>
-      <v-col class="pb-0" cols="12" md="6">
-        <v-text-field
-          ref="dadName"
-          v-model="dadName"
-          label="Họ Và Tên Bố"
-          outlined
-          dense
-        ></v-text-field>
+      <v-col cols="12" md="6">
+        <v-text-field ref="dadName" v-model="dadName" label="Họ Và Tên Bố" outlined hide-details dense></v-text-field>
       </v-col>
     </v-row>
     <v-row>
       <v-col class="pb-0" cols="12" md="6">
-        <v-text-field
-          v-model="dadJob"
-          label="Nghề nghiệp"
-          outlined
-          dense
-        ></v-text-field>
+        <v-text-field v-model="dadJob" label="Nghề nghiệp" outlined hide-details dense></v-text-field>
       </v-col>
       <v-col class="pb-0" cols="12" md="6">
-        <v-text-field
-          v-model="dadCompany"
-          label="Cơ quan công tác"
-          outlined
-          dense
-        ></v-text-field>
+        <v-text-field v-model="dadCompany" label="Cơ quan công tác" outlined hide-details dense></v-text-field>
       </v-col>
       <v-col class="pb-0" cols="12" md="6">
-        <v-text-field
-          ref="dadPhone"
-          v-model="dadPhone"
-          label="Số điện thoại bố"
-          outlined
-          dense
-        ></v-text-field>
+        <v-text-field ref="dadPhone" v-model="dadPhone" label="Số điện thoại bố" outlined dense></v-text-field>
       </v-col>
       <v-col class="pb-0" cols="12" md="6">
-        <v-text-field
-          ref="dadEmail"
-          v-model="dadEmail"
-          label="Email Bố"
-          dense
-          outlined
-        ></v-text-field>
+        <v-text-field ref="dadEmail" v-model="dadEmail" label="Email Bố" dense outlined></v-text-field>
       </v-col>
     </v-row>
-    <v-divider></v-divider>
     <v-row class="mt-2">
-      <v-col class="pb-0" cols="12" md="6">
-        <v-text-field
-          ref="momName"
-          v-model="momName"
-          label="Họ Và Tên Mẹ"
-          outlined
-          dense
-        ></v-text-field>
+      <v-col cols="12" md="6">
+        <v-text-field ref="momName" v-model="momName" label="Họ Và Tên Mẹ" outlined hide-details dense></v-text-field>
       </v-col>
     </v-row>
     <v-row>
       <v-col class="pb-0" cols="12" md="6">
-        <v-text-field
-          v-model="momJob"
-          label="Nghề nghiệp"
-          outlined
-          dense
-        ></v-text-field>
+        <v-text-field v-model="momJob" label="Nghề nghiệp" outlined hide-details dense></v-text-field>
       </v-col>
       <v-col class="pb-0" cols="12" md="6">
-        <v-text-field
-          v-model="momCompany"
-          label="Cơ quan công tác"
-          outlined
-          dense
-        ></v-text-field>
+        <v-text-field v-model="momCompany" label="Cơ quan công tác" outlined hide-details dense></v-text-field>
       </v-col>
       <v-col class="pb-0" cols="12" md="6">
-        <v-text-field
-          v-model="momPhone"
-          label="Số điện thoại mẹ"
-          outlined
-          dense
-        ></v-text-field>
+        <v-text-field v-model="momPhone" label="Số điện thoại mẹ" outlined dense></v-text-field>
       </v-col>
       <v-col class="pb-0" cols="12" md="6">
-        <v-text-field
-          v-model="momEmail"
-          label="Email Mẹ"
-          dense
-          outlined
-        ></v-text-field>
+        <v-text-field v-model="momEmail" label="Email Mẹ" dense outlined></v-text-field>
       </v-col>
     </v-row>
   </v-form>
