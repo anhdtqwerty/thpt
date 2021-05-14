@@ -132,7 +132,7 @@ export default {
         division: this.division,
         grade: this.grade,
         code: this.code,
-        title: (this.gradeText + this.title).trim()
+        title: this.gradeText + this.title
       }
     }
   },
