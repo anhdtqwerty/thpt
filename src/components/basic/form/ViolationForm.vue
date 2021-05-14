@@ -11,7 +11,7 @@
       </v-col>
       <v-col cols="2">
         <div>Lớp</div>
-        <h4>{{ classData.title }}</h4>
+        <h4>{{ classData && classData.title }}</h4>
       </v-col>
     </v-row>
     <RadioViolation :violation="violation.type" @change="type = $event" />

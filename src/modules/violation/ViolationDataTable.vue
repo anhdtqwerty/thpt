@@ -8,7 +8,7 @@
     v-model="selected"
     mobile-breakpoint="0"
     :footer-props="{
-      'items-per-page-text': '',
+      'items-per-page-text': 'Khen thưởng kỷ luật mỗi trang',
       'items-per-page-all-text': 'Tất cả'
     }"
   >
@@ -17,6 +17,14 @@
     </template>
     <template v-slot:[`item.date`]="{ item }">
       {{ item.date | ddmmyyyy }}
+    </template>
+    <template v-slot:[`item.class`]="{ item }">
+      <router-link style="text-decoration: none" :to="'/class/' + (item.class && item.class.id)">
+        <span v-if="item.class">{{ item.class && item.class.title }}</span>
+      </router-link>
+    </template>
+    <template v-slot:[`item.student`]="{ item }">
+      <CardStudentName :student="item.student" link />
     </template>
     <template v-slot:[`item.type`]="{ item }">
       <v-chip small label :color="getColor(item.type)" dark
@@ -39,6 +47,7 @@
 
 <script>
 import ViolationActions from '@/modules/violation/ViolationListActions.vue'
+import CardStudentName from '@/components/basic/card/CardStudentName.vue'
 
 const originHeaders = [
   {
@@ -50,14 +59,14 @@ const originHeaders = [
   },
   {
     text: 'Lớp',
-    value: 'class.title',
+    value: 'class',
     align: 'left',
     sortable: false,
     show: true
   },
   {
     text: 'Họ tên',
-    value: 'student.name',
+    value: 'student',
     align: 'left',
     sortable: false,
     show: true
@@ -94,7 +103,8 @@ export default {
     }
   },
   components: {
-    ViolationActions
+    ViolationActions,
+    CardStudentName
   },
   props: {
     headers: { type: Array, default: () => null },

@@ -106,6 +106,8 @@ export default {
       ) {
         return
       }
+      this.$loading.active = true
+
       const studentGeneralForm = this.$refs.studentGeneralForm.getData()
       const studentClassForm = this.$refs.studentClassForm.getData()
       const studentContactForm = this.$refs.studentContactForm.getData()
@@ -141,6 +143,7 @@ export default {
         type: 'student',
         role: this.roleIdByName('Student')
       })
+
       if (studentGeneralForm.avatar) {
         let formData = new FormData()
         formData.append('files', studentGeneralForm.avatar)
@@ -154,6 +157,8 @@ export default {
       this.reset()
       this.$router.push(`/student/${student.id}`)
       this.$emit('done', student)
+
+      this.$loading.active = false
     },
     cancel() {
       this.dialog = false
