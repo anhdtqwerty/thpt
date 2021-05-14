@@ -46,7 +46,7 @@ export default {
         ...this.filter,
 
         department: this.department.id,
-        status_in: ['opened', 'running']
+        status: 'running'
       })
       if (this.changeClass && this.currentClass) {
         this.classes = this.classes.filter(c => get(c.grade, 'id') === this.currentClass.grade)

@@ -1,6 +1,9 @@
 <template>
   <div>
     <v-avatar v-bind="this.$attrs" size="128" rounded>
+      <v-btn class="remove-button" icon v-if="avatar !== url">
+        <v-icon color="grey" @click="removeImage">close</v-icon>
+      </v-btn>
       <img :src="avatar" alt="Avatar" style="boder-radius: 4px !important;" />
       <v-file-input
         class="file-input"
@@ -40,18 +43,32 @@ export default {
         this.save(file)
       }
     },
+    removeImage() {
+      this.$dialog.confirm({
+        title: 'Xóa ảnh đại diện',
+        text: ` Bạn có Chắc Chắn muốn xóa ảnh đại diện ?`,
+        okText: 'Có',
+        cancelText: 'Hủy',
+        done: () => {
+          this.destroyAvatar(this.student.avatar.id)
+        }
+      })
+    },
     save(image) {
-      if (this.student.avatar) {
-        this.destroyAvatar(this.student.avatar.id)
+      if (this.student) {
+        if (this.student.avatar) {
+          this.destroyAvatar(this.student.avatar.id)
+        }
+        let formData = new FormData()
+        formData.append('files', image)
+        formData.append('refId', this.student.id)
+        formData.append('ref', this.type)
+        formData.append('field', 'avatar')
+        this.uploadAvatar(formData)
       }
-      let formData = new FormData()
-      formData.append('files', image)
-      formData.append('refId', this.student.id)
-      formData.append('ref', this.type)
-      formData.append('field', 'avatar')
-      this.uploadAvatar(formData)
     }
-  }
+  },
+  watch: {}
 }
 </script>
 
@@ -59,6 +76,12 @@ export default {
 .file-input {
   position: absolute;
   bottom: 0;
+  right: 0;
+}
+
+.remove-button {
+  position: absolute;
+  top: 0;
   right: 0;
 }
 </style>

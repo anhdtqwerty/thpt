@@ -1,12 +1,9 @@
 <template>
   <v-form>
-    <v-row >
-      <v-col cols="12" md="8" v-if="advanced">
+    <v-row>
+      <v-col cols="12" md="10">
         <v-row>
-          <v-col
-            cols="12"
-            md="4"
-          >
+          <v-col cols="12" md="4">
             <autocomplete-grade
               v-model="grade"
               item-text="name"
@@ -21,10 +18,7 @@
               hide-details
             />
           </v-col>
-          <v-col
-            cols="12"
-            md="4"
-          >
+          <v-col cols="12" md="4">
             <autocomplete-division
               v-model="division"
               item-text="name"
@@ -40,10 +34,7 @@
               hide-details
             />
           </v-col>
-          <v-col
-            cols="12"
-            md="4"
-          >
+          <v-col cols="12" md="4">
             <autocomplete-teacher
               v-model="teacher"
               item-text="name"
@@ -60,43 +51,11 @@
           </v-col>
         </v-row>
       </v-col>
-      <v-col cols="12" md="8" v-else>
-        <v-row no-gutters>
-          <v-col cols="12" md="4">
-            <AutocompleteClass
-              prepend-inner-icon="mdi-magnify"
-              v-model="classData"
-              item-text="name"
-              item-value="id"
-              clear-icon="mdi-close"
-              clearable
-              label="Tìm kiếm Lớp"
-              outlined
-              dense
-              deletable-chips
-              hide-details
-              @change="onFilterChanged"
-            />
-          </v-col>
-        </v-row>
-      </v-col>
-      <v-col class="d-flex" cols="12" md="4">
-        <v-btn
-          dark
-          outlined
-          style="height: 40px"
-          @click="onFilterChanged"
-          color="primary"
-          v-if="advanced"
-        >
-          <v-icon left dark>mdi-filter-outline</v-icon>Lọc
+      <v-col class="d-flex" cols="12" md="2">
+        <v-btn dark outlined style="height: 40px" @click="onFilterChanged" color="primary">
+          Tìm kiếm
         </v-btn>
         <v-spacer />
-        <v-checkbox
-          class="py-0 mt-2 ml-2"
-          v-model="advanced"
-          label="Nâng cao"
-        ></v-checkbox>
       </v-col>
     </v-row>
   </v-form>
@@ -122,7 +81,6 @@ export default {
     grade: '',
     status: 'running',
     tags: '',
-    advanced: false,
     classData: ''
   }),
   computed: {
@@ -131,12 +89,10 @@ export default {
   methods: {
     onFilterChanged() {
       this.$emit('onFilterChanged', {
-        dialog: false,
         grade: this.grade,
         division: this.division,
         teachers: this.teacher,
-        _sort: 'createdAt:desc',
-        id: this.advanced ? '' : get(this.classData, 'id', null)
+        _sort: 'createdAt:desc'
       })
     },
     reset() {

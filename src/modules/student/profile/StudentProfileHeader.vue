@@ -2,7 +2,7 @@
   <v-card elevation="0" outlined>
     <v-row class="py-5 px-3">
       <v-col class="d-flex align-center justify-center" cols="2">
-        <user-avatar-picker :student="student" type="student" />
+        <UserAvatarPicker :student="student" type="student" />
       </v-col>
       <v-col class="d-flex flex-column justify-center" cols="8">
         <v-row no-gutters class="flex-column">
@@ -12,44 +12,35 @@
         <v-row>
           <v-col cols="2" class="py-2 d-flex flex-column justify-end">
             <p class="text-caption mb-0">Lớp</p>
-            <p class="text-subtitle-2 mb-0">
-              {{ this.student.currentClass.title }}
-            </p>
+            <router-link
+              style="text-decoration: none"
+              :to="'/class/' + (student.currentClass && student.currentClass.id)"
+            >
+              <p class="text-subtitle-2 mb-0">
+                {{ student.currentClass && student.currentClass.title }}
+              </p>
+            </router-link>
           </v-col>
           <v-col cols="5" class="py-2 d-flex flex-column justify-end">
             <p class="text-caption mb-0">Bố / Người giám hộ</p>
             <p class="text-subtitle-2 mb-0">
-              {{
-                `${this.student.data.dadName} / ${this.student.data.dadPhone}`
-              }}
+              {{ `${this.student.data.dadName} / ${this.student.data.dadPhone}` }}
             </p>
           </v-col>
           <v-col cols="5" class="py-2 d-flex flex-column justify-end">
             <p class="text-caption mb-0">Mẹ / Người giám hộ</p>
             <p class="text-subtitle-2 mb-0">
-              {{
-                `${this.student.data.momName} / ${this.student.data.momPhone}`
-              }}
+              {{ `${this.student.data.momName} / ${this.student.data.momPhone}` }}
             </p>
           </v-col>
         </v-row>
       </v-col>
       <v-col class="d-flex align-end" cols="2">
-        <v-btn
-          @click="detailState = !detailState"
-          small
-          color="primary"
-          outlined
-          >Hồ sơ chi tiết</v-btn
-        >
+        <v-btn @click="detailState = !detailState" small color="primary" outlined>Hồ sơ chi tiết</v-btn>
       </v-col>
     </v-row>
 
-    <student-profile-detail-dialog
-      @edit="editState = !editState"
-      :student="student"
-      :state="detailState"
-    />
+    <student-profile-detail-dialog @edit="editState = !editState" :student="student" :state="detailState" />
     <student-edit-dialog :student="student" :state="editState" />
   </v-card>
 </template>

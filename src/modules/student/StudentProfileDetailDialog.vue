@@ -1,11 +1,5 @@
 <template>
-  <v-dialog
-    :fullscreen="$vuetify.breakpoint.smAndDown"
-    v-model="dialog"
-    width="600"
-    height="600"
-    scrollable
-  >
+  <v-dialog :fullscreen="$vuetify.breakpoint.smAndDown" v-model="dialog" width="600" height="600" scrollable>
     <v-card>
       <v-card-title class="primary white--text">
         Hồ sơ chi tiết
@@ -17,32 +11,16 @@
       <v-divider />
       <v-card-text>
         <v-form ref="form" class="py-4">
-          <student-general-form-view
-            class="mb-6"
-            :student="student"
-            readonly
-          ></student-general-form-view>
-          <student-contact-form-view
-            class="mb-6"
-            :student="student"
-            readonly
-          ></student-contact-form-view>
-          <student-note-form-view
-            class="mb-6"
-            :student="student"
-            readonly
-          ></student-note-form-view>
-          <student-family-form-view
-            class="mb-6"
-            :student="student"
-            readonly
-          ></student-family-form-view>
+          <student-general-form-view class="mb-6" :student="student" readonly></student-general-form-view>
+          <student-contact-form-view class="mb-6" :student="student" readonly></student-contact-form-view>
+          <student-note-form-view class="mb-6" :student="student" readonly></student-note-form-view>
+          <student-family-form-view class="mb-6" :student="student" readonly></student-family-form-view>
         </v-form>
       </v-card-text>
       <v-divider></v-divider>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn @click="editState" class="ma-2" outlined color="#0D47A1">Sửa học sinh</v-btn>
+        <v-btn @click="editState" class="ma-2" outlined color="#0D47A1">Sửa hồ sơ học sinh</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -59,15 +37,15 @@ export default {
     StudentGeneralFormView,
     StudentContactFormView,
     StudentNoteFormView,
-    StudentFamilyFormView,
+    StudentFamilyFormView
   },
   props: {
     state: Boolean,
-    student: Object,
+    student: Object
   },
   data() {
     return {
-      dialog: false,
+      dialog: false
     }
   },
   methods: {
@@ -82,10 +60,9 @@ export default {
   watch: {
     state(state) {
       this.dialog = true
-    },
-  },
+    }
+  }
 }
 </script>
 
-<style>
-</style>
+<style></style>

@@ -29,7 +29,6 @@
         :search="search"
         v-model="selected"
         :loading="loading"
-        show-select
         :disable-sort="$vuetify.breakpoint.smAndDown"
         :footer-props="{
           'items-per-page-text': 'Lớp mỗi trang',
@@ -40,7 +39,9 @@
           <class-filter @onFilterChanged="refresh" />
         </div>
         <template v-slot:[`item.status`]="{ item }">
-          <span v-if="item.status" :class="getColor(item.status)">{{ item.status | classStatus }} </span>
+          <v-chip small class="white--text" v-if="item.status" :color="getColor(item.status)" label>
+            {{ item.status | classStatus }}
+          </v-chip>
         </template>
         <template v-slot:[`item.title`]="{ item }">
           <v-tooltip top>
@@ -54,9 +55,9 @@
             <span>Xem lớp</span>
           </v-tooltip>
         </template>
-        <template v-slot:[`item.generation`]="{ item }">
+        <template v-slot:[`item.studentCount`]="{ item }">
           <p style="margin: 0; white-space: nowrap">
-            {{ item.generation | getGeneration }}
+            {{ item.students && item.students.length }}
           </p>
         </template>
         <template v-slot:[`item.division`]="{ item }">
@@ -68,9 +69,6 @@
           <p style="margin: 0; white-space: nowrap">
             {{ item | getTeacherNames }}
           </p>
-        </template>
-        <template v-slot:[`item.actions`]="{ item }">
-          <ClassListActions :selected="item" />
         </template>
       </v-data-table>
     </v-card>
@@ -88,12 +86,19 @@ import ClassFilter from '@/modules/class/ClassFilter'
 import ClassListActions from '@/modules/class/ClassListActions'
 import ClassesSendSMSDialog from '@/modules/sms/ClassesSendSMSDialog'
 import moment from 'moment'
-import _ from 'lodash'
+import { get } from 'lodash'
 
 const originHeaders = [
   {
     text: 'Tên lớp',
     value: 'title',
+    align: 'left',
+    sortable: false,
+    show: true
+  },
+  {
+    text: 'Khối',
+    value: 'grade.title',
     align: 'left',
     sortable: false,
     show: true
@@ -113,15 +118,15 @@ const originHeaders = [
     show: true
   },
   {
-    text: 'Trạng thái',
-    value: 'status',
-    align: 'left',
+    text: 'Sĩ số',
+    value: 'studentCount',
+    align: 'center',
     sortable: false,
     show: true
   },
   {
-    text: 'Ghi chú',
-    value: 'note',
+    text: 'Trạng thái',
+    value: 'status',
     align: 'left',
     sortable: false,
     show: true
@@ -188,13 +193,7 @@ export default {
   },
   methods: {
     ...mapActions('class', ['fetchClasses', 'setClass', 'setClasses', 'updateClasses', 'removeClasses']),
-    getColor(status) {
-      if (status === 'opened') return 'primary--text'
-      if (status === 'running') return 'green--text'
-      else if (status === 'pending' || status === 'rejected') return 'red--text'
-      else if (status === 'done') return 'gray--text'
-      else return 'red'
-    },
+
     getCourse: course => {
       return course || {}
     },
@@ -233,6 +232,14 @@ export default {
           this.selected = []
         }
       })
+    },
+    getColor(classStatus) {
+      switch (classStatus) {
+        case 'running':
+          return '#46BE8A'
+        default:
+          return 'primary'
+      }
     }
   },
   filters: {
@@ -249,10 +256,10 @@ export default {
       else return ''
     },
     getGeneration: item => {
-      return _.get(item, 'name', '')
+      return get(item, 'name', '')
     },
     getRoom: item => {
-      return _.get(item, 'title', '')
+      return get(item, 'title', '')
     },
     getTeacherNames: classData => {
       return classData.teachers.map(teacher => teacher.name).join(',')

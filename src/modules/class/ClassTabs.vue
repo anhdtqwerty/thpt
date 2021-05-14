@@ -13,19 +13,20 @@
       <v-tabs-items v-model="tab">
         <v-tab-item :key="1">
           <v-card>
-            <div class="d-flex align-center">
-              <v-card-title>Danh sách học sinh trong lớp </v-card-title>
-              <v-spacer />
-              <!-- <drop-menu class="mr-2" @add-new-student="dialog = !dialog" /> -->
+            <div class="d-flex justify-end align-end ">
+              <v-btn v-if="$vuetify.breakpoint.mdAndUp" class="mt-4 mr-4" outlined color="primary">
+                <v-icon left>mdi-file-excel</v-icon> Xuất Excel
+              </v-btn>
             </div>
             <student-table disableSort mobile-breakpoint="0" />
           </v-card>
         </v-tab-item>
         <v-tab-item :key="2">
           <v-card>
-            <div class="d-flex align-center">
-              <v-card-title>Danh sách phụ huynh </v-card-title>
-              <v-spacer />
+            <div class="d-flex justify-end align-end ">
+              <v-btn v-if="$vuetify.breakpoint.mdAndUp" class="mt-4 mr-4" outlined color="primary">
+                <v-icon left>mdi-file-excel</v-icon> Xuất Excel
+              </v-btn>
             </div>
             <ParentDataTable disableSort mobile-breakpoint="0" />
           </v-card>

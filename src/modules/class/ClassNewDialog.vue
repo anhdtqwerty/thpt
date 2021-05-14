@@ -60,7 +60,7 @@ export default {
           ...data,
           department: this.department.id,
           generation: this.currentGeneration.id,
-          status: 'opened'
+          status: 'running'
         })
         this.$alert.addSuccess()
         this.$refs.form.reset()

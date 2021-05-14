@@ -33,12 +33,7 @@ export default {
         .catch(e => alert.error(e))
     },
     fetchUsers({ commit }, options = {}) {
-      const {
-        filters = [],
-        sortBy: { key = 'createdAt', asc = false } = {},
-        limit = 20,
-        page = 1
-      } = options
+      const { filters = [], sortBy: { key = 'createdAt', asc = false } = {}, limit = 20, page = 1 } = options
       const params = {
         _sort: key + ':' + (asc ? 'ASC' : 'DESC'),
         _limit: limit > 0 ? limit : null,
@@ -59,10 +54,7 @@ export default {
           alert.error(e)
         })
     },
-    async searchUsers(
-      { commit, getters, dispatch },
-      { role, keywords, skip, limit }
-    ) {
+    async searchUsers({ commit, getters, dispatch }, { role, keywords, skip, limit }) {
       if (!keywords) return
       await dispatch('fetchRoles')
       return axios
@@ -126,9 +118,7 @@ export default {
       })
 
       if (dones.length) {
-        alert.success(
-          'Deleted users: ' + dones.map(user => user.username).join(', ')
-        )
+        alert.success('Deleted users: ' + dones.map(user => user.username).join(', '))
         return dones
       } else if (errs.length) {
         alert.error('Fail to delete users!')
@@ -142,10 +132,7 @@ export default {
           commit('setUser', transedUser)
           commit('receiveUser', transedUser)
           commit('class/updateUser', transedUser, { root: true })
-          if (
-            rootState.auth.user &&
-            rootState.auth.user.id === transedUser.id
-          ) {
+          if (rootState.auth.user && rootState.auth.user.id === transedUser.id) {
             commit('auth/setUser', transedUser, { root: true })
           }
           alert.success('User updated!')
@@ -166,8 +153,7 @@ export default {
     // eslint-disable-next-line
     async validateEmail({}, email) {
       let errMsg = !!email || 'Required.'
-      errMsg =
-        errMsg === true ? /.+@.+/.test(email) || 'E-mail must be valid' : errMsg
+      errMsg = errMsg === true ? /.+@.+/.test(email) || 'E-mail must be valid' : errMsg
       if (errMsg === true) {
         const users = await api.User.search({ email, _limit: 1 })
         if (users.length > 0) {
@@ -198,15 +184,13 @@ export default {
     async generateStudentCode({ dispatch }, name = '') {
       let userNameIndex = utils.generateUserName(utils.clearUnicode(name))
       userNameIndex = utils.removeUnicode(userNameIndex).toLowerCase()
-      const users = await api.User.search({
-        _sort: 'username_no:DESC',
-        _limit: 1,
-        type: 'student'
-      })
-      const userNo = _.get(_.last(users), 'username_no', 0) + 1
+
+      const userMeta = await api.UserMeta.fetch()
+      const userNo = _.get(userMeta, 'indexUser', 0) + 1
+
       const code = `00000${userNo}`.substr(`00000${userNo}`.length - 5)
       return {
-        username: `${userNameIndex}${code}`,
+        username: `${code}${userNameIndex}`,
         username_indexing: userNameIndex,
         username_no: userNo
       }

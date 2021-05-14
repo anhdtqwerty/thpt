@@ -31,9 +31,9 @@ export default {
         })
         .then(response => {
           commit('setAvatar', response[0])
-          alert.success('Upload successfully!')
+          alert.success('Tải ảnh thành công!')
         })
-        .catch(e => alert.error(e))
+        .catch(e => alert.error('Tải ảnh thất bại'))
     },
     async createMark({ commit }, { data, options }) {
       commit('setMark', await Mark.create(data, options))
@@ -43,6 +43,7 @@ export default {
         .delete(DESTROY_API + id)
         .then(staff => {
           console.log('Remove success')
+          commit('setAvatar', null)
         })
         .catch(e => alert.error(e))
     },
