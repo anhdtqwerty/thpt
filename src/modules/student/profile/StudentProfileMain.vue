@@ -11,7 +11,7 @@
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text class="pa-0">
-            <student-profile-marks :student="student" />
+            <StudentProfileMarks :student="student" />
           </v-card-text>
         </v-card>
       </v-col>
@@ -94,7 +94,7 @@
 <script>
 import ViolationDataTable from '@/modules/violation/ViolationDataTable'
 import AttendanceStudentDataTable from '@/modules/attendance/AttendanceStudentDataTable'
-import StudentProfileMarks from './StudentProfileMarks'
+import StudentProfileMarks from '@/modules/student/profile/StudentProfileMarks.vue'
 
 import { mapActions, mapState, mapGetters } from 'vuex'
 
