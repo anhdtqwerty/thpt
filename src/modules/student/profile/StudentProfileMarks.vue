@@ -18,7 +18,9 @@
                     <div></div>
                   </td>
                   <td v-for="mark in fm.marks" :key="mark.id" class="px-1">
-                    <div :class="getMarkColor(mark.value)">{{ mark.value }}</div>
+                    <div :class="getMarkColor(mark.value)">
+                      {{ mark.value }}
+                    </div>
                   </td>
                 </tr>
               </table>
@@ -111,7 +113,7 @@ tr {
 }
 .container {
   overflow-x: auto;
-  width: 100%;
+  max-width: 100%;
 }
 .container::-webkit-scrollbar {
   -webkit-appearance: none;
