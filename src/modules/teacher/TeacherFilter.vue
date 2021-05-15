@@ -13,7 +13,7 @@
               outlined
               dense
               hide-details
-               @keyup.enter="onFilterChanged"
+              @keyup.enter="onFilterChanged"
             />
           </v-col>
           <v-col class="py-2 pr-4" cols="12" md="4">
@@ -65,21 +65,11 @@
         </v-row>
       </v-col>
       <v-col class="py-2 d-flex" cols="12" md="4">
-        <v-btn
-          v-if="!advanced"
-          height="40"
-          color="#0D47A1"
-          @click="onFilterChanged"
-          outlined
-        >
+        <v-btn v-if="!advanced" height="40" color="#0D47A1" @click="onFilterChanged" outlined>
           <v-icon left dark>mdi-filter-outline</v-icon>Lọc
         </v-btn>
         <v-spacer />
-        <v-checkbox
-          class="mt-n1 pt-3"
-          v-model="advanced"
-          label="Tìm kiếm nhanh"
-        ></v-checkbox>
+        <v-checkbox class="mt-n1 pt-3" v-model="advanced" label="Tìm kiếm nhanh"></v-checkbox>
       </v-col>
     </v-row>
   </v-form>
@@ -92,7 +82,7 @@ import AutocompleteSubject from '@/components/basic/input/AutocompleteSubject'
 export default {
   components: {
     AutocompleteTeacher,
-    AutocompleteSubject,
+    AutocompleteSubject
   },
   data: () => ({
     query: '',
@@ -103,9 +93,9 @@ export default {
     filterState: false,
     types: [
       { value: 'short-tern', title: 'Ngắn hạn' },
-      { value: 'long-tern', title: 'Dài hạn' },
+      { value: 'long-tern', title: 'Dài hạn' }
     ],
-    advanced: false,
+    advanced: false
   }),
   methods: {
     onFilterChanged() {
@@ -113,12 +103,12 @@ export default {
         id: this.id,
         name_contains: this.name,
         subject: this.subject.id,
-        type: this.type,
+        type: this.type
       })
     },
     onFilterDialogChange(id) {
       this.$emit('onFilterChanged', id)
-    },
-  },
+    }
+  }
 }
 </script>
