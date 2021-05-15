@@ -23,12 +23,8 @@ export default {
       }
     },
     async removeMark({ commit }, id) {
-      try {
-        await Mark.remove(id)
-        alert.success('Xóa thành công!')
-      } catch (e) {
-        alert.error(e)
-      }
+      await Mark.remove(id)
+      commit('removeMark', id)
     },
     async updateMarks({ dispatch }, items) {
       await Promise.all(items.map(item => dispatch('updateMark', item)))
@@ -78,8 +74,8 @@ export default {
         ) // khớp điểm
 
         markByFactor = markByFactor.map(m => {
-          if (!!m && m.id) {
-            m.rawvalue = m.value // rawvalue for update mark
+          if (!!m && m.id && !m.rawValue) {
+            m.rawValue = m.value // rawvalue for update mark
           }
           return m
         })

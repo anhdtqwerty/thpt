@@ -42,7 +42,7 @@ export default {
     ...mapState('app', ['currentGeneration', 'currentSemester'])
   },
   methods: {
-    ...mapActions('MarkInput', ['fetchMarks', 'updateMark', 'setStudents', 'createMark', 'setFactor']),
+    ...mapActions('MarkInput', ['fetchMarks', 'updateMark', 'setStudents', 'createMark', 'setFactor', 'removeMark']),
     async onFilterChanged(params) {
       this.setStudents(get(params, 'class.students'))
       this.setFactor(get(params, 'factor'))
@@ -73,8 +73,13 @@ export default {
       const promises = studentMarks.reduce((acc, cur) => {
         const markPromies = cur.marks.map(({ index, id, value, rawValue }) => {
           if (id) {
-            if (rawValue !== value) return this.updateMark({ id, value })
-            else Promise.resolve()
+            if (rawValue !== value) {
+              if (value) {
+                return this.updateMark({ id, value })
+              } else {
+                return this.removeMark(id)
+              }
+            } else Promise.resolve()
           } else {
             if (value !== undefined) {
               return this.createMark({
