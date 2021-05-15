@@ -13,6 +13,7 @@
               outlined
               dense
               hide-details
+              @keyup.enter="onFilterChanged"
             />
           </v-col>
           <v-col cols="4">
@@ -28,7 +29,7 @@
             />
           </v-col>
           <v-col cols="4">
-            <date-picker label="Ngày sinh" outlined dense hide-details outline :date.sync="dob"></date-picker>
+            <DateIOSPicker label="Ngày sinh" outlined dense hide-details outline :date.sync="dob" @onEnterPress="onFilterChanged"></DateIOSPicker>
           </v-col>
           <v-col cols="4">
             <v-text-field
@@ -40,6 +41,7 @@
               dense
               clearable
               hide-details
+              @keyup.enter="onFilterChanged"
             />
           </v-col>
           <v-col cols="4">
@@ -110,14 +112,14 @@
 <script>
 import { mapState } from 'vuex'
 import { get } from 'lodash'
-import DatePicker from '@/components/basic/picker/DateIOSPicker'
+import DateIOSPicker from '@/components/basic/picker/DateIOSPicker'
 import AutocompleteClass from '@/components/basic/input/AutocompleteClass'
 import moment from 'moment'
 import { textHelpers } from '@/helpers/TextHelper'
 
 export default {
   components: {
-    DatePicker,
+    DateIOSPicker,
     AutocompleteClass
   },
   data: () => ({

@@ -13,6 +13,7 @@
               outlined
               dense
               hide-details
+               @keyup.enter="onFilterChanged"
             />
           </v-col>
           <v-col class="py-2 pr-4" cols="12" md="4">

@@ -50,7 +50,7 @@
                 />
               </v-col>
               <v-col cols="12" md="4">
-                <DateIOSPicker outlined dense hide-details label="Ngày nhập" :date.sync="createdDate" />
+                <DateIOSPicker outlined dense hide-details label="Ngày nhập" :date.sync="createdDate" @onEnterPress="onFilterChanged" />
               </v-col>
 
               <v-col cols="12" md="4">
