@@ -7,7 +7,7 @@
       <v-col class="d-flex flex-column justify-center" cols="8">
         <v-row no-gutters class="flex-column">
           <p class="text-h5 primary--text mb-0">{{ student.name }}</p>
-          <p class="text-subtitle-2">{{ student.code }}</p>
+          <p class="text-subtitle-2">{{ student.code | getStudentCode }}</p>
         </v-row>
         <v-row>
           <v-col cols="2" class="py-2 d-flex flex-column justify-end">

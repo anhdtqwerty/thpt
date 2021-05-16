@@ -21,57 +21,15 @@
         <v-btn v-if="selected.length" color="red" @click="onRemove" dark><v-icon left>mdi-delete</v-icon>Xóa</v-btn>
       </div>
     </div>
-    <v-card class="px-md-6 mx-md-4 elevation-1">
-      <v-data-table
-        item-key="id"
-        :headers="headers"
-        :items="classes"
-        :search="search"
-        v-model="selected"
-        :loading="loading"
-        :disable-sort="$vuetify.breakpoint.smAndDown"
-        :footer-props="{
-          'items-per-page-text': 'Lớp mỗi trang',
-          'items-per-page-all-text': 'Tất cả'
-        }"
-      >
-        <div slot="top" class="py-md-6">
-          <class-filter @onFilterChanged="refresh" />
-        </div>
-        <template v-slot:[`item.status`]="{ item }">
-          <v-chip small class="white--text" v-if="item.status" :color="getColor(item.status)" label>
-            {{ item.status | classStatus }}
-          </v-chip>
-        </template>
-        <template v-slot:[`item.title`]="{ item }">
-          <v-tooltip top>
-            <template v-slot:activator="{ on }">
-              <div v-on="on" style="text-decoration: none; white-space: nowrap">
-                <router-link v-on="on" style="text-decoration: none; white-space: nowrap" :to="'/class/' + item.id">{{
-                  item.title
-                }}</router-link>
-              </div>
-            </template>
-            <span>Xem lớp</span>
-          </v-tooltip>
-        </template>
-        <template v-slot:[`item.studentCount`]="{ item }">
-          <p style="margin: 0; white-space: nowrap">
-            {{ item.students && item.students.length }}
-          </p>
-        </template>
-        <template v-slot:[`item.division`]="{ item }">
-          <p style="margin: 0; white-space: nowrap">
-            {{ item.division | getDivision }}
-          </p>
-        </template>
-        <template v-slot:[`item.teachers`]="{ item }">
-          <p style="margin: 0; white-space: nowrap">
-            {{ item | getTeacherNames }}
-          </p>
-        </template>
-      </v-data-table>
+
+    <v-card outlined class="py-md-4 px-md-6 mx-md-4 mb-6 elevation-0">
+      <class-filter @onFilterChanged="refresh" />
     </v-card>
+
+    <v-card outlined class="mx-md-4 elevation-0">
+      <ClassesDataTable ref="classesDataTable" />
+    </v-card>
+
     <new-class-dialog :state="dialog" style="margin: 0 20px"></new-class-dialog>
     <classes-send-s-m-s-dialog :data="selected" :state="sendState"></classes-send-s-m-s-dialog>
   </div>
@@ -83,77 +41,24 @@ import { mapActions, mapState, mapGetters } from 'vuex'
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import NewClassDialog from '@/modules/class/ClassNewDialog'
 import ClassFilter from '@/modules/class/ClassFilter'
-import ClassListActions from '@/modules/class/ClassListActions'
 import ClassesSendSMSDialog from '@/modules/sms/ClassesSendSMSDialog'
 import moment from 'moment'
 import { get } from 'lodash'
+import ClassesDataTable from '@/modules/class/ClassesDataTable.vue'
 
-const originHeaders = [
-  {
-    text: 'Tên lớp',
-    value: 'title',
-    align: 'left',
-    sortable: false,
-    show: true
-  },
-  {
-    text: 'Khối',
-    value: 'grade.title',
-    align: 'left',
-    sortable: false,
-    show: true
-  },
-  {
-    text: 'Phân ban',
-    value: 'division',
-    align: 'left',
-    sortable: false,
-    show: true
-  },
-  {
-    text: 'Giáo viên chủ nhiệm',
-    value: 'teachers',
-    align: 'left',
-    sortable: false,
-    show: true
-  },
-  {
-    text: 'Sĩ số',
-    value: 'studentCount',
-    align: 'center',
-    sortable: false,
-    show: true
-  },
-  {
-    text: 'Trạng thái',
-    value: 'status',
-    align: 'left',
-    sortable: false,
-    show: true
-  },
-  {
-    text: '',
-    value: 'actions',
-    align: 'left',
-    sortable: false,
-    show: true
-  }
-]
 export default {
   components: {
     ClassFilter,
     NewClassDialog,
-    ClassListActions,
     Breadcrumbs,
-    ClassesSendSMSDialog
+    ClassesSendSMSDialog,
+    ClassesDataTable
   },
   props: {
     role: String
   },
   data() {
     return {
-      headers: originHeaders,
-      originHeaders: originHeaders,
       draw: false,
       search: '',
       status: null,
@@ -170,12 +75,6 @@ export default {
       selected: [],
       sendState: false
     }
-  },
-  async created() {
-    await this.refresh({
-      department: this.department.id,
-      generation: this.currentGeneration.id
-    })
   },
   computed: {
     ...mapState('class', ['classData']),
@@ -194,44 +93,8 @@ export default {
   methods: {
     ...mapActions('class', ['fetchClasses', 'setClass', 'setClasses', 'updateClasses', 'removeClasses']),
 
-    getCourse: course => {
-      return course || {}
-    },
     async refresh(query) {
-      this.loading = true
-      await this.setClasses([])
-      await this.fetchClasses({
-        department: this.department.id,
-        generation: this.currentGeneration.id,
-        ...query,
-        _sort: 'createdAt:desc, startTime:desc'
-      })
-      this.loading = false
-    },
-    onRemove() {
-      this.$dialog.confirm({
-        title: 'Xóa Lớp Học',
-        text: `Bạn Có chắc muốn xóa những Lớp học này.? ${this.selected.length} lớp học đã chọn`,
-        okText: 'Có',
-        cancelText: 'Không',
-        done: async () => {
-          await this.removeClasses(this.selected)
-          this.selected = []
-          this.$emit('removed')
-        }
-      })
-    },
-    onUpdate(status) {
-      this.$dialog.confirm({
-        title: 'Cập Nhật Lớp Học',
-        text: `${this.selected.length} lớp học đã chọn`,
-        okText: 'Có',
-        cancelText: 'Không',
-        done: async () => {
-          await this.updateClasses(this.selected.map(c => ({ id: c.id, status })))
-          this.selected = []
-        }
-      })
+      this.$refs.classesDataTable.refresh(query)
     },
     getColor(classStatus) {
       switch (classStatus) {

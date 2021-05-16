@@ -11,7 +11,7 @@
       </router-link>
 
       <div style="white-space: nowrap" v-else>{{ student.name }}</div>
-      <div style="white-space: nowrap">{{ student.code.substring(0, 5) }}</div>
+      <div style="white-space: nowrap">{{ student.code | getStudentCode }}</div>
     </div>
   </div>
 </template>

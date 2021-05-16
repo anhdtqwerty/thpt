@@ -1,5 +1,6 @@
 import api from '../../plugins/api'
 import alert from '../../plugins/alert'
+import loading from '../../plugins/loading'
 import _ from 'lodash'
 
 export default {
@@ -8,13 +9,16 @@ export default {
     students: [],
     studentSearchParams: {},
     totalItems: 0,
-    itemsPerPage: 5,
+    itemsPerPage: 10,
     generations: [],
     majors: [],
-    classes: []
+    classes: [],
+    pageText: ''
   },
   actions: {
     async requestPageSettings({ state, commit, dispatch }, { page, itemsPerPage }) {
+      loading.active = true
+
       if (!page) page = 1
       if (!itemsPerPage) itemsPerPage = state.itemsPerPage
       if (state.studentSearchParams) {
@@ -36,6 +40,11 @@ export default {
             itemsPerPage,
             studentSearchParams
           })
+
+          const pageStart = (page - 1) * itemsPerPage + 1
+          const pageStop = page * itemsPerPage
+          const pageText = `${pageStart}-${pageStop} trên ${totalItems}`
+          commit('setPageText', pageText)
         } else {
           var pages = _.rangeRight(1, page)
           for (let index = 0; index < pages; index++) {
@@ -47,6 +56,8 @@ export default {
           }
         }
       }
+
+      loading.active = false
     },
     async fetchGenerations({ commit, state }) {
       if (_.isEmpty(state.generations)) {
@@ -130,6 +141,9 @@ export default {
     }
   },
   mutations: {
+    setPageText(state, pageText) {
+      state.pageText = pageText
+    },
     clean(state) {
       state.students = []
       state.studentSearchParams = {}
