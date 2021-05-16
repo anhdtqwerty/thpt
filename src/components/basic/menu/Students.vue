@@ -17,7 +17,7 @@
       </v-list-item>
       <v-list-item class="px-0" active-class="blue lighten-4 primary--text" link to="/complimented">
         <v-list-item-action></v-list-item-action>
-        <v-list-item-title>KHEN THƯỞNG KỶ LUẬT</v-list-item-title>
+        <v-list-item-title>Khen thưởng kỷ luật</v-list-item-title>
       </v-list-item>
       <v-list-item active-class="blue lighten-4 primary--text" class="px-0" link to="/student-mark">
         <v-list-item-action></v-list-item-action>
