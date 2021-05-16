@@ -14,21 +14,33 @@
         <v-tab-item :key="1">
           <v-card>
             <div class="d-flex justify-end align-end ">
-              <v-btn v-if="$vuetify.breakpoint.mdAndUp" class="mt-4 mr-4" outlined color="primary">
+              <v-btn
+                v-if="$vuetify.breakpoint.mdAndUp"
+                class="mt-4 mr-4"
+                outlined
+                color="primary"
+                @click="exportExcel('STUDENT_TABLE')"
+              >
                 <v-icon left>mdi-file-excel</v-icon> Xuất Excel
               </v-btn>
             </div>
-            <student-table disableSort mobile-breakpoint="0" />
+            <student-table disableSort mobile-breakpoint="0" ref="studentTable" />
           </v-card>
         </v-tab-item>
         <v-tab-item :key="2">
           <v-card>
             <div class="d-flex justify-end align-end ">
-              <v-btn v-if="$vuetify.breakpoint.mdAndUp" class="mt-4 mr-4" outlined color="primary">
+              <v-btn
+                v-if="$vuetify.breakpoint.mdAndUp"
+                class="mt-4 mr-4"
+                outlined
+                color="primary"
+                @click="exportExcel('PARENT_TABLE')"
+              >
                 <v-icon left>mdi-file-excel</v-icon> Xuất Excel
               </v-btn>
             </div>
-            <ParentDataTable disableSort mobile-breakpoint="0" />
+            <ParentDataTable disableSort mobile-breakpoint="0" ref="parentDataTable" />
           </v-card>
         </v-tab-item>
       </v-tabs-items>
@@ -39,6 +51,8 @@
 <script>
 import StudentTable from '@/modules/class/student/StudentTable.vue'
 import ParentDataTable from '@/modules/class/ParentDataTable.vue'
+import { mapGetters } from 'vuex'
+import utils from '@/plugins/utils'
 export default {
   data() {
     return {
@@ -52,7 +66,21 @@ export default {
   props: {
     classData: Object
   },
-  methods: {}
+  methods: {
+    exportExcel(tableName) {
+      let excelHeader
+      switch (tableName) {
+        case 'STUDENT_TABLE':
+          excelHeader = this.$refs.studentTable.headers.map(({ text, value }) => ({ text, value }))
+          utils.exportExcel(this.students, excelHeader, 'Student_List')
+          break
+        case 'PARENT_TABLE':
+          excelHeader = this.$refs.parentDataTable.headers.map(({ text, value }) => ({ text, value }))
+          utils.exportExcel(this.students, excelHeader, 'Parent_List')
+      }
+    }
+  },
+  computed: mapGetters('classDetail', ['students'])
 }
 </script>
 

@@ -5,7 +5,7 @@
         <Breadcrumbs headline="Lớp học" :link="[{ text: 'Lớp học', href: '../classes' }]" />
       </div>
       <div class="flex-center">
-        <v-btn v-if="$vuetify.breakpoint.mdAndUp" class="mr-2" outlined color="success">
+        <v-btn v-if="$vuetify.breakpoint.mdAndUp" class="mr-2" outlined color="success" @click="exportExcel">
           <v-icon left>mdi-file-excel</v-icon> Xuất Excel
         </v-btn>
         <v-btn color="primary" @click="dialog = !dialog"><v-icon left>add</v-icon>{{ addButtonText }}</v-btn>
@@ -87,6 +87,7 @@ import ClassListActions from '@/modules/class/ClassListActions'
 import ClassesSendSMSDialog from '@/modules/sms/ClassesSendSMSDialog'
 import moment from 'moment'
 import { get } from 'lodash'
+import utils from '@/plugins/utils'
 
 const originHeaders = [
   {
@@ -240,6 +241,10 @@ export default {
         default:
           return 'primary'
       }
+    },
+    exportExcel() {
+      const excelHeader = this.headers.map(({ text, value }) => ({ text, value }))
+      utils.exportExcel(this.classes, excelHeader, 'Classes_List')
     }
   },
   filters: {

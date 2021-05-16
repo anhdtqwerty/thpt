@@ -2,27 +2,13 @@
   <div>
     <div class="pa-4 d-flex justify-space-between align-center">
       <div>
-        <Breadcrumbs
-          headline="Sổ Liên Lạc"
-          :link="[{ text: 'Sổ liên lạc', href: '../contact-book' }]"
-        />
+        <Breadcrumbs headline="Sổ Liên Lạc" :link="[{ text: 'Sổ liên lạc', href: '../contact-book' }]" />
       </div>
       <div class="flex-center">
-        <v-btn
-          v-if="$vuetify.breakpoint.mdAndUp"
-          class="mr-2"
-          outlined
-          color="success"
-        >
+        <v-btn v-if="$vuetify.breakpoint.mdAndUp" class="mr-2" outlined color="success" @click="exportExcel">
           <v-icon left>mdi-file-excel</v-icon> Xuất Excel
         </v-btn>
-        <v-btn
-          v-if="selected.length"
-          dark
-          color="red"
-          @click.stop="onRemove"
-          class="mr-2"
-        >
+        <v-btn v-if="selected.length" dark color="red" @click.stop="onRemove" class="mr-2">
           <v-icon left>mdi-delete</v-icon>Xóa
         </v-btn>
         <v-btn dark color="#0D47A1" @click.stop="createState = !createState">
@@ -47,7 +33,7 @@
         show-select
       >
         <div slot="top" class="py-md-6">
-            <student-filter @onFilterChanged="refresh"></student-filter>
+          <student-filter @onFilterChanged="refresh"></student-filter>
         </div>
         <template v-slot:[`item.name`]="{ item }">
           <card-student-name :student="item" link />
@@ -58,13 +44,7 @@
           </v-btn>
         </template>
         <template v-slot:[`item.contact.app`]="{ item }">
-          <v-chip
-            v-if="item.contact && item.contact.app"
-            class="ma-2"
-            color="green"
-            outlined
-            small
-          >
+          <v-chip v-if="item.contact && item.contact.app" class="ma-2" color="green" outlined small>
             app
           </v-chip>
         </template>
@@ -77,11 +57,7 @@
           <span v-if="item.classes">{{ item.classes | getClasses }}</span>
         </template>
         <template v-slot:[`item.gender`]="{ item }">{{
-          item.gender === 'male'
-            ? 'Nam'
-            : item.gender === 'female'
-            ? 'Nữ'
-            : 'Khác'
+          item.gender === 'male' ? 'Nam' : item.gender === 'female' ? 'Nữ' : 'Khác'
         }}</template>
       </v-data-table>
     </v-card>
@@ -92,6 +68,7 @@ import { mapActions, mapState } from 'vuex'
 import CardStudentName from '@/components/basic/card/CardStudentName.vue'
 import StudentFilter from '@/modules/contactBook/ContactBookFilter.vue'
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
+import utils from '@/plugins/utils'
 
 const originHeaders = [
   {
@@ -205,13 +182,16 @@ export default {
         .reduce((a, b) => a + b, 0) >= 0
         ? ''
         : 'Nợ'
+    },
+    exportExcel() {
+      const excelHeader = this.headers.map(({ text, value }) => ({ text, value }))
+      utils.exportExcel(this.students, excelHeader, 'ContactBook_List')
     }
   },
   watch: {
     studentTableOptions: {
       handler(newOptions, oldOptions) {
-        const itemPerPageChanged =
-          newOptions.itemsPerPage !== oldOptions.itemsPerPage
+        const itemPerPageChanged = newOptions.itemsPerPage !== oldOptions.itemsPerPage
         const pageChanged = newOptions.page !== oldOptions.page
         if (pageChanged || itemPerPageChanged) {
           this.requestPageSettings({
