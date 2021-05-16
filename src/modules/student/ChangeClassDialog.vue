@@ -23,7 +23,7 @@
               </div>
               <div>
                 <p class="text-caption my-0">Mã số</p>
-                <span>{{ item.code }}</span>
+                <span>{{ item.code | getStudentCode }}</span>
               </div>
               <div>
                 <p class="text-caption my-0">Lớp</p>
@@ -51,7 +51,8 @@
                 dense
                 outlined
                 label="Lớp mới"
-                hide-details
+                class="required"
+                :rules="[$rules.required]"
               />
             </v-col>
           </v-row>
@@ -70,7 +71,6 @@
 import { mapActions, mapState, mapGetters } from 'vuex'
 import CardStudentName from '@/components/basic/card/CardStudentName'
 import AutocompleteClass from '@/components/basic/input/AutocompleteClass'
-import { get } from 'lodash'
 
 export default {
   components: {
@@ -80,7 +80,7 @@ export default {
   data() {
     return {
       dialog: false,
-      currentClass: {}
+      currentClass: null
     }
   },
   props: {
@@ -100,8 +100,9 @@ export default {
   methods: {
     ...mapActions('students', ['updateStudent']),
     async save() {
-      if (!get(this.currentClass, 'id')) return
+      if (!this.$refs.form.validate()) return
       try {
+        this.$loading.active = true
         await this.updateStudent({
           id: this.item.id,
           classes: [this.currentClass],
@@ -111,6 +112,8 @@ export default {
         this.reset()
       } catch (error) {
         this.$alert.updateError()
+      } finally {
+        this.$loading.active = false
       }
 
       this.dialog = false

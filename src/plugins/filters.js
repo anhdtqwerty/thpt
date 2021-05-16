@@ -34,4 +34,7 @@ export const vueFilterRegister = () => {
         return 'grey'
     }
   })
+  Vue.filter('getStudentCode', code => {
+    return code.substr(0, 5)
+  })
 }

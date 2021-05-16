@@ -23,7 +23,7 @@
               </div>
               <div>
                 <p class="text-caption my-0">Mã số</p>
-                <span>{{ item.code }}</span>
+                <span>{{ item.code | getStudentCode }}</span>
               </div>
               <div>
                 <p class="text-caption my-0">Lớp</p>
@@ -38,7 +38,7 @@
                 <span class="text-subtitle-2 font-weight-black">{{ item.status | getStatus }}</span>
               </div>
             </v-col>
-            <v-col cols="3" class="d-flex justify-center align-center">
+            <v-col cols="3" class="d-flex justify-center align-start">
               <v-icon large>mdi-arrow-right</v-icon>
             </v-col>
             <v-col cols="6">
@@ -50,7 +50,8 @@
                 dense
                 outlined
                 label="Trạng thái mới"
-                hide-details
+                class="required"
+                :rules="[$rules.required]"
               />
             </v-col>
           </v-row>
@@ -113,8 +114,10 @@ export default {
   methods: {
     ...mapActions('students', ['updateStudent']),
     async save() {
-      if (!this.status) return
+      if (!this.$refs.form.validate()) return
       try {
+        this.$loading.active = true
+
         await this.updateStudent({
           id: this.item.id,
           status: this.status
@@ -123,6 +126,8 @@ export default {
         this.$refs.form.reset()
       } catch (error) {
         this.$alert.updateError()
+      } finally {
+        this.$loading.active = false
       }
 
       this.dialog = false

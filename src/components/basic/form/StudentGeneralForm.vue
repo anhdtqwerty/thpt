@@ -81,6 +81,8 @@ import DateIOSPicker from '@/components/basic/picker/DateIOSPicker.vue'
 import { mapActions } from 'vuex'
 import RadioGender from '@/modules/class/student/RadioGender.vue'
 import UserAvatarPicker from '@/components/basic/picker/UserAvatarPicker'
+import utils from '@/plugins/utils'
+import { textHelpers } from '@/helpers/TextHelper.js'
 
 export default {
   components: { DateIOSPicker, RadioGender, UserAvatarPicker },
@@ -124,7 +126,7 @@ export default {
         username_indexing,
         // eslint-disable-next-line
         username_no
-      } = await this.generateStudentCode(this.name)
+      } = await this.generateStudentCode(this.studentName)
       this.username = username
       // eslint-disable-next-line
       this.username_indexing = username_indexing
@@ -148,7 +150,8 @@ export default {
     },
     getData() {
       return {
-        name: this.name,
+        name: this.studentName,
+        tags: utils.generateStudentTags(this.studentName),
         username: this.username,
         user_indexing: this.username_indexing,
         username_no: this.username_no,
@@ -171,6 +174,11 @@ export default {
     removeImage() {
       this.avatar = null
       this.imageData = null
+    }
+  },
+  computed: {
+    studentName() {
+      return textHelpers.removeSpaces(this.name)
     }
   }
 }
