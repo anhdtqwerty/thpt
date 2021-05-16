@@ -122,7 +122,7 @@ export default {
         currentClass: studentClassForm.class,
         grade: studentClassForm.grade,
         name: studentGeneralForm.name,
-        tag: studentGeneralForm.tag,
+        tags: studentGeneralForm.tags,
         username: studentGeneralForm.username,
         username_indexing: studentGeneralForm.username_indexing,
         username_no: studentGeneralForm.username_no,

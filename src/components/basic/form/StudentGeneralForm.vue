@@ -151,7 +151,7 @@ export default {
     getData() {
       return {
         name: this.studentName,
-        tag: utils.generateStudentTag(this.studentName),
+        tags: utils.generateStudentTags(this.studentName),
         username: this.username,
         user_indexing: this.username_indexing,
         username_no: this.username_no,

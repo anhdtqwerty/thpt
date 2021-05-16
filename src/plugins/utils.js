@@ -236,7 +236,7 @@ export default {
     console.log(str)
     return str.trim().toLocaleLowerCase()
   },
-  generateStudentTag(name = '') {
+  generateStudentTags(name = '') {
     const nameClearedUnicode = this.clearUnicode(name)
     let nameArr = nameClearedUnicode.split(' ')
     if (nameArr[nameArr.length - 1].length === 1) {
