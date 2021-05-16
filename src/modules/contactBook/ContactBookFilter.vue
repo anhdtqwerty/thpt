@@ -12,6 +12,7 @@
           outlined
           dense
           hide-details
+          @keyup.enter="onFilterChanged"
         />
       </v-col>
       <v-col md="3">
@@ -38,6 +39,7 @@
           dense
           clearable
           hide-details
+          @keyup.enter="onFilterChanged"
         />
       </v-col>
       <v-col md="3">
