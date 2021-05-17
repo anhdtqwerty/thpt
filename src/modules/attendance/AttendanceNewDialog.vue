@@ -14,7 +14,7 @@
           <p>Ngày {{ getCurrentDate }}</p>
           <v-row>
             <v-col cols="6">
-              <autocomplete-grade
+              <AutocompleteGrade
                 label="Khối"
                 outlined
                 class="required"
@@ -24,7 +24,7 @@
               />
             </v-col>
             <v-col cols="6">
-              <autocomplete-class
+              <AutocompleteClass
                 v-model="classData"
                 label="Lớp"
                 outlined
@@ -35,14 +35,14 @@
               />
             </v-col>
             <v-col cols="6">
-              <autocomplete-student
+              <AutocompleteStudent
                 v-model="student"
                 label="Học sinh"
                 outlined
                 class="required"
                 dense
                 :rules="[rules.required]"
-                :filter="{ currentClass: classData.id }"
+                :filter="classId"
               />
             </v-col>
           </v-row>
@@ -113,6 +113,9 @@ export default {
     },
     gradeId() {
       return { grade: this.grade }
+    },
+    classId() {
+      return { currentClass: this.classData.id }
     }
   },
   methods: {
