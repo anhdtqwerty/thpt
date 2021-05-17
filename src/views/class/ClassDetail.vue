@@ -1,5 +1,5 @@
 <template>
-  <div v-if="classData" class="pt-2" :class="{ 'px-3': $vuetify.breakpoint.mdAndUp }">
+  <div v-if="classData.id" class="pt-2" :class="{ 'px-3': $vuetify.breakpoint.mdAndUp }">
     <Breadcrumbs
       :class="{ 'px-5 mt-2': $vuetify.breakpoint.smAndDown }"
       data="classData.title"
@@ -11,50 +11,57 @@
     />
 
     <v-card class="mt-6">
-      <v-img src="../../assets/class-default-img.png" class="pa-6" max-height="178">
-        <div class="d-flex">
-          <div
-            class="white--text pa-6 sm-12 xs-12 md-12 lg-6"
-            style="
-            width: 99%;
-              background: rgba(33, 33, 33, 0.3);
-              border-radius: 4px;
-              position: relative;
-            "
-          >
-            <div class="d-flex justify-space-between">
-              <div class="">
-                <p>Lớp học</p>
-                <h2>{{ classData.title }}</h2>
-              </div>
-              <div class="">
-                <p>Giáo viên chủ nhiệm</p>
-                <p style="border: 1px solid #fff; border-radius: 4px" class="pa-1">
-                  {{ classData.teachers | getTeacher }}
-                </p>
-              </div>
-              <div class="">
-                <p>Sĩ số</p>
-                <p>{{ getStudentCount }}</p>
-              </div>
-              <div class="">
-                <p>Niên khóa</p>
-                <p>{{ classData.generation | getGeneration }}</p>
-              </div>
-              <div class="">
-                <p class="">Ban học</p>
-                <p>{{ classData.division | getDivision }}</p>
+      <v-row class="d-flex">
+        <v-col class="pa-6" cols="10">
+          <div class="d-flex align-end justify-space-between">
+            <div>
+              <div>Lớp</div>
+              <h2>{{ classData.title }}</h2>
+            </div>
+            <div>
+              <div>Niên khóa</div>
+              <div class="font-weight-bold">{{ classData.generation | getGeneration }}</div>
+            </div>
+            <div>
+              <div>Phân ban</div>
+              <div class="font-weight-bold">{{ classData.division.title }}</div>
+            </div>
+            <div>
+              <div>Giáo viên chủ nhiệm</div>
+              <div class="font-weight-bold">
+                {{ classData.teachers | getTeacher }}
               </div>
             </div>
+            <div>
+              <div>Sĩ số</div>
+              <div class="font-weight-bold">{{ getStudentCount }}</div>
+            </div>
+
+            <div>
+              <div>Trạng thái</div>
+              <v-chip
+                small
+                class="white--text"
+                v-if="classData.status"
+                :color="classData.status | classStatusColor"
+                label
+              >
+                {{ classData.status | classStatus }}
+              </v-chip>
+            </div>
           </div>
-          <v-btn icon dark @click="updateClass"><v-icon medium>create</v-icon></v-btn>
-        </div>
-      </v-img>
+        </v-col>
+        <v-col class="pa-6 d-flex justify-end align-end" cols="2">
+          <v-btn @click="detailState = !detailState" small color="primary" outlined>Hồ sơ chi tiết</v-btn>
+        </v-col>
+      </v-row>
     </v-card>
     <ClassTabs class="mt-4" />
     <div class="text-center">
       <v-btn class="ma-4" @click="remove" color="red" outlined>Xóa lớp</v-btn>
     </div>
+    <ClassDetailDialog @edit="updateDialogState = !updateDialogState" :classData="classData" :state="detailState" />
+
     <class-update-dialog :state="updateDialogState" :classData="classInfo"></class-update-dialog>
   </div>
   <h1 v-else-if="!$loading.active">Class not found</h1>
@@ -64,16 +71,15 @@ import { mapActions, mapGetters } from 'vuex'
 import { get } from 'lodash'
 import Breadcrumbs from '@/components/layout/Breadcrumbs.vue'
 import ClassUpdateDialog from '@/modules/class/ClassUpdateDialog.vue'
-import StudentTable from '@/modules/class/student/StudentTable.vue'
-import DropMenu from '@/modules/class/student/Menu.vue'
 import ClassTabs from '@/modules/class/ClassTabs.vue'
+import ClassDetailDialog from '@/modules/class/ClassDetailDialog.vue'
+
 export default {
   components: {
     Breadcrumbs,
     ClassUpdateDialog,
-    StudentTable,
-    DropMenu,
-    ClassTabs
+    ClassTabs,
+    ClassDetailDialog
   },
   data() {
     return {
@@ -81,6 +87,7 @@ export default {
       attendanceDialogState: false,
       updateDialogState: false,
       tab: null,
+      detailState: false,
       dialog: false
     }
   },

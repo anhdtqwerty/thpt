@@ -12,7 +12,7 @@
     :footer-props="footerTable"
   >
     <template v-slot:[`item.status`]="{ item }">
-      <v-chip small class="white--text" v-if="item.status" :color="getColor(item.status)" label>
+      <v-chip small class="white--text" v-if="item.status" :color="item.status | classStatusColor" label>
         {{ item.status | classStatus }}
       </v-chip>
     </template>
@@ -170,14 +170,6 @@ export default {
         _sort: 'createdAt:desc, startTime:desc',
         ...query
       })
-    },
-    getColor(classStatus) {
-      switch (classStatus) {
-        case 'running':
-          return '#46BE8A'
-        default:
-          return 'primary'
-      }
     }
   },
   filters: {
@@ -186,12 +178,6 @@ export default {
         return 0
       }
       return students.length
-    },
-    classStatus: status => {
-      if (status === 'opened') return 'Đang chờ'
-      else if (status === 'running') return 'Đang Học'
-      else if (status === 'done') return 'Kết Thúc'
-      else return ''
     },
     getGeneration: item => {
       return get(item, 'name', '')
