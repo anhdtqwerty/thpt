@@ -41,31 +41,17 @@
     >
       <span slot="prepend-inner" class="mt-1">{{ gradeText }}</span>
     </v-text-field>
-    <autocomplete-teacher
-      v-model="teachers"
-      item-text="name"
-      item-value="id"
-      label="Giáo viên chủ nhiệm"
-      deletable-chips
-      chips
-      small-chips
-      multiple
-      dense
-      outlined
-    />
     <v-textarea ref="description" v-model="description" label="Mô Tả" hide-details outlined />
   </v-form>
 </template>
 <script>
 import { get } from 'lodash'
-import AutocompleteTeacher from '@/components/basic/input/AutocompleteTeacher'
 import AutocompleteGrade from '@/components/basic/input/AutocompleteGrade'
 import AutocompleteDivision from '@/components/basic/input/AutocompleteDivision'
 import { textHelpers } from '@/helpers/TextHelper.js'
 
 export default {
   components: {
-    AutocompleteTeacher,
     AutocompleteGrade,
     AutocompleteDivision
   },
@@ -84,8 +70,7 @@ export default {
     grade: '',
     division: '',
     title: '',
-    description: '',
-    teachers: []
+    description: ''
   }),
   computed: {
     getCourseItems() {
@@ -110,14 +95,12 @@ export default {
     },
     resetDefault() {
       if (this.classData) {
-        this.teachers = this.classData.teachers
         this.code = this.classData.code
         this.title = this.classData.title
         this.course = this.courseData || this.classData.course
         this.grade = this.gradeData || this.classData.grade
         this.description = this.classData.description
       } else {
-        this.teachers = []
         this.code = ''
         this.title = ''
         this.course = null
@@ -127,7 +110,6 @@ export default {
     },
     getData() {
       return {
-        teachers: this.teachers,
         description: this.description,
         division: this.division,
         grade: this.grade,

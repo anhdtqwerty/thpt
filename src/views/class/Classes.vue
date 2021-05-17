@@ -30,7 +30,7 @@
       <ClassesDataTable ref="classesDataTable" />
     </v-card>
 
-    <new-class-dialog :state="dialog" style="margin: 0 20px"></new-class-dialog>
+    <new-class-dialog :state="dialog" @done="requestPageSettings({})" style="margin: 0 20px"></new-class-dialog>
     <classes-send-s-m-s-dialog :data="selected" :state="sendState"></classes-send-s-m-s-dialog>
   </div>
 </template>
@@ -91,7 +91,14 @@ export default {
     }
   },
   methods: {
-    ...mapActions('class', ['fetchClasses', 'setClass', 'setClasses', 'updateClasses', 'removeClasses']),
+    ...mapActions('class', [
+      'fetchClasses',
+      'setClass',
+      'setClasses',
+      'updateClasses',
+      'removeClasses',
+      'requestPageSettings'
+    ]),
 
     async refresh(query) {
       this.$refs.classesDataTable.refresh(query)

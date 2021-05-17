@@ -56,7 +56,7 @@ export default {
 
       try {
         this.$loading.active = true
-        await this.createClass({
+        const classData = await this.createClass({
           ...data,
           department: this.department.id,
           generation: this.currentGeneration.id,
@@ -65,6 +65,7 @@ export default {
         this.$alert.addSuccess()
         this.$refs.form.reset()
         this.dialog = false
+        this.$emit('done', classData)
       } catch (error) {
         this.$alert.addError()
       } finally {

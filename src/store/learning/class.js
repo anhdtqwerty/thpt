@@ -85,6 +85,7 @@ export default {
         const c = await Class.create(classData)
         commit('setClass', c)
         alert.success('Tạo lớp học mới thành công!')
+        return c
       } catch (e) {
         alert.error(e)
       }
