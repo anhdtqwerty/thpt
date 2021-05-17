@@ -236,6 +236,13 @@ export default {
     console.log(str)
     return str.trim().toLocaleLowerCase()
   },
+  generateNameToSort(name = '') {
+    let nameArr = name.toLowerCase().split(' ')
+    if (nameArr[nameArr.length - 1].length === 1) {
+      nameArr = nameArr.splice(-1, 1)
+    }
+    return nameArr.slice(0, nameArr.length - 1).reduce((pre, cur) => pre + ' ' + cur, nameArr[nameArr.length - 1])
+  },
   generateStudentTags(name = '') {
     const nameClearedUnicode = this.clearUnicode(name)
     let nameArr = nameClearedUnicode.split(' ')

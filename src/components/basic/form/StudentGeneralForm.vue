@@ -151,6 +151,7 @@ export default {
     getData() {
       return {
         name: this.studentName,
+        formatedName: utils.generateNameToSort(this.studentName),
         tags: utils.generateStudentTags(this.studentName),
         username: this.username,
         user_indexing: this.username_indexing,
