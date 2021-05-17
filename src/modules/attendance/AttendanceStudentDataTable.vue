@@ -23,15 +23,22 @@
         items-per-page-all-text="Tất cả"
       />
     </template>
-
+    <template v-slot:[`item.student`]="{ item }">
+      <CardStudentName :student="item.student" link />
+    </template>
     <template v-slot:[`item.action`]="{ item }">
       <attendance-list-actions :item="item" />
     </template>
     <template v-slot:[`item.checkin`]="{ item }">
-      <span>{{ formatTime(item.checkin[0], 'LT') }}</span>
+      <span>{{ item.checkin[0] }}</span>
     </template>
-    <template v-slot:[`item.student.dob`]="{ item }">
-      <span>{{ formatTime(item.student.dob, 'DD/MM/YYYY') }}</span>
+    <template v-slot:[`item.dob`]="{ item }">
+      <span>{{ (item.student && item.student.dob) | ddmmyyyy }}</span>
+    </template>
+    <template v-slot:[`item.class`]="{ item }">
+      <router-link style="text-decoration: none" :to="'/class/' + (item.class && item.class.id)">
+        <span v-if="item.class">{{ item.class && item.class.title }}</span>
+      </router-link>
     </template>
     <template v-slot:[`item.type`]="{ item }">
       <v-chip small label :color="getColor(item.type)" dark
@@ -46,20 +53,21 @@
 <script>
 import moment from 'moment'
 import AttendanceListActions from '@/modules/attendance/AttendanceListActions'
+import CardStudentName from '@/components/basic/card/CardStudentName.vue'
 
 export default {
-  components: { AttendanceListActions },
+  components: { AttendanceListActions, CardStudentName },
   data() {
     return {
       originHeaders: [
-        { text: 'Học sinh', value: 'student.name', sortable: true },
+        { text: 'Học sinh', value: 'student', width: 200, sortable: true },
         {
           text: 'Ngày sinh',
-          value: 'student.dob',
-          width: 200,
+          value: 'dob',
+          width: 100,
           sortable: false
         },
-        { text: 'Lớp', value: 'class.title', width: 100, sortable: false },
+        { text: 'Lớp', value: 'class', width: 100, sortable: false },
         {
           text: 'Giờ đến',
           value: 'checkin',
@@ -74,16 +82,16 @@ export default {
         },
         { text: 'Trạng thái', value: 'status', width: 100, sortable: false },
         { text: 'Hành động', value: 'action', width: 100, sortable: false }
-      ],
-      attendances: [
-        { date: '28/01/2021', time: '08:00 / 17:00', type: 'onTime' },
-        { date: '29/01/2021', time: '09:00 / 17:00', type: 'late' },
-        { date: '30/01/2021', time: '08:00 / 17:00', type: 'onTime' }
       ]
+      // attendances: [
+      //   { date: '28/01/2021', time: '08:00 / 17:00', type: 'onTime' },
+      //   { date: '29/01/2021', time: '09:00 / 17:00', type: 'late' },
+      //   { date: '30/01/2021', time: '08:00 / 17:00', type: 'onTime' }
+      // ]
     }
   },
   props: {
-    // attendances: Array,
+    attendances: Array,
     hideFooter: { type: Boolean, default: () => false },
     headers: { type: Array, default: () => null }
   },
