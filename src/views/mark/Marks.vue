@@ -67,6 +67,7 @@ export default {
     ...mapActions('subjects', ['fetchSubject']),
 
     async onFilterChanged(query) {
+      if (!get(query, 'class.id') || !get(query, 'subject')) return
       this.$loading.active = true
 
       this.setStudents(get(query, 'class.students'))

@@ -60,6 +60,7 @@ export default {
     ...mapActions('subjects', ['fetchSubjects']),
 
     async onFilterChanged(query) {
+      if (!get(query, 'class.id') || !get(query, 'student.id')) return
       this.$loading.active = true
 
       await this.fetchSubjects({ grade: query.grade })
