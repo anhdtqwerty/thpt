@@ -1,5 +1,5 @@
 <template>
-  <div v-if="classData.id" class="pt-2" :class="{ 'px-3': $vuetify.breakpoint.mdAndUp }">
+  <div v-if="classData" class="pt-2" :class="{ 'px-3': $vuetify.breakpoint.mdAndUp }">
     <Breadcrumbs
       :class="{ 'px-5 mt-2': $vuetify.breakpoint.smAndDown }"
       data="classData.title"

@@ -19,7 +19,7 @@
               <tbody>
                 <tr v-for="(item, order) in studentMarks" :key="item.student.id">
                   <td>{{ order + 1 }}</td>
-                  <td>
+                  <td class="px-2 py-0" style="text-align: left">
                     <CardStudentName :student="item.student" link />
                   </td>
                   <td>{{ item.student.dob | ddmmyyyy }}</td>

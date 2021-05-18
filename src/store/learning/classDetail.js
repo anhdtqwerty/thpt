@@ -1,6 +1,7 @@
 import alert from '@/plugins/alert'
 import { Class, Attendance, Slot, Log, Mark } from '@/plugins/api'
 import _ from 'lodash'
+import utils from '../../plugins/utils'
 
 export default {
   namespaced: true,
@@ -152,10 +153,7 @@ export default {
       return state.attendances
     },
     students: state => {
-      const objs = Object.values(state.students)
-      const collator = new Intl.Collator('vi')
-      const sortedName = objs.sort((a, b) => collator.compare(a.formatedName, b.formatedName))
-      return sortedName
+      return utils.sortListByName(Object.values(state.students))
     }
   }
 }

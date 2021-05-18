@@ -1,6 +1,7 @@
 import { Mark } from '@/plugins/api'
 import alert from '@/plugins/alert'
-import { sum } from 'lodash'
+import utils from '../../plugins/utils'
+
 export default {
   namespaced: true,
   state: {
@@ -17,7 +18,7 @@ export default {
       }
     },
     setStudents({ commit }, students) {
-      commit('setStudents', students)
+      commit('setStudents', utils.sortListByName(students))
     },
     setFactors({ commit }, factors) {
       commit('setFactors', factors)

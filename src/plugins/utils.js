@@ -237,6 +237,11 @@ export default {
     console.log(str)
     return str.trim().toLocaleLowerCase()
   },
+  sortListByName(list = []) {
+    const collator = new Intl.Collator('vi')
+    const sortedList = list.sort((a, b) => collator.compare(a.formatedName, b.formatedName))
+    return sortedList
+  },
   generateNameToSort(name = '') {
     let nameArr = name.toLowerCase().split(' ')
     if (nameArr[nameArr.length - 1].length === 1) {
