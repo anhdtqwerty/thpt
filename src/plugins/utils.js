@@ -239,7 +239,18 @@ export default {
   },
   sortListByName(list = []) {
     const collator = new Intl.Collator('vi')
-    const sortedList = list.sort((a, b) => collator.compare(a.formatedName, b.formatedName))
+    const sortedList = list.sort((a, b) => {
+      const name1 = [...a.formatedName]
+      const name2 = [...b.formatedName]
+      for (let index = 0; index < name1.length; index++) {
+        if (!name2[index]) return 1
+        const compare = collator.compare(name1[index], name2[index])
+        if (!compare && index < name1.length - 1) continue
+        if (compare) return compare
+        if (name2[index + 1]) return -1
+        return collator.compare(a.code, b.code)
+      }
+    })
     return sortedList
   },
   generateNameToSort(name = '') {

@@ -24,7 +24,7 @@
             </div>
             <div>
               <div>Phân ban</div>
-              <div class="font-weight-bold">{{ classData.division.title }}</div>
+              <div class="font-weight-bold">{{ classData.division && classData.division.title }}</div>
             </div>
             <div>
               <div>Giáo viên chủ nhiệm</div>

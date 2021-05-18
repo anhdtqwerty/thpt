@@ -1,6 +1,6 @@
 <template>
   <v-dialog :fullscreen="$vuetify.breakpoint.smAndDown" v-model="dialog" width="600" height="600" scrollable>
-    <v-card>
+    <v-card v-if="classData.id">
       <v-card-title class="primary white--text">
         Hồ SƠ CHI TIẾT LỚP
         <v-spacer></v-spacer>
