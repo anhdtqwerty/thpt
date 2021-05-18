@@ -11,7 +11,7 @@
         />
       </div>
       <div class="flex-center">
-        <v-btn v-if="$vuetify.breakpoint.mdAndUp" class="mr-2" outlined color="success">
+        <v-btn v-if="$vuetify.breakpoint.mdAndUp" class="mr-2" outlined color="success" @click="exportExcel">
           <v-icon left>mdi-file-excel</v-icon> Xuất Excel
         </v-btn>
         <v-btn @click="createStateDialog = !createStateDialog" dark color="#0D47A1">
@@ -45,6 +45,7 @@ import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import NewDivisionDialog from '@/modules/division/NewDivisionDialog.vue'
 import DivisionActions from '@/modules/division/DivisionListActions.vue'
 import DropMenu from '@/modules/student/menu/Menu.vue'
+import utils from '@/plugins/utils'
 
 export default {
   components: {
@@ -120,6 +121,10 @@ export default {
     },
     onDivisionSelected(division) {
       this.setDivision(division)
+    },
+    exportExcel() {
+      const excelHeader = this.headers.map(({ text, value }) => ({ text, value }))
+      utils.exportExcel(this.divisions, excelHeader, 'Divisions_List')
     }
   },
   filters: {

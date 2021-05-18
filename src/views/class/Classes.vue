@@ -5,7 +5,7 @@
         <Breadcrumbs headline="Lớp học" :link="[{ text: 'Lớp học', href: '../classes' }]" />
       </div>
       <div class="flex-center">
-        <v-btn v-if="$vuetify.breakpoint.mdAndUp" class="mr-2" outlined color="success">
+        <v-btn v-if="$vuetify.breakpoint.mdAndUp" class="mr-2" outlined color="success" @click="exportExcel">
           <v-icon left>mdi-file-excel</v-icon> Xuất Excel
         </v-btn>
         <v-btn color="primary" @click="dialog = !dialog"><v-icon left>add</v-icon>{{ addButtonText }}</v-btn>
@@ -44,6 +44,7 @@ import ClassFilter from '@/modules/class/ClassFilter'
 import ClassesSendSMSDialog from '@/modules/sms/ClassesSendSMSDialog'
 import moment from 'moment'
 import { get } from 'lodash'
+import utils from '@/plugins/utils'
 import ClassesDataTable from '@/modules/class/ClassesDataTable.vue'
 
 export default {
@@ -77,7 +78,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('class', ['classData']),
+    ...mapState('class', ['classData', 'classesData']),
     ...mapState('app', ['department', 'currentGeneration']),
     ...mapGetters('class', ['classes']),
     addButtonText() {
@@ -110,6 +111,22 @@ export default {
         default:
           return 'primary'
       }
+    },
+    exportExcel() {
+      const excelHeader = this.$refs.classesDataTable.headers.map(({ text, value }) => ({ text, value }))
+      console.log('excel', excelHeader)
+      const filters = this.$options.filters
+      // map on an array modify the original array => need to clone a new array
+      const classesData = JSON.parse(JSON.stringify(this.classesData))
+      const data = classesData.map(item => {
+        item.division = filters.getDivision(item.division)
+        item.teachers = filters.getTeacherNames(item)
+        item.status = filters.classStatus(item.status)
+        item.studentCount = filters.studentCounter(item.students)
+        console.log('item', item)
+        return item
+      })
+      utils.exportExcel(data, excelHeader, 'Classes_List')
     }
   },
   filters: {

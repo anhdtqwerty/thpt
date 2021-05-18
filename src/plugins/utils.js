@@ -1,6 +1,7 @@
 import moment from 'moment'
-import { get, last } from 'lodash'
-import { parse } from 'json2csv'
+import { saveAs } from 'file-saver'
+import * as XLSX from 'xlsx'
+import _ from 'lodash'
 var ChuSo = [' không ', ' một ', ' hai ', ' ba ', ' bốn ', ' năm ', ' sáu ', ' bảy ', ' tám ', ' chín ']
 var Tien = ['', ' nghìn', ' triệu', ' tỷ', ' nghìn tỷ', ' triệu tỷ']
 function DocSo3ChuSo(baso) {
@@ -286,13 +287,28 @@ export default {
       console.log(e)
     }
   },
-  exportExcel(json) {
-    try {
-      const csv = parse(json, Object.keys(json))
-      return csv
-    } catch (err) {
-      console.error(err)
-    }
+  handleExportExcel(json, excelFileName) {
+    const worksheet = XLSX.utils.json_to_sheet(json)
+    const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] }
+    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
+    const data = new Blob([excelBuffer], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
+    })
+    saveAs(data, `${excelFileName}.xlsx`)
+  },
+  exportExcel(data, excelHeader, excelFileName) {
+    if (data === undefined || data.length === 0) return
+    const tableData = data.map(item => {
+      let dataRow = {}
+      excelHeader.map(h => {
+        if (h.text === undefined || h.value === undefined || h.value === 'actions') {
+          return
+        }
+        dataRow[h.text] = _.get(item, h.value, '')
+      })
+      return dataRow
+    })
+    this.handleExportExcel(tableData, excelFileName)
   },
 
   moneyToString(SoTien) {

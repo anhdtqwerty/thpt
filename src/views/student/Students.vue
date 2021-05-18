@@ -2,33 +2,20 @@
   <div>
     <div class="pa-4 d-flex justify-space-between align-center">
       <div>
-        <Breadcrumbs
-          headline="Danh sách học sinh"
-          :link="[{ text: 'Học sinh', href: '../students' }]"
-        />
+        <Breadcrumbs headline="Danh sách học sinh" :link="[{ text: 'Học sinh', href: '../students' }]" />
       </div>
       <div class="flex-center">
-        <v-btn
-          v-if="$vuetify.breakpoint.mdAndUp"
-          class="mr-2"
-          outlined
-          color="primary"
-        >
+        <v-btn v-if="$vuetify.breakpoint.mdAndUp" class="mr-2" outlined color="primary" @click="exportExcel">
           <v-icon left>mdi-file-excel</v-icon> Xuất Excel
         </v-btn>
-        <v-btn
-          depressed
-          dark
-          color="#0D47A1"
-          @click.stop="createState = !createState"
-        >
+        <v-btn depressed dark color="#0D47A1" @click.stop="createState = !createState">
           <v-icon left>add</v-icon>{{ btnTitle }}
         </v-btn>
       </div>
     </div>
 
     <v-card outlined class="py-md-4 px-md-6 mx-md-4 mb-6 elevation-0">
-      <student-filter  @onFilterChanged="refresh" />
+      <student-filter @onFilterChanged="refresh" />
     </v-card>
 
     <v-card outlined class="mx-md-4 elevation-0">
@@ -49,6 +36,7 @@ import StudentNewDialog from '@/modules/student/StudentNewDialog'
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
 // import StudentSendSMSDialog from '@/modules/sms/StudentSendSMSDialog'
 import StudentDataTable from '@/modules/student/StudentDataTable'
+import utils from '@/plugins/utils'
 
 export default {
   components: {
@@ -56,27 +44,28 @@ export default {
     StudentFilter,
     Breadcrumbs,
     // StudentSendSMSDialog,
-    StudentDataTable,
+    StudentDataTable
   },
   props: {
-    role: String,
+    role: String
   },
   data() {
     return {
       createState: false,
       sendState: false,
-      selected: [],
+      selected: []
     }
   },
   computed: {
     ...mapState('app', ['department']),
+    ...mapState('students', ['students']),
     btnTitle() {
       if (this.$vuetify.breakpoint.smAndDown) {
         return 'Thêm'
       } else {
         return 'Thêm học sinh'
       }
-    },
+    }
   },
   methods: {
     ...mapActions('students', [
@@ -84,7 +73,7 @@ export default {
       'searchStudents',
       'updateStudent',
       'removeStudents',
-      'fetchStudents',
+      'fetchStudents'
     ]),
     refresh(query) {
       this.$refs.studentDataTable.refresh(query)
@@ -99,10 +88,23 @@ export default {
           await this.removeStudents(this.selected)
           this.selected = []
           this.$emit('removed')
-        },
+        }
       })
     },
-  },
+    exportExcel() {
+      const excelHeader = this.$refs.studentDataTable.headers.map(({ text, value }) => ({ text, value }))
+      const filters = this.$refs.studentDataTable.$options.filters
+      const students = JSON.parse(JSON.stringify(this.students))
+      const data = students.map(item => {
+        item.status = filters.getStatus(item.status)
+        item.currentClass = filters.getCurrentClass(item.currentClass)
+        item.gender = filters.getGender(item.gender)
+        item.dob = filters.formatDate(item.dob)
+        return item
+      })
+      utils.exportExcel(data, excelHeader, 'Student_List')
+    }
+  }
 }
 </script>
 <style scoped>

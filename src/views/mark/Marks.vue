@@ -16,7 +16,7 @@
 
     <v-card v-if="factors && factors.length" class="mx-md-4 elevation-1">
       <v-row class="pa-4 justify-end">
-        <v-btn v-if="$vuetify.breakpoint.mdAndUp" class="mr-2" outlined color="primary">
+        <v-btn v-if="$vuetify.breakpoint.mdAndUp" class="mr-2" outlined color="primary" @click="exportExcel">
           <v-icon left>mdi-file-excel</v-icon> Xuất Excel
         </v-btn>
       </v-row>
@@ -104,6 +104,9 @@ export default {
       let yearFactors = [{ title: 'TB HK I' }, { title: 'TB HK II' }, { title: 'Cả Năm' }]
       this.setFactors(yearFactors)
       this.semester = { title: 'Cả năm', type: 'year' }
+    },
+    exportExcel() {
+      // todo
     }
   },
   created() {}

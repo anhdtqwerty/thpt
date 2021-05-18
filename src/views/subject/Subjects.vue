@@ -11,7 +11,7 @@
         />
       </div>
       <div class="flex-center">
-        <v-btn v-if="$vuetify.breakpoint.mdAndUp" class="mr-2" outlined color="success">
+        <v-btn v-if="$vuetify.breakpoint.mdAndUp" class="mr-2" outlined color="success" @click="exportExcel">
           <v-icon left>mdi-file-excel</v-icon> Xuất Excel
         </v-btn>
         <v-btn @click="createSubject = !createSubject" dark color="primary">
@@ -46,6 +46,7 @@ import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import DropMenu from '@/modules/student/menu/Menu.vue'
 import SubjectNewDialog from '@/modules/subject/SubjectNewDialog'
 import SubjectFilter from '@/modules/subject/SubjectFilter.vue'
+import utils from '@/plugins/utils'
 
 export default {
   components: {
@@ -142,6 +143,10 @@ export default {
           await this.removeSubject(id)
         }
       })
+    },
+    exportExcel() {
+      const excelHeader = this.headers.map(({ text, value }) => ({ text, value }))
+      utils.exportExcel(this.subjects, excelHeader, 'Subject_List')
     }
   },
   filters: {

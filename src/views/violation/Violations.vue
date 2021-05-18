@@ -6,30 +6,21 @@
           headline="Khen thưởng kỷ luật"
           :link="[
             { text: 'Học sinh', href: '../students' },
-            { text: 'KTKL', href: '/complimented' },
+            { text: 'KTKL', href: '/complimented' }
           ]"
         />
       </div>
       <div class="flex-center">
-        <v-btn
-          v-if="$vuetify.breakpoint.mdAndUp"
-          class="mr-2"
-          outlined
-          color="primary"
-        >
+        <v-btn v-if="$vuetify.breakpoint.mdAndUp" class="mr-2" outlined color="primary" @click="exportExcel">
           <v-icon left>mdi-file-excel</v-icon> Xuất Excel
         </v-btn>
-        <v-btn color="primary" @click="dialog = !dialog">
-          <v-icon left>add</v-icon> {{ btnTitle }}
-        </v-btn>
+        <v-btn color="primary" @click="dialog = !dialog"> <v-icon left>add</v-icon> {{ btnTitle }} </v-btn>
       </div>
     </div>
-    <v-card class="mx-md-4 my-md-4 elevation-1"
-      ><violation-filter class="pa-4" @onFilterChanged="refresh" />
-    </v-card>
+    <v-card class="mx-md-4 my-md-4 elevation-1"><violation-filter class="pa-4" @onFilterChanged="refresh" /> </v-card>
 
     <v-card class="mx-md-4 elevation-1">
-      <violation-data-table :violations="violations"> </violation-data-table>
+      <violation-data-table :violations="violations" ref="violationDataTable"> </violation-data-table>
     </v-card>
     <violation-new-dialog :state="dialog"> </violation-new-dialog>
   </div>
@@ -41,20 +32,21 @@ import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import ViolationFilter from '@/modules/violation/ViolationFilter.vue'
 import ViolationNewDialog from '@/modules/violation/ViolationNewDialog.vue'
 import ViolationDataTable from '@/modules/violation/ViolationDataTable.vue'
+import utils from '@/plugins/utils'
 
 export default {
   components: {
     Breadcrumbs,
     ViolationFilter,
     ViolationNewDialog,
-    ViolationDataTable,
+    ViolationDataTable
   },
   data() {
     return {
       createState: false,
       filterState: false,
       dialog: false,
-      sendState: false,
+      sendState: false
     }
   },
   computed: {
@@ -65,7 +57,7 @@ export default {
       } else {
         return 'Thêm KTKL'
       }
-    },
+    }
   },
   async created() {
     await this.refresh({})
@@ -81,7 +73,7 @@ export default {
         await this.fetchViolation({
           ...query,
           _limit: 9999,
-          _sort: 'createdAt:desc',
+          _sort: 'createdAt:desc'
         })
       } catch (err) {
         console.log(err)
@@ -89,7 +81,11 @@ export default {
         this.loading = false
       }
     },
-  },
+    exportExcel() {
+      const excelHeader = this.$refs.violationDataTable.originHeaders.map(({ text, value }) => ({ text, value }))
+      utils.exportExcel(this.violations, excelHeader, 'Violation_List')
+    }
+  }
 }
 </script>
 <style lang="stylus"></style>
