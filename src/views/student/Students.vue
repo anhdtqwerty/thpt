@@ -93,7 +93,16 @@ export default {
     },
     exportExcel() {
       const excelHeader = this.$refs.studentDataTable.headers.map(({ text, value }) => ({ text, value }))
-      utils.exportExcel(this.students, excelHeader, 'Student_List')
+      const filters = this.$refs.studentDataTable.$options.filters
+      const students = JSON.parse(JSON.stringify(this.students))
+      const data = students.map(item => {
+        item.status = filters.getStatus(item.status)
+        item.currentClass = filters.getCurrentClass(item.currentClass)
+        item.gender = filters.getGender(item.gender)
+        item.dob = filters.formatDate(item.dob)
+        return item
+      })
+      utils.exportExcel(data, excelHeader, 'Student_List')
     }
   }
 }

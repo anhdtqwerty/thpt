@@ -21,14 +21,12 @@
     </template>
     <template v-slot:[`item.currentClass`]="{ item }">
       <router-link style="text-decoration: none" :to="'/class/' + (item.currentClass && item.currentClass.id)">
-        <span v-if="item.currentClass">{{ item.currentClass && item.currentClass.title }}</span>
+        <span v-if="item.currentClass">{{ item.currentClass | getCurrentClass }}</span>
       </router-link>
     </template>
-    <template v-slot:[`item.gender`]="{ item }">{{
-      item.gender === 'male' ? 'Nam' : item.gender === 'female' ? 'Nữ' : 'Khác'
-    }}</template>
+    <template v-slot:[`item.gender`]="{ item }">{{ item.gender | getGender }}</template>
     <template v-slot:[`item.dob`]="{ item }">
-      <span>{{ formatDate(item.dob) }}</span>
+      <span>{{ item.dob | formatDate }}</span>
     </template>
     <template v-slot:[`item.action`]="{ item }">
       <student-list-actions :item="item"></student-list-actions>
@@ -153,9 +151,6 @@ export default {
         ? ''
         : 'Nợ'
     },
-    formatDate(date) {
-      return moment(date).format('DD/MM/YYYY')
-    },
     getColor(status) {
       switch (status) {
         case 'active':
@@ -194,6 +189,15 @@ export default {
       if (classes && classes.length > 0) {
         return classes.map(c => c.title).join(' ,')
       } else return ''
+    },
+    getCurrentClass(currentClass) {
+      return currentClass == null ? '' : currentClass.title
+    },
+    getGender(gender) {
+      return gender === 'male' ? 'Nam' : gender === 'female' ? 'Nữ' : 'Khác'
+    },
+    formatDate(date) {
+      return moment(date).format('DD/MM/YYYY')
     }
   },
   watch: {

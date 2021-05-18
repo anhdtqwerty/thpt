@@ -78,7 +78,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('class', ['classData']),
+    ...mapState('class', ['classData', 'classesData']),
     ...mapState('app', ['department', 'currentGeneration']),
     ...mapGetters('class', ['classes']),
     addButtonText() {
@@ -113,13 +113,17 @@ export default {
       }
     },
     exportExcel() {
-      const excelHeader = this.headers.map(({ text, value }) => ({ text, value }))
+      const excelHeader = this.$refs.classesDataTable.headers.map(({ text, value }) => ({ text, value }))
+      console.log('excel', excelHeader)
       const filters = this.$options.filters
-      const data = this.classes.map(item => {
+      // map on an array modify the original array => need to clone a new array
+      const classesData = JSON.parse(JSON.stringify(this.classesData))
+      const data = classesData.map(item => {
         item.division = filters.getDivision(item.division)
         item.teachers = filters.getTeacherNames(item)
         item.status = filters.classStatus(item.status)
         item.studentCount = filters.studentCounter(item.students)
+        console.log('item', item)
         return item
       })
       utils.exportExcel(data, excelHeader, 'Classes_List')
