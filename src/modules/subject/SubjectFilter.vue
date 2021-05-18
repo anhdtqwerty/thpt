@@ -4,20 +4,6 @@
       <v-col cols="12" md="10">
         <v-row>
           <v-col cols="12" md="4">
-            <autocomplete-subject
-              v-model="subject"
-              item-text="title"
-              clearable
-              clear-icon="mdi-close"
-              outlined
-              placeholder="Môn học"
-              item-value="id"
-              dense
-              deletable-chips
-              hide-details
-            />
-          </v-col>
-          <v-col cols="12" md="4">
             <autocomplete-grade
               v-model="grade"
               item-text="title"
@@ -40,6 +26,20 @@
               clearable
               placeholder="Phân ban"
               outlined
+              dense
+              deletable-chips
+              hide-details
+            />
+          </v-col>
+          <v-col cols="12" md="4">
+            <autocomplete-subject
+              v-model="subject"
+              item-text="title"
+              clearable
+              clear-icon="mdi-close"
+              outlined
+              placeholder="Môn học"
+              item-value="id"
               dense
               deletable-chips
               hide-details
@@ -79,8 +79,8 @@ export default {
   data: () => ({
     subject: '',
     query: '',
-    divisions:'',
-    grade:'',
+    divisions: '',
+    grade: '',
     dialog: true,
   }),
   computed: {
@@ -88,12 +88,12 @@ export default {
   },
   methods: {
     onFilterChanged() {
-    this.$emit('onFilterChanged', {
+      this.$emit('onFilterChanged', {
         grade: this.grade,
         divisions: this.divisions,
         id: this.subject,
       }),
-    this.reset()
+      this.reset()
     },
     reset() {
       this.query = ''

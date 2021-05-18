@@ -8,10 +8,7 @@
     :items-per-page="-1"
     :headers="headers"
     :items="students"
-    :footer-props="{
-      'items-per-page-text': 'Phụ huynh mỗi trang',
-      'items-per-page-all-text': 'Tất cả'
-    }"
+    hide-default-footer
     class="mt-3"
   >
     <template v-slot:[`item.index`]="{ item }">

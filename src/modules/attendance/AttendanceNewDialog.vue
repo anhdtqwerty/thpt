@@ -1,10 +1,5 @@
 <template>
-  <v-dialog
-    :fullscreen="$vuetify.breakpoint.smAndDown"
-    v-model="dialog"
-    width="600"
-    scrollable
-  >
+  <v-dialog :fullscreen="$vuetify.breakpoint.smAndDown" v-model="dialog" width="600" scrollable>
     <v-card>
       <v-card-title class="primary white--text text-uppercase">
         Thêm điểm danh đến
@@ -19,33 +14,35 @@
           <p>Ngày {{ getCurrentDate }}</p>
           <v-row>
             <v-col cols="6">
-              <autocomplete-grade
-                v-model="grade"
+              <AutocompleteGrade
                 label="Khối"
                 outlined
                 class="required"
                 dense
                 :rules="[rules.required]"
+                @change="grade = $event"
               />
             </v-col>
             <v-col cols="6">
-              <autocomplete-class
-                v-model="classes"
+              <AutocompleteClass
+                v-model="classData"
                 label="Lớp"
                 outlined
                 class="required"
                 dense
                 :rules="[rules.required]"
+                :filter="gradeId"
               />
             </v-col>
             <v-col cols="6">
-              <autocomplete-student
+              <AutocompleteStudent
                 v-model="student"
                 label="Học sinh"
                 outlined
                 class="required"
                 dense
                 :rules="[rules.required]"
+                :filter="classId"
               />
             </v-col>
           </v-row>
@@ -62,20 +59,14 @@
               />
             </v-col>
             <v-col cols="6">
-              <v-checkbox
-                class="my-0"
-                label="Đi học muộn"
-                v-model="late"
-              ></v-checkbox>
+              <v-checkbox class="my-0" label="Đi học muộn" v-model="late"></v-checkbox>
             </v-col>
           </v-row>
         </v-form>
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn class="ma-2" dark depressed color="#0D47A1" @click="save()"
-          >Lưu</v-btn
-        >
+        <v-btn class="ma-2" dark depressed color="#0D47A1" @click="save()">Lưu</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -94,25 +85,25 @@ export default {
     AutocompleteGrade,
     AutocompleteClass,
     AutocompleteStudent,
-    TimeSelector,
+    TimeSelector
   },
   data() {
     return {
       grade: '',
-      classes: '',
+      classData: '',
       student: '',
       time: '',
       late: false,
       dialog: false,
       rules: {
-        required: (value) => !!value || 'Trường này không được để trống',
-        min: (v) => v.length >= 6 || 'Ít nhất 6 ký tự',
-        email: (v) => /.+@.+/.test(v) || 'Email chưa đúng định dạng',
-      },
+        required: value => !!value || 'Trường này không được để trống',
+        min: v => v.length >= 6 || 'Ít nhất 6 ký tự',
+        email: v => /.+@.+/.test(v) || 'Email chưa đúng định dạng'
+      }
     }
   },
   props: {
-    state: Boolean,
+    state: Boolean
   },
   computed: {
     ...mapState('app', ['department']),
@@ -120,11 +111,19 @@ export default {
     getCurrentDate() {
       return moment().format('DD/MM/YYYY')
     },
+    gradeId() {
+      return { grade: this.grade }
+    },
+    classId() {
+      return { currentClass: this.classData.id }
+    }
   },
   methods: {
     ...mapActions('attendance', ['checkinAttendance']),
     timeChange(data) {
-      this.time = moment(data, 'hh:mm').add(7, 'hours').toISOString()
+      this.time = moment(data, 'hh:mm')
+        .add(7, 'hours')
+        .toISOString()
     },
     async save() {
       if (this.$refs.form.validate()) {
@@ -132,16 +131,17 @@ export default {
           student: this.student.id,
           time: this.time
         })
+        this.dialog = false
       }
     },
     cancel() {
       this.dialog = false
-    },
+    }
   },
   watch: {
     state(state) {
       this.dialog = true
-    },
-  },
+    }
+  }
 }
 </script>

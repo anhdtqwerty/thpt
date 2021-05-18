@@ -9,7 +9,13 @@
     :search-input.sync="inputValue"
     clearable
     :loading="loading"
-  ></v-autocomplete>
+  >
+    <template v-slot:item="data">
+      <v-list-item-content>
+        <CardStudentInfo :student="data.item" />
+      </v-list-item-content>
+    </template>
+  </v-autocomplete>
 </template>
 
 <script>
@@ -17,8 +23,12 @@ import api from '../../../plugins/api'
 import { debounce } from 'lodash'
 import utils from '@/plugins/utils.js'
 import { Student } from '@/plugins/api'
+import CardStudentInfo from '@/components/basic/card/CardStudentInfo.vue'
 
 export default {
+  components: {
+    CardStudentInfo
+  },
   data: () => ({
     students: [],
     inputValue: '',

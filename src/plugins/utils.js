@@ -2,7 +2,6 @@ import moment from 'moment'
 import { saveAs } from 'file-saver'
 import * as XLSX from 'xlsx'
 import _ from 'lodash'
-
 var ChuSo = [' không ', ' một ', ' hai ', ' ba ', ' bốn ', ' năm ', ' sáu ', ' bảy ', ' tám ', ' chín ']
 var Tien = ['', ' nghìn', ' triệu', ' tỷ', ' nghìn tỷ', ' triệu tỷ']
 function DocSo3ChuSo(baso) {
@@ -237,6 +236,23 @@ export default {
     str = str.replace(/\s\s+/g, ' ').trim()
     console.log(str)
     return str.trim().toLocaleLowerCase()
+  },
+  generateNameToSort(name = '') {
+    let nameArr = name.toLowerCase().split(' ')
+    if (nameArr[nameArr.length - 1].length === 1) {
+      nameArr = nameArr.splice(-1, 1)
+    }
+    return nameArr.slice(0, nameArr.length - 1).reduce((pre, cur) => pre + ' ' + cur, nameArr[nameArr.length - 1])
+  },
+  generateStudentTags(name = '') {
+    const nameClearedUnicode = this.clearUnicode(name)
+    let nameArr = nameClearedUnicode.split(' ')
+    if (nameArr[nameArr.length - 1].length === 1) {
+      nameArr = nameArr.splice(-1, 1)
+    }
+    const tag1 = nameArr.slice(0, nameArr.length - 1).reduce((pre, cur) => pre + '_' + cur, nameArr[nameArr.length - 1])
+    const tag2 = nameClearedUnicode.replaceAll(' ', '_')
+    return tag1 + '|' + tag2
   },
   generateUserName(name = '') {
     let nameArr = name.split(' ')

@@ -40,6 +40,9 @@ export default {
     if (this.defaultDivisions) {
       this.divisions = this.defaultDivisions
     }
+    if (this.div) {
+      this.value = this.div
+    }
     this.fetchAllDivisions()
   },
   methods: {

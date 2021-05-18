@@ -1,10 +1,7 @@
-import axios from '@/plugins/axios'
 import alert from '@/plugins/alert'
-import utils from '@/plugins/utils'
 import { Class } from '@/plugins/api'
 import _ from 'lodash'
-
-const CLASS_API = '/classes/'
+import loading from '../../plugins/loading'
 
 export default {
   namespaced: true,
@@ -15,25 +12,64 @@ export default {
     },
     count: 0,
     search: [],
-    classes: {}
+    classes: {},
+    classesData: [],
+    pageText: '',
+    itemsPerPage: 10,
+    classSearchParams: {},
+    totalItems: 0
   },
   actions: {
-    async searchClasses({ commit, getters, dispatch }, { keywords, skip, limit, status }) {
-      if (!keywords) return
-      return axios
-        .get(CLASS_API, {
-          hideLoading: true,
-          params: utils.filterObject({
-            code_contains: keywords,
-            skip,
-            limit,
-            status
+    async searchClasses({ commit, state, dispatch }, query) {
+      const classSearchParams = {
+        _limit: state.itemsPerPage,
+        ...query
+      }
+
+      commit('changeState', { classSearchParams })
+      dispatch('requestPageSettings', {})
+    },
+    async requestPageSettings({ state, commit, dispatch }, { page, itemsPerPage }) {
+      loading.active = true
+      if (!page) page = 1
+      if (!itemsPerPage) itemsPerPage = state.itemsPerPage
+      if (state.classSearchParams) {
+        const classSearchParams = {
+          ...state.classSearchParams,
+          _start: (page - 1) * itemsPerPage,
+          _limit: itemsPerPage,
+          _sort: 'createdAt:DESC'
+        }
+        const [totalItems, classesData] = await Promise.all([
+          Class.count(classSearchParams),
+          Class.search(classSearchParams)
+        ])
+
+        if (totalItems > (page - 1) * itemsPerPage || page === 1) {
+          commit('changeState', {
+            classesData,
+            totalItems,
+            itemsPerPage,
+            classSearchParams
           })
-        })
-        .then(classes => {
-          commit('setSearch', classes)
-        })
-        .catch(e => alert.error(e))
+
+          const pageStart = (page - 1) * itemsPerPage + 1
+          const pageStop = page * itemsPerPage
+          const pageText = `${pageStart}-${pageStop} trên ${totalItems}`
+          commit('setPageText', pageText)
+        } else {
+          var pages = _.rangeRight(1, page)
+          for (let index = 0; index < pages; index++) {
+            const selectedPage = pages[index]
+            if (totalItems > (selectedPage - 1) * itemsPerPage) {
+              dispatch('requestPageSettings', {})
+              break
+            }
+          }
+        }
+      }
+
+      loading.active = false
     },
     async fetchClasses({ commit }, params) {
       const classes = await Class.fetch({ ...params })
@@ -49,6 +85,7 @@ export default {
         const c = await Class.create(classData)
         commit('setClass', c)
         alert.success('Tạo lớp học mới thành công!')
+        return c
       } catch (e) {
         alert.error(e)
       }
@@ -81,6 +118,9 @@ export default {
     }
   },
   mutations: {
+    setPageText(state, pageText) {
+      state.pageText = pageText
+    },
     setSearch(state, search) {
       state.search = search
     },

@@ -1,13 +1,10 @@
 <template>
   <div>
-    <div class="pa-4 d-flex justify-space-between align-center">
+    <div v-if="student.id" class="pa-4 d-flex justify-space-between align-center">
       <div>
         <Breadcrumbs
           :headline="student ? `${student.name}` : 'Học Sinh'"
-          :link="[
-            { text: 'Học sinh', href: '../students' },
-            { text: 'Danh sách' }
-          ]"
+          :link="[{ text: 'Học sinh', href: '../students' }, { text: 'Danh sách' }]"
         />
       </div>
     </div>
@@ -41,12 +38,7 @@ export default {
     await this.fetchStudent(this.$route.params.id)
   },
   methods: {
-    ...mapActions('student', [
-      'updateStudent',
-      'fetchStudent',
-      'setTuitions',
-      'removeStudent'
-    ]),
+    ...mapActions('student', ['updateStudent', 'fetchStudent', 'setTuitions', 'removeStudent']),
     resetValidation() {
       this.$refs.form.resetValidation()
     },

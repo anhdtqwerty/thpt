@@ -6,13 +6,9 @@
     :server-items-length="totalItems"
     :headers="headers"
     :items="students"
-    :items-per-page="10"
     sort-by="name"
     @input="$emit('update:selected', $event)"
-    :footer-props="{
-      'items-per-page-text': 'Học sinh mỗi trang',
-      'items-per-page-all-text': 'Tất cả'
-    }"
+    :footer-props="footerTable"
     v-bind="this.$attrs"
   >
     <template v-slot:[`item.name`]="{ item }">
@@ -44,15 +40,6 @@
         </template>
         <span>{{ item.notes }}</span>
       </v-tooltip>
-    </template>
-    <template v-slot:top="{ pagination, options, updateOptions }">
-      <v-data-footer
-        :pagination="pagination"
-        :options="options"
-        @update:options="updateOptions"
-        items-per-page-text="Học sinh mỗi trang"
-        items-per-page-all-text="Tất cả"
-      />
     </template>
   </v-data-table>
 </template>
@@ -136,7 +123,20 @@ export default {
     StudentListActions
   },
   computed: {
-    ...mapState('students', ['totalItems', 'students'])
+    ...mapState('students', ['totalItems', 'students', 'pageText']),
+
+    footerTable() {
+      let footer = {
+        'items-per-page-text': 'Học sinh mỗi trang',
+        'items-per-page-all-text': 'Tất cả',
+        'items-per-page': 10,
+        'page-text': this.pageText
+      }
+      if (this.totalItems > 100) {
+        footer['items-per-page-options'] = [5, 10, 15]
+      }
+      return footer
+    }
   },
   methods: {
     ...mapActions('students', ['requestPageSettings', 'searchStudents', 'fetchStudents']),

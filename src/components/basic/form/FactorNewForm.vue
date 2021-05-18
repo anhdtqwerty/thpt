@@ -86,7 +86,8 @@ export default {
           type: this.type,
           description: this.description,
           semesterType: this.semesterType,
-          multiply: this.multiply
+          multiply: this.multiply,
+          quantity: this.quantity
         }
       }
     },
