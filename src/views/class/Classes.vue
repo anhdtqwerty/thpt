@@ -244,7 +244,15 @@ export default {
     },
     exportExcel() {
       const excelHeader = this.headers.map(({ text, value }) => ({ text, value }))
-      utils.exportExcel(this.classes, excelHeader, 'Classes_List')
+      const filters = this.$options.filters
+      const data = this.classes.map(item => {
+        item.division = filters.getDivision(item.division)
+        item.teachers = filters.getTeacherNames(item)
+        item.status = filters.classStatus(item.status)
+        item.studentCount = filters.studentCounter(item.students)
+        return item
+      })
+      utils.exportExcel(data, excelHeader, 'Classes_List')
     }
   },
   filters: {

@@ -34,19 +34,19 @@
         </template>
         <template v-slot:[`item.status`]="{ item }">
           <span v-if="item.status" :class="getColor(item.status)">
-            {{ item.status === 'active' ? 'Đang dạy' : item.status === 'block' ? 'Không dạy' : '' }}
+            {{ item.status | getStatus }}
           </span>
         </template>
         <template v-slot:[`item.metadata.type`]="{ item }">
           <span v-if="item.metadata.type">
-            {{ item.metadata.type === 'long-tern' ? 'Dài hạn' : item.metadata.type === 'short-tern' ? 'Ngắn hạn' : '' }}
+            {{ item.metadata.type | getTeacherType }}
           </span>
         </template>
         <template v-slot:[`item.subject`]="{ item }">
-          <span v-if="item.subject">{{ item.subject[item.subject.length - 1] }}</span>
+          <span v-if="item.subject">{{ item.subject | getTeacherSubject }}</span>
         </template>
         <template v-slot:[`item.metadata.dob`]="{ item }">
-          {{ formatDate(item.metadata.dob) }}
+          {{ item.metadata.dob | formatDate }}
         </template>
         <template v-slot:[`item.gender`]="{ item }">
           {{ item.gender | getGender }}
@@ -165,9 +165,6 @@ export default {
       if (status === 'block') return 'red--text'
       else return 'gray--text'
     },
-    formatDate(date) {
-      return moment(date).format('DD/MM/YYYY')
-    },
     refresh(query) {
       this.isLoading = true
       this.fetchTeachers({ ...query, department: this.department.id }).then(() => {
@@ -176,7 +173,20 @@ export default {
     },
     exportExcel() {
       const excelHeader = this.headers.map(({ text, value }) => ({ text, value }))
-      utils.exportExcel(this.teachers, excelHeader, 'Teacher_List')
+      const filters = this.$options.filters
+      // map on an array modify the original array => need to clone a new array
+      const teacherss = JSON.parse(JSON.stringify(this.teachers))
+      const data = teacherss.map(item => {
+        item.gender = filters.getGender(item.gender)
+        if (item.subject) {
+          item.subject = filters.getTeacherSubject(item.subject)
+        }
+        item.metadata.dob = filters.formatDate(item.metadata.dob)
+        item.metadata.type = filters.getTeacherType(item.metadata.type)
+        item.status = filters.getStatus(item.status)
+        return item
+      })
+      utils.exportExcel(data, excelHeader, 'Teacher_List')
     }
   },
   filters: {
@@ -186,6 +196,18 @@ export default {
       } else if (gender === 'female') {
         return 'Nữ'
       }
+    },
+    getTeacherType(type) {
+      return type === 'long-tern' ? 'Dài hạn' : type === 'short-tern' ? 'Ngắn hạn' : ''
+    },
+    formatDate(date) {
+      return moment(date).format('DD/MM/YYYY')
+    },
+    getStatus(status) {
+      return status === 'active' ? 'Đang dạy' : status === 'block' ? 'Không dạy' : ''
+    },
+    getTeacherSubject(subject) {
+      return subject[subject.length - 1]
     }
   }
 }
