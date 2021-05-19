@@ -33,6 +33,8 @@ const SUBJECT_API = '/subjects/'
 const VIOLATION_API = '/violations/'
 const FACTOR_API = '/factors/'
 const POST_API = '/posts/'
+const GROUP_SUBJECT_API = '/group-subjects/'
+
 const APIHelper = api => ({
   search: (params, option) => axios.get(api, { params: utils.filterObject(params) }, option),
   count: (params, option) => axios.get(api + 'count', { params: utils.filterObject(params) }, option),
@@ -85,6 +87,8 @@ export const Subject = APIHelper(SUBJECT_API)
 export const Violation = APIHelper(VIOLATION_API)
 export const Factor = APIHelper(FACTOR_API)
 export const Post = APIHelper(POST_API)
+export const GroupSubject = APIHelper(GROUP_SUBJECT_API)
+
 export const Upload = {
   upload: formData =>
     axios.post(UPLOAD_API, formData, {
@@ -120,5 +124,6 @@ export default {
   Subject,
   Violation,
   Factor,
-  Post
+  Post,
+  GroupSubject
 }

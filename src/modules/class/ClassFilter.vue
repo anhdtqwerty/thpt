@@ -4,7 +4,8 @@
       <v-col cols="12" md="10">
         <v-row>
           <v-col cols="12" md="4">
-            <autocomplete-grade
+            <AutocompleteGrade
+              return-object
               v-model="grade"
               item-text="name"
               item-value="id"
@@ -19,12 +20,11 @@
             />
           </v-col>
           <v-col cols="12" md="4">
-            <autocomplete-division
+            <AutocompleteDivision
               v-model="division"
               item-text="name"
               clearable
               clear-icon="mdi-close"
-              :grade="grade"
               label="Ban"
               placeholder="Tất cả"
               item-value="id"
@@ -32,10 +32,11 @@
               dense
               deletable-chips
               hide-details
+              :filter="divisionFilter"
             />
           </v-col>
           <v-col cols="12" md="4">
-            <autocomplete-teacher
+            <AutocompleteTeacher
               v-model="teacher"
               item-text="name"
               clearable
@@ -67,29 +68,31 @@ import { get } from 'lodash'
 import AutocompleteTeacher from '@/components/basic/input/AutocompleteTeacher'
 import AutocompleteGrade from '@/components/basic/input/AutocompleteGrade'
 import AutocompleteDivision from '@/components/basic/input/AutocompleteDivision'
-import AutocompleteClass from '@/components/basic/input/AutocompleteClass'
 export default {
   components: {
     AutocompleteTeacher,
     AutocompleteGrade,
-    AutocompleteDivision,
-    AutocompleteClass
+    AutocompleteDivision
   },
   data: () => ({
     division: '',
     teacher: {},
-    grade: '',
+    grade: {},
     status: 'running',
     tags: '',
     classData: ''
   }),
   computed: {
-    ...mapState('constant', ['classStatus'])
+    ...mapState('constant', ['classStatus']),
+
+    divisionFilter() {
+      return { academicLevel: get(this.grade, 'academicLevel') }
+    }
   },
   methods: {
     onFilterChanged() {
       this.$emit('onFilterChanged', {
-        grade: this.grade,
+        grade: get(this.grade, 'id'),
         division: this.division,
         teachers: this.teacher,
         _sort: 'createdAt:desc'

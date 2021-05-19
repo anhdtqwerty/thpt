@@ -1,8 +1,8 @@
 <template>
-  <v-dialog v-model="dialog" width="600px" scrollable :fullscreen="$vuetify.breakpoint.smAndDown">
+  <v-dialog v-model="dialog" width="400px" scrollable :fullscreen="$vuetify.breakpoint.smAndDown">
     <v-card>
       <v-card-title class="blue darken-4 white--text text-uppercase">
-        <v-toolbar-title>SỬA PHÂN BAN</v-toolbar-title>
+        <v-toolbar-title>SỬA BỘ MÔN</v-toolbar-title>
         <v-spacer />
         <v-icon color="white" @click="cancel">close</v-icon>
       </v-card-title>
@@ -40,7 +40,7 @@ export default {
   },
   props: {
     state: Boolean,
-    division: { type: Object, default: () => {} }
+    groupSubject: { type: Object, default: () => {} }
   },
   data() {
     return {
@@ -51,19 +51,23 @@ export default {
     }
   },
   created() {
-    if (this.division) {
-      this.title = this.division.title
-      this.academicLevel = this.division.academicLevel
+    if (this.groupSubject) {
+      this.title = this.groupSubject.title
+      this.academicLevel = this.groupSubject.academicLevel
     }
   },
   computed: {},
   methods: {
-    ...mapActions('division', ['updateDivision']),
+    ...mapActions('GroupSubject', ['updateGroupSubject']),
     async save() {
       if (!this.$refs.form.validate()) return
       try {
         this.loading = true
-        await this.updateDivision({ id: this.division.id, title: this.title, academicLevel: this.academicLevel })
+        await this.updateGroupSubject({
+          id: this.groupSubject.id,
+          title: this.title,
+          academicLevel: this.academicLevel
+        })
         this.$alert.updateSuccess()
         this.dialog = false
       } catch (error) {

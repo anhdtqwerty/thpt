@@ -57,4 +57,16 @@ export const vueFilterRegister = () => {
         return ''
     }
   })
+  Vue.filter('getAcademicLevel', level => {
+    switch (level) {
+      case 'primary':
+        return '1'
+      case 'secondary':
+        return '2'
+      case 'high':
+        return '3'
+      default:
+        return ''
+    }
+  })
 }
