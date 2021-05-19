@@ -74,6 +74,7 @@ export default {
     async fetchClasses({ commit }, params) {
       const classes = await Class.fetch({ ...params })
       commit('setClasses', classes)
+      return classes
     },
     async countClasses({ commit }, params) {
       const classes = await Class.count(params)

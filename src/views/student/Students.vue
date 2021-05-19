@@ -58,7 +58,7 @@ export default {
   },
   computed: {
     ...mapState('app', ['department']),
-    ...mapState('students', ['students']),
+    ...mapState('students', ['students', 'studentSearchParams']),
     btnTitle() {
       if (this.$vuetify.breakpoint.smAndDown) {
         return 'Thêm'
@@ -91,10 +91,11 @@ export default {
         }
       })
     },
-    exportExcel() {
+    async exportExcel() {
       const excelHeader = this.$refs.studentDataTable.headers.map(({ text, value }) => ({ text, value }))
       const filters = this.$refs.studentDataTable.$options.filters
-      const students = JSON.parse(JSON.stringify(this.students))
+      const list = await this.fetchStudents({ ...this.studentSearchParams, _limit: -1 })
+      const students = JSON.parse(JSON.stringify(list))
       const data = students.map(item => {
         item.status = filters.getStatus(item.status)
         item.currentClass = filters.getCurrentClass(item.currentClass)

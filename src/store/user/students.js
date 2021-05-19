@@ -2,6 +2,7 @@ import api from '../../plugins/api'
 import alert from '../../plugins/alert'
 import loading from '../../plugins/loading'
 import _ from 'lodash'
+import utils from '@/plugins/utils'
 
 export default {
   namespaced: true,
@@ -64,6 +65,10 @@ export default {
         const generations = await api.Generation.fetch()
         commit('changeState', { generations })
       }
+    },
+    async fetchStudents({ commit }, params) {
+      const students = await api.Student.fetch({ ...params })
+      return utils.sortListByName(students)
     },
     async searchMajors({ commit }, majorCode) {
       const majors = await api.Major.search({
