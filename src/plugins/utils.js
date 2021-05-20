@@ -297,7 +297,9 @@ export default {
       console.error(err)
     }
   },
-
+  autoGeneratePassword(){
+    return ("" + Math.random()).substring(2, 10)
+  },
   moneyToString(SoTien) {
     var lan = 0
     var i = 0

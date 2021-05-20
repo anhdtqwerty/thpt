@@ -1,88 +1,122 @@
 <template>
-  <div>
-    <div class="pa-4 d-flex justify-space-between align-center">
+  <div class="pa-4">
+    <ConfigContactDialog
+      :state="configDialog"
+      :student="selectedStudent"
+      @close="configDialog = false"
+    />
+    <ConfigPasswordDialog
+      :state="configPasswordDialog"
+      :student="selectedStudent"
+      @close="configPasswordDialog = false"
+    />
+    <div class="d-flex justify-space-between align-center">
       <div>
         <Breadcrumbs
-          headline="Sổ Liên Lạc"
+          headline="Danh sách sổ liên lạc"
           :link="[{ text: 'Sổ liên lạc', href: '../contact-book' }]"
         />
       </div>
-      <div class="flex-center">
-        <v-btn
-          v-if="$vuetify.breakpoint.mdAndUp"
-          class="mr-2"
-          outlined
-          color="success"
-        >
+      <!-- <div class="flex-center">
+        <v-btn v-if="$vuetify.breakpoint.mdAndUp" outlined color="success">
           <v-icon left>mdi-file-excel</v-icon> Xuất Excel
         </v-btn>
-        <v-btn
-          v-if="selected.length"
-          dark
-          color="red"
-          @click.stop="onRemove"
-          class="mr-2"
-        >
-          <v-icon left>mdi-delete</v-icon>Xóa
-        </v-btn>
-        <v-btn dark color="#0D47A1" @click.stop="createState = !createState">
-          <v-icon left>add</v-icon>{{ btnTitle }}
-        </v-btn>
-      </div>
+      </div> -->
     </div>
 
-    <v-card class="px-md-6 mx-md-4 elevation-1">
+    <v-card class="card-border elevation-0 pa-5 mt-4">
+      <student-filter @onFilterChanged="onFilterChanged"></student-filter>
+    </v-card>
+
+    <v-card class="elevation-1 mt-6">
       <v-data-table
         item-key="id"
         :options.sync="studentTableOptions"
         :server-items-length="totalItems"
         :headers="headers"
-        :items="students"
+        :items="filteredStudents"
         :loading="loading"
         :items-per-page="10"
         :footer-props="{
-          itemsPerPageOptions: [5, 10, 15, 20, 30]
+          itemsPerPageOptions: [5, 10, 15, 20, 30],
         }"
-        v-model="selected"
-        show-select
       >
-        <div slot="top" class="py-md-6">
-            <student-filter @onFilterChanged="refresh"></student-filter>
-        </div>
         <template v-slot:[`item.name`]="{ item }">
           <card-student-name :student="item" link />
         </template>
         <template v-slot:[`item.action`]="{ item }">
-          <v-btn icon :to="'contact-book/' + item.id">
-            <v-icon small>mdi-pencil</v-icon>
-          </v-btn>
+          <v-menu left offset-x>
+            <template v-slot:activator="{ on }">
+              <v-btn text v-on="on" icon>
+                <v-icon color="primary">mdi-dots-vertical</v-icon>
+              </v-btn>
+            </template>
+            <v-list>
+              <v-list-item @click="configContact(item)">
+                <v-list-item-title>Cài đặt sổ</v-list-item-title>
+              </v-list-item>
+              <v-list-item disabled>
+                <v-list-item-title>Xem chi tiết tin đã gửi</v-list-item-title>
+              </v-list-item>
+              <v-list-item
+                @click="unlockContact(item)"
+                v-if="item.contact && item.contact.isLocked"
+              >
+                <v-list-item-title>Gỡ khoá</v-list-item-title>
+              </v-list-item>
+              <v-list-item @click="lockContact(item)" v-else>
+                <v-list-item-title>Khoá sổ</v-list-item-title>
+              </v-list-item>
+              <v-list-item @click="configPassword(item)">
+                <v-list-item-title>Đặt mật khẩu APP</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
         </template>
-        <template v-slot:[`item.contact.app`]="{ item }">
-          <v-chip
-            v-if="item.contact && item.contact.app"
-            class="ma-2"
-            color="green"
-            outlined
-            small
-          >
-            app
-          </v-chip>
+        <template v-slot:[`item.senderMethod`]="{ item }">
+          <span>{{ item | getSenderMethod }}</span>
+        </template>
+        <template v-slot:[`item.phone`]="{ item }">
+          <span>{{ item | getPhone }}</span>
         </template>
         <template v-slot:[`item.status`]="{ item }">
-          <span v-if="item.status" :class="getColor(item.status)">
-            {{ item.status | getStatus }}
-          </span>
+          <v-chip
+            color="error"
+            style="width: 105px"
+            class="d-flex justify-center"
+            v-if="item.contact && item.contact.isLocked"
+            >Đã khoá</v-chip
+          >
+          <v-chip
+            color="cancel"
+            style="width: 105px"
+            v-else-if="
+              !item.contact ||
+              !item.contact.phones ||
+              !item.contact.phones.length === 0
+            "
+            ><span class="white--text">Chưa cài đặt</span></v-chip
+          >
+          <v-chip
+            color="success"
+            style="width: 105px"
+            class="d-flex justify-center"
+            v-else
+            >Hoạt động</v-chip
+          >
         </template>
         <template v-slot:[`item.classes`]="{ item }">
-          <span v-if="item.classes">{{ item.classes | getClasses }}</span>
+          <v-btn
+            style="letter-spacing: 0.2px !important"
+            class="d-flex justify-start px-0"
+            color="primary"
+            plain
+            >{{ item.classes | getClasses }}</v-btn
+          >
         </template>
-        <template v-slot:[`item.gender`]="{ item }">{{
-          item.gender === 'male'
-            ? 'Nam'
-            : item.gender === 'female'
-            ? 'Nữ'
-            : 'Khác'
-        }}</template>
+        <template v-slot:[`item.dob`]="{ item }">
+          <span>{{ item | getStudentDob }}</span>
+        </template>
       </v-data-table>
     </v-card>
   </div>
@@ -90,77 +124,87 @@
 <script>
 import { mapActions, mapState } from 'vuex'
 import CardStudentName from '@/components/basic/card/CardStudentName.vue'
+import ConfigContactDialog from './ConfigContactDialog.vue'
+import ConfigPasswordDialog from './ConfigPasswordDialog.vue'
 import StudentFilter from '@/modules/contactBook/ContactBookFilter.vue'
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
-
+import moment from 'moment'
 const originHeaders = [
   {
-    text: 'Tên học sinh',
+    text: 'Học sinh',
     value: 'name',
     align: 'left',
     sortable: false,
-    show: true
+    show: true,
+  },
+  {
+    text: 'Ngày sinh',
+    value: 'dob',
+    align: 'left',
+    sortable: false,
+    show: true,
   },
   { text: 'Lớp', value: 'classes', align: 'left', sortable: false, show: true },
   {
-    text: 'Điện thoại',
-    value: 'contact.phone',
+    text: 'Hình thức sử dụng',
+    value: 'senderMethod',
     align: 'left',
     sortable: false,
-    show: true
+    show: true,
   },
   {
-    text: 'Hành động',
+    text: 'SĐT đăng ký',
+    value: 'phone',
+    align: 'left',
+    sortable: false,
+    show: true,
+  },
+  {
+    text: 'Trạng thái',
+    value: 'status',
+    align: 'left',
+    sortable: false,
+    show: true,
+  },
+  {
+    text: '',
     value: 'action',
     align: 'center',
     sortable: false,
-    show: true
-  }
+    show: true,
+  },
 ]
 export default {
   components: {
     CardStudentName,
     StudentFilter,
-    Breadcrumbs
+    Breadcrumbs,
+    ConfigContactDialog,
+    ConfigPasswordDialog,
   },
   props: {
-    role: String
+    role: String,
   },
   data() {
     return {
       headers: originHeaders,
       originHeaders: originHeaders,
-      draw: false,
+      selectedStudent: {},
       search: '',
-      status: null,
-      loading: true,
-      statuses: [
-        { text: 'Active', value: 'false' },
-        { text: 'Blocked', value: 'true' }
-      ],
-      range: { from: null, to: null },
-      previewUserId: null,
-      ready: false,
+      loading: false,
+      configDialog: false,
+      configPasswordDialog: false,
       studentTableOptions: {},
-      createState: false,
-      filterState: false,
-      selected: [],
-      sendState: false
+      filteredStudents: [],
     }
   },
   async created() {
     await this.refresh({})
+    this.filteredStudents = this.students
   },
   computed: {
     ...mapState('app', ['department']),
     ...mapState('students', ['totalItems', 'students']),
-    btnTitle() {
-      if (this.$vuetify.breakpoint.smAndDown) {
-        return 'Thêm'
-      } else {
-        return 'Thêm học sinh'
-      }
-    }
   },
   methods: {
     ...mapActions('students', [
@@ -168,44 +212,70 @@ export default {
       'searchStudents',
       'updateStudent',
       'removeStudents',
-      'fetchStudents'
+      'fetchStudents',
     ]),
-    updateDraw(draw) {
-      this.draw = draw
+    configContact(item) {
+      this.configDialog = true
+      this.selectedStudent = item
     },
-    getColor(status) {
-      if (status === 'active') return 'green--text'
-      if (status === 'reserved') return 'orange--text'
-      else return 'gray--text'
+    configPassword(item) {
+      this.configPasswordDialog = true
+      this.selectedStudent = item
     },
-    onRemove() {
-      this.$dialog.confirm({
-        title: 'Xóa Học Sinh',
-        text: `Bạn Có chắc muốn xóa những học sinh này.? ${this.selected.length} học sinh đã chọn`,
-        okText: 'Có',
-        cancelText: 'Không',
-        done: async () => {
-          await this.removeStudents(this.selected)
-          this.selected = []
-          this.$emit('removed')
-        }
+    async lockContact(item) {
+      this.$loading.active = true
+      await this.updateStudent({
+        id: item.id,
+        contact: { ...item.contact, isLocked: true },
       })
+      await this.refresh({})
+      this.$loading.active = false
+    },
+    async unlockContact(item) {
+      this.$loading.active = true
+      await this.updateStudent({
+        id: item.id,
+        contact: { ...item.contact, isLocked: false },
+      })
+      await this.refresh({})
+      this.$loading.active = false
     },
     async refresh(query) {
       this.loading = true
       await this.searchStudents({ department: this.department.id, ...query })
       this.loading = false
     },
-    getTuitionStatus(leads) {
-      if (!leads) return ''
-      return leads
-        .map(lead => {
-          return lead.liabilities
-        })
-        .reduce((a, b) => a + b, 0) >= 0
-        ? ''
-        : 'Nợ'
-    }
+    async onFilterChanged(data) {
+      this.$loading.active = true
+      await this.refresh({
+        grade: data.grade,
+        currentClass: data.classes[0].id,
+      })
+      this.filteredStudents = this.students
+      // this.filteredStudents = this.students.filter((student) => {
+      //   let isAvailable = true
+      //   if (data.studentNameOrCode) {
+      //     if (
+      //       !student.name.includes(data.studentNameOrCode) &&
+      //       !student.code.includes(data.studentNameOrCode)
+      //     )
+      //       isAvailable = false
+      //   } else if (data.status) {
+      //     if (data.status === 'inactive' && student.contact) isAvailable = false
+      //     else if (
+      //       data.status === 'locked' &&
+      //       (!student.contact || !student.contact.isLocked)
+      //     )
+      //       isAvailable = false
+      //     else if (
+      //       data.status === 'active' &&
+      //       (!student.contact || student.contact.phones.length === 0)
+      //     )
+      //       isAvailable = false
+      //   }
+      // })
+      this.$loading.active = false
+    },
   },
   watch: {
     studentTableOptions: {
@@ -216,32 +286,46 @@ export default {
         if (pageChanged || itemPerPageChanged) {
           this.requestPageSettings({
             page: newOptions.page,
-            itemsPerPage: newOptions.itemsPerPage
+            itemsPerPage: newOptions.itemsPerPage,
           })
         }
       },
-      deep: true
-    }
+      deep: true,
+    },
+    students(students) {
+      this.filteredStudents = students
+    },
   },
   filters: {
-    getStatus(status) {
-      if (status === 'reserved') return 'Bảo Lưu'
-      if (status === 'active') return 'Đang học'
-      return status
-    },
-    getClassCount(classes) {
-      return classes ? classes.length : 0
-    },
     getClasses(classes) {
       if (classes && classes.length > 0) {
-        return classes.map(c => c.title).join(' ,')
+        return classes.map((c) => c.title).join(' ,')
       } else return ''
-    }
-  }
+    },
+    getStudentDob(item) {
+      if (item.dob) return moment.utc(item.dob).format('DD/MM/YYYY')
+      return ''
+    },
+    getSenderMethod(item) {
+      if (!item.contact) return ''
+      else if (item.contact && item.contact.isSms && item.contact.isApp)
+        return 'APP và SMS'
+      return 'SMS'
+    },
+    getPhone(item) {
+      if (!item.contact || !item.contact.phones) return ''
+      else if (typeof item.contact.phones === 'string')
+        return item.contact.phones
+      else return item.contact.phones.join(', ')
+    },
+  },
 }
 </script>
 <style scoped>
 td {
   white-space: nowrap !important   ;
+}
+.card-border {
+  border: 1px solid rgba(224, 224, 224, 1);
 }
 </style>

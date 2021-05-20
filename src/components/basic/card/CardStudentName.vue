@@ -4,7 +4,7 @@
     :key="student.id"
     @click="$emit('change', student)"
   >
-    <div v-if="!$vuetify.breakpoint.mobile" class="image-wrapper mr-2">
+    <div class="image-wrapper mr-2">
       <img :src="avatar" alt="" />
     </div>
     <div>

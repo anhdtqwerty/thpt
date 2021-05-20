@@ -4,7 +4,7 @@
       <v-list-item-icon class="mr-4">
         <v-icon>mdi-layers</v-icon>
       </v-list-item-icon>
-      <v-list-item-title>NÂNG CAO</v-list-item-title>
+      <v-list-item-title>Nâng cao</v-list-item-title>
     </template>
     <v-list class="py-0">
       <v-list-item

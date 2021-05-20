@@ -1,48 +1,100 @@
 <template>
   <v-form>
     <v-row>
-      <v-col md="3">
-        <v-text-field
-          v-model="name"
-          label="Tên học sinh"
-          placeholder="Tìm Tên"
-          return-object
-          clearable
-          flat
-          outlined
-          dense
-          hide-details
-        />
+      <v-col cols="12" xs="12" sm="12" md="10">
+        <v-row>
+          <v-col md="4">
+            <autocomplete-grade
+              v-model="grade"
+              item-text="name"
+              item-value="id"
+              clear-icon="mdi-close"
+              clearable
+              label="Khối"
+              outlined
+              dense
+              deletable-chips
+              hide-details
+            />
+          </v-col>
+          <v-col md="4">
+            <autocomplete-class
+              v-model="classes"
+              clear-icon="mdi-close"
+              label="Lớp"
+              :disabled="!grade"
+              :filter="classFilter"
+              clearable
+              flat
+              outlined
+              dense
+              return-object
+              hide-details
+            />
+          </v-col>
+          <v-col md="4">
+            <v-text-field
+              v-model="studentNameOrCode"
+              label="Học sinh"
+              return-object
+              clearable
+              flat
+              outlined
+              dense
+              hide-details
+            />
+          </v-col>
+        </v-row>
       </v-col>
-      <v-col md="3">
-        <AutocompleteClass
-          v-model="classes"
-          clear-icon="mdi-close"
-          placeholder="Tìm kiếm lớp"
-          label="Lớp"
-          clearable
-          flat
-          outlined
-          dense
-          return-object
-          hide-details
-        />
+      <v-col cols="12" xs="12" sm="12" md="2"> </v-col>
+    </v-row>
+    <v-row class="mt-4">
+      <v-col cols="12" xs="12" sm="12" md="10">
+        <v-row>
+          <v-col md="4">
+            <v-select
+              v-model="status"
+              item-text="title"
+              item-value="status"
+              label="Trạng thái"
+              :items="statuses"
+              outlined
+              dense
+            ></v-select>
+          </v-col>
+          <v-col md="4">
+            <v-text-field
+              v-model="phone"
+              label="Số điện thoại đăng ký"
+              return-object
+              clearable
+              flat
+              outlined
+              dense
+              hide-details
+            />
+          </v-col>
+          <v-col md="4">
+            <div class="d-flex justify-space-between align-center pt-1">
+              <v-checkbox
+                class="mt-0"
+                label="Sử dụng SMS"
+                v-model="isSms"
+                hide-details
+              ></v-checkbox>
+              <v-checkbox
+                v-model="isApp"
+                class="mt-0"
+                label="Sử dụng APP"
+                hide-details
+              ></v-checkbox>
+            </div>
+          </v-col>
+        </v-row>
       </v-col>
-      <v-col md="3">
-        <v-text-field
-          v-model="code"
-          clear-icon="mdi-close"
-          placeholder="Mã học viên"
-          flat
-          outlined
-          dense
-          clearable
-          hide-details
-        />
-      </v-col>
-      <v-col md="3">
+      <v-col cols="12" xs="12" sm="12" md="2">
         <v-btn height="40" color="#0D47A1" @click="onFilterChanged" outlined>
-          <v-icon left dark>mdi-filter-outline</v-icon>Lọc
+          Tìm kiếm
         </v-btn>
       </v-col>
     </v-row>
@@ -50,46 +102,51 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
-import moment from 'moment'
 import AutocompleteClass from '@/components/basic/input/AutocompleteClass'
+import AutocompleteGrade from '@/components/basic/input/AutocompleteGrade'
 export default {
-  components: { AutocompleteClass },
+  components: { AutocompleteClass, AutocompleteGrade },
   data: () => ({
-    show: false,
-    status: 'active',
-    code: '',
-    dob: '',
-    name: '',
-    classes: [],
-    gender: '',
-    selectedCourse: [],
-    genders: [
-      { title: 'Nam', value: 'male' },
-      { title: 'Nữ', value: 'female' },
-      { title: 'Khác', value: 'other' }
-    ]
+    studentNameOrCode: '',
+    phone: '',
+    classes: null,
+    grade: null,
+    isSms: false,
+    isApp: false,
+    status: '',
+    statuses: [
+      {
+        title: 'Chưa cài đặt',
+        status: 'inactive',
+      },
+      {
+        title: 'Đã khoá',
+        status: 'locked',
+      },
+      {
+        title: 'Hoạt động',
+        status: 'active',
+      },
+    ],
   }),
   computed: {
-    ...mapState('constant', ['studentStatus'])
+    classFilter() {
+      return this.grade ? { grade: this.grade } : {}
+    },
   },
   methods: {
     onFilterChanged() {
       this.$emit('onFilterChanged', {
-        name_contains: this.name,
+        grade: this.grade,
         classes: this.classes,
-        dob_gt: moment(this.dob)
-          .startOf('month')
-          .toISOString(),
-        dob_lt: moment(this.dob)
-          .endOf('month')
-          .toISOString(),
-        code_contains: this.code,
+        student: this.studentNameOrCode,
         status: this.status,
-        gender: this.gender,
-        _sort: 'createdAt:desc'
+        phone: this.phone,
+        isSms: this.isSms,
+        isApp: this.isApp,
+        _sort: 'updatedAt:desc',
       })
-    }
-  }
+    },
+  },
 }
 </script>

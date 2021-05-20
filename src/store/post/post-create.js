@@ -32,7 +32,7 @@ export default {
       } catch (error) {
         alert.error(error)
       }
-    }
+    },
   },
   mutations: {},
   getters: {
