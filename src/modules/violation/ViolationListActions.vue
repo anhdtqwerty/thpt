@@ -1,19 +1,16 @@
 <template>
   <div>
-    <violation-update-dialog
-      v-bind:violation="selected"
-      :state="EditViolation"
-    />
+    <violation-update-dialog v-bind:violation="selected" :state="EditViolation" />
     <v-menu offset-y>
       <template v-slot:activator="{ on, attrs }">
         <v-icon v-bind="attrs" v-on="on">mdi-dots-vertical</v-icon>
       </template>
       <v-list class="pa-0">
         <v-list-item @click="EditViolation = !EditViolation">
-          Sửa KTKL
+          Sửa nội dung
         </v-list-item>
         <v-list-item class="elevation-0" @click="onRemove()">
-          Xóa KTKL
+          Xóa nội dung
         </v-list-item>
       </v-list>
     </v-menu>
@@ -25,36 +22,36 @@ import ViolationUpdateDialog from '@/modules/violation/ViolationUpdateDialog.vue
 
 export default {
   components: {
-    ViolationUpdateDialog,
+    ViolationUpdateDialog
   },
   props: {
-    selected: { type: Object, default: () => [] },
+    selected: { type: Object, default: () => [] }
   },
   data() {
     return {
       sending: null,
-      EditViolation: false,
+      EditViolation: false
     }
   },
   computed: {
-    ...mapState('violation', ['violations']),
+    ...mapState('violation', ['violations'])
   },
   methods: {
     ...mapActions('violation', ['removeViolation', 'updateDivision']),
     onRemove() {
       this.$dialog.confirm({
         title: 'Xóa',
-        text: 'Bạn có chắc muốn xóa không?',
+        text: 'Bạn có chắc muốn xóa nội dung khen thưởng kỷ luật này không?',
         okText: 'Có',
         cancelText: 'Không',
         done: async () => {
           await this.removeViolation(this.selected.id)
-        },
+        }
       })
     },
     onEdit() {
       this.$emit('onEdit', this.selected)
-    },
-  },
+    }
+  }
 }
 </script>

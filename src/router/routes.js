@@ -50,6 +50,7 @@ import GuestLayout from '../components/layout/GuestLayout'
 import MainLayout from '../components/layout/MainLayout'
 import Page404 from '@/views/Page404'
 // -----------------------Advanced Setting---------------------------------
+import GroupSubjects from '@/views/groupSubject/GroupSubjects.vue'
 import Divisions from '@/views/division/Divisions.vue'
 import Semesters from '@/views/semester/Semesters.vue'
 import Grades from '@/views/grade/Grades.vue'
@@ -59,6 +60,8 @@ import Classes from '@/views/class/Classes'
 import TimeTableConfig from '@/views/timetable/TimeTableConfig.vue'
 // -----------------------Advanced Setting---------------------------------
 import PostCreate from '@/views/post/PostCreate.vue'
+import PostCreateAuto from '@/views/post/PostCreateAuto.vue'
+import PostCreateHistory from '@/views/post/PostCreateHistory.vue'
 
 const routes = [
   {
@@ -161,6 +164,15 @@ const routes = [
         name: 'Generations',
         meta: {
           title: 'Niên khóa',
+          auth: true
+        }
+      },
+      {
+        path: 'groupSubjects',
+        component: GroupSubjects,
+        name: 'GroupSubjects',
+        meta: {
+          title: 'Quản lý bộ môn',
           auth: true
         }
       },
@@ -437,6 +449,24 @@ const routes = [
         component: PostCreate,
         meta: {
           title: 'Gửi tin nhắn',
+          auth: true
+        }
+      },
+      {
+        path: 'post-send-auto',
+        name: 'Gửi tin tự động',
+        component: PostCreateAuto,
+        meta: {
+          title: 'Gửi tin tự động',
+          auth: true
+        }
+      },
+      {
+        path: 'post-history',
+        name: 'Lịch sử gửi tin',
+        component: PostCreateHistory,
+        meta: {
+          title: 'Lịch sử gửi tin',
           auth: true
         }
       },

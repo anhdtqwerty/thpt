@@ -1,18 +1,8 @@
 import moment from 'moment'
-import { get, last } from 'lodash'
-import { parse } from 'json2csv'
-var ChuSo = [
-  ' không ',
-  ' một ',
-  ' hai ',
-  ' ba ',
-  ' bốn ',
-  ' năm ',
-  ' sáu ',
-  ' bảy ',
-  ' tám ',
-  ' chín '
-]
+import { saveAs } from 'file-saver'
+import * as XLSX from 'xlsx'
+import _ from 'lodash'
+var ChuSo = [' không ', ' một ', ' hai ', ' ba ', ' bốn ', ' năm ', ' sáu ', ' bảy ', ' tám ', ' chín ']
 var Tien = ['', ' nghìn', ' triệu', ' tỷ', ' nghìn tỷ', ' triệu tỷ']
 function DocSo3ChuSo(baso) {
   var tram
@@ -71,9 +61,7 @@ const FAIR_EQUALS = [null, '', undefined]
 
 function _compare(src, tar) {
   if (typeof src !== 'object') {
-    return (
-      src === tar || (FAIR_EQUALS.includes(src) && FAIR_EQUALS.includes(tar))
-    )
+    return src === tar || (FAIR_EQUALS.includes(src) && FAIR_EQUALS.includes(tar))
   } else if (typeof src === typeof tar) {
     for (let key in src) {
       if (!src.hasOwnProperty(key)) continue
@@ -102,10 +90,7 @@ export default {
       const from = prop.from || prop
       const to = prop.to || from
       if (obj.hasOwnProperty(from)) {
-        extractedObj[to] =
-          typeof prop.handler === 'function'
-            ? prop.handler(obj[from])
-            : obj[from]
+        extractedObj[to] = typeof prop.handler === 'function' ? prop.handler(obj[from]) : obj[from]
       } else if (prop.hasOwnProperty('default')) {
         extractedObj[to] = prop.default
       }
@@ -252,14 +237,45 @@ export default {
     console.log(str)
     return str.trim().toLocaleLowerCase()
   },
+  sortListByName(list = []) {
+    const collator = new Intl.Collator('vi')
+    const sortedList = list.sort((a, b) => {
+      const name1 = [...a.formatedName]
+      const name2 = [...b.formatedName]
+      for (let index = 0; index < name1.length; index++) {
+        if (!name2[index]) return 1
+        const compare = collator.compare(name1[index], name2[index])
+        if (!compare && index < name1.length - 1) continue
+        if (compare) return compare
+        if (name2[index + 1]) return -1
+        return collator.compare(a.code, b.code)
+      }
+    })
+    return sortedList
+  },
+  generateNameToSort(name = '') {
+    let nameArr = name.toLowerCase().split(' ')
+    if (nameArr[nameArr.length - 1].length === 1) {
+      nameArr = nameArr.splice(-1, 1)
+    }
+    return nameArr.slice(0, nameArr.length - 1).reduce((pre, cur) => pre + ' ' + cur, nameArr[nameArr.length - 1])
+  },
+  generateStudentTags(name = '') {
+    const nameClearedUnicode = this.clearUnicode(name)
+    let nameArr = nameClearedUnicode.split(' ')
+    if (nameArr[nameArr.length - 1].length === 1) {
+      nameArr = nameArr.splice(-1, 1)
+    }
+    const tag1 = nameArr.slice(0, nameArr.length - 1).reduce((pre, cur) => pre + '_' + cur, nameArr[nameArr.length - 1])
+    const tag2 = nameClearedUnicode.replaceAll(' ', '_')
+    return tag1 + '|' + tag2
+  },
   generateUserName(name = '') {
     let nameArr = name.split(' ')
     if (nameArr[nameArr.length - 1].length === 1) {
       nameArr = nameArr.splice(-1, 1)
     }
-    return nameArr
-      .slice(0, nameArr.length - 1)
-      .reduce((pre, cur) => pre + cur[0], nameArr[nameArr.length - 1])
+    return nameArr.slice(0, nameArr.length - 1).reduce((pre, cur) => pre + cur[0], nameArr[nameArr.length - 1])
   },
   formatMoney(amount, decimalCount = 0, decimal = '.', thousands = ',') {
     try {
@@ -268,9 +284,7 @@ export default {
 
       const negativeSign = amount < 0 ? '-' : ''
 
-      let i = parseInt(
-        (amount = Math.abs(Number(amount) || 0).toFixed(decimalCount))
-      ).toString()
+      let i = parseInt((amount = Math.abs(Number(amount) || 0).toFixed(decimalCount))).toString()
       let j = i.length > 3 ? i.length % 3 : 0
 
       return (
@@ -289,13 +303,28 @@ export default {
       console.log(e)
     }
   },
-  exportExcel(json) {
-    try {
-      const csv = parse(json, Object.keys(json))
-      return csv
-    } catch (err) {
-      console.error(err)
-    }
+  handleExportExcel(json, excelFileName) {
+    const worksheet = XLSX.utils.json_to_sheet(json)
+    const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] }
+    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
+    const data = new Blob([excelBuffer], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
+    })
+    saveAs(data, `${excelFileName}.xlsx`)
+  },
+  exportExcel(data, excelHeader, excelFileName) {
+    if (data === undefined || data.length === 0) return
+    const tableData = data.map(item => {
+      let dataRow = {}
+      excelHeader.map(h => {
+        if (h.text === undefined || h.value === undefined || h.value === 'actions') {
+          return
+        }
+        dataRow[h.text] = _.get(item, h.value, '')
+      })
+      return dataRow
+    })
+    this.handleExportExcel(tableData, excelFileName)
   },
   autoGeneratePassword(){
     return ("" + Math.random()).substring(2, 10)

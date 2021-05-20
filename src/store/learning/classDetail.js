@@ -1,6 +1,7 @@
 import alert from '@/plugins/alert'
 import { Class, Attendance, Slot, Log, Mark } from '@/plugins/api'
 import _ from 'lodash'
+import utils from '../../plugins/utils'
 
 export default {
   namespaced: true,
@@ -17,7 +18,7 @@ export default {
     marks: {}
   },
   actions: {
-    async initClass({ commit }, {id}) {
+    async initClass({ commit }, { id }) {
       const [classData, slots, attendances, marks] = await Promise.all([
         Class.fetchOne(id),
         Slot.fetch({ class: id }),
@@ -46,10 +47,7 @@ export default {
       commit('setLogs', await Log.fetch(params))
     },
     async fetchAttendances({ commit }, params) {
-      commit(
-        'setAttendances',
-        await Attendance.fetch({ ...params, _limit: -1 })
-      )
+      commit('setAttendances', await Attendance.fetch({ ...params, _limit: -1 }))
     },
     async updateClass({ commit, state }, { id, ...classData }) {
       commit('setClass', await Class.update(id, classData))
@@ -58,14 +56,10 @@ export default {
       commit('setAttendance', await Attendance.create(data, option))
     },
     async createAttendances({ dispatch }, attendances) {
-      await Promise.all(
-        attendances.map(item => dispatch('createAttendance', { data: item }))
-      )
+      await Promise.all(attendances.map(item => dispatch('createAttendance', { data: item })))
     },
     async createSlots({ dispatch }, slots) {
-      await Promise.all(
-        slots.map(item => dispatch('createSlot', { data: item }))
-      )
+      await Promise.all(slots.map(item => dispatch('createSlot', { data: item })))
     },
     async createSlot({ commit }, data) {
       try {
@@ -75,9 +69,7 @@ export default {
       }
     },
     async createMarks({ dispatch }, marks) {
-      await Promise.all(
-        marks.map(item => dispatch('createMark', { data: item }))
-      )
+      await Promise.all(marks.map(item => dispatch('createMark', { data: item })))
     },
     async createMark({ commit }, { data, options }) {
       commit('setMark', await Mark.create(data, options))
@@ -161,7 +153,7 @@ export default {
       return state.attendances
     },
     students: state => {
-      return Object.values(state.students)
+      return utils.sortListByName(Object.values(state.students))
     }
   }
 }

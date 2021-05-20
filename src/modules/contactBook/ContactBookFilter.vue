@@ -76,18 +76,8 @@
           </v-col>
           <v-col md="4">
             <div class="d-flex justify-space-between align-center pt-1">
-              <v-checkbox
-                class="mt-0"
-                label="Sử dụng SMS"
-                v-model="isSms"
-                hide-details
-              ></v-checkbox>
-              <v-checkbox
-                v-model="isApp"
-                class="mt-0"
-                label="Sử dụng APP"
-                hide-details
-              ></v-checkbox>
+              <v-checkbox class="mt-0" label="Sử dụng SMS" v-model="isSms" hide-details></v-checkbox>
+              <v-checkbox v-model="isApp" class="mt-0" label="Sử dụng APP" hide-details></v-checkbox>
             </div>
           </v-col>
         </v-row>
@@ -117,22 +107,22 @@ export default {
     statuses: [
       {
         title: 'Chưa cài đặt',
-        status: 'inactive',
+        status: 'inactive'
       },
       {
         title: 'Đã khoá',
-        status: 'locked',
+        status: 'locked'
       },
       {
         title: 'Hoạt động',
-        status: 'active',
-      },
-    ],
+        status: 'active'
+      }
+    ]
   }),
   computed: {
     classFilter() {
       return this.grade ? { grade: this.grade } : {}
-    },
+    }
   },
   methods: {
     onFilterChanged() {
@@ -144,9 +134,9 @@ export default {
         phone: this.phone,
         isSms: this.isSms,
         isApp: this.isApp,
-        _sort: 'updatedAt:desc',
+        _sort: 'updatedAt:desc'
       })
-    },
-  },
+    }
+  }
 }
 </script>

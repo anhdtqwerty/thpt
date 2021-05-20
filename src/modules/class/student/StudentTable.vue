@@ -8,10 +8,7 @@
     :items-per-page="-1"
     :headers="headers"
     :items="students"
-    :footer-props="{
-      'items-per-page-text': 'Học sinh mỗi trang',
-      'items-per-page-all-text': 'Tất cả'
-    }"
+    hide-default-footer
     class="mt-3"
   >
     <template v-slot:[`item.index`]="{ item }">
@@ -22,7 +19,7 @@
     </template>
     <template v-slot:[`item.dob`]="{ item }">{{ item.dob | ddmmyyyy }}</template>
     <template v-slot:[`item.name`]="{ item }">
-      <user-item :student="item" link></user-item>
+      <CardStudentName :student="item" link />
     </template>
     <template v-slot:[`item.gender`]="{ item }">{{ item.gender | gender }}</template>
     <template v-slot:[`item.notes`]="{ item }">
@@ -37,10 +34,10 @@
 </template>
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex'
-import UserItem from '@/components/basic/card/CardStudentName.vue'
+import CardStudentName from '@/components/basic/card/CardStudentName.vue'
 const defaultHeaders = [
   { text: 'STT', value: 'index', align: 'center', sortable: false },
-  { text: 'Tên', value: 'name', align: 'left', sortable: false },
+  { text: 'Học sinh', value: 'name', align: 'left', sortable: false },
   { text: 'Ngày sinh', value: 'dob', align: 'left', sortable: false },
   { text: 'Giới tính', value: 'gender', align: 'left', sortable: false },
   {
@@ -59,7 +56,7 @@ const defaultHeaders = [
 ]
 export default {
   components: {
-    UserItem
+    CardStudentName
   },
   data() {
     return {

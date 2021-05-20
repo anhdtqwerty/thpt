@@ -11,10 +11,7 @@ export default {
   },
   actions: {
     async fetchAllSchoolData({ commit }, options) {
-      const [classNo, studentNo] = await Promise.all([
-        Class.count(),
-        Student.count()
-      ])
+      const [classNo, studentNo] = await Promise.all([Class.count(), Student.count()])
       commit('changeState', { classNo, studentNo })
     },
     async fetchGradeData({ commit }) {
@@ -25,14 +22,14 @@ export default {
         alert.error(error)
       }
     },
-    async fetchClassData({ commit }, { gradeId }) {
+    async fetchClassData({ commit }, params) {
       try {
-        const classes = await Class.fetch({ grade: gradeId })
+        const classes = await Class.fetch({ ...params })
         commit('changeState', { classes })
       } catch (error) {
         alert.error(error)
       }
-    },
+    }
   },
   mutations: {},
   getters: {

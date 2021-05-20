@@ -1,6 +1,8 @@
 import api from '../../plugins/api'
 import alert from '../../plugins/alert'
+import loading from '../../plugins/loading'
 import _ from 'lodash'
+import utils from '@/plugins/utils'
 
 export default {
   namespaced: true,
@@ -8,16 +10,16 @@ export default {
     students: [],
     studentSearchParams: {},
     totalItems: 0,
-    itemsPerPage: 5,
+    itemsPerPage: 10,
     generations: [],
     majors: [],
-    classes: []
+    classes: [],
+    pageText: ''
   },
   actions: {
-    async requestPageSettings(
-      { state, commit, dispatch },
-      { page, itemsPerPage }
-    ) {
+    async requestPageSettings({ state, commit, dispatch }, { page, itemsPerPage }) {
+      loading.active = true
+
       if (!page) page = 1
       if (!itemsPerPage) itemsPerPage = state.itemsPerPage
       if (state.studentSearchParams) {
@@ -39,6 +41,11 @@ export default {
             itemsPerPage,
             studentSearchParams
           })
+
+          const pageStart = (page - 1) * itemsPerPage + 1
+          const pageStop = page * itemsPerPage
+          const pageText = `${pageStart}-${pageStop} trên ${totalItems}`
+          commit('setPageText', pageText)
         } else {
           var pages = _.rangeRight(1, page)
           for (let index = 0; index < pages; index++) {
@@ -50,12 +57,18 @@ export default {
           }
         }
       }
+
+      loading.active = false
     },
     async fetchGenerations({ commit, state }) {
       if (_.isEmpty(state.generations)) {
         const generations = await api.Generation.fetch()
         commit('changeState', { generations })
       }
+    },
+    async fetchStudents({ commit }, params) {
+      const students = await api.Student.fetch({ ...params })
+      return utils.sortListByName(students)
     },
     async searchMajors({ commit }, majorCode) {
       const majors = await api.Major.search({
@@ -89,15 +102,15 @@ export default {
       await Promise.all(items.map(item => dispatch('updateStudent', item)))
     },
     async createStudent({ state, dispatch }, userData) {
-      let user = {}
-      try {
-        user = await api.User.create({ ...userData, type: 'student' })
-        userData.user = user.id
-      } catch (error) {
-        alert.error('Tạo tài khoản thất bại')
-        console.error(error)
-        return
-      }
+      // let user = {}
+      // try {
+      //   user = await api.User.create({ ...userData, type: 'student' })
+      //   userData.user = user.id
+      // } catch (error) {
+      //   alert.error('Tạo tài khoản thất bại')
+      //   console.error(error)
+      //   return
+      // }
       try {
         const student = await api.Student.create({
           ...userData,
@@ -107,7 +120,7 @@ export default {
         alert.success('Tạo học sinh thành công')
         return student
       } catch (error) {
-        user = await api.User.remove(user.id)
+        // user = await api.User.remove(user.id)
         alert.error('Tạo học sinh thất bại')
         console.error(error)
       }
@@ -133,6 +146,9 @@ export default {
     }
   },
   mutations: {
+    setPageText(state, pageText) {
+      state.pageText = pageText
+    },
     clean(state) {
       state.students = []
       state.studentSearchParams = {}

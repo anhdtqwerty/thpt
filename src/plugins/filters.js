@@ -34,4 +34,39 @@ export const vueFilterRegister = () => {
         return 'grey'
     }
   })
+  Vue.filter('getStudentCode', code => {
+    return code.substr(0, 5)
+  })
+  Vue.filter('classStatusColor', status => {
+    switch (status) {
+      case 'running':
+        return '#46BE8A'
+      default:
+        return 'primary'
+    }
+  })
+  Vue.filter('classStatus', status => {
+    switch (status) {
+      case 'running':
+        return 'Đang học'
+      case 'opened':
+        return 'Đang chờ'
+      case 'done':
+        return 'Kết thúc'
+      default:
+        return ''
+    }
+  })
+  Vue.filter('getAcademicLevel', level => {
+    switch (level) {
+      case 'primary':
+        return '1'
+      case 'secondary':
+        return '2'
+      case 'high':
+        return '3'
+      default:
+        return ''
+    }
+  })
 }

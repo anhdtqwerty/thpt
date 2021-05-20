@@ -96,6 +96,8 @@ export default {
   },
   methods: {
     ...mapActions('students', ['createStudent']),
+    ...mapActions('student', ['uploadAvatar']),
+
     async save() {
       if (
         !this.$refs.studentGeneralForm.validate() ||
@@ -104,6 +106,8 @@ export default {
       ) {
         return
       }
+      this.$loading.active = true
+
       const studentGeneralForm = this.$refs.studentGeneralForm.getData()
       const studentClassForm = this.$refs.studentClassForm.getData()
       const studentContactForm = this.$refs.studentContactForm.getData()
@@ -118,6 +122,8 @@ export default {
         currentClass: studentClassForm.class,
         grade: studentClassForm.grade,
         name: studentGeneralForm.name,
+        formatedName: studentGeneralForm.formatedName,
+        tags: studentGeneralForm.tags,
         username: studentGeneralForm.username,
         username_indexing: studentGeneralForm.username_indexing,
         username_no: studentGeneralForm.username_no,
@@ -139,10 +145,22 @@ export default {
         type: 'student',
         role: this.roleIdByName('Student')
       })
+
+      if (studentGeneralForm.avatar) {
+        let formData = new FormData()
+        formData.append('files', studentGeneralForm.avatar)
+        formData.append('refId', student.id)
+        formData.append('ref', 'student')
+        formData.append('field', 'avatar')
+        this.uploadAvatar(formData)
+      }
+
       this.dialog = false
       this.reset()
-      this.$router.push(`/student/${student.id}`)
+      // this.$router.push(`/student/${student.id}`)
       this.$emit('done', student)
+
+      this.$loading.active = false
     },
     cancel() {
       this.dialog = false

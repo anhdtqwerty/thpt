@@ -2,26 +2,13 @@
   <div>
     <div class="pa-4 d-flex justify-space-between align-center">
       <div>
-        <Breadcrumbs
-          headline="Giáo viên"
-          :link="[{ text: 'Giáo viên', href: '../teachers' }]"
-        />
+        <Breadcrumbs headline="Giáo viên" :link="[{ text: 'Giáo viên', href: '../teachers' }]" />
       </div>
       <div class="flex-center">
-        <v-btn
-          v-if="$vuetify.breakpoint.mdAndUp"
-          class="mr-2"
-          outlined
-          color="success"
-        >
+        <v-btn v-if="$vuetify.breakpoint.mdAndUp" class="mr-2" outlined @click="exportExcel" color="success">
           <v-icon left>mdi-file-excel</v-icon> Xuất Excel
         </v-btn>
-        <v-btn
-          depressed
-          dark
-          color="#0D47A1"
-          @click.stop="createState = !createState"
-        >
+        <v-btn depressed dark color="#0D47A1" @click.stop="createState = !createState">
           <v-icon left>add</v-icon>{{ titleBtn }}
         </v-btn>
       </div>
@@ -47,33 +34,19 @@
         </template>
         <template v-slot:[`item.status`]="{ item }">
           <span v-if="item.status" :class="getColor(item.status)">
-            {{
-              item.status === 'active'
-                ? 'Đang dạy'
-                : item.status === 'block'
-                ? 'Không dạy'
-                : ''
-            }}
+            {{ item.status | getStatus }}
           </span>
         </template>
         <template v-slot:[`item.metadata.type`]="{ item }">
           <span v-if="item.metadata.type">
-            {{
-              item.metadata.type === 'long-tern'
-                ? 'Dài hạn'
-                : item.metadata.type === 'short-tern'
-                ? 'Ngắn hạn'
-                : ''
-            }}
+            {{ item.metadata.type | getTeacherType }}
           </span>
         </template>
         <template v-slot:[`item.subject`]="{ item }">
-          <span v-if="item.subject">{{
-            item.subject[item.subject.length - 1]
-          }}</span>
+          <span v-if="item.subject">{{ item.subject | getTeacherSubject }}</span>
         </template>
         <template v-slot:[`item.metadata.dob`]="{ item }">
-          {{ formatDate(item.metadata.dob) }}
+          {{ item.metadata.dob | formatDate }}
         </template>
         <template v-slot:[`item.gender`]="{ item }">
           {{ item.gender | getGender }}
@@ -92,20 +65,21 @@ import NewTeacherDialog from '@/modules/teacher/TeacherNewDialog'
 import Breadcrumbs from '@/components/layout/Breadcrumbs.vue'
 import Vuetify from 'vuetify'
 import Vue from 'vue'
+import utils from '@/plugins/utils'
 const originHeaders = [
   {
     text: 'Họ tên',
     value: 'name',
     align: 'left',
     sortable: true,
-    show: true,
+    show: true
   },
   {
     text: 'Ngày sinh',
     value: 'metadata.dob',
     align: 'center',
     sortable: false,
-    show: true,
+    show: true
   },
   {
     text: 'Giới tính',
@@ -113,7 +87,7 @@ const originHeaders = [
     align: 'center',
     sortable: false,
     show: true,
-    width: 100,
+    width: 100
   },
   {
     text: 'Loại cán bộ',
@@ -121,7 +95,7 @@ const originHeaders = [
     align: 'center',
     sortable: false,
     show: true,
-    width: 100,
+    width: 100
   },
   {
     text: 'Lĩnh vực',
@@ -137,15 +111,15 @@ const originHeaders = [
     align: 'left',
     sortable: false,
     show: true,
-    width: 100,
+    width: 100
   },
   {
     text: 'Ghi chú',
     value: 'metadata.notes',
     align: 'left',
     sortable: false,
-    show: true,
-  },
+    show: true
+  }
 ]
 Vue.use(Vuetify)
 
@@ -154,7 +128,7 @@ export default {
     Breadcrumbs,
     UserItem,
     TeacherFilter,
-    NewTeacherDialog,
+    NewTeacherDialog
   },
   data() {
     return {
@@ -162,7 +136,7 @@ export default {
       isLoading: false,
       originHeaders: originHeaders,
       createState: false,
-      filterState: false,
+      filterState: false
     }
   },
   created() {
@@ -182,7 +156,7 @@ export default {
         default:
           return 'Thêm Giáo viên'
       }
-    },
+    }
   },
   methods: {
     ...mapActions('teacher', ['fetchTeachers', 'setTeachers']),
@@ -191,17 +165,29 @@ export default {
       if (status === 'block') return 'red--text'
       else return 'gray--text'
     },
-    formatDate(date) {
-      return moment(date).format('DD/MM/YYYY')
-    },
     refresh(query) {
       this.isLoading = true
-      this.fetchTeachers({ ...query, department: this.department.id }).then(
-        () => {
-          this.isLoading = false
-        }
-      )
+      this.fetchTeachers({ ...query, department: this.department.id }).then(() => {
+        this.isLoading = false
+      })
     },
+    exportExcel() {
+      const excelHeader = this.headers.map(({ text, value }) => ({ text, value }))
+      const filters = this.$options.filters
+      // map on an array modify the original array => need to clone a new array
+      const teacherss = JSON.parse(JSON.stringify(this.teachers))
+      const data = teacherss.map(item => {
+        item.gender = filters.getGender(item.gender)
+        if (item.subject) {
+          item.subject = filters.getTeacherSubject(item.subject)
+        }
+        item.metadata.dob = filters.formatDate(item.metadata.dob)
+        item.metadata.type = filters.getTeacherType(item.metadata.type)
+        item.status = filters.getStatus(item.status)
+        return item
+      })
+      utils.exportExcel(data, excelHeader, 'Teacher_List')
+    }
   },
   filters: {
     getGender(gender) {
@@ -211,6 +197,18 @@ export default {
         return 'Nữ'
       }
     },
-  },
+    getTeacherType(type) {
+      return type === 'long-tern' ? 'Dài hạn' : type === 'short-tern' ? 'Ngắn hạn' : ''
+    },
+    formatDate(date) {
+      return moment(date).format('DD/MM/YYYY')
+    },
+    getStatus(status) {
+      return status === 'active' ? 'Đang dạy' : status === 'block' ? 'Không dạy' : ''
+    },
+    getTeacherSubject(subject) {
+      return subject[subject.length - 1]
+    }
+  }
 }
 </script>

@@ -5,37 +5,25 @@
         <Breadcrumbs
           headline="Quản lý khóa"
           :link="[
-             { text: 'Nâng cao', href: '../divisions' },{ text: 'QL Khóa', href: '/generations' }
+            { text: 'Nâng cao', href: '../divisions' },
+            { text: 'QL Khóa', href: '/generations' }
           ]"
         />
       </div>
       <div class="flex-center">
-        <v-btn
-          v-if="$vuetify.breakpoint.mdAndUp"
-          class="mr-2"
-          outlined
-          color="success"
-        >
+        <v-btn v-if="$vuetify.breakpoint.mdAndUp" class="mr-2" outlined color="success" @click="exportExcel">
           <v-icon left>mdi-file-excel</v-icon> Xuất Excel
         </v-btn>
-        <v-btn
-          @click="createGeneration = !createGeneration"
-          dark
-          color="#0D47A1"
-        >
+        <v-btn @click="createGeneration = !createGeneration" dark color="#0D47A1">
           <v-icon left>add</v-icon>Thêm khóa
         </v-btn>
       </div>
     </div>
     <v-card class="px-md-6 mx-md-4 elevation-1">
       <v-data-table item-key="id" :headers="headers" :items="generations">
-        <div slot="top" class="py-md-3">
-        </div>
+        <div slot="top" class="py-md-3"></div>
         <template v-slot:[`item.actions`]="{ item }">
-          <generation-list-actions
-            :selected="item"
-            @onEdit="onEditGeneration"
-          />
+          <generation-list-actions :selected="item" @onEdit="onEditGeneration" />
         </template>
         <template v-slot:[`item.data.startDate`]="{ item }">
           {{ formatStartDate(item) }}
@@ -47,10 +35,7 @@
     </v-card>
 
     <new-generation-dialog :state="createGeneration"></new-generation-dialog>
-    <generation-update-dialog
-      :state="editGeneration"
-      :generation="selected"
-    ></generation-update-dialog>
+    <generation-update-dialog :state="editGeneration" :generation="selected"></generation-update-dialog>
   </div>
 </template>
 <script>
@@ -63,6 +48,7 @@ import DropMenu from '@/modules/student/menu/Menu.vue'
 import SettingTableHeader from '@/components/basic/table/SettingHeaders'
 import moment from 'moment'
 import { get } from 'lodash'
+import utils from '@/plugins/utils'
 
 const originHeaders = [
   { text: 'Tên', value: 'name', align: 'left', sortable: false, show: true },
@@ -149,14 +135,14 @@ export default {
       this.editGeneration = !this.editGeneration
     },
     formatStartDate(item) {
-      return get(item, 'data.startDate', '')
-        ? moment(item.data.startDate).format('D/MM/YYYY')
-        : ''
+      return get(item, 'data.startDate', '') ? moment(item.data.startDate).format('D/MM/YYYY') : ''
     },
     formatEndDate(item) {
-      return get(item, 'data.endDate', '')
-        ? moment(item.data.endDate).format('D/MM/YYYY')
-        : ''
+      return get(item, 'data.endDate', '') ? moment(item.data.endDate).format('D/MM/YYYY') : ''
+    },
+    exportExcel() {
+      const excelHeader = this.headers.map(({ text, value }) => ({ text, value }))
+      utils.exportExcel(this.generations, excelHeader, 'Generation_List')
     }
   }
 }

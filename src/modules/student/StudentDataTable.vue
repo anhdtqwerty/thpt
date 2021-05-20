@@ -6,13 +6,9 @@
     :server-items-length="totalItems"
     :headers="headers"
     :items="students"
-    :items-per-page="10"
     sort-by="name"
     @input="$emit('update:selected', $event)"
-    :footer-props="{
-      'items-per-page-text': 'Học sinh mỗi trang',
-      'items-per-page-all-text': 'Tất cả'
-    }"
+    :footer-props="footerTable"
     v-bind="this.$attrs"
   >
     <template v-slot:[`item.name`]="{ item }">
@@ -25,14 +21,12 @@
     </template>
     <template v-slot:[`item.currentClass`]="{ item }">
       <router-link style="text-decoration: none" :to="'/class/' + (item.currentClass && item.currentClass.id)">
-        <span v-if="item.currentClass">{{ item.currentClass && item.currentClass.title }}</span>
+        <span v-if="item.currentClass">{{ item.currentClass | getCurrentClass }}</span>
       </router-link>
     </template>
-    <template v-slot:[`item.gender`]="{ item }">{{
-      item.gender === 'male' ? 'Nam' : item.gender === 'female' ? 'Nữ' : 'Khác'
-    }}</template>
+    <template v-slot:[`item.gender`]="{ item }">{{ item.gender | getGender }}</template>
     <template v-slot:[`item.dob`]="{ item }">
-      <span>{{ formatDate(item.dob) }}</span>
+      <span>{{ item.dob | formatDate }}</span>
     </template>
     <template v-slot:[`item.action`]="{ item }">
       <student-list-actions :item="item"></student-list-actions>
@@ -44,15 +38,6 @@
         </template>
         <span>{{ item.notes }}</span>
       </v-tooltip>
-    </template>
-    <template v-slot:top="{ pagination, options, updateOptions }">
-      <v-data-footer
-        :pagination="pagination"
-        :options="options"
-        @update:options="updateOptions"
-        items-per-page-text="Học sinh mỗi trang"
-        items-per-page-all-text="Tất cả"
-      />
     </template>
   </v-data-table>
 </template>
@@ -68,7 +53,7 @@ const originHeaders = [
     text: 'Tên học sinh',
     value: 'name',
     align: 'left',
-    sortable: true,
+    sortable: false,
     show: true
   },
   {
@@ -136,7 +121,20 @@ export default {
     StudentListActions
   },
   computed: {
-    ...mapState('students', ['totalItems', 'students'])
+    ...mapState('students', ['totalItems', 'students', 'pageText']),
+
+    footerTable() {
+      let footer = {
+        'items-per-page-text': 'Học sinh mỗi trang',
+        'items-per-page-all-text': 'Tất cả',
+        'items-per-page': 10,
+        'page-text': this.pageText
+      }
+      if (this.totalItems > 100) {
+        footer['items-per-page-options'] = [5, 10, 15]
+      }
+      return footer
+    }
   },
   methods: {
     ...mapActions('students', ['requestPageSettings', 'searchStudents', 'fetchStudents']),
@@ -152,9 +150,6 @@ export default {
         .reduce((a, b) => a + b, 0) >= 0
         ? ''
         : 'Nợ'
-    },
-    formatDate(date) {
-      return moment(date).format('DD/MM/YYYY')
     },
     getColor(status) {
       switch (status) {
@@ -194,6 +189,15 @@ export default {
       if (classes && classes.length > 0) {
         return classes.map(c => c.title).join(' ,')
       } else return ''
+    },
+    getCurrentClass(currentClass) {
+      return currentClass == null ? '' : currentClass.title
+    },
+    getGender(gender) {
+      return gender === 'male' ? 'Nam' : gender === 'female' ? 'Nữ' : 'Khác'
+    },
+    formatDate(date) {
+      return moment(date).format('DD/MM/YYYY')
     }
   },
   watch: {

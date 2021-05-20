@@ -11,11 +11,7 @@
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text class="pa-0">
-            <v-row class="py-6">
-              <v-col class="text-center" cols="4"> </v-col>
-              <v-divider class="my-2" vertical></v-divider>
-              <v-col class="text-center" cols="4"> </v-col>
-            </v-row>
+            <StudentProfileMarks :student="student" />
           </v-card-text>
         </v-card>
       </v-col>
@@ -98,6 +94,7 @@
 <script>
 import ViolationDataTable from '@/modules/violation/ViolationDataTable'
 import AttendanceStudentDataTable from '@/modules/attendance/AttendanceStudentDataTable'
+import StudentProfileMarks from '@/modules/student/profile/StudentProfileMarks.vue'
 
 import { mapActions, mapState, mapGetters } from 'vuex'
 
@@ -142,6 +139,7 @@ export default {
     }
   },
   components: {
+    StudentProfileMarks,
     ViolationDataTable,
     AttendanceStudentDataTable
   },

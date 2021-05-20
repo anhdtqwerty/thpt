@@ -3,15 +3,11 @@
     <v-row class="pa-2">
       <v-col cols="12" md="10">
         <v-row>
+          <v-col cols="12" md="4">
+            <autocomplete-grade clearable dense outlined label="Khối" hide-details @change="grade = $event" />
+          </v-col>
           <v-col cols="12" md="4" v-bind="$attrs">
-            <autocomplete-class
-              clearable
-              v-model="classes"
-              dense
-              outlined
-              label="Lớp"
-              hide-details
-            />
+            <autocomplete-class clearable v-model="classes" dense outlined label="Lớp" hide-details :filter="gradeId" />
           </v-col>
           <v-col cols="12" md="4">
             <v-select
@@ -24,16 +20,6 @@
               label="Trạng thái"
               hide-details
               clearable
-            />
-          </v-col>
-          <v-col cols="12" md="4">
-            <autocomplete-grade
-              clearable
-              v-model="grade"
-              dense
-              outlined
-              label="Khối"
-              hide-details
             />
           </v-col>
         </v-row>
@@ -63,21 +49,23 @@ export default {
   },
   computed: {
     ...mapState('constant', ['attendanceStatus']),
+    gradeId() {
+      return { grade: this.grade }
+    }
   },
   methods: {
     onFilterChanged() {
       this.$emit('onFilterChanged', {
         grade: this.grade ? this.grade.id : '',
         status: this.status,
-        class: this.classes ? this.classes.id : '',
+        class: this.classes ? this.classes.id : ''
       })
     },
     change(data) {
       this.student = data
-    },
-  },
+    }
+  }
 }
 </script>
 
-<style>
-</style>
+<style></style>

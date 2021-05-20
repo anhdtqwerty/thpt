@@ -12,7 +12,7 @@
 
     <v-card v-if="factors && factors.length" class="mx-md-4 elevation-1">
       <v-row class="pa-4 justify-end">
-        <v-btn v-if="$vuetify.breakpoint.mdAndUp" class="mr-2" outlined color="primary">
+        <v-btn v-if="$vuetify.breakpoint.mdAndUp" class="mr-2" outlined color="primary" @click="exportExcel">
           <v-icon left>mdi-file-excel</v-icon> Xuất Excel
         </v-btn>
       </v-row>
@@ -60,6 +60,7 @@ export default {
     ...mapActions('subjects', ['fetchSubjects']),
 
     async onFilterChanged(query) {
+      if (!get(query, 'class.id') || !get(query, 'student.id')) return
       this.$loading.active = true
 
       await this.fetchSubjects({ grade: query.grade })
@@ -101,6 +102,9 @@ export default {
       let yearFactors = [{ title: 'TB HK I' }, { title: 'TB HK II' }, { title: 'Cả Năm' }]
       this.factors = yearFactors
       this.semesterData = { title: 'Cả năm', type: 'year' }
+    },
+    exportExcel() {
+      // todo
     }
   }
 }

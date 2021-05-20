@@ -2,18 +2,28 @@
   <v-dialog v-model="dialog" width="600px" scrollable :fullscreen="$vuetify.breakpoint.smAndDown">
     <v-card>
       <v-card-title class="blue darken-4 white--text text-uppercase">
-        <v-toolbar-title>Sửa {{ division.title }}</v-toolbar-title>
+        <v-toolbar-title>SỬA PHÂN BAN</v-toolbar-title>
         <v-spacer />
         <v-icon color="white" @click="cancel">close</v-icon>
       </v-card-title>
       <v-card-text>
         <v-divider></v-divider>
-        <DivisionFrom :division="division" ref="form" />
+        <v-form ref="form">
+          <v-text-field
+            outlined
+            dense
+            v-model="title"
+            class="required mt-4"
+            :rules="[$rules.required]"
+            label="Tên ban"
+          />
+          <RadioAcademicLevel :defaultLevel="academicLevel" @change="academicLevel = $event" />
+        </v-form>
       </v-card-text>
       <v-card-actions>
         <v-row class="pa-2" no-gutters>
+          <v-btn class="px-4" outlined light depressed @click="cancel">Hủy</v-btn>
           <v-spacer></v-spacer>
-          <v-btn class="px-6 mx-4 blue--text" color="#E3F2FD" dark depressed @click="cancel">Hủy</v-btn>
           <v-btn class="px-6" dark depressed color="#0D47A1" :loading="loading" @click="save">Lưu</v-btn>
         </v-row>
       </v-card-actions>
@@ -21,12 +31,12 @@
   </v-dialog>
 </template>
 <script>
-import DivisionFrom from '@/components/basic/form/DivisionFrom.vue'
-import { mapActions, mapState } from 'vuex'
+import { mapActions } from 'vuex'
+import RadioAcademicLevel from '@/modules/academicLevel/RadioAcademicLevel.vue'
 
 export default {
   components: {
-    DivisionFrom
+    RadioAcademicLevel
   },
   props: {
     state: Boolean,
@@ -35,21 +45,25 @@ export default {
   data() {
     return {
       dialog: false,
-      loading: false
+      loading: false,
+      title: '',
+      academicLevel: ''
     }
   },
-  computed: {
-    ...mapState('app', ['roles', 'department']),
-    ...mapState('auth', ['user'])
+  created() {
+    if (this.division) {
+      this.title = this.division.title
+      this.academicLevel = this.division.academicLevel
+    }
   },
+  computed: {},
   methods: {
-    ...mapActions('division', ['updateDivision', 'fetchDivision']),
+    ...mapActions('division', ['updateDivision']),
     async save() {
       if (!this.$refs.form.validate()) return
       try {
         this.loading = true
-        const data = this.$refs.form.getData()
-        await this.updateDivision({ id: this.division.id, ...data })
+        await this.updateDivision({ id: this.division.id, title: this.title, academicLevel: this.academicLevel })
         this.$alert.updateSuccess()
         this.dialog = false
       } catch (error) {
@@ -60,7 +74,6 @@ export default {
     },
     cancel() {
       this.dialog = false
-      this.$refs.form.resetDefault()
     }
   },
   watch: {

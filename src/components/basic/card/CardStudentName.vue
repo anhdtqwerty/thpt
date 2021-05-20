@@ -1,25 +1,17 @@
 <template>
-  <div
-    class="d-flex flex-row flex-nowrap align-center py-2"
-    :key="student.id"
-    @click="$emit('change', student)"
-  >
-    <div class="image-wrapper mr-2">
+  <div class="d-flex flex-row flex-nowrap align-center py-2" :key="student.id" @click="$emit('change', student)">
+    <div v-if="!$vuetify.breakpoint.mobile" class="image-wrapper mr-2">
       <img :src="avatar" alt="" />
     </div>
     <div>
-      <router-link
-        style="text-decoration: none"
-        v-if="link"
-        :to="'/student/' + student.id"
-      >
+      <router-link style="text-decoration: none" v-if="link" :to="'/student/' + student.id">
         <div style="white-space: nowrap">
           {{ student.name }}
         </div>
       </router-link>
 
       <div style="white-space: nowrap" v-else>{{ student.name }}</div>
-      <div style="white-space: nowrap">{{ formatCode(student.code) }}</div>
+      <div style="white-space: nowrap">{{ student.code | getStudentCode }}</div>
     </div>
   </div>
 </template>
@@ -32,18 +24,14 @@ export default {
     prepend: Object,
     append: Object,
     attendance: Object,
-    link: Boolean,
+    link: Boolean
   },
   computed: {
     avatar() {
       return _.get(this.student, 'avatar.url', '/default-avatar.png')
-    },
+    }
   },
-  methods: {
-    formatCode(code) {
-      return code.substring(code.length - 5)
-    },
-  },
+  methods: {}
 }
 </script>
 

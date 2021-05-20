@@ -1,5 +1,34 @@
 <template>
   <v-form ref="form" flat class="pa-6">
+    <div class="d-flex">
+      <AutocompleteGrade
+        return-object
+        v-model="grade"
+        item-text="title"
+        item-value="id"
+        label="Khối"
+        required
+        dense
+        outlined
+        class="required mr-2"
+        :rules="[$rules.required]"
+        @change="gradeChanged"
+      />
+
+      <AutocompleteDivision
+        v-model="division"
+        item-text="title"
+        item-value="id"
+        label="Ban"
+        return-object
+        required
+        dense
+        outlined
+        class="required"
+        :rules="[$rules.required]"
+        :filter="divisionFilter"
+      />
+    </div>
     <v-text-field
       ref="title"
       v-model="className"
@@ -12,60 +41,18 @@
     >
       <span slot="prepend-inner" class="mt-1">{{ gradeText }}</span>
     </v-text-field>
-    <autocomplete-grade
-      return-object
-      v-model="grade"
-      item-text="title"
-      item-value="id"
-      label="Khối"
-      required
-      dense
-      outlined
-      class="required"
-      :rules="[$rules.required]"
-      @change="grade = $event"
-    />
-    <autocomplete-division
-      :div.sync="division"
-      v-model="division"
-      item-text="title"
-      item-value="id"
-      label="Ban"
-      return-object
-      required
-      dense
-      outlined
-      class="required"
-      :rules="[$rules.required]"
-      :filter="gradeId"
-    />
-    <autocomplete-teacher
-      v-model="teachers"
-      :defaultTeachers="teachers"
-      item-text="name"
-      item-value="id"
-      label="Giáo viên chủ nhiệm"
-      deletable-chips
-      chips
-      small-chips
-      multiple
-      dense
-      outlined
-    />
-    <v-textarea ref="description" v-model="description" label="Mô Tả" outlined></v-textarea>
+
+    <v-textarea ref="description" v-model="description" label="Ghi chú" outlined></v-textarea>
   </v-form>
 </template>
 <script>
 import { get } from 'lodash'
-import AutocompleteTeacher from '@/components/basic/input/AutocompleteTeacher'
 import AutocompleteGrade from '@/components/basic/input/AutocompleteGrade'
 import AutocompleteDivision from '@/components/basic/input/AutocompleteDivision'
-import { mapActions, mapGetters } from 'vuex'
 import { textHelpers } from '@/helpers/TextHelper.js'
 
 export default {
   components: {
-    AutocompleteTeacher,
     AutocompleteGrade,
     AutocompleteDivision
   },
@@ -96,14 +83,20 @@ export default {
     getCourseItems() {
       return this.grade ? this.grade.courses : []
     },
-    gradeId() {
-      return { grade: this.grade.id }
+    divisionFilter() {
+      return { academicLevel: get(this.grade, 'academicLevel') }
     },
     gradeText() {
       return textHelpers.getNumber(get(this.grade, 'title', ''))
     }
   },
   methods: {
+    gradeChanged(grade) {
+      if (get(this.grade, 'academicLevel') !== get(grade, 'academicLevel')) {
+        this.division = null
+      }
+      this.grade = grade
+    },
     getCourseFilter() {
       return { grade: get(this.grade, 'id', null) }
     },
@@ -145,7 +138,7 @@ export default {
         grade: get(this.grade, 'id'),
         division: get(this.division, 'id'),
         code: this.code,
-        title: this.gradeText + this.className,
+        title: this.gradeText + this.className.trim(),
         mentors: this.mentors
       }
     }

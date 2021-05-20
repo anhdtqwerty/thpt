@@ -1,7 +1,7 @@
 import axios from '@/plugins/axios'
 import alert from '@/plugins/alert'
 import _ from 'lodash'
-import { Class, Lead, Student, Log, Mark, Major } from '@/plugins/api'
+import { Class, Lead, Student, Log, Mark, Major, Subject } from '@/plugins/api'
 const STUDENT_API = '/students/'
 const USER_API = '/users/'
 const UPLOAD_API = '/upload/'
@@ -19,7 +19,7 @@ export default {
     },
     marks: {
       // courseId: mark
-    }
+    },
   },
   actions: {
     uploadAvatar({ commit }, formData) {
@@ -31,9 +31,9 @@ export default {
         })
         .then(response => {
           commit('setAvatar', response[0])
-          alert.success('Upload successfully!')
+          alert.success('Tải ảnh thành công!')
         })
-        .catch(e => alert.error(e))
+        .catch(e => alert.error('Tải ảnh thất bại'))
     },
     async createMark({ commit }, { data, options }) {
       commit('setMark', await Mark.create(data, options))
@@ -43,6 +43,7 @@ export default {
         .delete(DESTROY_API + id)
         .then(staff => {
           console.log('Remove success')
+          commit('setAvatar', null)
         })
         .catch(e => alert.error(e))
     },
@@ -93,6 +94,15 @@ export default {
     },
     setStudent({ commit }, student) {
       commit('setStudent', student)
+    },
+    async fetchSubjectMarks({ commit }, student) {
+      const division = student.currentClass.division
+      if (division) {
+        const subjects = await Subject.fetch({ 'divisions.id': division })
+        const marks = await Mark.fetch({ class: student.currentClass.id, student: student.id })
+        return { subjects, marks }
+      }
+      return {}
     }
   },
   mutations: {
@@ -148,7 +158,7 @@ export default {
         (acc, cur) => ({ ...acc, [_.get(cur, 'course.id', '')]: cur }),
         {}
       )
-    }
+    },
   },
   getters: {
     logs: state => {

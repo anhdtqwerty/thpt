@@ -1,5 +1,5 @@
 <template>
-  <v-text-field v-bind="this.$attrs" ref="code" v-mask="mask" placeholder="dd/mm/yyyy" v-model="data"></v-text-field>
+  <v-text-field v-bind="this.$attrs" ref="code" v-mask="mask" placeholder="dd/mm/yyyy" v-model="data" @keypress.enter="onEnterPress"></v-text-field>
 </template>
 
 <script>
@@ -35,6 +35,9 @@ export default {
       } else {
         this.data = ''
       }
+    },
+    onEnterPress() {
+      this.$emit('onEnterPress')
     }
   },
   created() {
