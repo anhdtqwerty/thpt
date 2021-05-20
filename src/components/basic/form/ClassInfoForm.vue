@@ -12,11 +12,11 @@
         outlined
         class="required mr-2"
         :rules="[$rules.required]"
-        @change="grade = $event"
+        @change="gradeChanged"
       />
 
       <AutocompleteDivision
-        :div.sync="division"
+        v-model="division"
         item-text="title"
         item-value="id"
         label="Ban"
@@ -26,7 +26,7 @@
         outlined
         class="required"
         :rules="[$rules.required]"
-        :filter="gradeId"
+        :filter="divisionFilter"
       />
     </div>
     <v-text-field
@@ -83,14 +83,20 @@ export default {
     getCourseItems() {
       return this.grade ? this.grade.courses : []
     },
-    gradeId() {
-      return { grade: this.grade.id }
+    divisionFilter() {
+      return { academicLevel: get(this.grade, 'academicLevel') }
     },
     gradeText() {
       return textHelpers.getNumber(get(this.grade, 'title', ''))
     }
   },
   methods: {
+    gradeChanged(grade) {
+      if (get(this.grade, 'academicLevel') !== get(grade, 'academicLevel')) {
+        this.division = null
+      }
+      this.grade = grade
+    },
     getCourseFilter() {
       return { grade: get(this.grade, 'id', null) }
     },

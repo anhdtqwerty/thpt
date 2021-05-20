@@ -12,7 +12,7 @@
         outlined
         auto-select-first
         :rules="[$rules.required]"
-        @change="grade = $event"
+        @change="gradeChanged"
       />
       <AutocompleteDivision
         class="required mr-2"
@@ -67,8 +67,8 @@ export default {
   data: () => ({
     valid: true,
     course: '',
-    grade: '',
-    division: '',
+    grade: {},
+    division: {},
     title: '',
     description: ''
   }),
@@ -86,6 +86,12 @@ export default {
   methods: {
     getCourseFilter() {
       return { grade: get(this.grade, 'id', null) }
+    },
+    gradeChanged(grade) {
+      if (get(this.grade, 'academicLevel') !== get(grade, 'academicLevel')) {
+        this.division = null
+      }
+      this.grade = grade
     },
     reset() {
       this.$refs.form.reset()

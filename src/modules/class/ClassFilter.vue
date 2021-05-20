@@ -6,7 +6,6 @@
           <v-col cols="12" md="4">
             <AutocompleteGrade
               return-object
-              v-model="grade"
               item-text="name"
               item-value="id"
               clear-icon="mdi-close"
@@ -17,6 +16,7 @@
               dense
               deletable-chips
               hide-details
+              @change="gradeChanged"
             />
           </v-col>
           <v-col cols="12" md="4">
@@ -97,6 +97,13 @@ export default {
         teachers: this.teacher,
         _sort: 'createdAt:desc'
       })
+    },
+    gradeChanged(grade) {
+      if (get(this.grade, 'academicLevel') !== get(grade, 'academicLevel')) {
+        this.division = null
+        this.teacher = null
+      }
+      this.grade = grade
     },
     reset() {
       this.how = false

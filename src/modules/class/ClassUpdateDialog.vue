@@ -8,7 +8,8 @@
       </v-card-title>
       <v-divider></v-divider>
       <ClassInfoForm v-if="classData.id" :classData="classData" ref="form" />
-      <v-row class="pr-6 pb-6 mt-n7" no-gutters>
+      <v-row class="px-6 pb-6 mt-n7" no-gutters>
+        <v-btn class="px-6" outlined light depressed @click="cancel">Hủy</v-btn>
         <v-spacer></v-spacer>
         <v-btn class="px-6" depressed color="primary" @click="save">Lưu</v-btn>
       </v-row>
