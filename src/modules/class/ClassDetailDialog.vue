@@ -23,7 +23,7 @@
               </v-col>
               <v-col class="d-flex align-center py-0" cols="12">
                 <v-subheader class="px-0">Ban</v-subheader>
-                <p class="mb-0">{{ classData.division.title }}</p>
+                <p class="mb-0">{{ classData.division && classData.division.title }}</p>
               </v-col>
               <v-col class="d-flex align-center py-0" cols="12">
                 <v-subheader class="px-0">Niên khóa</v-subheader>

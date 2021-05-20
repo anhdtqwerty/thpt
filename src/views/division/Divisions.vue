@@ -11,48 +11,31 @@
         />
       </div>
       <div class="flex-center">
-        <v-btn v-if="$vuetify.breakpoint.mdAndUp" class="mr-2" outlined color="success" @click="exportExcel">
+        <!-- <v-btn v-if="$vuetify.breakpoint.mdAndUp" class="mr-2" outlined color="success" @click="exportExcel">
           <v-icon left>mdi-file-excel</v-icon> Xuất Excel
-        </v-btn>
+        </v-btn> -->
         <v-btn @click="createStateDialog = !createStateDialog" dark color="#0D47A1">
-          <v-icon left>add</v-icon>{{ addButtonText }}
+          <v-icon left>add</v-icon>Thêm ban
         </v-btn>
       </div>
     </div>
-    <v-card class="px-md-6 mx-md-4 elevation-1">
-      <v-data-table :headers="headers" :items="divisions">
-        <div slot="top" class="py-md-3"></div>
-        <template v-slot:item.subjects="{ item }">
-          <v-tooltip max-width="200px" bottom>
-            <template v-slot:activator="{ on, attrs }">
-              <p v-bind="attrs" v-on="on" class="shortenContent ma-0">{{ item | getSubject }}</p>
-            </template>
-            <span>{{ item | getSubject }}</span>
-          </v-tooltip>
-        </template>
-        <template v-slot:item.actions="{ item }">
-          <division-actions :selected="item"> </division-actions>
-        </template>
-      </v-data-table>
-    </v-card>
+    <DivisionDataTable :divisions="divisions" />
 
-    <new-division-dialog :state="createStateDialog" />
+    <NewDivisionDialog :state="createStateDialog" />
   </div>
 </template>
 <script>
 import { mapActions, mapState } from 'vuex'
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import NewDivisionDialog from '@/modules/division/NewDivisionDialog.vue'
-import DivisionActions from '@/modules/division/DivisionListActions.vue'
-import DropMenu from '@/modules/student/menu/Menu.vue'
 import utils from '@/plugins/utils'
+import DivisionDataTable from '@/modules/division/DivisionDataTable.vue'
 
 export default {
   components: {
     NewDivisionDialog,
     Breadcrumbs,
-    DivisionActions,
-    DropMenu
+    DivisionDataTable
   },
   props: {
     role: String
@@ -65,19 +48,13 @@ export default {
           value: 'title',
           align: 'left',
           sortable: false,
-          show: true
+          show: true,
+          width: 300
         },
         {
-          text: 'Khối',
-          value: 'grade.title',
-          align: 'left',
-          sortable: false,
-          show: true
-        },
-        {
-          text: 'Các môn học',
-          value: 'subjects',
-          align: 'left',
+          text: 'Cấp học',
+          value: 'academicLevel',
+          align: 'center',
           sortable: false,
           show: true
         },
@@ -86,7 +63,8 @@ export default {
           value: 'actions',
           align: 'center',
           sortable: false,
-          show: true
+          show: true,
+          width: 100
         }
       ],
       createStateDialog: false,
@@ -109,7 +87,6 @@ export default {
   },
   async created() {
     await this.refresh({})
-    console.log(this.divisions)
   },
   methods: {
     ...mapActions('division', ['fetchDivision']),

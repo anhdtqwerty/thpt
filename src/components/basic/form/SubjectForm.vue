@@ -21,6 +21,7 @@
     ></v-text-field>
     <div class="d-flex">
       <AutocompleteGrade
+        return-object
         v-model="grade"
         item-text="title"
         item-value="id"
@@ -30,19 +31,19 @@
         required
         dense
         outlined
+        @change="gradeChanged"
       />
       <AutocompleteDivision
-        v-model="divisions"
+        v-model="division"
         item-text="title"
         item-value="id"
-        label="Ban"
+        label="Phân ban"
         class="required"
         :rules="[$rules.required]"
-        :filter="gradeId"
+        :filter="divisionFilter"
         return-object
         chip
         clearable
-        multiple
         required
         dense
         outlined
@@ -91,6 +92,8 @@
 import { mapGetters } from 'vuex'
 import AutocompleteGrade from '@/components/basic/input/AutocompleteGrade'
 import AutocompleteDivision from '@/components/basic/input/AutocompleteDivision'
+import { get } from 'lodash'
+
 export default {
   components: {
     AutocompleteDivision,
@@ -104,7 +107,7 @@ export default {
       grade: '',
       markType: 'mark',
       multiply: 1,
-      divisions: '',
+      division: '',
       type: '',
       weeklyLesson: 0,
       anualyLesson: 0
@@ -112,8 +115,8 @@ export default {
   },
   computed: {
     ...mapGetters('app', ['department']),
-    gradeId() {
-      return { grade: this.grade }
+    divisionFilter() {
+      return { academicLevel: get(this.grade, 'academicLevel') }
     }
   },
   props: {
@@ -130,6 +133,12 @@ export default {
     resetValidation() {
       this.$refs.form.resetValidation()
     },
+    gradeChanged(grade) {
+      if (get(this.grade, 'academicLevel') !== get(grade, 'academicLevel')) {
+        this.division = null
+      }
+      this.grade = grade
+    },
     getData() {
       if (this.$refs.form.validate()) {
         return {
@@ -139,7 +148,7 @@ export default {
           markType: this.markType,
           multiply: this.multiply,
           grade: this.grade ? this.grade.id : '',
-          divisions: this.divisions ? [...this.divisions.map(d => d.id)] : '',
+          division: this.division,
           data: {
             weeklyLesson: this.weeklyLesson,
             anualyLesson: this.anualyLesson
@@ -148,16 +157,13 @@ export default {
       }
     },
     resetDefault() {
-      console.log(this.subject)
       if (this.subject && this.subject.id) {
-        console.log(this.subject.title)
-
         this.title = this.subject.title
         this.markType = this.subject.markType
         this.multiply = this.subject.multiply
         this.description = this.subject.description
         this.grade = this.subject.grade
-        this.divisions = this.subject.divisions
+        this.division = this.subject.division
         this.type = this.type
         if (this.subject.data) {
           this.anualyLesson = this.subject.data.anualyLesson

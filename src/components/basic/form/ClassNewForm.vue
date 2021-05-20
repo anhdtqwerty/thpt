@@ -1,7 +1,7 @@
 <template>
   <v-form ref="form" flat class="pa-6">
     <div class="d-flex">
-      <autocomplete-grade
+      <AutocompleteGrade
         return-object
         class="required mr-2"
         item-text="title"
@@ -12,9 +12,9 @@
         outlined
         auto-select-first
         :rules="[$rules.required]"
-        @change="grade = $event"
+        @change="gradeChanged"
       />
-      <autocomplete-division
+      <AutocompleteDivision
         class="required mr-2"
         v-model="division"
         item-text="title"
@@ -25,7 +25,7 @@
         outlined
         auto-select-first
         :rules="[$rules.required]"
-        :filter="gradeId"
+        :filter="divisionFilter"
       />
     </div>
     <v-text-field
@@ -67,8 +67,8 @@ export default {
   data: () => ({
     valid: true,
     course: '',
-    grade: '',
-    division: '',
+    grade: {},
+    division: {},
     title: '',
     description: ''
   }),
@@ -76,16 +76,22 @@ export default {
     getCourseItems() {
       return this.grade ? this.grade.courses : []
     },
-    gradeId() {
-      return { grade: get(this.grade, 'id') }
+    divisionFilter() {
+      return { academicLevel: get(this.grade, 'academicLevel') }
     },
     gradeText() {
-      return textHelpers.getNumber(get(this.grade, 'title', ''))
+      return get(this.grade, 'gradeNumber', '')
     }
   },
   methods: {
     getCourseFilter() {
       return { grade: get(this.grade, 'id', null) }
+    },
+    gradeChanged(grade) {
+      if (get(this.grade, 'academicLevel') !== get(grade, 'academicLevel')) {
+        this.division = null
+      }
+      this.grade = grade
     },
     reset() {
       this.$refs.form.reset()
@@ -114,7 +120,7 @@ export default {
         division: this.division,
         grade: this.grade,
         code: this.code,
-        title: this.gradeText + this.title.trim()
+        title: this.gradeText + textHelpers.removeSpaces(this.title)
       }
     }
   },

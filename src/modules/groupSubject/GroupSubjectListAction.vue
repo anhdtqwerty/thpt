@@ -1,13 +1,13 @@
 <template>
   <div>
-    <DivisionUpdateDialog :division="selected" :state="editDivision" />
+    <GroupSubjectUpdateDialog :groupSubject="selected" :state="editgroupSubject" />
     <v-menu offset-y>
       <template v-slot:activator="{ on, attrs }">
         <v-icon v-bind="attrs" v-on="on">mdi-dots-vertical</v-icon>
       </template>
       <v-list>
         <v-list-item>
-          <v-btn class="elevation-0" icon @click="editDivision = !editDivision">
+          <v-btn class="elevation-0" icon @click="editgroupSubject = !editgroupSubject">
             <v-icon>mdi-pencil</v-icon>
           </v-btn>
         </v-list-item>
@@ -21,12 +21,12 @@
   </div>
 </template>
 <script>
-import { mapActions, mapState } from 'vuex'
-import DivisionUpdateDialog from '@/modules/division/DivisionUpdateDialog.vue'
+import { mapActions } from 'vuex'
+import GroupSubjectUpdateDialog from '@/modules/groupSubject/GroupSubjectUpdateDialog.vue'
 
 export default {
   components: {
-    DivisionUpdateDialog
+    GroupSubjectUpdateDialog
   },
   props: {
     selected: { type: Object, default: () => [] }
@@ -34,23 +34,21 @@ export default {
   data() {
     return {
       sending: null,
-      editDivision: false
+      editgroupSubject: false
     }
   },
-  computed: {
-    ...mapState('division', ['divisions'])
-  },
+  computed: {},
   methods: {
-    ...mapActions('division', ['removeDivision', 'updateDivision']),
+    ...mapActions('GroupSubject', ['removeGroupSubject', 'updategroupSubject']),
     onRemove() {
       this.$dialog.confirm({
         title: 'Xóa phân ban',
-        text: 'Bạn có chắc muốn phân ban này?',
+        text: 'Bạn có chắc muốn bộ môn này?',
         okText: 'Có',
         cancelText: 'Không',
         done: async () => {
           try {
-            await this.removeDivision(this.selected.id)
+            await this.removeGroupSubject(this.selected.id)
             this.$alert.deleteSuccess()
           } catch (error) {
             this.$alert.deleteError()

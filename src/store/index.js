@@ -65,6 +65,7 @@ import user from './app/user'
 import factor from './factor/factor'
 
 import postCreate from './post/post-create'
+import GroupSubject from './groupSubject/GroupSubject'
 
 Vue.use(Vuex)
 
@@ -116,7 +117,8 @@ export default createStore(Vuex.Store, {
     postCreate,
     MarkInput,
     Mark,
-    StudentMark
+    StudentMark,
+    GroupSubject
   },
   mixins: {
     mutations: {
