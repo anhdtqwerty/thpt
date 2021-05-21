@@ -10,11 +10,26 @@
       <span class="font-weight-bold">[Gửi]</span>.
     </p>
 
-    <v-checkbox label="Xác nhận gửi tin" />
+    <v-checkbox v-model="checkbox" label="Xác nhận gửi tin" />
     <v-divider></v-divider>
     <v-card-actions>
       <v-spacer />
-      <v-btn depressed color="primary" class="px-6 mt-4  white--text">Gửi</v-btn>
+      <v-btn :disabled="!checkbox" depressed color="primary" class="px-6 mt-4  white--text">Gửi</v-btn>
     </v-card-actions>
   </v-card>
 </template>
+
+<script>
+export default {
+  components: {},
+  data() {
+    return {
+      checkbox: false
+    }
+  },
+  computed: {},
+  methods: {}
+}
+</script>
+
+<style lang="scss" scoped></style>

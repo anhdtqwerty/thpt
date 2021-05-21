@@ -16,10 +16,10 @@
           <MarkPostCreate />
         </v-tab-item>
         <v-tab-item :key="2">
-          <ViolationPostCreate />
+          <ViolationPostCreate @sendDailySMS="sendDailySMS" />
         </v-tab-item>
         <v-tab-item :key="3">
-          <AttendancePostCreate @sendPost="sendPost" />
+          <AttendancePostCreate @sendDiligenceSMS="sendDiligenceSMS" />
         </v-tab-item>
       </v-tabs-items>
     </v-card>
@@ -35,7 +35,7 @@ import MarkPostCreate from '@/modules/post/MarkPostCreate.vue'
 import ViolationPostCreate from '@/modules/post/ViolationPostCreate.vue'
 import AttendancePostCreate from '@/modules/post/AttendancePostCreate.vue'
 import AttendancePostCreateDialog from '@/modules/post/AttendancePostCreateDialog.vue'
-
+import { Post } from '@/plugins/api.js'
 export default {
   components: {
     SendSMSExcelDialog,
@@ -54,9 +54,33 @@ export default {
     }
   },
   methods: {
-    sendPost({ students, classes, grades, allSchool }) {
-      this.postTos = { students, classes, grades, allSchool }
-      this.sendDialog = !this.sendDialog
+    // sendPost({ students, classes, grades, allSchool }) {
+    //   this.postTos = { students, classes, grades, allSchool }
+    //   this.sendDialog = !this.sendDialog
+    // },
+    async sendDiligenceSMS(data) {
+      console.log(data)
+      if (data.classes.length === 0) this.$alert.error('Xin vui lòng chọn ít nhất một lớp!')
+      console.log(data.classes)
+      try {
+        const result = await Post.sendDiligenceSMS({
+          class: data.classes[0],
+          type: 'diligence'
+        })
+        this.$alert.success(result)
+      } catch (error) {
+        this.$alert.error(`Đã có lỗi xảy ra trong quá trình gửi tin nhắn! Lỗi: ${error}`)
+      }
+    },
+    async sendDailySMS() {
+      try {
+        this.loading = true
+        const sms = await Post.sendDailySMS()
+        if (sms.length > 0) this.$alert.success('Gửi tin nhắn hằng ngày thành công!')
+        this.loading = false
+      } catch (error) {
+        this.$alert.error(`Đã xảy ra lỗi trong quá trình gửi tin nhắn! Lỗi: ${error}`)
+      }
     }
   }
 }

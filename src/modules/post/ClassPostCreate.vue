@@ -68,7 +68,7 @@ export default {
     ...mapActions('postCreate', ['fetchClassData']),
     search() {
       if (this.grade) {
-        this.fetchClassData({ gradeId: this.grade })
+        this.fetchClassData({ grade: this.grade })
       }
     }
   }

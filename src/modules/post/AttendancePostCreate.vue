@@ -57,7 +57,12 @@
           <span :class="selecteds.length ? 'text--primary' : 'text--disabled'">
             {{ selecteds.length ? 'Đã chọn ' + selecteds.length + ' lớp' : 'Chưa chọn' }}
           </span>
-          <v-btn small color="primary" :disabled="!selecteds.length" @click="$emit('sendPost', { classes: selecteds })">
+          <v-btn
+            small
+            color="primary"
+            :disabled="!selecteds.length"
+            @click="$emit('sendDiligenceSMS', { classes: selecteds })"
+          >
             Gửi tin nhắn
           </v-btn>
         </div>
@@ -83,7 +88,8 @@ export default {
         { text: 'Đi muộn', value: 'late', sortable: false },
         { text: 'Vắng / quên quẹt thẻ', value: 'absent', sortable: false }
       ],
-      division: null
+      division: null,
+      loading: false
     }
   },
   computed: {
