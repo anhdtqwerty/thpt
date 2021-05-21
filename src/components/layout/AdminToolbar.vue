@@ -5,7 +5,6 @@
     <Teachers />
     <Classes />
     <AdvanceSetting />
-    <System />
     <Posts />
   </v-list>
 </template>
@@ -15,7 +14,6 @@ import Students from '@/components/basic/menu/Students.vue'
 import Teachers from '@/components/basic/menu/Teachers.vue'
 import Dashboard from '@/components/basic/menu/Dashboard'
 import AdvanceSetting from '@/components/basic/menu/AdvanceSetting.vue'
-import System from '@/components/basic/menu/System.vue'
 import Posts from '@/components/basic/menu/Posts.vue'
 import { mapState } from 'vuex'
 export default {
@@ -25,12 +23,11 @@ export default {
     Students,
     Teachers,
     AdvanceSetting,
-    System,
     Posts
   },
   computed: {
-    ...mapState('auth', ['profile', 'role']),
-  },
+    ...mapState('auth', ['profile', 'role'])
+  }
 }
 </script>
 

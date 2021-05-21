@@ -86,7 +86,11 @@ export const Semester = APIHelper(SEMESTER_API)
 export const Subject = APIHelper(SUBJECT_API)
 export const Violation = APIHelper(VIOLATION_API)
 export const Factor = APIHelper(FACTOR_API)
-export const Post = APIHelper(POST_API)
+export const Post = {
+  ...APIHelper(POST_API),
+  sendDiligenceSMS: params => axios.post('/posts/diligence', utils.filterObject(params)),
+  sendDailySMS: () => axios.post('/sms/sendDailySMS')
+}
 export const GroupSubject = APIHelper(GROUP_SUBJECT_API)
 
 export const Upload = {

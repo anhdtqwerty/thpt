@@ -4,7 +4,7 @@
       <v-list-item-icon class="mr-4">
         <v-icon>mdi-library</v-icon>
       </v-list-item-icon>
-      <v-list-item-title>HỌC SINH</v-list-item-title>
+      <v-list-item-title>Học sinh</v-list-item-title>
     </template>
     <v-list class="py-0">
       <v-list-item class="px-0" active-class="blue lighten-4 primary--text" link to="/students">

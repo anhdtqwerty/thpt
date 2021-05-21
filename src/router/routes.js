@@ -29,7 +29,6 @@ import StudentClasses from '@/views/student/Classes'
 import StudentImporter from '@/views/student/StudentImporter.vue'
 import Violation from '@/views/violation/Violations.vue'
 import ContactBook from '@/views/account/ContactBook.vue'
-import ContactBookDetail from '@/views/account/ContactBookDetail.vue'
 import Diligence from '@/views/diligence/Diligence.vue'
 import StudentMarks from '@/views/student/StudentMarks.vue'
 
@@ -61,6 +60,8 @@ import Classes from '@/views/class/Classes'
 import TimeTableConfig from '@/views/timetable/TimeTableConfig.vue'
 // -----------------------Advanced Setting---------------------------------
 import PostCreate from '@/views/post/PostCreate.vue'
+import PostCreateAuto from '@/views/post/PostCreateAuto.vue'
+import PostCreateHistory from '@/views/post/PostCreateHistory.vue'
 
 const routes = [
   {
@@ -438,16 +439,7 @@ const routes = [
         name: 'Sổ liên lạc',
         component: ContactBook,
         meta: {
-          title: 'Sổ liên lạc',
-          auth: true
-        }
-      },
-      {
-        path: 'contact-book/:id',
-        name: 'Chi tiết sổ liên lạc',
-        component: ContactBookDetail,
-        meta: {
-          title: 'Sổ liên lạc',
+          title: 'Danh sách sổ liên lạc',
           auth: true
         }
       },
@@ -457,6 +449,24 @@ const routes = [
         component: PostCreate,
         meta: {
           title: 'Gửi tin nhắn',
+          auth: true
+        }
+      },
+      {
+        path: 'post-send-auto',
+        name: 'Gửi tin tự động',
+        component: PostCreateAuto,
+        meta: {
+          title: 'Gửi tin tự động',
+          auth: true
+        }
+      },
+      {
+        path: 'post-history',
+        name: 'Lịch sử gửi tin',
+        component: PostCreateHistory,
+        meta: {
+          title: 'Lịch sử gửi tin',
           auth: true
         }
       },

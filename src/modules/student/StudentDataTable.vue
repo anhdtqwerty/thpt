@@ -53,7 +53,7 @@ const originHeaders = [
     text: 'Tên học sinh',
     value: 'name',
     align: 'left',
-    sortable: true,
+    sortable: false,
     show: true
   },
   {

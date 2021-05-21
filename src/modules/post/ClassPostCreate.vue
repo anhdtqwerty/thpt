@@ -1,35 +1,41 @@
 <template>
   <v-data-table
-    v-model='selecteds'
-    :headers='headers'
-    :items='classes'
-    item-key='title'
+    v-model="selecteds"
+    :headers="headers"
+    :items="classes"
+    item-key="title"
     show-select
-    class='elevation-1'
+    class="elevation-1"
+    :footer-props="{
+      'items-per-page-text': 'Lớp mỗi trang',
+      'items-per-page-all-text': 'Tất cả'
+    }"
   >
-    <div slot='top'>
+    <div slot="top">
       <div>
-        <v-card flat class='ma-1 mt-4 pa-4 elevation-1'>
-          <div class='d-flex'>
-            <AutocompleteGrade class='mr-2'
-                               v-model='grade'
-                               item-text='title'
-                               item-value='id'
-                               label='Khối'
-                               required
-                               dense
-                               outlined
-                               auto-select-first
-                               hide-details
-                               style='max-width: 256px' />
-            <v-btn color='primary' outlined @click='search'>Tìm kiếm</v-btn>
+        <v-card flat class="ma-1 mt-4 pa-4 elevation-1">
+          <div class="d-flex">
+            <AutocompleteGrade
+              class="mr-2"
+              v-model="grade"
+              item-text="title"
+              item-value="id"
+              label="Khối"
+              required
+              dense
+              outlined
+              auto-select-first
+              hide-details
+              style="max-width: 256px"
+            />
+            <v-btn color="primary" outlined @click="search">Tìm kiếm</v-btn>
           </div>
         </v-card>
-        <div class='d-flex justify-space-between ps-4 py-2'>
+        <div class="d-flex justify-space-between ps-4 py-2">
           <span :class="selecteds.length ? 'text--primary' : 'text--disabled'">
             {{ selecteds.length ? 'Đã chọn ' + selecteds.length + ' lớp' : 'Chưa chọn' }}
           </span>
-          <v-btn small color='primary' :disabled='!selecteds.length' @click="$emit('sendPost', { classes: selecteds})">
+          <v-btn small color="primary" :disabled="!selecteds.length" @click="$emit('sendPost', { classes: selecteds })">
             Gửi tin nhắn
           </v-btn>
         </div>
@@ -39,7 +45,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapState } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import AutocompleteGrade from '@/components/basic/input/AutocompleteGrade'
 
 export default {
@@ -62,13 +68,11 @@ export default {
     ...mapActions('postCreate', ['fetchClassData']),
     search() {
       if (this.grade) {
-        this.fetchClassData({ gradeId: this.grade })
+        this.fetchClassData({ grade: this.grade })
       }
     }
   }
 }
 </script>
 
-<style lang='scss' scoped>
-
-</style>
+<style lang="scss" scoped></style>

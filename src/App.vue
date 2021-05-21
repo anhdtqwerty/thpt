@@ -29,4 +29,12 @@ input {
   background-color: #f5f5f5;
   border-bottom: none;
 }
+.content-text {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+  color: #757575;
+}
 </style>
