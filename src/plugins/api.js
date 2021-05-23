@@ -34,6 +34,7 @@ const VIOLATION_API = '/violations/'
 const FACTOR_API = '/factors/'
 const POST_API = '/posts/'
 const GROUP_SUBJECT_API = '/group-subjects/'
+const CONTACT_BOOK_API = '/contact-books/'
 
 const APIHelper = api => ({
   search: (params, option) => axios.get(api, { params: utils.filterObject(params) }, option),
@@ -92,6 +93,7 @@ export const Post = {
   sendDailySMS: () => axios.post('/sms/sendDailySMS')
 }
 export const GroupSubject = APIHelper(GROUP_SUBJECT_API)
+export const ContactBook = APIHelper(CONTACT_BOOK_API)
 
 export const Upload = {
   upload: formData =>
@@ -129,5 +131,6 @@ export default {
   Violation,
   Factor,
   Post,
-  GroupSubject
+  GroupSubject,
+  ContactBook
 }

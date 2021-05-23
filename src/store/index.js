@@ -66,6 +66,7 @@ import factor from './factor/factor'
 
 import postCreate from './post/post-create'
 import GroupSubject from './groupSubject/GroupSubject'
+import ContactBook from './contactBook/ContactBook'
 
 Vue.use(Vuex)
 
@@ -118,7 +119,8 @@ export default createStore(Vuex.Store, {
     MarkInput,
     Mark,
     StudentMark,
-    GroupSubject
+    GroupSubject,
+    ContactBook
   },
   mixins: {
     mutations: {

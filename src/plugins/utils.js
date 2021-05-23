@@ -326,8 +326,8 @@ export default {
     })
     this.handleExportExcel(tableData, excelFileName)
   },
-  autoGeneratePassword(){
-    return ("" + Math.random()).substring(2, 10)
+  autoGeneratePassword() {
+    return ('' + Math.random()).substring(2, 10)
   },
   moneyToString(SoTien) {
     var lan = 0

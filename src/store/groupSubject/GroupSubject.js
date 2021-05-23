@@ -24,8 +24,8 @@ export default {
       await GroupSubject.remove(id)
       commit('removeGroupSubject', id)
     },
-    async updateGroupSubject({ commit }, { id, ...grade }) {
-      const g = await GroupSubject.update(id, grade)
+    async updateGroupSubject({ commit }, { id, ...groupSubject }) {
+      const g = await GroupSubject.update(id, groupSubject)
       commit('updateGroupSubject', g)
     }
   },
@@ -33,17 +33,17 @@ export default {
     setGroupSubjects(state, groupSubjects) {
       state.groupSubjects = groupSubjects
     },
-    updateGroupSubject(state, grade) {
+    updateGroupSubject(state, groupSubject) {
       state.groupSubjects = state.groupSubjects.map(g => {
-        if (grade.id === g.id) return grade
+        if (groupSubject.id === g.id) return groupSubject
         else return g
       })
     },
-    createGroupSubject(state, grade) {
-      state.groupSubjects = [grade, ...state.groupSubjects]
+    createGroupSubject(state, groupSubject) {
+      state.groupSubjects = [groupSubject, ...state.groupSubjects]
     },
     removeGroupSubject(state, id) {
-      state.groupSubjects = state.groupSubjects.filter(grade => grade.id !== id)
+      state.groupSubjects = state.groupSubjects.filter(groupSubject => groupSubject.id !== id)
     }
   }
 }

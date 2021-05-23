@@ -24,10 +24,10 @@ export default {
       if (!itemsPerPage) itemsPerPage = state.itemsPerPage
       if (state.studentSearchParams) {
         const studentSearchParams = {
+          _sort: 'createdAt:DESC',
           ...state.studentSearchParams,
           _start: (page - 1) * itemsPerPage,
-          _limit: itemsPerPage,
-          _sort: 'createdAt:DESC'
+          _limit: itemsPerPage
         }
         const [totalItems, students] = await Promise.all([
           api.Student.count(studentSearchParams),

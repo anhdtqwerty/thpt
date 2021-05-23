@@ -69,4 +69,15 @@ export const vueFilterRegister = () => {
         return ''
     }
   })
+  Vue.filter('getContactBookPhones', item => {
+    if (!item.contactBook || !item.contactBook.phones) return ''
+    if (typeof item.contactBook.phones === 'string') return item.contactBook.phones
+    return item.contactBook.phones.join(', ')
+  })
+  Vue.filter('getNotificationMethod', item => {
+    if (!item.contactBook) return ''
+    if (item.contactBook.isSms && item.contactBook.isApp) return 'APP và SMS'
+    if (item.contactBook.isSms) return 'SMS'
+    if (item.contactBook.isApp) return 'APP'
+  })
 }
