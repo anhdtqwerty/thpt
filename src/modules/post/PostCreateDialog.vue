@@ -1,90 +1,61 @@
 <template>
-  <v-dialog
-    :fullscreen='$vuetify.breakpoint.smAndDown'
-    v-model='dialog'
-    width='600'
-    scrollable
-  >
+  <v-dialog :fullscreen="$vuetify.breakpoint.smAndDown" v-model="dialog" width="600" scrollable>
     <v-card>
-      <v-card-title class='primary white--text text-uppercase'>
+      <v-card-title class="primary white--text text-uppercase">
         Gửi tin nhắn đến người nhận
         <v-spacer></v-spacer>
         <v-btn dark icon>
-          <v-icon @click='cancel'>close</v-icon>
+          <v-icon @click="cancel">close</v-icon>
         </v-btn>
       </v-card-title>
       <v-divider />
       <v-card-text>
-        <v-form ref='form' class='py-4'>
+        <v-form ref="form" class="py-4">
           <div>
             <v-row>
-              <v-col cols='12' sm='3'>
+              <v-col cols="12" sm="3">
                 <h3>Nhóm nhận tin</h3>
               </v-col>
-              <v-col cols='12' sm='9'>
+              <v-col cols="12" sm="9">
                 <div>{{ postToOverview }}</div>
                 <div>{{ postToDetail }}</div>
               </v-col>
             </v-row>
-            <v-divider class='my-4' />
+            <v-divider class="my-4" />
             <v-row>
-              <v-col cols='12' sm='3'>
+              <v-col cols="12" sm="3">
                 <h3>Dạng tin nhắn</h3>
               </v-col>
-              <v-col cols='12' sm='9'>
-                <v-radio-group v-model='postType' class='ma-0' hide-details>
-                  <div class='d-flex flex-wrap'>
-                    <v-radio
-                      class='mr-4'
-                      v-for='p in postTypes'
-                      :key='p.type'
-                      :label='p.title'
-                      :value='p.type'
-                    />
+              <v-col cols="12" sm="9">
+                <v-radio-group v-model="postType" class="ma-0" hide-details>
+                  <div class="d-flex flex-wrap">
+                    <v-radio class="mr-4" v-for="p in postTypes" :key="p.type" :label="p.title" :value="p.type" />
                   </div>
                 </v-radio-group>
               </v-col>
             </v-row>
-            <v-divider class='my-4' />
+            <v-divider class="my-4" />
             <v-row>
-              <v-col cols='12' sm='3'>
+              <v-col cols="12" sm="3">
                 <h3>Gửi qua</h3>
               </v-col>
-              <v-col cols='12' sm='9'>
-                <v-radio-group v-model='senderMethod' class='ma-0' hide-details>
-                  <div class='d-flex flex-wrap'>
-                    <v-radio
-                      class='mr-4'
-                      v-for='m in senderMethods'
-                      :key='m.type'
-                      :label='m.title'
-                      :value='m.type'
-                    />
+              <v-col cols="12" sm="9">
+                <v-radio-group v-model="senderMethod" class="ma-0" hide-details>
+                  <div class="d-flex flex-wrap">
+                    <v-radio class="mr-4" v-for="m in senderMethods" :key="m.type" :label="m.title" :value="m.type" />
                   </div>
                 </v-radio-group>
               </v-col>
             </v-row>
-            <v-divider class='my-4' />
-            <v-textarea
-              outlined
-              label='Nội dung tin nhắn'
-              v-model='content'
-            ></v-textarea>
+            <v-divider class="my-4" />
+            <v-textarea outlined label="Nội dung tin nhắn" v-model="content"></v-textarea>
           </div>
         </v-form>
       </v-card-text>
       <v-divider />
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn
-          class='ma-2'
-          dark
-          depressed
-          color='primary'
-          @click='create'
-        >Gửi
-        </v-btn
-        >
+        <v-btn class="ma-2" dark depressed color="primary" @click="create">Gửi </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -127,6 +98,7 @@ export default {
   },
   methods: {
     async create() {
+      this.$loading.active = true
       const params = {
         content: this.content,
         keywords: utils.clearUnicode(this.content),
@@ -157,12 +129,16 @@ export default {
       }
       this.dialog = false
       this.$emit('done')
+      this.$alert.success('Gửi tin nhắn thành công')
+      this.reset()
+      this.$loading.active = false
     },
     cancel() {
       this.dialog = false
       this.$emit('cancel')
     },
     reset() {
+      this.content = ''
     }
   },
   computed: {
@@ -191,6 +167,4 @@ export default {
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

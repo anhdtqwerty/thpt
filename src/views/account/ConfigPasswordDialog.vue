@@ -1,11 +1,6 @@
 <template>
   <div class="text-center">
-    <v-dialog
-      :fullscreen="$vuetify.breakpoint.smAndDown"
-      max-width="720"
-      v-model="dialog"
-      scrollable
-    >
+    <v-dialog :fullscreen="$vuetify.breakpoint.smAndDown" max-width="720" v-model="dialog" scrollable>
       <v-form ref="form">
         <v-card height="350px">
           <v-card-title class="primary white--text">
@@ -23,13 +18,13 @@
               <v-col cols="2" class="pb-5">
                 <div class="info-title">Ngày sinh</div>
                 <div class="info-content mt-1">
-                  {{ student | getStudentDob }}
+                  {{ student | ddmmyyyy }}
                 </div>
               </v-col>
               <v-col cols="2" class="pb-5">
                 <div class="info-title">Mã số</div>
                 <div class="info-content mt-1">
-                  {{ student | getStudentCode }}
+                  {{ (student.code || '') | getStudentCode }}
                 </div>
               </v-col>
               <v-col cols="2" class="pb-5">
@@ -40,20 +35,13 @@
               </v-col>
             </v-row>
             <v-row class="pt-4">
-              <v-col cols="3" class="mt-2">
-                Mật khẩu mới <span class="error--text">*</span>
-              </v-col>
+              <v-col cols="3" class="mt-2"> Mật khẩu mới <span class="error--text">*</span> </v-col>
               <v-col cols="9" class="d-flex">
                 <div class="d-flex">
                   <v-text-field
                     v-model="password"
-                    v-mask="'###########'"
                     placeholder="Nhập mật khẩu APP"
-                    :rules="[
-                      $rules.required,
-                      $rules.minLength(6),
-                      $rules.maxLength(12),
-                    ]"
+                    :rules="[$rules.required, $rules.minLength(6), $rules.maxLength(12), $rules.nospace]"
                     outlined
                     dense
                   ></v-text-field>
@@ -64,17 +52,9 @@
           </v-card-text>
           <v-divider></v-divider>
           <v-card-actions class="d-flex justify-space-between py-4 px-5">
-            <v-btn color="cancel" width="100px" @click="cancel" outlined
-              >Huỷ</v-btn
-            >
+            <v-btn color="cancel" width="100px" @click="cancel" outlined>Huỷ</v-btn>
             <v-spacer></v-spacer>
-            <v-btn
-              color="primary"
-              width="100px"
-              class="elevation-0"
-              @click="save()"
-              >Lưu</v-btn
-            >
+            <v-btn color="primary" width="100px" class="elevation-0" @click="save()">Lưu</v-btn>
           </v-card-actions>
         </v-card>
       </v-form>
@@ -84,7 +64,6 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import moment from 'moment'
 import { get } from 'lodash'
 import CardStudentName from '@/components/basic/card/CardStudentName.vue'
 import { mask } from 'vue-the-mask'
@@ -94,24 +73,24 @@ export default {
   props: {
     student: {
       type: Object,
-      default: () => {},
+      default: () => {}
     },
-    state: Boolean,
+    state: Boolean
   },
   directives: {
-    mask,
+    mask
   },
   data() {
     return {
       dialog: false,
-      password: '',
+      password: ''
     }
   },
   computed: {
     ...mapGetters('noti', ['sms']),
     getPhoneNumArray() {
       return [...Array(this.phoneNum).keys()]
-    },
+    }
   },
   methods: {
     ...mapActions('noti', ['sendEmail', 'sendSMS']),
@@ -132,43 +111,37 @@ export default {
     async save() {
       try {
         if (this.$refs.form.validate()) {
+          this.$loading.active = true
           await this.updateUser({
             id: this.student.user.id,
-            password: this.password,
+            password: this.password
           })
           this.$alert.success('Cài đặt mật khẩu mới thành công')
           this.dialog = false
         }
       } catch (error) {
-        this.$alert.error(error)
+        this.$alert.error('Cập nhật mật khẩu thất bại')
+      } finally {
+        this.$loading.active = false
       }
     },
     reset() {
       // this.password = this.$utils.autoGeneratePassword()
       this.password = ''
       this.dialog = false
-    },
+      this.$refs.form.resetValidation()
+    }
   },
   filters: {
-    getStudentDob: (student) => {
-      if (student.dob) return moment.utc(student.dob).format('DD/MM/YYYY')
-      return ''
-    },
-    getStudentCode: (student) => {
-      return get(student, 'code', '')
-    },
-    getClassTitle: (student) => {
-      return get(student, 'classes[0].title', '')
-    },
+    getClassTitle: student => {
+      return get(student, 'currentClass.title', '')
+    }
   },
   watch: {
     state(state) {
-      this.dialog = state
-    },
-    dialog(dialog) {
-      if (!dialog) this.$emit('close')
-    },
-  },
+      this.dialog = true
+    }
+  }
 }
 </script>
 

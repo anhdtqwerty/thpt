@@ -28,7 +28,7 @@ import Student from '@/views/student/Student'
 import StudentClasses from '@/views/student/Classes'
 import StudentImporter from '@/views/student/StudentImporter.vue'
 import Violation from '@/views/violation/Violations.vue'
-import ContactBook from '@/views/account/ContactBook.vue'
+import ContactBook from '@/views/account/ContactBooks.vue'
 import Diligence from '@/views/diligence/Diligence.vue'
 import StudentMarks from '@/views/student/StudentMarks.vue'
 

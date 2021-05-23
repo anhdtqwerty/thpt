@@ -4,7 +4,7 @@
       <v-col cols="12" xs="12" sm="12" md="10">
         <v-row>
           <v-col md="4">
-            <autocomplete-grade
+            <AutocompleteGrade
               v-model="grade"
               item-text="name"
               item-value="id"
@@ -15,11 +15,12 @@
               dense
               deletable-chips
               hide-details
+              @change="currentClass = {}"
             />
           </v-col>
           <v-col md="4">
-            <autocomplete-class
-              v-model="classes"
+            <AutocompleteClass
+              v-model="currentClass"
               clear-icon="mdi-close"
               label="Lớp"
               :disabled="!grade"
@@ -30,10 +31,21 @@
               dense
               return-object
               hide-details
+              @change="student = {}"
             />
           </v-col>
           <v-col md="4">
-            <v-text-field
+            <AutocompleteStudent
+              return-object
+              :disabled="!currentClass.id"
+              label="Học sinh"
+              outlined
+              dense
+              clearable
+              :filter="currentClassId"
+              @change="student = $event"
+            />
+            <!-- <v-text-field
               v-model="studentNameOrCode"
               label="Học sinh"
               return-object
@@ -42,7 +54,7 @@
               outlined
               dense
               hide-details
-            />
+            /> -->
           </v-col>
         </v-row>
       </v-col>
@@ -59,6 +71,7 @@
               label="Trạng thái"
               :items="statuses"
               outlined
+              clearable
               dense
             ></v-select>
           </v-col>
@@ -94,12 +107,16 @@
 <script>
 import AutocompleteClass from '@/components/basic/input/AutocompleteClass'
 import AutocompleteGrade from '@/components/basic/input/AutocompleteGrade'
+import AutocompleteStudent from '@/components/basic/input/AutocompleteStudent.vue'
+import { get } from 'lodash'
+
 export default {
-  components: { AutocompleteClass, AutocompleteGrade },
+  components: { AutocompleteClass, AutocompleteGrade, AutocompleteStudent },
   data: () => ({
+    student: {},
     studentNameOrCode: '',
     phone: '',
-    classes: null,
+    currentClass: {},
     grade: null,
     isSms: false,
     isApp: false,
@@ -122,20 +139,30 @@ export default {
   computed: {
     classFilter() {
       return this.grade ? { grade: this.grade } : {}
+    },
+    currentClassId() {
+      return { currentClass: get(this.currentClass, 'id') }
     }
   },
   methods: {
     onFilterChanged() {
-      this.$emit('onFilterChanged', {
+      const params = {
         grade: this.grade,
-        classes: this.classes,
-        student: this.studentNameOrCode,
-        status: this.status,
-        phone: this.phone,
-        isSms: this.isSms,
-        isApp: this.isApp,
-        _sort: 'updatedAt:desc'
-      })
+        currentClass: get(this.currentClass, 'id'),
+        id: get(this.student, 'id'),
+        'contactBook.phones_contains': this.phone,
+        'contactBook.isApp': this.isApp,
+        'contactBook.isSms': this.isSms
+      }
+      if (this.status === 'inactive') {
+        params['contactBook_null'] = true
+        params['_sort'] = 'createdAt:desc'
+      } else {
+        params['contactBook.status'] = this.status
+        params['_sort'] = 'contactBook.createdAt:desc'
+      }
+
+      this.$emit('onFilterChanged', { ...params })
     }
   }
 }

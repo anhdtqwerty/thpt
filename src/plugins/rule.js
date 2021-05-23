@@ -12,9 +12,9 @@ export const inputRules = {
   normal: v => !v || /^[a-z0-9 ._ẮẰẲẴẶĂẤẦẨẪẬÂÁÀÃẢẠĐẾỀỂỄỆÊÉÈẺẼẸÍÌỈĨỊỐỒỔỖỘÔỚỜỞỠỢƠÓÒÕỎỌỨỪỬỮỰƯÚÙỦŨỤÝỲỶỸỴ]+$/gi.test(v.trim()) || 'Contains invalid character',
   equal: (target, msg) => v => !v || target === v || msg || `Must be equal to ${target}`,
   phone: v => !v || (v.length >= 10 && /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s./0-9]*$/gi.test(v)) || 'Số điện thoại không hợp lệ',
-  nospace: v => !v || !/ /.test(v.trim()) || 'Space is not allowed',
+  nospace: v => !v || !/ /.test(v) || 'Không được chứa khoảng trắng',
   notEmpty: v => !Array.isArray(v) || !!v.length || 'Required',
   date: v => moment(v, 'DD/MM/YYYY', true).isValid() || 'Ngày không hợp lệ',
   markInput: v => !v || (parseFloat(v) >= 0 && parseFloat(v) <= 10) || 'Điểm phải trong khoảng từ 0 đến 10',
-  vnPhone: v => !v || (v.length>= 10 && /(0[3|5|7|8|9])+([0-9]{8})\b/gi.test(v)) || "Số điện thoại không hợp lệ"
+  vnPhone: v => !v || (v.length >= 10 && /(0[3|5|7|8|9])+([0-9]{8})\b/gi.test(v)) || 'Số điện thoại không hợp lệ'
 }
