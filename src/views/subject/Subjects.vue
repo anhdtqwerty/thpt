@@ -63,12 +63,13 @@ export default {
       isLoading: false,
       headers: [
         {
-          text: 'Tên môn',
+          text: 'Tên môn học',
           value: 'title',
           align: 'left',
           sortable: false,
           show: true
         },
+        { text: 'Bộ môn', value: 'group_subject', show: true },
         { text: 'Nhóm môn học', value: 'type', show: true },
         { text: 'Khối', value: 'grade', show: true },
         { text: 'Phân ban', value: 'divisions', show: true },
@@ -78,13 +79,7 @@ export default {
           show: true,
           align: 'center'
         },
-        { text: 'Loại đánh giá', value: 'markType', show: true },
-        {
-          text: 'Số tiết/tuần',
-          value: 'data.weeklyLesson',
-          show: true,
-          align: 'center'
-        }
+        { text: 'Đánh giá theo', value: 'markType', show: true }
       ],
       createSubject: false,
       selected: {}

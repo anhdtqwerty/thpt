@@ -8,21 +8,23 @@
       </v-card-title>
       <v-card-text>
         <v-divider></v-divider>
-        <SubjectForm ref="form" :editCode="true" />
+        <SubjectNewForm ref="form" />
       </v-card-text>
-      <v-card-actions class="d-flex justify-end pa-6">
-        <v-btn dark depressed color="#0D47A1" :loading="loading" @click="save"><v-icon left>add</v-icon>Thêm</v-btn>
+      <v-divider />
+      <v-card-actions class="d-flex justify-space-between pa-6">
+        <v-btn class="gray--text" depressed :loading="loading" outlined @click="cancel">HUỶ</v-btn>
+        <v-btn depressed color="primary" :loading="loading" @click="save">LƯU</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
-import SubjectForm from '@/components/basic/form/SubjectForm'
-import { mapActions, mapState } from 'vuex'
+import SubjectNewForm from '@/components/basic/form/SubjectNewForm'
+import { mapActions } from 'vuex'
 export default {
   components: {
-    SubjectForm
+    SubjectNewForm
   },
   props: {
     state: Boolean
@@ -32,10 +34,6 @@ export default {
       dialog: false,
       loading: false
     }
-  },
-  computed: {
-    ...mapState('app', ['roles', 'department']),
-    ...mapState('auth', ['user'])
   },
   methods: {
     ...mapActions('subjects', ['createSubject']),

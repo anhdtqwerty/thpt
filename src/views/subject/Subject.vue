@@ -1,9 +1,9 @@
 <template>
-  <div class="pa-2">
+  <v-flex fill-height class="pa-2">
     <div class="pa-4 pa-md-2 d-flex justify-space-between align-center">
       <div>
         <Breadcrumbs
-          headline="Quản lý môn"
+          :headline="subject.title"
           :link="[
             { text: 'Nâng cao', href: '../divisions' },
             { text: 'Danh sách môn', href: '../subjects' }
@@ -12,89 +12,71 @@
       </div>
     </div>
     <v-card class="pa-4" v-if="subject">
-      <div>
-        <div class="caption">Môn học</div>
-        <h1 class="primary--text display-1">{{ subject.title }}</h1>
-      </div>
-      <v-row class="mt-1">
-        <v-col>
-          <table class="table">
-            <tr>
-              <td class="gray--text">Nhóm môn</td>
-              <td>Môn chính khóa</td>
-            </tr>
-            <tr>
-              <td class="gray--text">Khối lớp</td>
-              <td v-if="subject.grade">{{ subject.grade.title }}</td>
-            </tr>
-            <tr>
-              <td class="gray--text">Hệ số tổng kết</td>
-              <td>{{ subject.multiply }}</td>
-            </tr>
-            <tr>
-              <td class="gray--text">Ban</td>
-              <td>{{ subject.divisions | getDivision }}</td>
-            </tr>
-          </table>
+      <v-row>
+        <v-col cols="4">
+          <p>môn học</p>
+          <h1>{{ subject.title }}</h1>
         </v-col>
-        <v-col>
-          <table class="table">
-            <tr>
-              <td class="gray--text">Loại đánh giá</td>
-              <td>{{ subject.markType | getMarkType }}</td>
-            </tr>
-            <tr>
-              <td class="gray--text">Số tiết / tuần</td>
-              <td v-if="subject.data">
-                {{ subject.data.weeklyLesson }}
-              </td>
-            </tr>
-            <tr>
-              <td class="gray--text">Số tiết / năm</td>
-              <td v-if="subject.data">{{ subject.data.anualyLesson }}</td>
-            </tr>
-            <tr>
-              <td class="gray--text">Ghép lớp</td>
-              <td>Không</td>
-            </tr>
-          </table>
+        <v-col cols="1.5">
+          <p>Hệ số tổng kết</p>
+          <p>{{ subject.multiply }}</p>
         </v-col>
-        <v-col>
-          <div class="gray--text">Ghi chú</div>
-          <p>{{ subject.description }}</p>
+        <v-col cols="1.5">
+          <p>Đánh giá theo</p>
+          <p>{{ subject.markType | getMarkType }}</p>
+        </v-col>
+        <v-col cols="2">
+          <p>Số tiết trên tuần</p>
+          <p>Tối thiểu {{ subject.data | maxWeeklyLesson }} / Tối đa {{ subject.data | minWeeklyLesson }}</p>
+        </v-col>
+        <v-col cols="1.5">
+          <p>Ghép lớp</p>
+          <p>{{ subject.data && subject.data.compoundClass | compoundClass }}</p>
+        </v-col>
+        <v-col cols="1.5" class="d-flex justify-end justify-content-center align-center">
+          <v-btn class="ma-2 text-capitalize" outlined color="indigo" @click="detailSubject = !detailSubject"
+            >Hồ sơ chi tiết</v-btn
+          >
         </v-col>
       </v-row>
-      <v-btn style="position: absolute; top: 8px; right: 8px" icon @click="state = !state"
-        ><v-icon small>mdi-pencil</v-icon></v-btn
-      >
     </v-card>
     <v-card class="pa-4 mt-4" v-if="subject">
       <div class="d-flex justify-space-center align-center">
         <div class="caption">Cấu Hình Điểm</div>
         <v-spacer></v-spacer>
-        <v-btn color="primary" depressed small @click="factorStateNewDialog = !factorStateNewDialog"
-          ><v-icon>mdi-plus</v-icon> Thêm</v-btn
+        <v-btn color="primary" depressed small @click="addFactor = !addFactor"
+          ><v-icon>mdi-plus</v-icon> Thêm đầu điểm</v-btn
         >
       </div>
       <FactorTable no-data-text="Chưa có cấu hình điểm" :subject="subject" />
     </v-card>
-    <SubjectEditDialog :subject="subject" :state="state" />
-    <FactorNewDialog :subject="subject" :state="factorStateNewDialog" />
-  </div>
+    <SubjectDeleteDialog :subject="subject" :state="deleteSubject" />
+    <FactorNewDialog :state="addFactor" />
+    <SubjectDetailDialog :state="detailSubject" @editSubjectProfile="editSubject = !editSubject" />
+    <SubjectEditDialog :state="editSubject" />
+    <div class="d-flex flex-column align-center mt-8">
+      <v-btn outlined color="red" @click="deleteSubject = !deleteSubject">Xoá môn học</v-btn>
+    </div>
+  </v-flex>
 </template>
 
 <script>
 import { mapActions, mapState } from 'vuex'
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import SubjectEditDialog from '@/modules/subject/SubjectEditDialog'
-import FactorNewDialog from '@/modules/factor/FactorNewDialog'
+import SubjectDetailDialog from '@/modules/subject/SubjectDetailDialog'
+import SubjectDeleteDialog from '@/modules/subject/SubjectDeleteDialog'
 import FactorTable from '@/modules/factor/FactorTable.vue'
+import FactorNewDialog from '@/modules/factor/FactorNewDialog'
+import _ from 'lodash'
 export default {
   components: {
     Breadcrumbs,
     SubjectEditDialog,
-    FactorNewDialog,
-    FactorTable
+    SubjectDetailDialog,
+    SubjectDeleteDialog,
+    FactorTable,
+    FactorNewDialog
   },
   props: {
     role: String
@@ -102,16 +84,15 @@ export default {
   data() {
     return {
       state: false,
-      factorStateNewDialog: false,
-      factorStateEditDialog: false,
-      factor: {}
+      deleteSubject: false,
+      addFactor: false,
+      detailSubject: false,
+      editSubject: false
     }
   },
 
   computed: {
-    ...mapState('app', ['department']),
-    ...mapState('subjects', ['subject']),
-    ...mapState('factor', ['factors'])
+    ...mapState('subjects', ['subject'])
   },
   async created() {
     await this.refresh({})
@@ -135,6 +116,15 @@ export default {
     getMarkType(type) {
       if (type === 'mark') return 'Điểm số'
       return 'Đánh giá'
+    },
+    compoundClass(value) {
+      return value ? 'Có' : 'Không'
+    },
+    minWeeklyLesson(data) {
+      return _.isEmpty(data && data.minWeeklyLesson) ? 0 : data.minWeeklyLesson
+    },
+    maxWeeklyLesson(data) {
+      return _.isEmpty(data && data.maxWeeklyLesson) ? 0 : data.maxWeeklyLesson
     }
   }
 }
