@@ -8,7 +8,7 @@
       </v-card-title>
       <v-card-text>
         <v-divider></v-divider>
-        <SubjectNewForm ref="form" />
+        <SubjectNewForm ref="form" :state="dialog" />
       </v-card-text>
       <v-divider />
       <v-card-actions class="d-flex justify-space-between pa-6">
@@ -38,13 +38,12 @@ export default {
   methods: {
     ...mapActions('subjects', ['createSubject']),
     async save() {
-      if (!this.$refs.form.validate()) return
       try {
-        this.loading = true
         const data = this.$refs.form.getData()
+        if (!data) return
+        this.loading = true
         await this.createSubject({ ...data })
         this.$alert.addSuccess()
-        this.$refs.form.resetDefault()
         this.dialog = false
       } catch (error) {
         this.$alert.addError()
@@ -54,7 +53,6 @@ export default {
     },
     cancel() {
       this.dialog = false
-      this.$refs.form.resetDefault()
     }
   },
   watch: {

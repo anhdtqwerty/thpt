@@ -70,10 +70,7 @@ export default {
         const factorPromises = factors.map(async f => Factor.create(f))
         const factorRes = await Promise.all(factorPromises)
         console.log(factors)
-        commit(
-          'createSubject',
-          await Subject.create({ ...data, factors: factorRes.map(f => f.id) })
-        )
+        commit('createSubject', await Subject.create({ ...data, factors: factorRes.map(f => f.id) }))
       } catch (e) {
         alert.error(e)
       }

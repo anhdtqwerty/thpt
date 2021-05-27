@@ -58,6 +58,9 @@
 <script>
 import { mapState } from 'vuex'
 export default {
+  props: {
+    state: Boolean
+  },
   components: {},
   data() {
     return {
@@ -72,12 +75,6 @@ export default {
     ...mapState('subjects', ['subject'])
   },
   methods: {
-    reset() {
-      this.$refs.form.reset()
-    },
-    resetValidation() {
-      this.$refs.form.resetValidation()
-    },
     getData() {
       if (this.$refs.form.validate()) {
         let subjectClone = JSON.parse(JSON.stringify(this.subject))
@@ -91,14 +88,15 @@ export default {
       return null
     },
     resetDefault() {
-      if (this.subject) {
+      this.compoundClass = true
+      this.markType = 'mark'
+      if (this.subject != null) {
         this.multiply = this.subject.multiply
         this.markType = this.subject.markType
-        if (this.data != null) {
-          this.minWeeklyLesson = this.data.minWeeklyLesson
-          this.maxWeeklyLesson = this.data.maxWeeklyLesson
-          this.compoundClass = this.data.compoundClass
-        }
+        const data = this.subject.data
+        this.minWeeklyLesson = data.minWeeklyLesson
+        this.maxWeeklyLesson = data.maxWeeklyLesson
+        this.compoundClass = data.compoundClass
       }
     }
   },
@@ -106,8 +104,12 @@ export default {
     this.resetDefault()
   },
   watch: {
-    subject() {
-      this.resetDefault()
+    state(state) {
+      if (state) {
+        this.resetDefault()
+      } else {
+        this.$refs.form.reset()
+      }
     }
   }
 }

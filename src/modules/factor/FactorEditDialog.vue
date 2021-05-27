@@ -19,7 +19,7 @@
           </div>
           <div class="d-flex flex-column mr-10">
             <span>Ban</span>
-            <h3>{{ subject.division }}</h3>
+            <h3>{{ subject.divisions | getDivision }}</h3>
           </div>
           <div class="d-flex flex-column mr-10">
             <span>Đánh giá theo</span>
@@ -31,7 +31,7 @@
           <p class="mr-5">Đầu điểm</p>
           <p>Điểm kiểm tra miệng</p>
         </div>
-        <FactorEditForm :factor="factor" ref="form" />
+        <FactorEditForm :factor="factor" ref="form" :state="dialog" />
       </v-card-text>
       <v-divider></v-divider>
       <v-card-actions class="d-flex justify-space-between pa-6">
@@ -65,14 +65,19 @@ export default {
   methods: {
     ...mapActions('factor', ['updateFactor']),
     async save() {
-      const data = this.$refs.form.getData()
-      if (!data) return
-      this.loading = true
-      console.log('update', data)
-      await this.updateFactor(data)
-      this.$alert.success('Cập nhật đầu điểm thành công')
-      this.loading = false
-      this.dialog = false
+      try {
+        const data = this.$refs.form.getData()
+        if (!data) return
+        this.loading = true
+        console.log('update', data)
+        await this.updateFactor(data)
+        this.$alert.success('Cập nhật đầu điểm thành công')
+        this.dialog = false
+      } catch (error) {
+        this.$alert.addError()
+      } finally {
+        this.loading = false
+      }
     },
     cancel() {
       this.dialog = false
@@ -87,6 +92,10 @@ export default {
     getMarkType(type) {
       if (type === 'mark') return 'Điểm số'
       return 'Đánh giá'
+    },
+    getDivision(divisions) {
+      if (!divisions || !divisions.length) return ''
+      return divisions.map(d => d.title).join(', ')
     }
   }
 }

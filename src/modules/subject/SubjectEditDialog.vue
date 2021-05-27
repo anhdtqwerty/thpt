@@ -8,7 +8,7 @@
       </v-card-title>
       <v-divider></v-divider>
       <v-card-text class="pt-5">
-        <SubjectEditForm :subject="subject" ref="form" />
+        <SubjectEditForm :subject="subject" ref="form" :state="dialog" />
       </v-card-text>
       <v-divider />
       <v-card-actions class="d-flex justify-space-between pa-6">
@@ -42,18 +42,21 @@ export default {
   methods: {
     ...mapActions('subjects', ['updateSubject']),
     async save() {
-      const data = this.$refs.form.getData()
-      if (!data) return
-      this.loading = true
-      await this.updateSubject({ id: this.subject.id, ...data })
-      this.$alert.success('Cập nhật thành công')
-      this.$refs.form.resetDefault()
-      this.loading = false
-      this.dialog = false
+      try {
+        const data = this.$refs.form.getData()
+        if (!data) return
+        this.loading = true
+        await this.updateSubject({ id: this.subject.id, ...data })
+        this.$alert.success('Cập nhật thành công')
+        this.dialog = false
+      } catch (error) {
+        this.$alert.addError()
+      } finally {
+        this.loading = false
+      }
     },
     cancel() {
       this.dialog = false
-      this.$refs.form.resetDefault()
     }
   },
   watch: {

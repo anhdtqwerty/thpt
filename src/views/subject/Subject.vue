@@ -105,7 +105,10 @@ export default {
     },
     async refresh() {
       await this.fetchSubject(this.$route.params.id)
-      this.setFactors(this.subject.factors)
+      const factors = _.filter(this.subject.factors, f => {
+        return f.semesterType === 'semester-1'
+      })
+      this.setFactors(factors)
     }
   },
   filters: {

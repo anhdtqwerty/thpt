@@ -1,11 +1,13 @@
 <template>
   <v-form class="pt-0" flat ref="form">
     <v-radio-group v-model="selectedFactorType" required :rules="rules" row class="shrink mt-0">
-      <v-radio label="Miệng" hide-details :value="factorType.oralTest"></v-radio>
-      <v-radio label="Thực hành" hide-details :value="factorType.practiceTest"></v-radio>
-      <v-radio label="Kiểm tra 15'" hide-details :value="factorType.fifteenMinutesTest"></v-radio>
-      <v-radio label="Kiểm tra 1 tiết" hide-details :value="factorType.oneHourTest"></v-radio>
-      <v-radio label="Thi học kỳ" hide-details :value="factorType.SemesterExam"></v-radio>
+      <v-radio
+        v-for="item in defaultFactorTypes"
+        :key="item.type"
+        :label="item.name"
+        hide-details
+        :value="item.type"
+      ></v-radio>
     </v-radio-group>
     <div class="d-flex pt-5">
       <v-text-field
@@ -32,26 +34,29 @@
 <script>
 import { mapState } from 'vuex'
 import _ from 'lodash'
-
-const defaultFactorType = {
-  oralTest: 'Miệng',
-  practiceTest: 'Thực hành',
-  fifteenMinutesTest: '15 phút',
-  oneHourTest: '1 tiết',
-  SemesterExam: 'Học kỳ'
-}
+const defaultFactorTypes = [
+  { name: 'Miệng', type: 'oralTest' },
+  { name: 'Thực hành', type: 'practiceTest' },
+  { name: '15 phút', type: 'fifteenMinutesTest' },
+  { name: '1 tiết', type: 'oneHourTest' },
+  { name: 'Học kỳ', type: 'SemesterExam' }
+]
 
 export default {
   components: {},
+  props: {
+    subject: { type: Object, default: () => {} },
+    state: Boolean
+  },
   data() {
     return {
-      factorType: defaultFactorType,
       minMark: '',
       maxMark: '',
-      selectedFactorType: Object.values(defaultFactorType)[0],
+      defaultFactorTypes: defaultFactorTypes,
+      selectedFactorType: defaultFactorTypes[0].type,
       rules: [
         value => {
-          return !_.map(this.factors, 'title').includes(value) || 'Môn học đã tồn tại đầu điểm này'
+          return !_.map(this.factors, 'type').includes(value) || 'Môn học đã tồn tại đầu điểm này'
         }
       ]
     }
@@ -59,37 +64,32 @@ export default {
   computed: {
     ...mapState('factor', ['factors'])
   },
-  props: {
-    subject: { type: Object, default: () => {} }
-  },
   methods: {
-    reset() {
-      this.$refs.form.reset()
-    },
-    resetValidation() {
-      this.$refs.form.resetValidation()
-    },
     getData() {
       if (this.$refs.form.validate()) {
+        const name = defaultFactorTypes.find(m => m.type === this.selectedFactorType).name
         return {
-          title: this.selectedFactorType,
+          title: name,
+          type: this.selectedFactorType,
+          quantity: this.maxMark,
           data: {
-            shortName: this.selectedFactorType,
+            shortName: name,
             minMark: this.minMark,
             maxMark: this.maxMark
           }
         }
       }
       return null
-    },
-    resetDefault() {
-      this.minMark = ''
-      this.maxMark = ''
-      this.selectedFactorType = Object.values(defaultFactorType)[0]
     }
   },
-  created() {
-    this.resetDefault()
+  watch: {
+    state(state) {
+      if (state) {
+        this.selectedFactorType = defaultFactorTypes[0].type
+      } else {
+        this.$refs.form.reset()
+      }
+    }
   }
 }
 </script>

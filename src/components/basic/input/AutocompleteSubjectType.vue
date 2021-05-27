@@ -11,6 +11,7 @@
 </template>
 
 <script>
+import { GroupSubject } from '@/plugins/api'
 export default {
   data: () => ({
     subjectTypes: []
@@ -30,9 +31,9 @@ export default {
   },
   methods: {
     async fetchAllSubjectTypes() {
-      // this.subjectTypes = await Grade.fetch({
-      //   ...this.filters
-      // })
+      this.subjectTypes = await GroupSubject.fetch({
+        ...this.filters
+      })
     },
     async update(data) {},
     onChange(data) {

@@ -33,14 +33,12 @@ export default {
   },
   computed: {},
   props: {
+    state: Boolean,
     factor: { type: Object, default: () => {} }
   },
   methods: {
     reset() {
       this.$refs.form.reset()
-    },
-    resetValidation() {
-      this.$refs.form.resetValidation()
     },
     getData() {
       if (this.$refs.form.validate()) {
@@ -65,6 +63,13 @@ export default {
   watch: {
     factor() {
       this.resetDefault()
+    },
+    state(state) {
+      if (state) {
+        this.resetDefault()
+      } else {
+        this.reset()
+      }
     }
   }
 }

@@ -19,7 +19,7 @@
           </div>
           <div class="d-flex flex-column mr-10">
             <span>Ban</span>
-            <h3>{{ subject.division }}</h3>
+            <h3>{{ subject.divisions | getDivision }}</h3>
           </div>
           <div class="d-flex flex-column mr-10">
             <span>Đánh giá theo</span>
@@ -31,9 +31,7 @@
           <p class="mr-5">Đầu điểm</p>
           <p>Điểm kiểm tra miệng</p>
         </div>
-
-        <!-- <factor-form v-if="subject" :subject="subject" :factor="factor" ref="form" /> -->
-        <FactorNewForm ref="form" />
+        <FactorNewForm ref="form" :state="dialog" />
       </v-card-text>
       <v-divider></v-divider>
       <v-card-actions class="d-flex justify-space-between pa-6">
@@ -66,30 +64,36 @@ export default {
   methods: {
     ...mapActions('factor', ['createFactor']),
     async save() {
-      const data = this.$refs.form.getData()
-      if (!data) return
-      this.loading = true
-      await this.createFactor({ ...data, subject: this.subject.id })
-      this.$alert.success('Tạo đầu điểm mới thành công')
-      this.$refs.form.resetDefault()
-      this.loading = false
-      this.dialog = false
+      try {
+        const data = this.$refs.form.getData()
+        if (!data) return
+        this.loading = true
+        await this.createFactor({ ...data, subject: this.subject.id })
+        this.$alert.success('Tạo đầu điểm mới thành công')
+        this.dialog = false
+      } catch (error) {
+        this.$alert.addError()
+      } finally {
+        this.loading = false
+      }
     },
     cancel() {
       this.dialog = false
-      this.$refs.form.resetDefault()
     }
   },
   watch: {
     state(state) {
       this.dialog = true
-      this.$refs.form.resetDefault()
     }
   },
   filters: {
     getMarkType(type) {
       if (type === 'mark') return 'Điểm số'
       return 'Đánh giá'
+    },
+    getDivision(divisions) {
+      if (!divisions || !divisions.length) return ''
+      return divisions.map(d => d.title).join(', ')
     }
   }
 }

@@ -23,15 +23,17 @@ export default {
     },
     async createFactor({ commit }, data) {
       try {
-        commit('createFactor', await Factor.create(data))
+        await Factor.create({ ...data, semesterType: 'semester-2' })
+        commit('createFactor', await Factor.create({ ...data, semesterType: 'semester-1' }))
       } catch (e) {
         alert.error(e)
       }
     },
-    async removeFactor({ commit }, id) {
+    async removeFactor({ commit }, { semester1Id, semester2Id }) {
       try {
-        await Factor.remove(id)
-        commit('removeFactor', id)
+        await Factor.remove(semester1Id)
+        await Factor.remove(semester2Id)
+        commit('removeFactor', semester1Id)
         alert.success('Xóa thành công!')
       } catch (e) {
         alert.error(e)

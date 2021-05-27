@@ -31,11 +31,16 @@ export default {
   methods: {
     ...mapActions('subjects', ['removeSubject']),
     async onDelete(id) {
-      this.loading = true
-      await this.removeSubject(id)
-      this.loading = false
-      this.$router.back()
-      this.dialog = false
+      try {
+        this.loading = true
+        await this.removeSubject(id)
+        this.$router.back()
+        this.dialog = false
+      } catch (error) {
+        this.$alert.addError()
+      } finally {
+        this.loading = false
+      }
     },
     cancel() {
       this.dialog = false

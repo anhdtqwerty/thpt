@@ -13,19 +13,19 @@
         outlined
       />
       <AutocompleteDivision
-        v-model="division"
+        v-model="divisions"
         item-text="title"
         item-value="id"
         label="Ban"
         class="required col-md-6"
-        :rules="[$rules.required]"
-        return-object
-        chip
+        clear-icon="mdi-close"
         clearable
-        multiple
+        outlined
         required
         dense
-        outlined
+        multiple
+        deletable-chips
+        hide-details
       />
     </div>
     <div class="d-flex">
@@ -52,6 +52,7 @@
     </div>
     <div class="d-flex">
       <AutocompleteSubjectGroup
+        :defaultSubjectGroups="defaultSubjectGroups"
         v-model="subjectGroup"
         item-text="title"
         item-value="id"
@@ -62,21 +63,15 @@
         dense
         outlined
       />
-      <AutocompleteSubjectMultiply
-        v-model="multiply"
-        item-text="title"
-        item-value="id"
+      <v-text-field
         label="Hệ số tổng kết"
         class="required col-md-6"
         :rules="[$rules.required]"
-        return-object
-        chip
-        clearable
-        multiple
-        required
+        v-model="multiply"
         dense
         outlined
-      />
+        required
+      ></v-text-field>
     </div>
     <div class="d-flex">
       <v-text-field
@@ -125,15 +120,20 @@
 import AutocompleteGrade from '@/components/basic/input/AutocompleteGrade'
 import AutocompleteDivision from '@/components/basic/input/AutocompleteDivision'
 import AutocompleteSubjectGroup from '@/components/basic/input/AutocompleteSubjectGroup'
-import AutocompleteSubjectMultiply from '@/components/basic/input/AutocompleteSubjectMultiply'
 import AutocompleteSubjectType from '@/components/basic/input/AutocompleteSubjectType'
+const defaultSubjectGroups = [
+  { id: '1', title: 'Chính khoá' },
+  { id: '2', title: 'Ngoại khoá' }
+]
 export default {
   components: {
     AutocompleteDivision,
     AutocompleteGrade,
     AutocompleteSubjectGroup,
-    AutocompleteSubjectMultiply,
     AutocompleteSubjectType
+  },
+  props: {
+    state: Boolean
   },
   data() {
     return {
@@ -141,26 +141,17 @@ export default {
       grade: '',
       markType: 'mark',
       multiply: '',
-      division: '',
+      divisions: '',
       type: '',
-      weeklyLesson: 0,
+      weeklyLesson: '',
       minWeeklyLesson: '',
       maxWeeklyLesson: '',
       compoundClass: true,
-      subjectGroup: ''
+      subjectGroup: '',
+      defaultSubjectGroups: defaultSubjectGroups
     }
   },
-  props: {},
   methods: {
-    reset() {
-      this.$refs.form.reset()
-    },
-    validate() {
-      return this.$refs.form.validate()
-    },
-    resetValidation() {
-      this.$refs.form.resetValidation()
-    },
     getData() {
       if (this.$refs.form.validate()) {
         return {
@@ -168,8 +159,9 @@ export default {
           type: this.type,
           markType: this.markType,
           multiply: this.multiply,
-          grade: this.grade ? this.grade.id : '',
-          division: this.division,
+          grade: this.grade ? this.grade.title : '',
+          divisions: this.divisions,
+          group_subject: this.subjectGroups,
           data: {
             weeklyLesson: this.weeklyLesson,
             minWeeklyLesson: this.minWeeklyLesson,
@@ -181,23 +173,18 @@ export default {
       return null
     },
     resetDefault() {
-      if (this.subject && this.subject.id) {
-        this.title = ''
-        this.markType = 'mark'
-        this.multiply = ''
-        this.grade = ''
-        this.division = 'this.division'
-        this.type = ''
-        this.weeklyLesson = ''
-        this.minWeeklyLesson = ''
-        this.maxWeeklyLesson = ''
-        this.subjectGroup = ''
-        this.compoundClass = true
-      }
+      this.markType = 'mark'
+      this.compoundClass = true
     }
   },
-  created() {
-    this.resetDefault()
+  watch: {
+    state(state) {
+      if (state) {
+        this.resetDefault()
+      } else {
+        this.$refs.form.reset()
+      }
+    }
   }
 }
 </script>

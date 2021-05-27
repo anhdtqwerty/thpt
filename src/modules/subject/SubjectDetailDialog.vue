@@ -23,7 +23,7 @@
         <v-row class="pb-5">
           <v-col class="pb-0" cols="4"> Ban </v-col>
           <v-col class="pb-0 black--text" cols="8">
-            <label dark>{{ subject.division | getDivision }}</label></v-col
+            <label dark>{{ subject.divisions | getDivision }}</label></v-col
           >
         </v-row>
         <v-row class="pb-5">
