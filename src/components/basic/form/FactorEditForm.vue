@@ -46,7 +46,7 @@ export default {
         if (factorClone && factorClone.data != null) {
           factorClone.data.minMark = this.minMark
           factorClone.data.maxMark = this.maxMark
-        } else return { ...factorClone, data: { minMark: this.minMark, maxMark: this.maxmark } }
+        } else return { ...factorClone, data: { minMark: this.minMark, maxMark: this.maxMark } }
         return factorClone
       }
     },
