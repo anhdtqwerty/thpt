@@ -44,6 +44,7 @@ export default {
       this.debounce(search, this)
     },
     filter(filter) {
+      this.inputValue = null
       this.fetchStudents(filter)
     }
   },

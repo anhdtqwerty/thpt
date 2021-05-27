@@ -1,10 +1,10 @@
 <template>
   <v-card elevation="0" outlined>
-    <v-row class="py-5 px-3">
-      <v-col class="d-flex align-center justify-center" cols="2">
+    <v-row class="py-5 px-6" no-gutters>
+      <v-col class="d-flex align-center" cols="2">
         <UserAvatarPicker :student="student" type="student" />
       </v-col>
-      <v-col class="d-flex flex-column justify-center" cols="8">
+      <v-col class="d-flex flex-column" cols="8">
         <v-row no-gutters class="flex-column">
           <p class="text-h5 primary--text mb-0">{{ student.name }}</p>
           <p class="text-subtitle-2">{{ student.code | getStudentCode }}</p>
@@ -16,18 +16,16 @@
               style="text-decoration: none"
               :to="'/class/' + (student.currentClass && student.currentClass.id)"
             >
-              <p class="text-subtitle-2 mb-0">
-                {{ student.currentClass && student.currentClass.title }}
-              </p>
+              <span v-if="student.currentClass">{{ student.currentClass && student.currentClass.title }}</span>
             </router-link>
           </v-col>
-          <v-col cols="5" class="py-2 d-flex flex-column justify-end">
+          <v-col cols="4" class="py-2 d-flex flex-column justify-end">
             <p class="text-caption mb-0">Bố / Người giám hộ</p>
             <p class="text-subtitle-2 mb-0">
               {{ `${this.student.data.dadName} / ${this.student.data.dadPhone}` }}
             </p>
           </v-col>
-          <v-col cols="5" class="py-2 d-flex flex-column justify-end">
+          <v-col cols="4" class="py-2 d-flex flex-column justify-end">
             <p class="text-caption mb-0">Mẹ / Người giám hộ</p>
             <p class="text-subtitle-2 mb-0">
               {{ `${this.student.data.momName} / ${this.student.data.momPhone}` }}
@@ -35,7 +33,7 @@
           </v-col>
         </v-row>
       </v-col>
-      <v-col class="d-flex align-end" cols="2">
+      <v-col class="d-flex align-end justify-end" cols="2">
         <v-btn @click="detailState = !detailState" small color="primary" outlined>Hồ sơ chi tiết</v-btn>
       </v-col>
     </v-row>

@@ -35,6 +35,7 @@ const FACTOR_API = '/factors/'
 const POST_API = '/posts/'
 const GROUP_SUBJECT_API = '/group-subjects/'
 const CONTACT_BOOK_API = '/contact-books/'
+const SMS_API = '/sms/'
 
 const APIHelper = api => ({
   search: (params, option) => axios.get(api, { params: utils.filterObject(params) }, option),
@@ -90,10 +91,12 @@ export const Factor = APIHelper(FACTOR_API)
 export const Post = {
   ...APIHelper(POST_API),
   sendDiligenceSMS: params => axios.post('/posts/diligence', utils.filterObject(params)),
-  sendDailySMS: () => axios.post('/sms/sendDailySMS')
+  sendDailySMS: () => axios.post('/sms/sendDailySMS'),
+  sendMarkNotification: () => axios.post('/sms/sendMarkNotificationDaily')
 }
 export const GroupSubject = APIHelper(GROUP_SUBJECT_API)
 export const ContactBook = APIHelper(CONTACT_BOOK_API)
+export const Sms = APIHelper(SMS_API)
 
 export const Upload = {
   upload: formData =>
@@ -132,5 +135,6 @@ export default {
   Factor,
   Post,
   GroupSubject,
-  ContactBook
+  ContactBook,
+  Sms
 }

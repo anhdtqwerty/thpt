@@ -13,7 +13,7 @@
       </v-tabs>
       <v-tabs-items v-model="tab">
         <v-tab-item :key="1">
-          <MarkPostCreate />
+          <MarkPostCreate @sendMarkNotification="sendMarkNotification" />
         </v-tab-item>
         <v-tab-item :key="2">
           <ViolationPostCreate @sendDailySMS="sendDailySMS" />
@@ -71,6 +71,9 @@ export default {
       } catch (error) {
         this.$alert.error(`Đã có lỗi xảy ra trong quá trình gửi tin nhắn! Lỗi: ${error}`)
       }
+    },
+    async sendMarkNotification() {
+      await Post.sendMarkNotification()
     },
     async sendDailySMS() {
       try {
