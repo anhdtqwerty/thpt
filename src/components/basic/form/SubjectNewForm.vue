@@ -2,6 +2,7 @@
   <v-form ref="form" flat class="pt-5">
     <div class="d-flex">
       <AutocompleteGrade
+        return-object
         v-model="grade"
         item-text="title"
         item-value="id"
@@ -11,21 +12,23 @@
         required
         dense
         outlined
+        auto-select-first
+        @change="gradeChanged"
       />
       <AutocompleteDivision
-        v-model="divisions"
+        v-model="division"
         item-text="title"
         item-value="id"
         label="Ban"
         class="required col-md-6"
         clear-icon="mdi-close"
-        clearable
+        :rules="[$rules.required]"
         outlined
         required
         dense
-        multiple
         deletable-chips
         hide-details
+        :filter="filterByGrade"
       />
     </div>
     <div class="d-flex">
@@ -37,8 +40,11 @@
         class="required col-md-6 mr-4"
         :rules="[$rules.required]"
         required
+        deletable-chips
         dense
+        hide-details
         outlined
+        :filter="filterByGrade"
       />
       <v-text-field
         label="Tên môn học"
@@ -71,6 +77,7 @@
         dense
         outlined
         required
+        type="number"
       ></v-text-field>
     </div>
     <div class="d-flex">
@@ -82,6 +89,7 @@
         dense
         outlined
         required
+        type="number"
       ></v-text-field>
       <v-text-field
         label="Số tiết tối đa trên tuần"
@@ -91,6 +99,7 @@
         dense
         outlined
         required
+        type="number"
       ></v-text-field>
     </div>
     <v-row>
@@ -103,14 +112,15 @@
           dense
           outlined
           required
+          type="number"
         ></v-text-field>
       </v-col>
     </v-row>
-    <v-radio-group row class="shrink mt-0" v-model="markType">
+    <v-radio-group row class="shrink mt-0" mandatory v-model="markType">
       <v-radio label="Đánh giá bằng cho điểm" hide-details value="mark"></v-radio>
       <v-radio label="Đánh giá bằng nhận xét" hide-details value="evaluate"></v-radio>
     </v-radio-group>
-    <v-radio-group row class="shrink mt-0" v-model="compoundClass">
+    <v-radio-group row class="shrink mt-0" mandatory v-model="compoundClass">
       <v-radio label="Có học ghép lớp" hide-details :value="true"></v-radio>
       <v-radio label="Không học ghép lớp" hide-details :value="false"></v-radio>
     </v-radio-group>
@@ -121,6 +131,8 @@ import AutocompleteGrade from '@/components/basic/input/AutocompleteGrade'
 import AutocompleteDivision from '@/components/basic/input/AutocompleteDivision'
 import AutocompleteSubjectGroup from '@/components/basic/input/AutocompleteSubjectGroup'
 import AutocompleteSubjectType from '@/components/basic/input/AutocompleteSubjectType'
+import { textHelpers } from '@/helpers/TextHelper.js'
+import { get } from 'lodash'
 const defaultSubjectGroups = [
   { id: '1', title: 'Chính khoá' },
   { id: '2', title: 'Ngoại khoá' }
@@ -141,7 +153,7 @@ export default {
       grade: '',
       markType: 'mark',
       multiply: '',
-      divisions: '',
+      division: '',
       type: '',
       weeklyLesson: '',
       minWeeklyLesson: '',
@@ -155,12 +167,12 @@ export default {
     getData() {
       if (this.$refs.form.validate()) {
         return {
-          title: this.title,
+          title: textHelpers.removeSpaces(this.title),
           type: this.type,
           markType: this.markType,
           multiply: this.multiply,
-          grade: this.grade ? this.grade.title : '',
-          divisions: this.divisions,
+          grade: this.grade,
+          division: this.division,
           group_subject: this.subjectGroups,
           data: {
             weeklyLesson: this.weeklyLesson,
@@ -172,16 +184,22 @@ export default {
       }
       return null
     },
-    resetDefault() {
-      this.markType = 'mark'
-      this.compoundClass = true
+    gradeChanged(grade) {
+      if (get(this.grade, 'academicLevel') !== get(grade, 'academicLevel')) {
+        this.division = null
+        this.type = null
+      }
+      this.grade = grade
+    }
+  },
+  computed: {
+    filterByGrade() {
+      return { academicLevel: get(this.grade, 'academicLevel') }
     }
   },
   watch: {
     state(state) {
-      if (state) {
-        this.resetDefault()
-      } else {
+      if (!state) {
         this.$refs.form.reset()
       }
     }

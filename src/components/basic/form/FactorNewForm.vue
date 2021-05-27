@@ -1,6 +1,6 @@
 <template>
   <v-form class="pt-0" flat ref="form">
-    <v-radio-group v-model="selectedFactorType" required :rules="rules" row class="shrink mt-0">
+    <v-radio-group required :v-model="selectedFactorType" :rules="rules" row class="shrink mt-0" mandatory>
       <v-radio
         v-for="item in defaultFactorTypes"
         :key="item.type"
@@ -18,6 +18,7 @@
         dense
         outlined
         required
+        type="number"
       ></v-text-field>
       <v-text-field
         label="Số điểm tối đa trên học sinh"
@@ -27,6 +28,7 @@
         dense
         outlined
         required
+        type="number"
       ></v-text-field>
     </div>
   </v-form>
@@ -82,11 +84,13 @@ export default {
       return null
     }
   },
+  mounted() {
+    this.$refs.form.reset()
+  },
+
   watch: {
     state(state) {
-      if (state) {
-        this.selectedFactorType = defaultFactorTypes[0].type
-      } else {
+      if (!state) {
         this.$refs.form.reset()
       }
     }

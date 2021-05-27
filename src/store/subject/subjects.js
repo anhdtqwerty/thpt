@@ -5,31 +5,36 @@ const defaultFactors = [
     title: 'Miệng',
     index: 0,
     quantity: 3,
-    multiply: 1
+    multiply: 1,
+    type: 'oralTest'
   },
   {
     title: 'Thực hành',
     index: 1,
     quantity: 2,
-    multiply: 1
+    multiply: 1,
+    type: 'practiceTest'
   },
   {
     title: '15 phút',
     index: 2,
     quantity: 3,
-    multiply: 1
+    multiply: 1,
+    type: 'fifteenMinutesTest'
   },
   {
     title: '1 tiết',
     index: 3,
     quantity: 2,
-    multiply: 2
+    multiply: 2,
+    type: 'oneHourTest'
   },
   {
     title: 'Học kỳ',
     index: 4,
     quantity: 1,
-    multiply: 3
+    multiply: 3,
+    type: 'SemesterExam'
   }
 ]
 

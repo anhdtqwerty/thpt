@@ -17,7 +17,7 @@ export default {
     subjectTypes: []
   }),
   props: {
-    filters: Object,
+    filter: Object,
     defaultGrades: Array,
     options: Object
   },
@@ -32,12 +32,17 @@ export default {
   methods: {
     async fetchAllSubjectTypes() {
       this.subjectTypes = await GroupSubject.fetch({
-        ...this.filters
+        ...this.filter
       })
     },
     async update(data) {},
     onChange(data) {
       this.$emit('change', data)
+    }
+  },
+  watch: {
+    filter(filter) {
+      this.fetchAllSubjectTypes()
     }
   }
 }

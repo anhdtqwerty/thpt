@@ -10,6 +10,7 @@
           dense
           outlined
           required
+          type="number"
         ></v-text-field>
       </v-col>
     </v-row>
@@ -23,6 +24,7 @@
           dense
           outlined
           required
+          type="number"
         ></v-text-field
       ></v-col>
       <v-col cols="6" class="pt-0">
@@ -34,12 +36,13 @@
           dense
           outlined
           required
+          type="number"
         ></v-text-field
       ></v-col>
     </v-row>
     <v-row>
       <v-col cols="12" class="pt-0">
-        <v-radio-group v-model="markType" row class="shrink mt-0">
+        <v-radio-group v-model="markType" mandatory row class="shrink mt-0">
           <v-radio label="Đánh giá bằng cho điểm" hide-details value="mark"></v-radio>
           <v-radio label="Đánh giá bằng nhận xét" hide-details value="evaluate"></v-radio>
         </v-radio-group>
@@ -47,7 +50,7 @@
     </v-row>
     <v-row>
       <v-col cols="12" class="pt-0">
-        <v-radio-group v-model="compoundClass" row class="shrink mt-0">
+        <v-radio-group v-model="compoundClass" mandatory row class="shrink mt-0">
           <v-radio label="Có học ghép lớp" hide-details :value="true"></v-radio>
           <v-radio label="Không học ghép lớp" hide-details :value="false"></v-radio>
         </v-radio-group>
@@ -88,8 +91,6 @@ export default {
       return null
     },
     resetDefault() {
-      this.compoundClass = true
-      this.markType = 'mark'
       if (this.subject != null) {
         this.multiply = this.subject.multiply
         this.markType = this.subject.markType

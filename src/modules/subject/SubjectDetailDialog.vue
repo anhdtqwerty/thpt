@@ -23,7 +23,7 @@
         <v-row class="pb-5">
           <v-col class="pb-0" cols="4"> Ban </v-col>
           <v-col class="pb-0 black--text" cols="8">
-            <label dark>{{ subject.divisions | getDivision }}</label></v-col
+            <label dark>{{ subject.division && subject.division.title }}</label></v-col
           >
         </v-row>
         <v-row class="pb-5">
@@ -104,10 +104,6 @@ export default {
     },
     maxWeeklyLesson(data) {
       return _.isEmpty(data && data.maxWeeklyLesson) ? 0 : data.maxWeeklyLesson
-    },
-    getDivision(divisions) {
-      if (!divisions || !divisions.length) return ''
-      return divisions.map(d => d.title).join(', ')
     }
   }
 }

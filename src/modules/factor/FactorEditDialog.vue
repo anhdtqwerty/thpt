@@ -19,7 +19,7 @@
           </div>
           <div class="d-flex flex-column mr-10">
             <span>Ban</span>
-            <h3>{{ subject.divisions | getDivision }}</h3>
+            <h3>{{ subject.division && subject.division.tite }}</h3>
           </div>
           <div class="d-flex flex-column mr-10">
             <span>Đánh giá theo</span>
@@ -35,7 +35,7 @@
       </v-card-text>
       <v-divider></v-divider>
       <v-card-actions class="d-flex justify-space-between pa-6">
-        <v-btn depressed :loading="loading" outlined @click="cancel">Huỷ</v-btn>
+        <v-btn depressed outlined @click="cancel">Huỷ</v-btn>
         <v-btn depressed color="primary" :loading="loading" @click="save">Lưu</v-btn>
       </v-card-actions>
     </v-card>
@@ -92,10 +92,6 @@ export default {
     getMarkType(type) {
       if (type === 'mark') return 'Điểm số'
       return 'Đánh giá'
-    },
-    getDivision(divisions) {
-      if (!divisions || !divisions.length) return ''
-      return divisions.map(d => d.title).join(', ')
     }
   }
 }

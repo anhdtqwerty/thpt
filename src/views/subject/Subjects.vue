@@ -29,9 +29,6 @@
         <template v-slot:item.grade="{ item }">
           {{ item.grade | getGrade }}
         </template>
-        <template v-slot:item.divisions="{ item }">
-          {{ item.divisions | getDivision }}
-        </template>
         <template v-slot:item.markType="{ item }">
           {{ item.markType | getMarkType }}
         </template>
@@ -72,7 +69,7 @@ export default {
         { text: 'Bộ môn', value: 'group_subject', show: true },
         { text: 'Nhóm môn học', value: 'type', show: true },
         { text: 'Khối', value: 'grade', show: true },
-        { text: 'Phân ban', value: 'divisions', show: true },
+        { text: 'Phân ban', value: 'division.title', show: true },
         {
           text: 'Hệ số tổng kết',
           value: 'multiply',
@@ -145,10 +142,6 @@ export default {
     }
   },
   filters: {
-    getDivision(divisions) {
-      if (!divisions || !divisions.length) return ''
-      return divisions.map(d => d.title).join(', ')
-    },
     getGrade(grade) {
       if (!grade) return ''
       return grade.title

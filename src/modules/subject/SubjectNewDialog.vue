@@ -12,7 +12,7 @@
       </v-card-text>
       <v-divider />
       <v-card-actions class="d-flex justify-space-between pa-6">
-        <v-btn class="gray--text" depressed :loading="loading" outlined @click="cancel">HUỶ</v-btn>
+        <v-btn class="gray--text" depressed outlined @click="cancel">HUỶ</v-btn>
         <v-btn depressed color="primary" :loading="loading" @click="save">LƯU</v-btn>
       </v-card-actions>
     </v-card>
