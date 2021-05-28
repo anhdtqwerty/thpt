@@ -153,7 +153,7 @@ export default {
     },
     cancel() {
       this.dialog = false
-      this.reset()
+      // this.reset()
     },
     async save() {
       if (this.$refs.form.validate()) {

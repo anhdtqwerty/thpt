@@ -10,7 +10,7 @@
         <v-list-item style="cursor: pointer" @click="configDialog = !configDialog">
           <v-list-item-title>Cài đặt sổ</v-list-item-title>
         </v-list-item>
-        <!-- <v-list-item disabled>
+        <!-- <v-list-item @click="detailClicked">
           <v-list-item-title>Xem chi tiết tin đã gửi</v-list-item-title>
         </v-list-item> -->
         <v-list-item @click="unlockContact" v-if="item.contactBook && item.contactBook.status === 'locked'">
@@ -19,7 +19,10 @@
         <v-list-item @click="lockContact" v-else>
           <v-list-item-title>Khoá sổ</v-list-item-title>
         </v-list-item>
-        <v-list-item @click="configPasswordDialog = !configPasswordDialog">
+        <v-list-item
+          v-if="item.fcmAndroid || item.fcmIos || (item.contactBook && item.contactBook.isApp)"
+          @click="configPasswordDialog = !configPasswordDialog"
+        >
           <v-list-item-title>Đặt mật khẩu APP</v-list-item-title>
         </v-list-item>
         <v-list-item @click="onRemove">
@@ -72,7 +75,6 @@ export default {
       'removeUser',
       'removeContactBook'
     ]),
-
     async lockContact() {
       this.$dialog.confirm({
         title: 'Khóa sổ liên lạc',
@@ -111,6 +113,9 @@ export default {
         this.$loading.active = false
       }
     },
+    // detailClicked() {
+    //   this.$router.push(`/contact-book-detail/` + this.item.id)
+    // },
     onRemove() {
       this.$dialog.confirm({
         title: 'Xóa sổ liên lạc',
@@ -123,8 +128,8 @@ export default {
             this.$loading.active = true
             if (this.item.contactBook) await this.removeContactBook(this.item.contactBook.id)
             if (this.item.user) await this.removeUser(this.item.user.id)
-            this.$alert.deleteSuccess()
             await this.updateStudent({ id: this.item.id })
+            this.$alert.deleteSuccess()
           } catch (error) {
             this.$alert.deleteError()
           } finally {

@@ -54,7 +54,8 @@ export default {
           })
 
           const pageStart = (page - 1) * itemsPerPage + 1
-          const pageStop = page * itemsPerPage
+          let pageStop = page * itemsPerPage
+          pageStop = pageStop > totalItems ? totalItems : pageStop
           const pageText = `${pageStart}-${pageStop} trên ${totalItems}`
           commit('setPageText', pageText)
         } else {

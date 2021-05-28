@@ -16,7 +16,7 @@
           <MarkPostCreate @sendMarkNotification="sendMarkNotification" />
         </v-tab-item>
         <v-tab-item :key="2">
-          <ViolationPostCreate @sendDailySMS="sendDailySMS" />
+          <ViolationPostCreate @sendDailyViolation="sendDailyViolation" />
         </v-tab-item>
         <v-tab-item :key="3">
           <AttendancePostCreate @sendDiligenceSMS="sendDiligenceSMS" />
@@ -36,6 +36,7 @@ import ViolationPostCreate from '@/modules/post/ViolationPostCreate.vue'
 import AttendancePostCreate from '@/modules/post/AttendancePostCreate.vue'
 import AttendancePostCreateDialog from '@/modules/post/AttendancePostCreateDialog.vue'
 import { Post } from '@/plugins/api.js'
+import { mapGetters } from 'vuex'
 export default {
   components: {
     SendSMSExcelDialog,
@@ -52,6 +53,9 @@ export default {
       sendExcelDialog: false,
       postTos: {}
     }
+  },
+  computed: {
+    ...mapGetters('auth', ['profile'])
   },
   methods: {
     // sendPost({ students, classes, grades, allSchool }) {
@@ -73,14 +77,14 @@ export default {
       }
     },
     async sendMarkNotification() {
-      await Post.sendMarkNotification()
+      await Post.sendMarkNotification(this.profile.id)
     },
-    async sendDailySMS() {
+    async sendDailyViolation() {
       try {
-        this.loading = true
-        const sms = await Post.sendDailySMS()
-        if (sms.length > 0) this.$alert.success('Gửi tin nhắn hằng ngày thành công!')
-        this.loading = false
+        this.$loading.active = true
+        const sms = await Post.sendDailyViolation(this.profile.id)
+        if (sms.length > 0) this.$alert.success('Gửi tin nhắn Khen thưởng kỷ luật thành công!')
+        this.$loading.active = false
       } catch (error) {
         this.$alert.error(`Đã xảy ra lỗi trong quá trình gửi tin nhắn! Lỗi: ${error}`)
       }

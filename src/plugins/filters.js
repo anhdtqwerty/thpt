@@ -3,6 +3,7 @@ import Vue from 'vue'
 
 export const vueFilterRegister = () => {
   Vue.filter('ddmmyyyy', isoStr => (isoStr ? moment(isoStr).format('DD/MM/YYYY') : ''))
+  Vue.filter('ddmmyyyyhhmm', isoStr => (isoStr ? moment(isoStr).format('DD/MM/YYYY HH:mm') : ''))
   Vue.filter('gender', gender => {
     if (gender === 'male') return 'Nam'
     else if (gender === 'female') return 'Nữ'
@@ -79,5 +80,50 @@ export const vueFilterRegister = () => {
     if (item.contactBook.isSms && item.contactBook.isApp) return 'APP và SMS'
     if (item.contactBook.isSms) return 'SMS'
     if (item.contactBook.isApp) return 'APP'
+  })
+  Vue.filter('getPostType', type => {
+    switch (type) {
+      case 'mark':
+        return 'Sổ điểm'
+      case 'violation':
+        return 'Khen thưởng kỷ luật'
+      case 'notification':
+        return 'Thông báo'
+      case 'tuition':
+        return 'Học phí'
+      case 'attendance':
+        return 'Chuyên cần'
+      case 'schedule':
+        return 'Thời khóa biểu'
+      case 'other':
+        return 'Khác'
+      default:
+        return ''
+    }
+  })
+  Vue.filter('getConfig', config => {
+    if (config === 'daily') return 'Tự động'
+    else if (config === 'immediately') return 'Soạn riêng'
+    return ''
+  })
+  Vue.filter('getSendNotiStatus', status => {
+    switch (status) {
+      case 'success':
+        return 'Thành công'
+      case 'error':
+        return 'Gửi lỗi'
+      default:
+        return ''
+    }
+  })
+  Vue.filter('getSendNotiStatusColor', status => {
+    switch (status) {
+      case 'success':
+        return '#46BE8A'
+      case 'error':
+        return 'red'
+      default:
+        return 'grey'
+    }
   })
 }
