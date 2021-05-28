@@ -98,40 +98,49 @@ export default {
   },
   methods: {
     async create() {
-      this.$loading.active = true
-      const params = {
-        content: this.content,
-        keywords: utils.clearUnicode(this.content),
-        type: this.postType,
-        senderMethod: this.senderMethod
+      try {
+        this.$loading.active = true
+
+        const params = {
+          staff: this.profile.id,
+          content: this.content,
+          keywords: utils.clearUnicode(this.content),
+          type: this.postType,
+          senderMethod: this.senderMethod,
+          config: 'immediately'
+        }
+        const { students, classes, grades, allSchool } = this.postTos || {}
+        const receivers = this.postToOverview + this.postToDetail
+
+        if (students) {
+          const groups = chunk(students, 5)
+          for (let subStudents of groups) {
+            await Promise.all(subStudents.map(s => ({ ...params, student: s.id, receivers })).map(p => Post.create(p)))
+          }
+        } else if (classes) {
+          const groups = chunk(classes, 5)
+          for (let subClasses of groups) {
+            await Promise.all(subClasses.map(c => ({ ...params, class: c.id, receivers })).map(p => Post.create(p)))
+          }
+        } else if (grades) {
+          const groups = chunk(grades, 5)
+          for (let subGrades of groups) {
+            await Promise.all(subGrades.map(g => ({ ...params, grade: g.id, receivers })).map(p => Post.create(p)))
+          }
+        } else if (allSchool) {
+          const departmentId = get(this.user.department, 'id')
+          if (departmentId) {
+            await Post.create({ ...params, department: departmentId, receivers: 'Toàn trường' })
+          }
+        }
+        this.dialog = false
+        this.$emit('done')
+        this.$alert.success('Gửi tin nhắn thành công')
+        this.reset()
+      } catch (error) {
+      } finally {
+        this.$loading.active = false
       }
-      const { students, classes, grades, allSchool } = this.postTos || {}
-      if (students) {
-        const groups = chunk(students, 5)
-        for (let subStudents of groups) {
-          await Promise.all(subStudents.map(s => ({ ...params, student: s.id })).map(p => Post.create(p)))
-        }
-      } else if (classes) {
-        const groups = chunk(classes, 5)
-        for (let subClasses of groups) {
-          await Promise.all(subClasses.map(c => ({ ...params, class: c.id })).map(p => Post.create(p)))
-        }
-      } else if (grades) {
-        const groups = chunk(grades, 5)
-        for (let subGrades of groups) {
-          await Promise.all(subGrades.map(g => ({ ...params, grade: g.id })).map(p => Post.create(p)))
-        }
-      } else if (allSchool) {
-        const departmentId = get(this.user.department, 'id')
-        if (departmentId) {
-          await Post.create({ ...params, department: departmentId })
-        }
-      }
-      this.dialog = false
-      this.$emit('done')
-      this.$alert.success('Gửi tin nhắn thành công')
-      this.reset()
-      this.$loading.active = false
     },
     cancel() {
       this.dialog = false
@@ -142,7 +151,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('auth', ['user']),
+    ...mapGetters('auth', ['user', 'profile']),
     postToOverview() {
       const { students, classes, grades, allSchool } = this.postTos || {}
       if (students) return `${students.length} học sinh`

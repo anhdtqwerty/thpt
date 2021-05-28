@@ -28,7 +28,6 @@ import Student from '@/views/student/Student'
 import StudentClasses from '@/views/student/Classes'
 import StudentImporter from '@/views/student/StudentImporter.vue'
 import Violation from '@/views/violation/Violations.vue'
-import ContactBook from '@/views/account/ContactBooks.vue'
 import Diligence from '@/views/diligence/Diligence.vue'
 import StudentMarks from '@/views/student/StudentMarks.vue'
 
@@ -62,6 +61,9 @@ import TimeTableConfig from '@/views/timetable/TimeTableConfig.vue'
 import PostCreate from '@/views/post/PostCreate.vue'
 import PostCreateAuto from '@/views/post/PostCreateAuto.vue'
 import PostCreateHistory from '@/views/post/PostCreateHistory.vue'
+// -----------------------Contact Book---------------------------------
+import ContactBook from '@/views/account/ContactBooks.vue'
+// import StudentContactBookDetail from '@/modules/contactBook/StudentContactBookDetail.vue'
 
 const routes = [
   {
@@ -418,7 +420,7 @@ const routes = [
       },
       {
         path: 'marks',
-        name: 'Sổ điểm',
+        name: 'Sổ điểm học sinh',
         component: Mark,
         meta: {
           title: 'Sổ điểm',
@@ -443,6 +445,15 @@ const routes = [
           auth: true
         }
       },
+      // {
+      //   path: 'contact-book-detail/:id',
+      //   name: 'Danh sách sổ liên lạc',
+      //   component: StudentContactBookDetail,
+      //   meta: {
+      //     title: 'Chi tiết tin đã gửi',
+      //     auth: true
+      //   }
+      // },
       {
         path: 'post-send',
         name: 'Gửi tin nhắn',

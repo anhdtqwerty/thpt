@@ -67,6 +67,7 @@ import { mapActions, mapGetters } from 'vuex'
 import { get } from 'lodash'
 import CardStudentName from '@/components/basic/card/CardStudentName.vue'
 import { mask } from 'vue-the-mask'
+import { Post } from '@/plugins/api'
 
 export default {
   components: { CardStudentName },
@@ -97,36 +98,47 @@ export default {
     ...mapActions('auth', ['user']),
     ...mapActions('students', ['updateStudent']),
     ...mapActions('user', ['updateUser']),
-    addPhoneNumber() {
-      if (this.phoneNum < 4) this.phoneNum++
-    },
-    removePhoneNumber(index) {
-      this.phones.splice(index, 1)
-      if (this.phoneNum > 1) this.phoneNum--
-    },
+
     cancel() {
       this.dialog = false
       this.reset()
     },
     async save() {
-      try {
-        if (this.$refs.form.validate()) {
-          this.$loading.active = true
-          await this.updateUser({
-            id: this.student.user.id,
-            password: this.password
-          })
-          this.$alert.success('Cài đặt mật khẩu mới thành công')
-          this.dialog = false
-        }
-      } catch (error) {
-        this.$alert.error('Cập nhật mật khẩu thất bại')
-      } finally {
-        this.$loading.active = false
+      if (this.$refs.form.validate()) {
+        this.$dialog.confirm({
+          title: 'Xác nhận cài đặt',
+          text: ` Hệ thống sẽ gửi tin nhắn thông báo thông tin tài khoản (để đăng nhập và sử dụng APP) tới số điện thoại đăng kí (${this.getPhones})
+            Vui lòng kiểm tra lại thông tin và bấm xác nhận để tiếp tục.`,
+          okText: 'Xác nhận',
+          cancelText: 'Hủy',
+          done: async () => {
+            try {
+              this.$loading.active = true
+              await this.updateUser({
+                id: this.student.user.id,
+                password: this.password
+              })
+
+              const post = {
+                student: this.student.id,
+                senderMethod: 'sms',
+                type: 'other',
+                content: `Tai khoan dang nhap APP so lien lac dien tu cua hoc sinh ${this.student.name}, Tai khoan: ${this.student.user.username}, mat khau: ${this.password}`
+              }
+              await Post.create(post)
+
+              this.$alert.success('Cài đặt mật khẩu mới thành công')
+              this.dialog = false
+            } catch (error) {
+              this.$alert.error('Cập nhật mật khẩu thất bại')
+            } finally {
+              this.$loading.active = false
+            }
+          }
+        })
       }
     },
     reset() {
-      // this.password = this.$utils.autoGeneratePassword()
       this.password = ''
       this.dialog = false
       this.$refs.form.resetValidation()

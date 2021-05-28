@@ -41,6 +41,7 @@
               label="Học sinh"
               outlined
               dense
+              hide-details
               clearable
               :filter="currentClassId"
               @change="student = $event"
@@ -73,6 +74,7 @@
               outlined
               clearable
               dense
+              hide-details
             ></v-select>
           </v-col>
           <v-col md="4">

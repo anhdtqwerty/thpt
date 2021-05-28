@@ -16,7 +16,7 @@
       <v-spacer />
       <v-btn
         :disabled="!checkbox"
-        @click="$emit('sendDailySMS')"
+        @click="$emit('sendDailyViolation')"
         depressed
         color="primary"
         class="px-6 mt-4  white--text"

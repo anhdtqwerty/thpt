@@ -366,6 +366,74 @@ export default {
         title: 'Ảnh đại diện',
         status: 'highlight'
       }
+    ],
+    postTypes: [
+      {
+        title: 'Điểm số',
+        value: 'mark'
+      },
+      {
+        title: 'Khen thưởng kỷ luật',
+        value: 'violation'
+      },
+      {
+        title: 'Thông báo',
+        value: 'notification'
+      },
+      {
+        title: 'Học phí',
+        value: 'tuition'
+      },
+      {
+        title: 'Chuyên cần',
+        value: 'attendance'
+      },
+      {
+        title: 'Thời khóa biểu',
+        value: 'schedule'
+      },
+      {
+        title: 'Khác',
+        value: 'other'
+      }
+    ],
+    smsStatuses: [
+      {
+        title: 'Thành công',
+        value: 'success'
+      },
+      {
+        title: 'Gửi lỗi',
+        value: 'error'
+      }
+    ],
+    postToTypes: [
+      {
+        title: 'Toàn trường',
+        value: 'department'
+      },
+      {
+        title: 'Khối',
+        value: 'grade'
+      },
+      {
+        title: 'Lớp',
+        value: 'class'
+      },
+      {
+        title: 'Học sinh',
+        value: 'student'
+      }
+    ],
+    postConfigs: [
+      {
+        title: 'Soạn riêng',
+        value: 'immediately'
+      },
+      {
+        title: 'Tự động',
+        value: 'auto'
+      }
     ]
   },
   getters: {
@@ -376,6 +444,10 @@ export default {
     paymentTypes: state => state.paymentTypes,
     productTypes: state => state.productTypes,
     productStatus: state => state.productStatus,
-    showcasePositions: state => state.showcasePositions
+    showcasePositions: state => state.showcasePositions,
+    postTypes: state => state.postTypes,
+    smsStatuses: state => state.smsStatuses,
+    postToTypes: state => state.postToTypes,
+    postConfigs: state => state.postConfigs
   }
 }
