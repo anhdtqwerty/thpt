@@ -37,11 +37,11 @@
 import { mapState } from 'vuex'
 import _ from 'lodash'
 const defaultFactorTypes = [
-  { name: 'Miệng', type: 'oralTest' },
-  { name: 'Thực hành', type: 'practiceTest' },
-  { name: '15 phút', type: 'fifteenMinutesTest' },
-  { name: '1 tiết', type: 'oneHourTest' },
-  { name: 'Học kỳ', type: 'semesterExam' }
+  { name: 'Miệng', type: 'oralTest', multiply: 1 },
+  { name: 'Thực hành', type: 'practiceTest', multiply: 1 },
+  { name: '15 phút', type: 'fifteenMinutesTest', multiply: 1 },
+  { name: '1 tiết', type: 'oneHourTest', multiply: 2 },
+  { name: 'Học kỳ', type: 'semesterExam', multiply: 3 }
 ]
 
 export default {
@@ -69,13 +69,14 @@ export default {
   methods: {
     getData() {
       if (this.$refs.form.validate()) {
-        const name = defaultFactorTypes.find(m => m.type === this.selectedFactorType).name
+        const selectedType = defaultFactorTypes.find(m => m.type === this.selectedFactorType)
         return {
           title: name,
           type: this.selectedFactorType,
           quantity: this.maxMark,
+          multiply: selectedType.multiply,
           data: {
-            shortName: name,
+            shortName: selectedType.name,
             minMark: this.minMark,
             maxMark: this.maxMark
           }
