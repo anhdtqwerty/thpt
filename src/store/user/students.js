@@ -43,7 +43,8 @@ export default {
           })
 
           const pageStart = (page - 1) * itemsPerPage + 1
-          const pageStop = page * itemsPerPage
+          let pageStop = page * itemsPerPage
+          pageStop = pageStop > totalItems ? totalItems : pageStop
           const pageText = `${pageStart}-${pageStop} trên ${totalItems}`
           commit('setPageText', pageText)
         } else {
@@ -96,7 +97,6 @@ export default {
     async updateStudent({ commit, state }, { id, ...student }) {
       const stn = await api.Student.update(id, student)
       commit('receiveStudent', stn)
-      alert.success('Update student successfully!')
     },
     async updateStudents({ dispatch }, items) {
       await Promise.all(items.map(item => dispatch('updateStudent', item)))

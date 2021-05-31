@@ -33,8 +33,10 @@ const SUBJECT_API = '/subjects/'
 const VIOLATION_API = '/violations/'
 const FACTOR_API = '/factors/'
 const POST_API = '/posts/'
-const GROUP_SUBJECT_API = '/group-subjects/'
+const SUBJECT_GROUP_API = '/subject-groups/'
 const CONTACT_BOOK_API = '/contact-books/'
+const SMS_API = '/sms/'
+const HISTORY_API = '/histories/'
 
 const APIHelper = api => ({
   search: (params, option) => axios.get(api, { params: utils.filterObject(params) }, option),
@@ -43,7 +45,7 @@ const APIHelper = api => ({
   fetchOne: (id, option) => axios.get(api + id, option),
   create: (params, options) => axios.post(api, utils.filterObject(params), options),
   checkin: (params, options) => axios.post(api + 'checkin', utils.filterObject(params), options),
-  update: (id, params, option) => axios.put(api + id, utils.filterObject(params), option),
+  update: (id, params, option) => axios.put(api + id, params, option),
   remove: (id, option) => axios.delete(api + id, option)
 })
 export const APIRespository = APIHelper
@@ -90,10 +92,18 @@ export const Factor = APIHelper(FACTOR_API)
 export const Post = {
   ...APIHelper(POST_API),
   sendDiligenceSMS: params => axios.post('/posts/diligence', utils.filterObject(params)),
-  sendDailySMS: () => axios.post('/sms/sendDailySMS')
+  sendDailyViolation: staffId => axios.post('/sms/sendDailyViolation', { staffId }),
+  sendMarkNotification: staffId => axios.post('/sms/sendMarkNotificationDaily', { staffId })
 }
-export const GroupSubject = APIHelper(GROUP_SUBJECT_API)
-export const ContactBook = APIHelper(CONTACT_BOOK_API)
+export const SubjectGroup = APIHelper(SUBJECT_GROUP_API)
+export const ContactBook = {
+  ...APIHelper(CONTACT_BOOK_API),
+  resend: historyId => axios.post('/contact-book/resend', { historyId }),
+  updateContact: (id, params) => axios.put('/contact-books/' + id, params)
+}
+
+export const Sms = APIHelper(SMS_API)
+export const History = APIHelper(HISTORY_API)
 
 export const Upload = {
   upload: formData =>
@@ -131,6 +141,8 @@ export default {
   Violation,
   Factor,
   Post,
-  GroupSubject,
-  ContactBook
+  SubjectGroup,
+  ContactBook,
+  Sms,
+  History
 }

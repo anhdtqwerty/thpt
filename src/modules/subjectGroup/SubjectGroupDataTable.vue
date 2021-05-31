@@ -2,7 +2,7 @@
   <v-card class="mx-md-4 elevation-1">
     <v-data-table
       :headers="headers"
-      :items="groupSubjects"
+      :items="subjectGroups"
       :footer-props="{
         'items-per-page-text': 'Bộ môn mỗi trang',
         'items-per-page-all-text': 'Tất cả'
@@ -12,19 +12,19 @@
         <span>{{ item.academicLevel | getAcademicLevel }}</span>
       </template>
       <template v-slot:[`item.actions`]="{ item }">
-        <GroupSubjectListAction v-if="!(item.config && item.config.default)" :selected="item" />
+        <SubjectGroupListAction v-if="!(item.config && item.config.default)" :selected="item" />
       </template>
     </v-data-table>
   </v-card>
 </template>
 
 <script>
-import GroupSubjectListAction from '@/modules/groupSubject/GroupSubjectListAction.vue'
+import SubjectGroupListAction from '@/modules/subjectGroup/SubjectGroupListAction.vue'
 
 export default {
-  components: { GroupSubjectListAction },
+  components: { SubjectGroupListAction },
   props: {
-    groupSubjects: Array
+    subjectGroups: Array
   },
   data() {
     return {

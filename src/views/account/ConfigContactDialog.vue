@@ -99,6 +99,7 @@
 import { mapActions, mapGetters, mapState } from 'vuex'
 import CardStudentName from '@/components/basic/card/CardStudentName.vue'
 import { mask } from 'vue-the-mask'
+import { Post } from '@/plugins/api'
 
 export default {
   components: { CardStudentName },
@@ -152,7 +153,7 @@ export default {
     },
     cancel() {
       this.dialog = false
-      this.reset()
+      // this.reset()
     },
     async save() {
       if (this.$refs.form.validate()) {
@@ -229,6 +230,15 @@ export default {
           id: this.student.id,
           user: user.id
         })
+
+        const post = {
+          student: this.student.id,
+          senderMethod: 'sms',
+          type: 'other',
+          content: `Tai khoan dang nhap APP so lien lac dien tu cua hoc sinh ${this.student.name}, Tai khoan: ${user.username}, mat khau: ${this.password}`
+        }
+        await Post.create(post)
+
         this.$alert.success('Cài đặt thành công sổ liên lạc')
         this.dialog = false
       } catch (error) {

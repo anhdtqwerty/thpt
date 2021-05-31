@@ -65,8 +65,10 @@ import user from './app/user'
 import factor from './factor/factor'
 
 import postCreate from './post/post-create'
-import GroupSubject from './groupSubject/GroupSubject'
+import SubjectGroup from './subjectGroup/SubjectGroup'
 import ContactBook from './contactBook/ContactBook'
+import SmsHistory from './smsHistory/SmsHistory'
+import AppHistory from './appHistory/AppHistory'
 
 Vue.use(Vuex)
 
@@ -119,8 +121,10 @@ export default createStore(Vuex.Store, {
     MarkInput,
     Mark,
     StudentMark,
-    GroupSubject,
-    ContactBook
+    SubjectGroup,
+    ContactBook,
+    SmsHistory,
+    AppHistory
   },
   mixins: {
     mutations: {

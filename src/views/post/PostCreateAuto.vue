@@ -13,10 +13,10 @@
       </v-tabs>
       <v-tabs-items v-model="tab">
         <v-tab-item :key="1">
-          <MarkPostCreate />
+          <MarkPostCreate @sendMarkNotification="sendMarkNotification" />
         </v-tab-item>
         <v-tab-item :key="2">
-          <ViolationPostCreate @sendDailySMS="sendDailySMS" />
+          <ViolationPostCreate @sendDailyViolation="sendDailyViolation" />
         </v-tab-item>
         <v-tab-item :key="3">
           <AttendancePostCreate @sendDiligenceSMS="sendDiligenceSMS" />
@@ -36,6 +36,7 @@ import ViolationPostCreate from '@/modules/post/ViolationPostCreate.vue'
 import AttendancePostCreate from '@/modules/post/AttendancePostCreate.vue'
 import AttendancePostCreateDialog from '@/modules/post/AttendancePostCreateDialog.vue'
 import { Post } from '@/plugins/api.js'
+import { mapGetters } from 'vuex'
 export default {
   components: {
     SendSMSExcelDialog,
@@ -53,6 +54,9 @@ export default {
       postTos: {}
     }
   },
+  computed: {
+    ...mapGetters('auth', ['profile'])
+  },
   methods: {
     // sendPost({ students, classes, grades, allSchool }) {
     //   this.postTos = { students, classes, grades, allSchool }
@@ -63,6 +67,8 @@ export default {
       if (data.classes.length === 0) this.$alert.error('Xin vui lòng chọn ít nhất một lớp!')
       console.log(data.classes)
       try {
+        this.$loading.active = true
+
         const result = await Post.sendDiligenceSMS({
           class: data.classes[0],
           type: 'diligence'
@@ -70,16 +76,30 @@ export default {
         this.$alert.success(result)
       } catch (error) {
         this.$alert.error(`Đã có lỗi xảy ra trong quá trình gửi tin nhắn! Lỗi: ${error}`)
+      } finally {
+        this.$loading.active = false
       }
     },
-    async sendDailySMS() {
+    async sendMarkNotification() {
       try {
-        this.loading = true
-        const sms = await Post.sendDailySMS()
-        if (sms.length > 0) this.$alert.success('Gửi tin nhắn hằng ngày thành công!')
-        this.loading = false
+        this.$loading.active = true
+        await Post.sendMarkNotification(this.profile.id)
+        this.$alert.success('Gửi tin nhắn Sổ điểm thành công!')
       } catch (error) {
         this.$alert.error(`Đã xảy ra lỗi trong quá trình gửi tin nhắn! Lỗi: ${error}`)
+      } finally {
+        this.$loading.active = false
+      }
+    },
+    async sendDailyViolation() {
+      try {
+        this.$loading.active = true
+        const sms = await Post.sendDailyViolation(this.profile.id)
+        if (sms.length > 0) this.$alert.success('Gửi tin nhắn Khen thưởng kỷ luật thành công!')
+      } catch (error) {
+        this.$alert.error(`Đã xảy ra lỗi trong quá trình gửi tin nhắn! Lỗi: ${error}`)
+      } finally {
+        this.$loading.active = false
       }
     }
   }

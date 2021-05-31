@@ -7,6 +7,7 @@
     @change="onChange"
     v-on:input="$emit('input', $event)"
     @update:search-input="update"
+    clearable
     :loading="loading"
   ></v-autocomplete>
 </template>
@@ -50,7 +51,7 @@ export default {
   },
   watch: {
     filter(filter) {
-      this.fetchAllSubjects(filter)
+      this.fetchAllSubjects()
     },
     defaultSubjects(subjects) {
       this.subjects = subjects

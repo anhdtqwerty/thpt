@@ -4,27 +4,32 @@
       <v-col cols="12">
         <v-row class="basic-filter">
           <v-col cols="12" md="4">
-            <AutocompleteGrade placeholder="Khối" outlined dense hide-details @change="gradeData = $event" />
+            <AutocompleteGrade label="Khối" placeholder="Khối" outlined dense hide-details @change="gradeChanged" />
           </v-col>
           <v-col cols="12" md="4">
             <AutocompleteClass
+              v-model="classData"
+              label="Lớp"
               placeholder="Lớp"
               outlined
               dense
               hide-details
-              :filter="{ grade: gradeData }"
-              @change="classData = $event"
+              :filter="classFilter"
+              :disabled="!grade"
+              @change="subjectData = null"
             />
           </v-col>
           <v-col cols="12" md="4">
             <AutocompleteSubject
+              label="Môn học"
+              v-model="subjectData"
               return-object
               placeholder="Môn học"
               outlined
               dense
               hide-details
-              :filter="{ grade: gradeData }"
-              @change="subjectData = $event"
+              :filter="subjectFilter"
+              :disabled="!classData"
             />
           </v-col>
         </v-row>
@@ -33,7 +38,13 @@
     <v-row class="pt-4" justify="space-between" no-gutters>
       <RadioSemester :generation="currentGeneration" @change="onRadioSemesterChange" />
       <v-col cols="12" md="2">
-        <v-btn color="primary" style="width: 100%" @click="onFilterChanged">Xem điểm</v-btn>
+        <v-btn
+          :disabled="!grade || !classData || !subjectData"
+          color="primary"
+          style="width: 100%"
+          @click="onFilterChanged"
+          >Xem điểm</v-btn
+        >
       </v-col>
     </v-row>
   </div>
@@ -45,6 +56,7 @@ import AutocompleteClass from '@/components/basic/input/AutocompleteClass'
 import AutocompleteSubject from '@/components/basic/input/AutocompleteSubject'
 import AutocompleteGrade from '@/components/basic/input/AutocompleteGrade'
 import RadioSemester from '@/components/basic/input/RadioSemester'
+import { get } from 'lodash'
 
 export default {
   components: {
@@ -57,10 +69,17 @@ export default {
     classData: '',
     subjectData: '',
     semesterData: '',
-    gradeData: ''
+    grade: ''
   }),
   computed: {
-    ...mapState('app', ['currentGeneration'])
+    ...mapState('app', ['currentGeneration']),
+
+    classFilter() {
+      return this.grade ? { grade: this.grade } : {}
+    },
+    subjectFilter() {
+      return { division: get(this.classData, 'division.id') }
+    }
   },
   methods: {
     onRadioSemesterChange(semester) {
@@ -69,10 +88,15 @@ export default {
     onFilterChanged() {
       this.$emit('onFilterChanged', {
         class: this.classData,
-        grade: this.gradeData,
+        grade: this.grade,
         semester: this.semesterData,
         subject: this.subjectData.id
       })
+    },
+    gradeChanged(grade) {
+      this.grade = grade
+      this.classData = null
+      this.subjectData = null
     }
   }
 }

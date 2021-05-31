@@ -7,7 +7,7 @@
       <v-list-item-title>Nâng cao</v-list-item-title>
     </template>
     <v-list class="py-0">
-      <v-list-item active-class="blue lighten-4 primary--text" class="px-0" link to="/groupSubjects">
+      <v-list-item active-class="blue lighten-4 primary--text" class="px-0" link to="/subjectGroups">
         <v-list-item-action></v-list-item-action>
         <v-list-item-title>Bộ môn</v-list-item-title>
       </v-list-item>

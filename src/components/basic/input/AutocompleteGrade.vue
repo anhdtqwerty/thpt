@@ -7,6 +7,7 @@
     @change="onChange"
     v-on:input="$emit('input', $event)"
     @update:search-input="update"
+    clearable
   ></v-autocomplete>
 </template>
 

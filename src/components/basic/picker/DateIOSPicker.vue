@@ -1,5 +1,12 @@
 <template>
-  <v-text-field v-bind="this.$attrs" ref="code" v-mask="mask" placeholder="dd/mm/yyyy" v-model="data" @keypress.enter="onEnterPress"></v-text-field>
+  <v-text-field
+    v-bind="this.$attrs"
+    ref="code"
+    v-mask="mask"
+    placeholder="dd/mm/yyyy"
+    v-model="data"
+    @keypress.enter="onEnterPress"
+  ></v-text-field>
 </template>
 
 <script>
@@ -46,6 +53,11 @@ export default {
   watch: {
     data(value) {
       this.updated(this.data)
+    },
+    date(value) {
+      if (value) {
+        this.updated(moment(value).format('DD/MM/YYYY'))
+      }
     }
   }
 }

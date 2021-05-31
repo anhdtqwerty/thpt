@@ -28,7 +28,6 @@ import Student from '@/views/student/Student'
 import StudentClasses from '@/views/student/Classes'
 import StudentImporter from '@/views/student/StudentImporter.vue'
 import Violation from '@/views/violation/Violations.vue'
-import ContactBook from '@/views/account/ContactBooks.vue'
 import Diligence from '@/views/diligence/Diligence.vue'
 import StudentMarks from '@/views/student/StudentMarks.vue'
 
@@ -50,7 +49,7 @@ import GuestLayout from '../components/layout/GuestLayout'
 import MainLayout from '../components/layout/MainLayout'
 import Page404 from '@/views/Page404'
 // -----------------------Advanced Setting---------------------------------
-import GroupSubjects from '@/views/groupSubject/GroupSubjects.vue'
+import SubjectGroups from '@/views/subjectGroup/SubjectGroups.vue'
 import Divisions from '@/views/division/Divisions.vue'
 import Semesters from '@/views/semester/Semesters.vue'
 import Grades from '@/views/grade/Grades.vue'
@@ -62,6 +61,9 @@ import TimeTableConfig from '@/views/timetable/TimeTableConfig.vue'
 import PostCreate from '@/views/post/PostCreate.vue'
 import PostCreateAuto from '@/views/post/PostCreateAuto.vue'
 import PostCreateHistory from '@/views/post/PostCreateHistory.vue'
+// -----------------------Contact Book---------------------------------
+import ContactBook from '@/views/account/ContactBooks.vue'
+// import StudentContactBookDetail from '@/modules/contactBook/StudentContactBookDetail.vue'
 
 const routes = [
   {
@@ -168,9 +170,9 @@ const routes = [
         }
       },
       {
-        path: 'groupSubjects',
-        component: GroupSubjects,
-        name: 'GroupSubjects',
+        path: 'subjectGroups',
+        component: SubjectGroups,
+        name: 'SubjectGroups',
         meta: {
           title: 'Quản lý bộ môn',
           auth: true
@@ -418,7 +420,7 @@ const routes = [
       },
       {
         path: 'marks',
-        name: 'Sổ điểm',
+        name: 'Sổ điểm học sinh',
         component: Mark,
         meta: {
           title: 'Sổ điểm',
@@ -443,6 +445,15 @@ const routes = [
           auth: true
         }
       },
+      // {
+      //   path: 'contact-book-detail/:id',
+      //   name: 'Danh sách sổ liên lạc',
+      //   component: StudentContactBookDetail,
+      //   meta: {
+      //     title: 'Chi tiết tin đã gửi',
+      //     auth: true
+      //   }
+      // },
       {
         path: 'post-send',
         name: 'Gửi tin nhắn',

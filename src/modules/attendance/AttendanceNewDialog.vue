@@ -36,7 +36,7 @@
             </v-col>
             <v-col cols="6">
               <AutocompleteStudent
-                v-model="student"
+                :syncedValue.sync="student"
                 label="Học sinh"
                 outlined
                 class="required"
