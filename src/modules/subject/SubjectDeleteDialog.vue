@@ -37,7 +37,7 @@ export default {
         this.$router.back()
         this.dialog = false
       } catch (error) {
-        this.$alert.addError()
+        this.$alert.deleteError()
       } finally {
         this.loading = false
       }

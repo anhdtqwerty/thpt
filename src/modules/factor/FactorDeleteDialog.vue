@@ -39,7 +39,7 @@ export default {
           .id
         await this.removeFactor({ semester1Id: this.item.id, semester2Id })
       } catch (error) {
-        this.$alert.addError()
+        this.$alert.deleteError()
       } finally {
         this.loading = false
       }

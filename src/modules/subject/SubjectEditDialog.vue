@@ -50,7 +50,7 @@ export default {
         this.$alert.success('Cập nhật thành công')
         this.dialog = false
       } catch (error) {
-        this.$alert.addError()
+        this.$alert.updateError()
       } finally {
         this.loading = false
       }

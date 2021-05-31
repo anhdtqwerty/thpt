@@ -74,7 +74,7 @@ export default {
         this.$alert.success('Cập nhật đầu điểm thành công')
         this.dialog = false
       } catch (error) {
-        this.$alert.addError()
+        this.$alert.updateError()
       } finally {
         this.loading = false
       }
