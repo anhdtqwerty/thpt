@@ -117,16 +117,8 @@
       </v-col>
     </v-row>
     <v-radio-group row class="shrink mt-0" mandatory v-model="markType">
-      <v-radio
-        label="Đánh giá bằng cho điểm"
-        hide-details
-        value="mark"
-      ></v-radio>
-      <v-radio
-        label="Đánh giá bằng nhận xét"
-        hide-details
-        value="evaluate"
-      ></v-radio>
+      <v-radio label="Đánh giá bằng cho điểm" hide-details value="mark"></v-radio>
+      <v-radio label="Đánh giá bằng nhận xét" hide-details value="evaluate"></v-radio>
     </v-radio-group>
     <v-radio-group row class="shrink mt-0" mandatory v-model="compoundClass">
       <v-radio label="Có học ghép lớp" hide-details :value="true"></v-radio>
@@ -202,7 +194,6 @@ export default {
   },
   computed: {
     onFilterChanged() {
-      console.log('computed', this.grade)
       return { academicLevel: get(this.grade, 'academicLevel') }
     }
   },
