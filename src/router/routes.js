@@ -49,7 +49,7 @@ import GuestLayout from '../components/layout/GuestLayout'
 import MainLayout from '../components/layout/MainLayout'
 import Page404 from '@/views/Page404'
 // -----------------------Advanced Setting---------------------------------
-import GroupSubjects from '@/views/groupSubject/GroupSubjects.vue'
+import SubjectGroups from '@/views/subjectGroup/SubjectGroups.vue'
 import Divisions from '@/views/division/Divisions.vue'
 import Semesters from '@/views/semester/Semesters.vue'
 import Grades from '@/views/grade/Grades.vue'
@@ -170,9 +170,9 @@ const routes = [
         }
       },
       {
-        path: 'groupSubjects',
-        component: GroupSubjects,
-        name: 'GroupSubjects',
+        path: 'subjectGroups',
+        component: SubjectGroups,
+        name: 'SubjectGroups',
         meta: {
           title: 'Quản lý bộ môn',
           auth: true

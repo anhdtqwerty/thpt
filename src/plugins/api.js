@@ -33,7 +33,7 @@ const SUBJECT_API = '/subjects/'
 const VIOLATION_API = '/violations/'
 const FACTOR_API = '/factors/'
 const POST_API = '/posts/'
-const GROUP_SUBJECT_API = '/group-subjects/'
+const SUBJECT_GROUP_API = '/subject-groups/'
 const CONTACT_BOOK_API = '/contact-books/'
 const SMS_API = '/sms/'
 const HISTORY_API = '/histories/'
@@ -95,7 +95,7 @@ export const Post = {
   sendDailyViolation: staffId => axios.post('/sms/sendDailyViolation', { staffId }),
   sendMarkNotification: staffId => axios.post('/sms/sendMarkNotificationDaily', { staffId })
 }
-export const GroupSubject = APIHelper(GROUP_SUBJECT_API)
+export const SubjectGroup = APIHelper(SUBJECT_GROUP_API)
 export const ContactBook = {
   ...APIHelper(CONTACT_BOOK_API),
   resend: historyId => axios.post('/contact-book/resend', { historyId }),
@@ -141,7 +141,7 @@ export default {
   Violation,
   Factor,
   Post,
-  GroupSubject,
+  SubjectGroup,
   ContactBook,
   Sms,
   History
