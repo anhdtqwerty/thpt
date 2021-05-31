@@ -6,8 +6,8 @@
         Đầu điểm này sẽ bị xoá khỏi cấu hình điểm của môn và các thông tin về điểm của môn học này sẽ bị thay đổi
       </v-card-text>
       <v-card-actions class="d-flex justify-space-between pa-6">
-        <v-btn depressed class="red white--text" :loading="loading" @click="onDelete(item)">Xoá</v-btn>
-        <v-btn depressed @click="cancel()">Huỷ</v-btn>
+        <v-btn depressed class="red white--text" :loading="loading" @click="onDelete()">Xoá</v-btn>
+        <v-btn depressed outlined @click="cancel()">Huỷ</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -32,11 +32,12 @@ export default {
   },
   methods: {
     ...mapActions('factor', ['removeFactor']),
-    async onDelete(item) {
+    async onDelete() {
       try {
         this.loading = true
-        const semester2Id = this.subject.factors.find(f => f.type === item.type && f.semesterType === 'semester-2').id
-        await this.removeFactor({ semester1Id: item.id, semester2Id })
+        const semester2Id = this.subject.factors.find(f => f.type === this.item.type && f.semesterType === 'semester-2')
+          .id
+        await this.removeFactor({ semester1Id: this.item.id, semester2Id })
       } catch (error) {
         this.$alert.addError()
       } finally {

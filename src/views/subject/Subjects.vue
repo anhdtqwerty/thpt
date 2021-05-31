@@ -32,6 +32,9 @@
         <template v-slot:item.markType="{ item }">
           {{ item.markType | getMarkType }}
         </template>
+        <template v-slot:item.type="{ item }">
+          {{ item.type | getSubjectType }}
+        </template>
       </v-data-table>
     </v-card>
   </div>
@@ -40,7 +43,6 @@
 <script>
 import { mapActions, mapState } from 'vuex'
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
-import DropMenu from '@/modules/student/menu/Menu.vue'
 import SubjectNewDialog from '@/modules/subject/SubjectNewDialog'
 import SubjectFilter from '@/modules/subject/SubjectFilter.vue'
 import utils from '@/plugins/utils'
@@ -49,7 +51,6 @@ export default {
   components: {
     SubjectNewDialog,
     Breadcrumbs,
-    DropMenu,
     SubjectFilter
   },
   props: {
@@ -154,6 +155,9 @@ export default {
         return 'Đánh giá'
       }
       return ''
+    },
+    getSubjectType(item) {
+      return item === 'coreCurriculum' ? 'Chính khoá' : 'Ngoại khoá'
     }
   }
 }

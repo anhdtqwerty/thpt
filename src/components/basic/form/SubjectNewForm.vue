@@ -28,23 +28,21 @@
         dense
         deletable-chips
         hide-details
-        :filter="filterByGrade"
+        :filter="onFilterChanged"
       />
     </div>
     <div class="d-flex">
-      <AutocompleteSubjectType
-        v-model="type"
+      <AutocompleteSubjectGroup
+        v-model="subjectGroup"
         item-text="title"
         item-value="id"
         label="Bộ môn"
         class="required col-md-6 mr-4"
-        :rules="[$rules.required]"
-        required
         deletable-chips
         dense
         hide-details
         outlined
-        :filter="filterByGrade"
+        :filter="onFilterChanged"
       />
       <v-text-field
         label="Tên môn học"
@@ -57,9 +55,9 @@
       ></v-text-field>
     </div>
     <div class="d-flex">
-      <AutocompleteSubjectGroup
-        :defaultSubjectGroups="defaultSubjectGroups"
-        v-model="subjectGroup"
+      <AutocompleteSubjectType
+        :defaultSubjectTypes="defaultSubjectTypes"
+        v-model="type"
         item-text="title"
         item-value="id"
         label="Nhóm môn học"
@@ -133,9 +131,9 @@ import AutocompleteSubjectGroup from '@/components/basic/input/AutocompleteSubje
 import AutocompleteSubjectType from '@/components/basic/input/AutocompleteSubjectType'
 import { textHelpers } from '@/helpers/TextHelper.js'
 import { get } from 'lodash'
-const defaultSubjectGroups = [
-  { id: '1', title: 'Chính khoá' },
-  { id: '2', title: 'Ngoại khoá' }
+const defaultSubjectTypes = [
+  { id: 'coreCurriculum', title: 'Chính khoá' },
+  { id: 'extraCurriculum', title: 'Ngoại khoá' }
 ]
 export default {
   components: {
@@ -160,7 +158,7 @@ export default {
       maxWeeklyLesson: '',
       compoundClass: true,
       subjectGroup: '',
-      defaultSubjectGroups: defaultSubjectGroups
+      defaultSubjectTypes: defaultSubjectTypes
     }
   },
   methods: {
@@ -173,7 +171,7 @@ export default {
           multiply: this.multiply,
           grade: this.grade,
           division: this.division,
-          group_subject: this.subjectGroups,
+          group_subject: this.subjectGroup,
           data: {
             weeklyLesson: this.weeklyLesson,
             minWeeklyLesson: this.minWeeklyLesson,
@@ -193,7 +191,8 @@ export default {
     }
   },
   computed: {
-    filterByGrade() {
+    onFilterChanged() {
+      console.log('computed', this.grade)
       return { academicLevel: get(this.grade, 'academicLevel') }
     }
   },

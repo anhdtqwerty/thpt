@@ -13,8 +13,7 @@
           type="number"
         ></v-text-field>
       </v-col>
-    </v-row>
-    <v-row>
+      <v-col cols="6" />
       <v-col cols="6" class="pt-0">
         <v-text-field
           label="Số tiết tối thiểu trên tuần"
@@ -39,16 +38,12 @@
           type="number"
         ></v-text-field
       ></v-col>
-    </v-row>
-    <v-row>
       <v-col cols="12" class="pt-0">
         <v-radio-group v-model="markType" mandatory row class="shrink mt-0">
           <v-radio label="Đánh giá bằng cho điểm" hide-details value="mark"></v-radio>
           <v-radio label="Đánh giá bằng nhận xét" hide-details value="evaluate"></v-radio>
         </v-radio-group>
       </v-col>
-    </v-row>
-    <v-row>
       <v-col cols="12" class="pt-0">
         <v-radio-group v-model="compoundClass" mandatory row class="shrink mt-0">
           <v-radio label="Có học ghép lớp" hide-details :value="true"></v-radio>

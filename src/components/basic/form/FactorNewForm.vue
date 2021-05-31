@@ -1,6 +1,6 @@
 <template>
   <v-form class="pt-0" flat ref="form">
-    <v-radio-group required :v-model="selectedFactorType" :rules="rules" row class="shrink mt-0" mandatory>
+    <v-radio-group required v-model="selectedFactorType" :rules="rules" row class="shrink mt-0" mandatory>
       <v-radio
         v-for="item in defaultFactorTypes"
         :key="item.type"

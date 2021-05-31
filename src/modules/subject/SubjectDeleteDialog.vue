@@ -8,7 +8,7 @@
       </v-card-text>
       <v-card-actions class="d-flex justify-space-between pa-6">
         <v-btn depressed class="red white--text" :loading="loading" @click="onDelete(subject.id)">Xoá</v-btn>
-        <v-btn depressed @click="cancel()">Huỷ</v-btn>
+        <v-btn depressed outlined @click="cancel()">Huỷ</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
