@@ -15,7 +15,7 @@
               dense
               deletable-chips
               hide-details
-              @change="currentClass = {}"
+              @change="gradeChanged"
             />
           </v-col>
           <v-col md="4">
@@ -23,7 +23,6 @@
               v-model="currentClass"
               clear-icon="mdi-close"
               label="Lớp"
-              :disabled="!grade"
               :filter="classFilter"
               clearable
               flat
@@ -31,20 +30,19 @@
               dense
               return-object
               hide-details
-              @change="student = {}"
+              @change="student = null"
             />
           </v-col>
           <v-col md="4">
             <AutocompleteStudent
+              v-model="student"
               return-object
-              :disabled="!currentClass.id"
               label="Học sinh"
               outlined
               dense
               hide-details
               clearable
               :filter="currentClassId"
-              @change="student = $event"
             />
             <!-- <v-text-field
               v-model="studentNameOrCode"
@@ -165,6 +163,11 @@ export default {
       }
 
       this.$emit('onFilterChanged', { ...params })
+    },
+    gradeChanged(grade) {
+      this.grade = grade
+      this.currentClass = null
+      this.student = null
     }
   }
 }

@@ -10,6 +10,7 @@
     @input="onChange"
     auto-select-first
     :loading="loading"
+    clearable
   ></v-autocomplete>
 </template>
 

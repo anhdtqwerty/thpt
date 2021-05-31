@@ -63,7 +63,7 @@ export default {
       if (!get(query, 'class.id') || !get(query, 'student.id')) return
       this.$loading.active = true
 
-      await this.fetchSubjects({ grade: query.grade })
+      await this.fetchSubjects({ division: query.class.division.id })
       this.setSubjects(this.subjects)
 
       if (query.semester.type !== 'year') {

@@ -23,8 +23,7 @@
           :rules="[$rules.required]"
           outlined
           dense
-          clearable
-          @change="grade = $event"
+          @change="gradeChanged"
         />
       </v-col>
       <v-col>
@@ -38,7 +37,7 @@
           dense
           clearable
           :filter="gradeId"
-          @change="classData = $event"
+          @change="student = null"
         />
       </v-col>
     </v-row>
@@ -52,7 +51,6 @@
       dense
       clearable
       :filter="currentClasId"
-      @change="student = $event"
     />
     <RadioViolation :value="type" @change="type = $event" mandatory />
     <v-textarea
@@ -86,7 +84,7 @@ export default {
   data: () => ({
     grade: '',
     classData: '',
-    student: '',
+    student: {},
     description: '',
     type: '',
     time: moment().toISOString()
@@ -109,6 +107,13 @@ export default {
       this.description = null
       this.time = moment().toISOString()
       this.type = 'commendation'
+
+      this.$refs.form.resetValidation()
+    },
+    gradeChanged(grade) {
+      this.grade = grade
+      this.classData = null
+      this.student = null
 
       this.$refs.form.resetValidation()
     },

@@ -3,12 +3,12 @@
     v-bind="this.$attrs"
     item-text="display"
     :items="studentList"
-    :value="student"
     return-object
     @change="onChange"
     :search-input.sync="inputValue"
     clearable
     :loading="loading"
+    v-model="student"
   >
     <template v-slot:item="data">
       <v-list-item-content>
@@ -32,7 +32,8 @@ export default {
   data: () => ({
     students: [],
     inputValue: '',
-    loading: false
+    loading: false,
+    student: ''
   }),
   props: {
     filter: Object,
@@ -61,9 +62,18 @@ export default {
       this.$emit('input', data)
     },
     debounce: debounce(async (search, context) => {
-      if (!search) return
+      if (!search || context.student) {
+        await context.fetchStudents()
+        return
+      }
+
       // this.loading = true
+      let params = {}
+      if (context.filter && context.filter.currentClass) {
+        params.currentClass = context.filter.currentClass
+      }
       const data = await api.Student.search({
+        ...params,
         code_contains: utils.removeUnicode(search),
         _limit: 5,
         _sort: 'createdAt:DESC'
@@ -78,13 +88,6 @@ export default {
       return [...this.students, this.defaultStudent]
         .filter(u => !!u && !!u.code)
         .map(s => ({ ...s, display: `${s.name} [${s.code}]` }))
-    },
-    student() {
-      if (!this.defaultStudent || !this.defaultStudent.code) return null
-      return {
-        ...this.defaultStudent,
-        display: `${this.defaultStudent.name} [${this.defaultStudent.code}]`
-      }
     }
   }
 }

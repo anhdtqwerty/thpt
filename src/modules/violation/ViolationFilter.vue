@@ -7,7 +7,7 @@
             <DateRangeIOSPicker :date-range.sync="dateRange" placeholder="Ngày" outlined hide-details />
           </v-col>
           <v-col cols="12" md="4">
-            <autocomplete-class
+            <AutocompleteClass
               v-model="classData"
               clear-icon="mdi-close"
               clearable
@@ -17,10 +17,11 @@
               large
               deletable-chips
               hide-details
+              @change="student = null"
             />
           </v-col>
           <v-col cols="12" md="4">
-            <autocomplete-student
+            <AutocompleteStudent
               v-model="student"
               clearable
               clear-icon="mdi-close"
@@ -76,12 +77,6 @@ export default {
   },
   methods: {
     onFilterChanged() {
-      console.log({
-        class: this.classData,
-        student: this.student,
-        dateRange: this.dateRange,
-        _sort: 'createdAt:desc'
-      })
       this.dateData_gte = ''
       this.dateData_lte = ''
       if (this.dateRange.length > 1) {
@@ -92,8 +87,8 @@ export default {
         this.dateData_lte = moment(this.dateRange[0], 'DD/MM/YYYY').toISOString()
       }
       this.$emit('onFilterChanged', {
-        class: this.classData.id,
-        student: this.student.id,
+        class: get(this.classData, 'id'),
+        student: get(this.student, 'id'),
         date_gte: this.dateData_gte,
         date_lte: this.dateData_lte,
         _sort: 'createdAt:desc'
