@@ -2,9 +2,9 @@
   <v-form class="pt-0" flat ref="form">
     <v-radio-group required v-model="selectedFactorType" :rules="rules" row class="shrink mt-0" mandatory>
       <v-radio
-        v-for="item in defaultFactorTypes"
+        v-for="item in defaultFactors"
         :key="item.type"
-        :label="item.name"
+        :label="item.title"
         hide-details
         :value="item.type"
       ></v-radio>
@@ -34,15 +34,8 @@
   </v-form>
 </template>
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import _ from 'lodash'
-const defaultFactorTypes = [
-  { name: 'Miệng', type: 'oralTest', multiply: 1 },
-  { name: 'Thực hành', type: 'practiceTest', multiply: 1 },
-  { name: '15 phút', type: 'fifteenMinutesTest', multiply: 1 },
-  { name: '1 tiết', type: 'oneHourTest', multiply: 2 },
-  { name: 'Học kỳ', type: 'semesterExam', multiply: 3 }
-]
 
 export default {
   components: {},
@@ -54,8 +47,7 @@ export default {
     return {
       minMark: '',
       maxMark: '',
-      defaultFactorTypes: defaultFactorTypes,
-      selectedFactorType: defaultFactorTypes[0].type,
+      selectedFactorType: '',
       rules: [
         value => {
           return !_.map(this.factors, 'type').includes(value) || 'Môn học đã tồn tại đầu điểm này'
@@ -64,15 +56,16 @@ export default {
     }
   },
   computed: {
-    ...mapState('factor', ['factors'])
+    ...mapState('factor', ['factors']),
+    ...mapGetters('subjects', ['defaultFactors'])
   },
   methods: {
     getData() {
       if (this.$refs.form.validate()) {
-        const selectedType = defaultFactorTypes.find(m => m.type === this.selectedFactorType)
+        const selectedType = this.defaultFactors.find(m => m.type === this.selectedFactorType)
         return {
-          title: name,
-          type: this.selectedFactorType,
+          title: selectedType.title,
+          type: selectedType.type,
           quantity: this.maxMark,
           multiply: selectedType.multiply,
           data: {
