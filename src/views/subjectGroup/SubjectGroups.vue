@@ -5,8 +5,8 @@
         <Breadcrumbs
           headline="Quản lý bộ môn"
           :link="[
-            { text: 'Nâng cao', href: '../groupSubjects' },
-            { text: 'QL bộ môn', href: '../groupSubjects' }
+            { text: 'Nâng cao', href: '../subjectGroups' },
+            { text: 'QL bộ môn', href: '../subjectGroups' }
           ]"
         />
       </div>
@@ -16,22 +16,22 @@
         </v-btn>
       </div>
     </div>
-    <GroupSubjectDataTable :groupSubjects="groupSubjects" />
+    <SubjectGroupDataTable :subjectGroups="subjectGroups" />
 
-    <GroupSubjectNewDialog :state="createStateDialog" />
+    <SubjectGroupNewDialog :state="createStateDialog" />
   </div>
 </template>
 <script>
 import { mapActions, mapState } from 'vuex'
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
-import GroupSubjectNewDialog from '@/modules/groupSubject/GroupSubjectNewDialog.vue'
-import GroupSubjectDataTable from '@/modules/groupSubject/GroupSubjectDataTable.vue'
+import SubjectGroupNewDialog from '@/modules/subjectGroup/SubjectGroupNewDialog.vue'
+import SubjectGroupDataTable from '@/modules/subjectGroup/SubjectGroupDataTable.vue'
 
 export default {
   components: {
-    GroupSubjectNewDialog,
+    SubjectGroupNewDialog,
     Breadcrumbs,
-    GroupSubjectDataTable
+    SubjectGroupDataTable
   },
   props: {
     role: String
@@ -68,18 +68,18 @@ export default {
   },
 
   computed: {
-    ...mapState('GroupSubject', ['groupSubjects'])
+    ...mapState('SubjectGroup', ['subjectGroups'])
   },
   async created() {
     await this.refresh({})
   },
   methods: {
-    ...mapActions('GroupSubject', ['fetchGroupSubjects']),
+    ...mapActions('SubjectGroup', ['fetchSubjectGroups']),
     updateDraw(draw) {
       this.draw = draw
     },
     refresh() {
-      this.fetchGroupSubjects({ _sort: 'createdAt:desc' })
+      this.fetchSubjectGroups({ _sort: 'createdAt:desc' })
     },
     onDivisionSelected(division) {
       this.setDivision(division)
