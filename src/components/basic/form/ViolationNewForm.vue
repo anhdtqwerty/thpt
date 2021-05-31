@@ -54,7 +54,7 @@
       :filter="currentClasId"
       @change="student = $event"
     />
-    <RadioViolation :value="type" @change="type = $event" />
+    <RadioViolation :value="type" @change="type = $event" mandatory />
     <v-textarea
       class="required"
       :rules="[$rules.required]"

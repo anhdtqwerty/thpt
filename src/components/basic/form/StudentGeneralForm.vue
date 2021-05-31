@@ -25,7 +25,7 @@
         />
       </v-col>
       <v-col class="pb-0" cols="12" md="6">
-        <RadioGender :defaultGender="gender" @change="gender = $event" />
+        <RadioGender :defaultGender="gender" @change="gender = $event" mandatory />
       </v-col>
     </v-row>
     <v-row>
