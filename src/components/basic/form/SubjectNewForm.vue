@@ -40,6 +40,8 @@
         class="required col-md-6 mr-4"
         deletable-chips
         dense
+        :rules="[$rules.required]"
+        required
         hide-details
         outlined
         :filter="onFilterChanged"
@@ -115,8 +117,16 @@
       </v-col>
     </v-row>
     <v-radio-group row class="shrink mt-0" mandatory v-model="markType">
-      <v-radio label="Đánh giá bằng cho điểm" hide-details value="mark"></v-radio>
-      <v-radio label="Đánh giá bằng nhận xét" hide-details value="evaluate"></v-radio>
+      <v-radio
+        label="Đánh giá bằng cho điểm"
+        hide-details
+        value="mark"
+      ></v-radio>
+      <v-radio
+        label="Đánh giá bằng nhận xét"
+        hide-details
+        value="evaluate"
+      ></v-radio>
     </v-radio-group>
     <v-radio-group row class="shrink mt-0" mandatory v-model="compoundClass">
       <v-radio label="Có học ghép lớp" hide-details :value="true"></v-radio>

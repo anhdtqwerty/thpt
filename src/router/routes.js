@@ -32,7 +32,6 @@ import Diligence from '@/views/diligence/Diligence.vue'
 import StudentMarks from '@/views/student/StudentMarks.vue'
 
 // ---------------- DEPARTMENT -------------------------------
-import Department from '@/views/department/Department'
 // ---------------- Score -------------------------------
 // import InputScore from '@/views/score/InputScore.vue'
 
