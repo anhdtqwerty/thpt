@@ -35,7 +35,7 @@
       </v-card-text>
       <v-divider></v-divider>
       <v-card-actions class="d-flex justify-space-between pa-6">
-        <v-btn depressed @click="cancel">Huỷ</v-btn>
+        <v-btn depressed outlined @click="cancel">Huỷ</v-btn>
         <v-btn depressed color="primary" :loading="loading" @click="save">Lưu</v-btn>
       </v-card-actions>
     </v-card>

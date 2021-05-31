@@ -171,9 +171,9 @@ export default {
           type: this.type,
           markType: this.markType,
           multiply: this.multiply,
-          grade: this.grade,
+          grade: this.grade.id,
           division: this.division,
-          group_subject: this.subjectGroup,
+          subjectGroup: this.subjectGroup,
           data: {
             weeklyLesson: this.weeklyLesson,
             minWeeklyLesson: this.minWeeklyLesson,

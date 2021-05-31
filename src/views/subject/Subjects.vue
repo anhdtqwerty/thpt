@@ -67,7 +67,7 @@ export default {
           sortable: false,
           show: true
         },
-        { text: 'Bộ môn', value: 'group_subject', show: true },
+        { text: 'Bộ môn', value: 'subjectGroup.title', show: true },
         { text: 'Nhóm môn học', value: 'type', show: true },
         { text: 'Khối', value: 'grade', show: true },
         { text: 'Phân ban', value: 'division.title', show: true },

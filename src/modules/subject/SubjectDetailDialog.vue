@@ -63,7 +63,7 @@
 </template>
 <script>
 import { mapState } from 'vuex'
-import _ from 'lodash'
+import { isEmpty } from 'lodash'
 
 export default {
   components: {},
@@ -96,10 +96,10 @@ export default {
   },
   filters: {
     minWeeklyLesson(data) {
-      return _.isEmpty(data && data.minWeeklyLesson) ? 0 : data.minWeeklyLesson
+      return isEmpty(data && data.minWeeklyLesson) ? 0 : data.minWeeklyLesson
     },
     maxWeeklyLesson(data) {
-      return _.isEmpty(data && data.maxWeeklyLesson) ? 0 : data.maxWeeklyLesson
+      return isEmpty(data && data.maxWeeklyLesson) ? 0 : data.maxWeeklyLesson
     }
   }
 }

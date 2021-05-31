@@ -35,7 +35,7 @@
 </template>
 <script>
 import { mapState, mapGetters } from 'vuex'
-import _ from 'lodash'
+import { map } from 'lodash'
 
 export default {
   components: {},
@@ -50,7 +50,7 @@ export default {
       selectedFactorType: '',
       rules: [
         value => {
-          return !_.map(this.factors, 'type').includes(value) || 'Môn học đã tồn tại đầu điểm này'
+          return !map(this.factors, 'type').includes(value) || 'Môn học đã tồn tại đầu điểm này'
         }
       ]
     }

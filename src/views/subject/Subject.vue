@@ -68,7 +68,7 @@ import SubjectDetailDialog from '@/modules/subject/SubjectDetailDialog'
 import SubjectDeleteDialog from '@/modules/subject/SubjectDeleteDialog'
 import FactorTable from '@/modules/factor/FactorTable.vue'
 import FactorNewDialog from '@/modules/factor/FactorNewDialog'
-import _ from 'lodash'
+import { filter, isEmpty } from 'lodash'
 export default {
   components: {
     Breadcrumbs,
@@ -105,7 +105,7 @@ export default {
     },
     async refresh() {
       await this.fetchSubject(this.$route.params.id)
-      const factors = _.filter(this.subject.factors, f => {
+      const factors = filter(this.subject.factors, f => {
         return f.semesterType === 'semester-1'
       })
       this.setFactors(factors)
@@ -120,10 +120,10 @@ export default {
       return value ? 'Có' : 'Không'
     },
     minWeeklyLesson(data) {
-      return _.isEmpty(data && data.minWeeklyLesson) ? 0 : data.minWeeklyLesson
+      return isEmpty(data && data.minWeeklyLesson) ? 0 : data.minWeeklyLesson
     },
     maxWeeklyLesson(data) {
-      return _.isEmpty(data && data.maxWeeklyLesson) ? 0 : data.maxWeeklyLesson
+      return isEmpty(data && data.maxWeeklyLesson) ? 0 : data.maxWeeklyLesson
     }
   }
 }
