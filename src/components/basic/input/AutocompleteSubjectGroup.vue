@@ -7,15 +7,17 @@
     @change="onChange"
     v-on:input="$emit('input', $event)"
     @update:search-input="update"
+    :loading="loading"
   ></v-autocomplete>
 </template>
 
 <script>
-import { GroupSubject } from '@/plugins/api'
+import { SubjectGroup } from '@/plugins/api'
 
 export default {
   data: () => ({
-    subjectGroups: []
+    subjectGroups: [],
+    loading: false
   }),
   props: {
     filter: Object,
@@ -32,9 +34,11 @@ export default {
   },
   methods: {
     async fetchAllSubjectGroups() {
-      this.subjectGroups = await GroupSubject.fetch({
+      this.loading = true
+      this.subjectGroups = await SubjectGroup.fetch({
         ...this.filter
       })
+      this.loading = false
     },
     async update(data) {},
     onChange(data) {

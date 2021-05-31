@@ -81,7 +81,7 @@ export default {
   },
 
   methods: {
-    async editSubjectProfile() {
+    editSubjectProfile() {
       this.$emit('editSubjectProfile')
       this.dialog = false
     },
@@ -95,10 +95,6 @@ export default {
     }
   },
   filters: {
-    getMarkType(type) {
-      if (type === 'mark') return 'Điểm số'
-      return 'Đánh giá'
-    },
     minWeeklyLesson(data) {
       return _.isEmpty(data && data.minWeeklyLesson) ? 0 : data.minWeeklyLesson
     },

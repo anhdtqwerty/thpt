@@ -85,12 +85,6 @@ export default {
     state(state) {
       this.dialog = true
     }
-  },
-  filters: {
-    getMarkType(type) {
-      if (type === 'mark') return 'Điểm số'
-      return 'Đánh giá'
-    }
   }
 }
 </script>

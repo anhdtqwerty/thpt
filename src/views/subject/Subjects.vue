@@ -147,15 +147,6 @@ export default {
       if (!grade) return ''
       return grade.title
     },
-    getMarkType(markType) {
-      if (markType === 'mark') {
-        return 'Điểm số'
-      }
-      if (markType === 'evaluate') {
-        return 'Đánh giá'
-      }
-      return ''
-    },
     getSubjectType(item) {
       return item === 'coreCurriculum' ? 'Chính khoá' : 'Ngoại khoá'
     }

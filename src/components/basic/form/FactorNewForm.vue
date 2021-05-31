@@ -41,7 +41,7 @@ const defaultFactorTypes = [
   { name: 'Thực hành', type: 'practiceTest' },
   { name: '15 phút', type: 'fifteenMinutesTest' },
   { name: '1 tiết', type: 'oneHourTest' },
-  { name: 'Học kỳ', type: 'SemesterExam' }
+  { name: 'Học kỳ', type: 'semesterExam' }
 ]
 
 export default {

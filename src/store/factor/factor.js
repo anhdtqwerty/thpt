@@ -22,12 +22,8 @@ export default {
       }
     },
     async createFactor({ commit }, data) {
-      try {
-        await Factor.create({ ...data, semesterType: 'semester-2' })
-        commit('createFactor', await Factor.create({ ...data, semesterType: 'semester-1' }))
-      } catch (e) {
-        alert.error(e)
-      }
+      await Factor.create({ ...data, semesterType: 'semester-2' })
+      commit('createFactor', await Factor.create({ ...data, semesterType: 'semester-1' }))
     },
     async removeFactor({ commit }, { semester1Id, semester2Id }) {
       try {

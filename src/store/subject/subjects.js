@@ -34,7 +34,7 @@ const defaultFactors = [
     index: 4,
     quantity: 1,
     multiply: 3,
-    type: 'SemesterExam'
+    type: 'semesterExam'
   }
 ]
 

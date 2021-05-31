@@ -116,10 +116,6 @@ export default {
       if (!divisions || !divisions.length) return ''
       return divisions.map(d => d.title).join(', ')
     },
-    getMarkType(type) {
-      if (type === 'mark') return 'Điểm số'
-      return 'Đánh giá'
-    },
     compoundClass(value) {
       return value ? 'Có' : 'Không'
     },
