@@ -22,7 +22,7 @@
           </v-col>
           <v-col cols="12" md="4">
             <AutocompleteStudent
-              v-model="student"
+              :syncedValue.sync="student"
               clearable
               clear-icon="mdi-close"
               outlined

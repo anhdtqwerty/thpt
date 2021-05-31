@@ -38,7 +38,8 @@ export default {
   props: {
     filter: Object,
     options: Object,
-    defaultStudent: Object
+    defaultStudent: Object,
+    syncedValue: Object
   },
   watch: {
     async inputValue(search) {
@@ -47,6 +48,9 @@ export default {
     filter(filter) {
       this.inputValue = null
       this.fetchStudents(filter)
+    },
+    syncedValue(value) {
+      this.student = value
     }
   },
   methods: {
@@ -58,6 +62,7 @@ export default {
       this.loading = false
     },
     onChange(data) {
+      this.$emit('update:syncedValue', data)
       this.$emit('change', data)
       this.$emit('input', data)
     },

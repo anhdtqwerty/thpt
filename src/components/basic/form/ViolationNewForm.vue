@@ -42,7 +42,7 @@
       </v-col>
     </v-row>
     <AutocompleteStudent
-      v-model="student"
+      :syncedValue.sync="student"
       return-object
       label="Học sinh"
       class="required"
