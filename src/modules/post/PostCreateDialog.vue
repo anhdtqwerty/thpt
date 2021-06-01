@@ -54,6 +54,7 @@
       </v-card-text>
       <v-divider />
       <v-card-actions>
+        <v-btn class="px-4" outlined light depressed @click="cancel">Hủy</v-btn>
         <v-spacer></v-spacer>
         <v-btn class="ma-2" dark depressed color="primary" @click="create">Gửi </v-btn>
       </v-card-actions>

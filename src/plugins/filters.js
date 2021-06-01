@@ -91,7 +91,7 @@ export const vueFilterRegister = () => {
         return 'Thông báo'
       case 'tuition':
         return 'Học phí'
-      case 'attendance':
+      case 'diligence':
         return 'Chuyên cần'
       case 'schedule':
         return 'Thời khóa biểu'
@@ -102,9 +102,8 @@ export const vueFilterRegister = () => {
     }
   })
   Vue.filter('getConfig', config => {
-    if (config === 'daily') return 'Tự động'
-    else if (config === 'immediately') return 'Soạn riêng'
-    return ''
+    if (config === 'immediately') return 'Soạn riêng'
+    return 'Tự động'
   })
   Vue.filter('getSendNotiStatus', status => {
     switch (status) {

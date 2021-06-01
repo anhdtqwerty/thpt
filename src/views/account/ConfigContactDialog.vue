@@ -207,7 +207,7 @@ export default {
         await this.searchStudents({ ...this.studentSearchParams })
         return true
       } catch (error) {
-        this.$alert.error('Cài đặt liên lạc thất bại')
+        this.$alert.error('Cài đặt liên lạc thất bại, Lỗi: ', error)
         return false
       }
     },
@@ -243,7 +243,7 @@ export default {
         this.dialog = false
       } catch (error) {
         this.removeUser(user.id)
-        this.$alert.error('Tạo tài khoản App thất bại')
+        this.$alert.error('Tạo tài khoản App thất bại, Lỗi: ', error)
       }
     },
     reset() {
