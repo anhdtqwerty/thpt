@@ -41,7 +41,7 @@
         </router-link>
       </template>
       <template v-slot:[`item.dob`]="{ item }">
-        <span>{{ item | ddmmyyyy }}</span>
+        <span>{{ item.dob | ddmmyyyy }}</span>
       </template>
     </v-data-table>
   </v-card>

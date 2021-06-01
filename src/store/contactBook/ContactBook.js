@@ -31,7 +31,6 @@ export default {
       return g
     },
     async createUser({ commit }, userData) {
-      console.log('userData', userData)
       const user = await User.create({ ...userData })
       return user
     },

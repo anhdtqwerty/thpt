@@ -54,6 +54,7 @@
       </v-card-text>
       <v-divider />
       <v-card-actions>
+        <v-btn class="px-4" outlined light depressed @click="cancel">Hủy</v-btn>
         <v-spacer></v-spacer>
         <v-btn class="ma-2" dark depressed color="primary" @click="create">Gửi </v-btn>
       </v-card-actions>
@@ -110,27 +111,26 @@ export default {
           config: 'immediately'
         }
         const { students, classes, grades, allSchool } = this.postTos || {}
-        const receivers = this.postToOverview + this.postToDetail
 
         if (students) {
           const groups = chunk(students, 5)
           for (let subStudents of groups) {
-            await Promise.all(subStudents.map(s => ({ ...params, student: s.id, receivers })).map(p => Post.create(p)))
+            await Promise.all(subStudents.map(s => ({ ...params, student: s.id })).map(p => Post.create(p)))
           }
         } else if (classes) {
           const groups = chunk(classes, 5)
           for (let subClasses of groups) {
-            await Promise.all(subClasses.map(c => ({ ...params, class: c.id, receivers })).map(p => Post.create(p)))
+            await Promise.all(subClasses.map(c => ({ ...params, class: c.id })).map(p => Post.create(p)))
           }
         } else if (grades) {
           const groups = chunk(grades, 5)
           for (let subGrades of groups) {
-            await Promise.all(subGrades.map(g => ({ ...params, grade: g.id, receivers })).map(p => Post.create(p)))
+            await Promise.all(subGrades.map(g => ({ ...params, grade: g.id })).map(p => Post.create(p)))
           }
         } else if (allSchool) {
           const departmentId = get(this.user.department, 'id')
           if (departmentId) {
-            await Post.create({ ...params, department: departmentId, receivers: 'Toàn trường' })
+            await Post.create({ ...params, department: departmentId })
           }
         }
         this.dialog = false

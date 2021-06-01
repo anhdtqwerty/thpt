@@ -89,17 +89,15 @@ export const Semester = APIHelper(SEMESTER_API)
 export const Subject = APIHelper(SUBJECT_API)
 export const Violation = APIHelper(VIOLATION_API)
 export const Factor = APIHelper(FACTOR_API)
-export const Post = {
-  ...APIHelper(POST_API),
-  sendDiligenceSMS: params => axios.post('/posts/diligence', utils.filterObject(params)),
-  sendDailyViolation: staffId => axios.post('/sms/sendDailyViolation', { staffId }),
-  sendMarkNotification: staffId => axios.post('/sms/sendMarkNotificationDaily', { staffId })
-}
+export const Post = APIHelper(POST_API)
 export const SubjectGroup = APIHelper(SUBJECT_GROUP_API)
 export const ContactBook = {
   ...APIHelper(CONTACT_BOOK_API),
-  resend: historyId => axios.post('/contact-book/resend', { historyId }),
-  updateContact: (id, params) => axios.put('/contact-books/' + id, params)
+  resend: historyId => axios.post('/contact-books/resend', { historyId }),
+  updateContact: (id, params) => axios.put('/contact-books/' + id, params),
+  sendDailyViolation: staffId => axios.post('/contact-books/sendDailyViolation', { staffId }),
+  sendMarkNotification: staffId => axios.post('/contact-books/sendMarkNotificationDaily', { staffId }),
+  sendDiligence: params => axios.post('/contact-books/sendDiligence', utils.filterObject(params))
 }
 
 export const Sms = APIHelper(SMS_API)

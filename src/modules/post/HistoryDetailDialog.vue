@@ -33,7 +33,7 @@
               </v-col>
               <v-col class="d-flex align-center py-0" cols="12">
                 <v-subheader class="px-0">Đối tượng nhận</v-subheader>
-                <div style="width: 70%" class="mb-0 black--text">{{ history | getReceiver }}</div>
+                <div style="width: 70%" class="mb-0 black--text">{{ history.postToType | getReceiver }}</div>
               </v-col>
               <v-col class="d-flex align-center py-0" cols="12">
                 <v-subheader class="px-0">Người nhận</v-subheader>
@@ -112,9 +112,19 @@ export default {
     }
   },
   filters: {
-    getReceiver(history) {
-      if (history.post) return history.post.receivers
-      return history.student.name
+    getReceiver(postToType) {
+      switch (postToType) {
+        case 'student':
+          return 'Học sinh'
+        case 'class':
+          return 'Lớp'
+        case 'grade':
+          return 'Khối'
+        case 'department':
+          return 'Toàn trường'
+        default:
+          return ''
+      }
     }
   }
 }

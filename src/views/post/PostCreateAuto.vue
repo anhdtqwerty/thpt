@@ -35,8 +35,9 @@ import MarkPostCreate from '@/modules/post/MarkPostCreate.vue'
 import ViolationPostCreate from '@/modules/post/ViolationPostCreate.vue'
 import AttendancePostCreate from '@/modules/post/AttendancePostCreate.vue'
 import AttendancePostCreateDialog from '@/modules/post/AttendancePostCreateDialog.vue'
-import { Post } from '@/plugins/api.js'
+import { ContactBook } from '@/plugins/api.js'
 import { mapGetters } from 'vuex'
+
 export default {
   components: {
     SendSMSExcelDialog,
@@ -63,28 +64,15 @@ export default {
     //   this.sendDialog = !this.sendDialog
     // },
     async sendDiligenceSMS(data) {
-      console.log(data)
       if (data.classes.length === 0) this.$alert.error('Xin vui lòng chọn ít nhất một lớp!')
-      console.log(data.classes)
-      try {
-        this.$loading.active = true
-
-        const result = await Post.sendDiligenceSMS({
-          class: data.classes[0],
-          type: 'diligence'
-        })
-        this.$alert.success(result)
-      } catch (error) {
-        this.$alert.error(`Đã có lỗi xảy ra trong quá trình gửi tin nhắn! Lỗi: ${error}`)
-      } finally {
-        this.$loading.active = false
-      }
+      this.postTos = { classes: data.classes }
+      this.sendDialog = !this.sendDialog
     },
     async sendMarkNotification() {
       try {
         this.$loading.active = true
-        await Post.sendMarkNotification(this.profile.id)
-        this.$alert.success('Gửi tin nhắn Sổ điểm thành công!')
+        await ContactBook.sendMarkNotification(this.profile.id)
+        this.$alert.success('Đã gửi tin nhắn Sổ điểm, vui lòng xem chi tiết trong lịch sử gửi tin')
       } catch (error) {
         this.$alert.error(`Đã xảy ra lỗi trong quá trình gửi tin nhắn! Lỗi: ${error}`)
       } finally {
@@ -94,8 +82,8 @@ export default {
     async sendDailyViolation() {
       try {
         this.$loading.active = true
-        const sms = await Post.sendDailyViolation(this.profile.id)
-        if (sms.length > 0) this.$alert.success('Gửi tin nhắn Khen thưởng kỷ luật thành công!')
+        await ContactBook.sendDailyViolation(this.profile.id)
+        this.$alert.success('Đã gửi tin nhắn Khen thưởng kỷ luật, vui lòng xem chi tiết trong lịch sử gửi tin')
       } catch (error) {
         this.$alert.error(`Đã xảy ra lỗi trong quá trình gửi tin nhắn! Lỗi: ${error}`)
       } finally {

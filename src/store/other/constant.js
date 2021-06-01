@@ -386,7 +386,7 @@ export default {
       },
       {
         title: 'Chuyên cần',
-        value: 'attendance'
+        value: 'diligence'
       },
       {
         title: 'Thời khóa biểu',

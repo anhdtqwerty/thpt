@@ -48,6 +48,7 @@
       </v-card-text>
       <v-divider />
       <v-card-actions>
+        <v-btn class="px-4" outlined light depressed @click="cancel">Hủy</v-btn>
         <v-spacer></v-spacer>
         <v-btn class="ma-2" dark depressed color="primary" @click="create">Gửi </v-btn>
       </v-card-actions>
@@ -56,10 +57,8 @@
 </template>
 
 <script>
-import utils from '@/plugins/utils'
-import { chunk, get } from 'lodash'
-import { Post } from '@/plugins/api'
 import { mapGetters } from 'vuex'
+import { ContactBook } from '../../plugins/api'
 
 export default {
   name: 'PostCreateDialog',
@@ -70,8 +69,6 @@ export default {
   data() {
     return {
       dialog: false,
-      content: '',
-      postType: 'notification',
       senderMethod: 'auto',
       senderMethods: [
         { type: 'auto', title: 'Tự đông theo đăng ký' },
@@ -82,36 +79,40 @@ export default {
   },
   methods: {
     async create() {
-      const params = {
-        content: this.content,
-        keywords: utils.clearUnicode(this.content),
-        type: this.postType,
-        senderMethod: this.senderMethod
-      }
-      const { students, classes, grades, allSchool } = this.postTos || {}
-      if (students) {
-        const groups = chunk(students, 5)
-        for (let subStudents of groups) {
-          await Promise.all(subStudents.map(s => ({ ...params, student: s.id })).map(p => Post.create(p)))
+      this.$dialog.confirm({
+        title: 'Xác nhận gửi tin',
+        text: `Hệ thống sẽ gửi tin nhắn tới các học sinh vắng hoặc quên quẹt thẻ ở các lớp  mà bạn đã chọn. Bạn có chắc chắn gửi tin nhắn này ?`,
+        okText: 'Xác nhận',
+        cancelText: 'Hủy',
+        done: async () => {
+          const { classes } = this.postTos || {}
+
+          const params = {
+            staffId: this.profile.id,
+            classes: classes,
+            type: 'diligence',
+            senderMethod: this.senderMethod,
+            config: 'daily'
+          }
+
+          try {
+            this.$loading.active = true
+            await ContactBook.sendDiligence(params)
+            this.$alert.success('Đã gửi tin nhắn điểm danh, vui lòng xem chi tiết trong lịch sử gửi tin')
+            this.dialog = false
+            this.$emit('done')
+          } catch (error) {
+            this.$alert.error(`Đã có lỗi xảy ra trong quá trình gửi tin nhắn! Lỗi: ${error}`)
+          } finally {
+            this.$loading.active = false
+          }
         }
-      } else if (classes) {
-        const groups = chunk(classes, 5)
-        for (let subClasses of groups) {
-          await Promise.all(subClasses.map(c => ({ ...params, class: c.id })).map(p => Post.create(p)))
-        }
-      } else if (grades) {
-        const groups = chunk(grades, 5)
-        for (let subGrades of groups) {
-          await Promise.all(subGrades.map(g => ({ ...params, grade: g.id })).map(p => Post.create(p)))
-        }
-      } else if (allSchool) {
-        const departmentId = get(this.user.department, 'id')
-        if (departmentId) {
-          await Post.create({ ...params, department: departmentId })
-        }
-      }
-      this.dialog = false
-      this.$emit('done')
+      })
+
+      // const groups = chunk(classes, 5)
+      // for (let subClasses of groups) {
+      //   await Promise.all(subClasses.map(c => ({ ...params, class: c.id })).map(p => Post.create(p)))
+      // }
     },
     cancel() {
       this.dialog = false
@@ -120,7 +121,7 @@ export default {
     reset() {}
   },
   computed: {
-    ...mapGetters('auth', ['user']),
+    ...mapGetters('auth', ['user', 'profile']),
     postToOverview() {
       const { students, classes, grades, allSchool } = this.postTos || {}
       if (students) return `${students.length} học sinh`
