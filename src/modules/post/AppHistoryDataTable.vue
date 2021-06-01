@@ -36,12 +36,12 @@
     <template v-slot:[`item.action`]="{ item }">
       <HistoryListActions :item="item" @resend="resend" />
     </template>
-    <template v-slot:[`item.notes`]="{ item }">
+    <template v-slot:[`item.content`]="{ item }">
       <v-tooltip max-width="250px" bottom>
         <template v-slot:activator="{ on, attrs }">
-          <p v-bind="attrs" v-on="on" class="nowrap ma-0">{{ item.notes }}</p>
+          <p v-bind="attrs" v-on="on" class="nowrap ma-0">{{ item.content }}</p>
         </template>
-        <span>{{ item.notes }}</span>
+        <span>{{ item.content }}</span>
       </v-tooltip>
     </template>
   </v-data-table>
