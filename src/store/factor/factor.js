@@ -24,7 +24,7 @@ export default {
     async createFactor({ commit }, data) {
       try {
         await Factor.create({ ...data, semesterType: 'semester-2' })
-        commit('createFactor', await Factor.create({ ...data, semesterType: 'semester-1' }))
+        commit('createFactor', await Factor.create({ ...data, semesterType: 's        ' }))
       } catch (e) {
         alert.error(e)
       }
@@ -39,11 +39,14 @@ export default {
         alert.error(e)
       }
     },
-    async updateFactor({ commit }, { id, ...factor }) {
+    async updateFactor({ commit }, { factor, force = true }) {
       try {
+        const { id } = factor
         const res = await Factor.update(id, factor)
-        commit('updateFactor', { id, factor: res })
-        alert.success('Cập nhật thành công!')
+        if (force) {
+          commit('updateFactor', { id, factor: res })
+          alert.success('Cập nhật thành công!')
+        }
       } catch (e) {
         alert.error(e)
       }

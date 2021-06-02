@@ -69,8 +69,14 @@ export default {
         const data = this.$refs.form.getData()
         if (!data) return
         this.loading = true
-        console.log('update', data)
-        await this.updateFactor(data)
+
+        const factorSemester1 = data.factorSemester1
+        const factorSemester2 = JSON.parse(JSON.stringify(factorSemester1))
+        factorSemester2.semesterType = 'semester-2'
+        factorSemester2.id = data.semester2Id
+        await this.updateFactor({ factor: factorSemester1 })
+        await this.updateFactor({ factor: factorSemester2, force: false })
+
         this.$alert.success('Cập nhật đầu điểm thành công')
         this.dialog = false
       } catch (error) {
