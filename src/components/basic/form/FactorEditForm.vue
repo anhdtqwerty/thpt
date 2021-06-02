@@ -25,6 +25,7 @@
   </v-form>
 </template>
 <script>
+import { mapState } from 'vuex'
 export default {
   components: {},
   data() {
@@ -33,10 +34,12 @@ export default {
       maxMark: ''
     }
   },
-  computed: {},
   props: {
     state: Boolean,
     factor: { type: Object, default: () => {} }
+  },
+  computed: {
+    ...mapState('subjects', ['subject'])
   },
   methods: {
     reset() {
@@ -44,12 +47,20 @@ export default {
     },
     getData() {
       if (this.$refs.form.validate()) {
+        const semester2Id = this.subject.factors.find(
+          f => f.type === this.factor.type && f.semesterType === 'semester-2'
+        ).id
         let factorClone = JSON.parse(JSON.stringify(this.factor))
         if (factorClone && factorClone.data != null) {
           factorClone.data.minMark = this.minMark
           factorClone.data.maxMark = this.maxMark
-        } else return { ...factorClone, data: { minMark: this.minMark, maxMark: this.maxMark } }
-        return factorClone
+        } else {
+          return {
+            factorSemester1: { ...factorClone, data: { minMark: this.minMark, maxMark: this.maxMark } },
+            semester2Id
+          }
+        }
+        return { factorSemester1: factorClone, semester2Id }
       }
       return null
     },
