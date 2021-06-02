@@ -125,4 +125,14 @@ export const vueFilterRegister = () => {
         return 'grey'
     }
   })
+  Vue.filter('getMarkType', type => {
+    switch (type) {
+      case 'mark':
+        return 'Điểm số'
+      case 'evaluate':
+        return 'Đánh giá'
+      default:
+        return ''
+    }
+  })
 }

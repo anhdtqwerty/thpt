@@ -13,35 +13,27 @@
       class="mt-3"
     >
       <template v-slot:item.status="{ item }"> </template>
-      <template v-slot:item.semesterType="{ item }">{{
-        item.semesterType | getSemester
-      }}</template>
-      <template v-slot:item.action="{ item }">
-        <v-btn text icon @click="updateFactor(item)">
-          <v-icon dense small>mdi-pencil</v-icon>
-        </v-btn>
-        <v-btn text icon @click="onRemove(item.id)">
-          <v-icon dense small>mdi-delete</v-icon>
-        </v-btn>
+      <template v-slot:item.semesterType="{ item }">{{ item.semesterType | getSemester }}</template>
+      <template v-slot:[`item.action`]="{ item }">
+        <FactorListActions :factor="item"></FactorListActions>
       </template>
     </v-data-table>
-    <FactorEditDialog :subject="subject" :factor="factor" :state="dialog" />
   </div>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-import FactorEditDialog from '@/modules/factor/FactorEditDialog'
+import { mapState } from 'vuex'
+import FactorListActions from './FactorListActions'
 const defaultHeaders = [
   { text: 'Tên đầu điểm', value: 'title' },
+  { text: 'Tên viết tắt', value: 'data.shortName' },
   { text: 'Hệ số', value: 'multiply' },
-  { text: 'Cột điểm', value: 'quantity' },
-  { text: 'Học kỳ', value: 'semesterType' },
-  { text: 'Hành động', value: 'action' }
+  { text: 'Số điểm tối thiểu trên học sinh', value: 'data.minMark' },
+  { text: 'Số điểm tối đa trên học sinh', value: 'data.maxMark' },
+  { text: 'Thao tác', value: 'action' }
 ]
 export default {
-  components: { FactorEditDialog },
-  props: { subject: Object },
+  components: { FactorListActions },
   data() {
     return {
       headers: defaultHeaders,
@@ -57,27 +49,9 @@ export default {
     }
   },
   computed: {
-    ...mapState('app', ['department']),
     ...mapState('factor', ['factors'])
   },
-  methods: {
-    ...mapActions('factor', ['removeFactor']),
-    updateFactor(factor) {
-      this.factor = factor
-      this.dialog = !this.dialog
-    },
-    onRemove(id) {
-      this.$dialog.confirm({
-        title: 'Xóa phân ban',
-        text: 'Bạn có chắc muốn xóa đầu điểm này?',
-        okText: 'Có',
-        cancelText: 'Không',
-        done: async () => {
-          await this.removeFactor(id)
-        }
-      })
-    }
-  },
+  methods: {},
   filters: {
     getSemester(s) {
       if (!s) return s

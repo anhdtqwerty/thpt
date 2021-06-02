@@ -4,32 +4,37 @@ const defaultFactors = [
   {
     title: 'Miệng',
     index: 0,
-    quantity: 3,
-    multiply: 1
+    quantity: 1,
+    multiply: 1,
+    type: 'oralTest'
   },
   {
     title: 'Thực hành',
     index: 1,
-    quantity: 2,
-    multiply: 1
+    quantity: 1,
+    multiply: 1,
+    type: 'practiceTest'
   },
   {
     title: '15 phút',
     index: 2,
-    quantity: 3,
-    multiply: 1
+    quantity: 1,
+    multiply: 1,
+    type: 'fifteenMinutesTest'
   },
   {
     title: '1 tiết',
     index: 3,
-    quantity: 2,
-    multiply: 2
+    quantity: 1,
+    multiply: 2,
+    type: 'oneHourTest'
   },
   {
     title: 'Học kỳ',
     index: 4,
     quantity: 1,
-    multiply: 3
+    multiply: 3,
+    type: 'semesterExam'
   }
 ]
 
@@ -37,7 +42,8 @@ export default {
   namespaced: true,
   state: {
     subjects: [],
-    subject: {}
+    subject: {},
+    defaultFactors
   },
   actions: {
     async fetchSubjects({ commit }, options) {
@@ -70,10 +76,7 @@ export default {
         const factorPromises = factors.map(async f => Factor.create(f))
         const factorRes = await Promise.all(factorPromises)
         console.log(factors)
-        commit(
-          'createSubject',
-          await Subject.create({ ...data, factors: factorRes.map(f => f.id) })
-        )
+        commit('createSubject', await Subject.create({ ...data, factors: factorRes.map(f => f.id) }))
       } catch (e) {
         alert.error(e)
       }
@@ -117,5 +120,8 @@ export default {
     removeSubject(state, id) {
       state.subjects = state.subjects.filter(subject => subject.id !== id)
     }
+  },
+  getters: {
+    defaultFactors: state => state.defaultFactors
   }
 }

@@ -29,11 +29,11 @@
         <template v-slot:item.grade="{ item }">
           {{ item.grade | getGrade }}
         </template>
-        <template v-slot:item.divisions="{ item }">
-          {{ item.divisions | getDivision }}
-        </template>
         <template v-slot:item.markType="{ item }">
           {{ item.markType | getMarkType }}
+        </template>
+        <template v-slot:item.type="{ item }">
+          {{ item.type | getSubjectType }}
         </template>
       </v-data-table>
     </v-card>
@@ -43,7 +43,6 @@
 <script>
 import { mapActions, mapState } from 'vuex'
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
-import DropMenu from '@/modules/student/menu/Menu.vue'
 import SubjectNewDialog from '@/modules/subject/SubjectNewDialog'
 import SubjectFilter from '@/modules/subject/SubjectFilter.vue'
 import utils from '@/plugins/utils'
@@ -52,7 +51,6 @@ export default {
   components: {
     SubjectNewDialog,
     Breadcrumbs,
-    DropMenu,
     SubjectFilter
   },
   props: {
@@ -63,28 +61,23 @@ export default {
       isLoading: false,
       headers: [
         {
-          text: 'Tên môn',
+          text: 'Tên môn học',
           value: 'title',
           align: 'left',
           sortable: false,
           show: true
         },
+        { text: 'Bộ môn', value: 'subjectGroup.title', show: true },
         { text: 'Nhóm môn học', value: 'type', show: true },
         { text: 'Khối', value: 'grade', show: true },
-        { text: 'Phân ban', value: 'divisions', show: true },
+        { text: 'Phân ban', value: 'division.title', show: true },
         {
           text: 'Hệ số tổng kết',
           value: 'multiply',
           show: true,
           align: 'center'
         },
-        { text: 'Loại đánh giá', value: 'markType', show: true },
-        {
-          text: 'Số tiết/tuần',
-          value: 'data.weeklyLesson',
-          show: true,
-          align: 'center'
-        }
+        { text: 'Đánh giá theo', value: 'markType', show: true }
       ],
       createSubject: false,
       selected: {}
@@ -150,22 +143,12 @@ export default {
     }
   },
   filters: {
-    getDivision(divisions) {
-      if (!divisions || !divisions.length) return ''
-      return divisions.map(d => d.title).join(', ')
-    },
     getGrade(grade) {
       if (!grade) return ''
       return grade.title
     },
-    getMarkType(markType) {
-      if (markType === 'mark') {
-        return 'Điểm số'
-      }
-      if (markType === 'evaluate') {
-        return 'Đánh giá'
-      }
-      return ''
+    getSubjectType(item) {
+      return item === 'coreCurriculum' ? 'Chính khoá' : 'Ngoại khoá'
     }
   }
 }

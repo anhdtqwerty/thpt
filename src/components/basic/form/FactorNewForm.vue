@@ -1,113 +1,92 @@
 <template>
-  <v-form ref="form" flat class="pa-6">
-    <p class="caption">Đầu điểm cho môn: {{ subject.title }}</p>
-    <v-text-field
-      label="Tên đầu điểm *"
-      v-model="title"
-      dense
-      outlined
-      required
-    ></v-text-field>
-    <div class="d-flex">
+  <v-form class="pt-0" flat ref="form">
+    <v-radio-group required v-model="selectedFactorType" :rules="rules" row class="shrink mt-0" mandatory>
+      <v-radio
+        v-for="item in defaultFactors"
+        :key="item.type"
+        :label="item.title"
+        hide-details
+        :value="item.type"
+      ></v-radio>
+    </v-radio-group>
+    <div class="d-flex pt-5">
       <v-text-field
-        class="mr-4"
-        label="Hệ số"
-        v-model="multiply"
+        label="Số điểm tối thiểu trên học sinh"
+        class="required col-md-6 mr-4"
+        :rules="[$rules.required]"
+        v-model="minMark"
         dense
-        type="quantity"
         outlined
         required
+        type="number"
       ></v-text-field>
       <v-text-field
-        label="Số lượng"
-        v-model="quantity"
+        label="Số điểm tối đa trên học sinh"
+        class="required col-md-6"
+        :rules="[$rules.required]"
+        v-model="maxMark"
         dense
-        type="number"
         outlined
         required
+        type="number"
       ></v-text-field>
     </div>
-    <v-select
-      label="Học Kỳ"
-      v-model="semesterType"
-      :items="[
-        { id: 'semester-1', title: 'Học kỳ 1' },
-        { id: 'semester-2', title: 'Học kỳ 2' }
-      ]"
-      item-text="title"
-      item-value="id"
-      dense
-      type="number"
-      outlined
-      required
-    />
-    <v-textarea
-      ref="description"
-      v-model="description"
-      label="Ghi chú"
-      outlined
-      dense
-    ></v-textarea>
   </v-form>
 </template>
 <script>
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
+import { map } from 'lodash'
+
 export default {
   components: {},
+  props: {
+    subject: { type: Object, default: () => {} },
+    state: Boolean
+  },
   data() {
     return {
-      title: '',
-      description: '',
-      multiply: 1,
-      quantity: 3,
-      semesterType: 'semester-1',
-      type: ''
+      minMark: '',
+      maxMark: '',
+      selectedFactorType: '',
+      rules: [
+        value => {
+          return !map(this.factors, 'type').includes(value) || 'Môn học đã tồn tại đầu điểm này'
+        }
+      ]
     }
   },
   computed: {
-    ...mapGetters('app', ['department'])
-  },
-  props: {
-    factor: { type: Object, default: () => {} },
-    subject: { type: Object, default: () => {} },
-    editCode: { type: Boolean, default: false }
+    ...mapState('factor', ['factors']),
+    ...mapGetters('subjects', ['defaultFactors'])
   },
   methods: {
-    reset() {
-      this.$refs.form.reset()
-    },
-    resetValidation() {
-      this.$refs.form.resetValidation()
-    },
     getData() {
       if (this.$refs.form.validate()) {
+        const selectedType = this.defaultFactors.find(m => m.type === this.selectedFactorType)
         return {
-          title: this.title,
-          type: this.type,
-          description: this.description,
-          semesterType: this.semesterType,
-          multiply: this.multiply,
-          quantity: this.quantity
+          title: selectedType.title,
+          type: selectedType.type,
+          quantity: this.maxMark,
+          multiply: selectedType.multiply,
+          data: {
+            shortName: selectedType.name,
+            minMark: this.minMark,
+            maxMark: this.maxMark
+          }
         }
       }
-    },
-    resetDefault() {
-      if (this.factor && this.factor.id) {
-        this.title = this.factor.title
-        this.type = this.factor.type
-        this.multiply = this.factor.multiply
-        this.semesterType = 'semester-1'
-        this.description = this.factor.description
-        this.quantity = this.factor.quantity
-      }
+      return null
     }
   },
-  created() {
-    this.resetDefault()
+  mounted() {
+    this.$refs.form.reset()
   },
+
   watch: {
-    factor() {
-      this.resetDefault()
+    state(state) {
+      if (!state) {
+        this.$refs.form.reset()
+      }
     }
   }
 }

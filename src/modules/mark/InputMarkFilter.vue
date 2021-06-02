@@ -91,7 +91,6 @@ import AutocompleteSubject from '@/components/basic/input/AutocompleteSubject'
 import AutocompleteFactor from '@/components/basic/input/AutocompleteFactor'
 import AutocompleteSemeter from '@/components/basic/input/AutocompleteSemester'
 import DateIOSPicker from '@/components/basic/picker/DateIOSPicker.vue'
-import { Division, Subject } from '@/plugins/api'
 import moment from 'moment'
 import { get } from 'lodash'
 
@@ -115,7 +114,10 @@ export default {
   computed: {
     ...mapState('app', ['currentGeneration', 'currentSemester']),
     filterFactor() {
-      return { subject: get(this.subjectData, 'id'), semesterType: this.semesterData.type }
+      return {
+        subject: get(this.subjectData, 'id'),
+        semesterType: this.semesterData.type
+      }
     },
     filterSubject() {
       return { division: get(this.classData, 'division.id') }
