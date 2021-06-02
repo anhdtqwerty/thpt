@@ -74,8 +74,8 @@ export default {
         const factorSemester2 = JSON.parse(JSON.stringify(factorSemester1))
         factorSemester2.semesterType = 'semester-2'
         factorSemester2.id = data.semester2Id
-        await this.updateFactor({ factor: factorSemester1 })
         await this.updateFactor({ factor: factorSemester2, force: false })
+        await this.updateFactor({ factor: factorSemester1 })
 
         this.$alert.success('Cập nhật đầu điểm thành công')
         this.dialog = false
