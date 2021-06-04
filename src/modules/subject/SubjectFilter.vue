@@ -30,7 +30,7 @@
               dense
               deletable-chips
               hide-details
-              @change="divisionChaged"
+              @change="divisionChanged"
               :filter="divisionFilter"
             />
           </v-col>
@@ -103,7 +103,7 @@ export default {
         id: get(this.subject, 'id')
       })
     },
-    divisionChaged(division) {
+    divisionChanged(division) {
       if (this.subject && !isEmpty(division) && this.subject.division.id !== division) {
         this.subject = null
       }
