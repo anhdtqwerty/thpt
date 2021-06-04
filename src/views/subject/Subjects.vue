@@ -22,7 +22,7 @@
     <SubjectNewDialog :state="createSubject" />
 
     <v-card class="px-md-6 mx-md-4 elevation-1">
-      <v-data-table :headers="headers" :items="subjects" @click:row="onSelected">
+      <v-data-table :headers="headers" :items="subjects" @click:row="onSelected" ref="subjectDataTable">
         <div slot="top" class="py-md-6">
           <SubjectFilter @onFilterChanged="refresh" />
         </div>
@@ -139,7 +139,15 @@ export default {
     },
     exportExcel() {
       const excelHeader = this.headers.map(({ text, value }) => ({ text, value }))
-      utils.exportExcel(this.subjects, excelHeader, 'Subject_List')
+      const subjects = JSON.parse(JSON.stringify(this.subjects))
+      const filters = this.$options.filters
+      const data = subjects.map(item => {
+        item.markType = filters.getMarkType(item.markType)
+        item.type = filters.getSubjectType(item.type)
+        item.grade = filters.getGrade(item.grade)
+        return item
+      })
+      utils.exportExcel(data, excelHeader, 'Subject_List')
     }
   },
   filters: {

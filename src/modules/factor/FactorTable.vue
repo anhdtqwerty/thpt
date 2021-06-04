@@ -12,8 +12,6 @@
       :sort-by="['semesterType', 'index', 'multiply']"
       class="mt-3"
     >
-      <template v-slot:item.status="{ item }"> </template>
-      <template v-slot:item.semesterType="{ item }">{{ item.semesterType | getSemester }}</template>
       <template v-slot:[`item.action`]="{ item }">
         <FactorListActions :factor="item"></FactorListActions>
       </template>
