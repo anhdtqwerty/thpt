@@ -5,8 +5,9 @@
         <v-text-field
           label="Hệ số tổng kết"
           class="required "
-          :rules="[$rules.required]"
+          :rules="[$rules.required, $rules.min(0)]"
           v-model="multiply"
+          min="0"
           dense
           outlined
           required
@@ -18,7 +19,8 @@
         <v-text-field
           label="Số tiết tối thiểu trên tuần"
           class="required pa-0"
-          :rules="[$rules.required]"
+          :rules="[$rules.required, $rules.min(0), $rules.max(maxWeeklyLesson)]"
+          min="0"
           v-model="minWeeklyLesson"
           dense
           outlined
@@ -30,7 +32,8 @@
         <v-text-field
           label="Số tiết tối đa trên tuần"
           class="required  pa-0"
-          :rules="[$rules.required]"
+          :rules="[$rules.required, $rules.min(0), $rules.min(minWeeklyLesson)]"
+          min="0"
           v-model="maxWeeklyLesson"
           dense
           outlined
@@ -94,6 +97,9 @@ export default {
         this.maxWeeklyLesson = data.maxWeeklyLesson
         this.compoundClass = data.compoundClass
       }
+    },
+    resetValidation() {
+      this.$refs.form.resetValidation()
     }
   },
   created() {
@@ -106,7 +112,10 @@ export default {
       } else {
         this.$refs.form.reset()
       }
-    }
+    },
+    maxWeeklyLesson: 'resetValidation',
+    minWeeklyLesson: 'resetValidation',
+    multiply: 'resetValidation'
   }
 }
 </script>

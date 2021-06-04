@@ -37,7 +37,8 @@ export default {
   methods: {
     async fetchAllGrades() {
       this.grades = await Grade.fetch({
-        ...this.filters
+        ...this.filters,
+        _limit: 9999
       })
     },
     async update(data) {},

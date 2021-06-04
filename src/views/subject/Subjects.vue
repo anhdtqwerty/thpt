@@ -107,7 +107,7 @@ export default {
     },
     async refresh(query) {
       console.log(query)
-      this.loading = true
+      this.$loading.active = true
       try {
         await this.fetchSubjects({
           ...query,
@@ -117,7 +117,7 @@ export default {
       } catch (err) {
         console.log(err)
       } finally {
-        this.loading = false
+        this.$loading.active = false
       }
     },
     onSubjectSelected(subject) {

@@ -13,22 +13,24 @@
       <v-text-field
         label="Số điểm tối thiểu trên học sinh"
         class="required col-md-6 mr-4"
-        :rules="[$rules.required]"
+        :rules="[$rules.required, $rules.min(0), $rules.max(maxMark)]"
         v-model="minMark"
         dense
         outlined
         required
         type="number"
+        min="0"
       ></v-text-field>
       <v-text-field
         label="Số điểm tối đa trên học sinh"
         class="required col-md-6"
-        :rules="[$rules.required]"
+        :rules="[$rules.required, $rules.min(0), $rules.min(minMark)]"
         v-model="maxMark"
         dense
         outlined
         required
         type="number"
+        min="0"
       ></v-text-field>
     </div>
   </v-form>
@@ -76,6 +78,9 @@ export default {
         }
       }
       return null
+    },
+    resetValidation() {
+      this.$refs.form.resetValidation()
     }
   },
   mounted() {
@@ -87,7 +92,9 @@ export default {
       if (!state) {
         this.$refs.form.reset()
       }
-    }
+    },
+    minMark: 'resetValidation',
+    maxMark: 'resetValidation'
   }
 }
 </script>

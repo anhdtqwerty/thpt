@@ -30,11 +30,13 @@
               dense
               deletable-chips
               hide-details
+              @change="divisionChanged"
               :filter="divisionFilter"
             />
           </v-col>
           <v-col cols="12" md="4">
             <AutocompleteSubject
+              return-object
               v-model="subject"
               item-text="title"
               clearable
@@ -45,6 +47,7 @@
               dense
               deletable-chips
               hide-details
+              :filter="subjectTitleFilter"
             />
           </v-col>
         </v-row>
@@ -64,7 +67,7 @@ import { mapState } from 'vuex'
 import AutocompleteSubject from '@/components/basic/input/AutocompleteSubject.vue'
 import AutocompleteDivision from '@/components/basic/input/AutocompleteDivision.vue'
 import AutocompleteGrade from '@/components/basic/input/AutocompleteGrade.vue'
-import { get } from 'lodash'
+import { get, isEmpty } from 'lodash'
 
 export default {
   components: {
@@ -73,10 +76,10 @@ export default {
     AutocompleteGrade
   },
   data: () => ({
-    subject: '',
+    subject: null,
     query: '',
     division: '',
-    grade: {},
+    grade: null,
     dialog: true
   }),
   computed: {
@@ -84,26 +87,41 @@ export default {
 
     divisionFilter() {
       return { academicLevel: get(this.grade, 'academicLevel') }
+    },
+    subjectTitleFilter() {
+      return {
+        grade: get(this.grade, 'id'),
+        division: this.division,
+      }
     }
   },
   methods: {
     onFilterChanged() {
       this.$emit('onFilterChanged', {
         grade: get(this.grade, 'id'),
-        division: this.division
+        division: this.division,
+        id: get(this.subject, 'id')
       })
     },
+    divisionChanged(division) {
+      if (this.subject && !isEmpty(division) && this.subject.division.id !== division) {
+        this.subject = null
+      }
+    },
     gradeChanged(grade) {
-      if (get(this.grade, 'academicLevel') !== get(grade, 'academicLevel')) {
-        this.division = null
+      if (grade && this.grade && get(this.grade, 'academicLevel') !== get(grade, 'academicLevel')) {
+        this.division = ''
+      }
+      if (grade && this.subject && get(grade, 'id') !== this.subject.grade.id) {
+        this.subject = null
       }
       this.grade = grade
     },
     reset() {
       this.query = ''
-      this.grade = ''
+      this.grade = null
       this.division = ''
-      this.subject = ''
+      this.subject = null
     }
   }
 }

@@ -49,7 +49,7 @@
       <v-text-field
         label="Tên môn học"
         class="required col-md-6"
-        :rules="[$rules.required]"
+        :rules="[$rules.required, titleRule]"
         v-model="title"
         dense
         outlined
@@ -72,7 +72,7 @@
       <v-text-field
         label="Hệ số tổng kết"
         class="required col-md-6"
-        :rules="[$rules.required]"
+        :rules="[$rules.required, $rules.min(0)]"
         v-model="multiply"
         dense
         outlined
@@ -84,7 +84,8 @@
       <v-text-field
         label="Số tiết tối thiểu trên tuần"
         class="required col-md-6 mr-4"
-        :rules="[$rules.required]"
+        :rules="[$rules.required, $rules.min(0), $rules.max(maxWeeklyLesson)]"
+        min="0"
         v-model="minWeeklyLesson"
         dense
         outlined
@@ -94,7 +95,8 @@
       <v-text-field
         label="Số tiết tối đa trên tuần"
         class="required col-md-6"
-        :rules="[$rules.required]"
+        :rules="[$rules.required, $rules.min(0), $rules.min(minWeeklyLesson)]"
+        min="0"
         v-model="maxWeeklyLesson"
         dense
         outlined
@@ -106,12 +108,13 @@
       <v-col cols="6" class="pa-0">
         <v-text-field
           label="Số tiết trên năm"
-          class="required pl-3 pr-2 mt-2"
-          :rules="[$rules.required]"
+          class="pl-3 pr-2 mt-2"
+          :rules="[$rules.min(0), $rules.min(minWeeklyLesson)]"
+          min="0"
           v-model="weeklyLesson"
           dense
-          outlined
           required
+          outlined
           type="number"
         ></v-text-field>
       </v-col>
@@ -132,7 +135,9 @@ import AutocompleteDivision from '@/components/basic/input/AutocompleteDivision'
 import AutocompleteSubjectGroup from '@/components/basic/input/AutocompleteSubjectGroup'
 import AutocompleteSubjectType from '@/components/basic/input/AutocompleteSubjectType'
 import { textHelpers } from '@/helpers/TextHelper.js'
-import { get } from 'lodash'
+import { get, map } from 'lodash'
+import { mapState } from 'vuex'
+
 const defaultSubjectTypes = [
   { id: 'coreCurriculum', title: 'Chính khoá' },
   { id: 'extraCurriculum', title: 'Ngoại khoá' }
@@ -160,7 +165,10 @@ export default {
       maxWeeklyLesson: '',
       compoundClass: true,
       subjectGroup: '',
-      defaultSubjectTypes: defaultSubjectTypes
+      defaultSubjectTypes: defaultSubjectTypes,
+      titleRule: v => {
+        return !map(this.subjects, 'title').includes(v) || 'Đã có môn học này'
+      }
     }
   },
   methods: {
@@ -190,19 +198,27 @@ export default {
         this.type = null
       }
       this.grade = grade
+    },
+    resetValidation() {
+      this.$refs.form.resetValidation()
     }
   },
   computed: {
     onFilterChanged() {
       return { academicLevel: get(this.grade, 'academicLevel') }
-    }
+    },
+    ...mapState('subjects', ['subjects'])
   },
   watch: {
     state(state) {
       if (!state) {
         this.$refs.form.reset()
       }
-    }
+    },
+    maxWeeklyLesson: 'resetValidation',
+    minWeeklyLesson: 'resetValidation',
+    multiply: 'resetValidation',
+    title: 'resetValidation'
   }
 }
 </script>

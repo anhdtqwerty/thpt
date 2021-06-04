@@ -40,7 +40,8 @@ export default {
     async fetchAllSubjects() {
       this.loading = true
       this.subjects = await Subject.fetch({
-        ...this.filter
+        ...this.filter,
+        _limit: 9999
       })
       this.loading = false
     },
