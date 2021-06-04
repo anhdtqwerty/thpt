@@ -18,7 +18,7 @@
               <v-col cols="2" class="pb-5">
                 <div class="info-title">Ngày sinh</div>
                 <div class="info-content mt-1">
-                  {{ student | ddmmyyyy }}
+                  {{ student.dob | ddmmyyyy }}
                 </div>
               </v-col>
               <v-col cols="2" class="pb-5">
@@ -68,6 +68,7 @@ import { get } from 'lodash'
 import CardStudentName from '@/components/basic/card/CardStudentName.vue'
 import { mask } from 'vue-the-mask'
 import { Post } from '@/plugins/api'
+import utils from '@/plugins/utils'
 
 export default {
   components: { CardStudentName },
@@ -119,11 +120,13 @@ export default {
                 password: this.password
               })
 
+              const content = `Tai khoan dang nhap APP so lien lac dien tu cua hoc sinh ${this.student.name}, Tai khoan: ${this.student.user.username}, mat khau: ${this.password}`
               const post = {
                 student: this.student.id,
                 senderMethod: 'sms',
                 type: 'other',
-                content: `Tai khoan dang nhap APP so lien lac dien tu cua hoc sinh ${this.student.name}, Tai khoan: ${this.student.user.username}, mat khau: ${this.password}`
+                content,
+                keywords: utils.clearUnicode(content)
               }
               await Post.create(post)
 

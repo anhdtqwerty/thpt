@@ -2,46 +2,25 @@
   <v-card class="elevation-1 mt-6">
     <v-data-table
       item-key="id"
-      :options.sync="studentTableOptions"
+      :options.sync="tableOptions"
       :server-items-length="totalItems"
       :headers="headers"
-      :items="students"
+      :items="historiesData"
       :loading="loading"
       :items-per-page="10"
       :footer-props="footerTable"
     >
-      <template v-slot:[`item.name`]="{ item }">
-        <CardStudentName :student="item" link />
-      </template>
-      <template v-slot:[`item.action`]="{ item }">
-        <ContactBookListActions :item="item" />
+      <template v-slot:[`item.time`]="{ item }">
+        <span>{{ item.createdAt | ddmmyyyy }}</span>
       </template>
       <template v-slot:[`item.senderMethod`]="{ item }">
-        <span>{{ item | getNotificationMethod }}</span>
+        <span>{{ item.senderMethod.toUpperCase() }}</span>
       </template>
-      <template v-slot:[`item.phone`]="{ item }">
-        <!-- <span>{{ item | getContactBookPhones }}</span> -->
-        <v-tooltip max-width="250px" bottom>
-          <template v-slot:activator="{ on, attrs }">
-            <div v-bind="attrs" v-on="on" class="d-inline-block text-truncate" style="max-width: 150px;">
-              {{ item | getContactBookPhones }}
-            </div>
-          </template>
-          <span>{{ item | getContactBookPhones }}</span>
-        </v-tooltip>
+      <template v-slot:[`item.postType`]="{ item }">
+        <span>{{ item.postType | getPostType }}</span>
       </template>
-      <template v-slot:[`item.status`]="{ item }">
-        <v-chip :color="item | getContactBookStatusColor" small class="white--text">{{
-          item | getContactBookStatus
-        }}</v-chip>
-      </template>
-      <template v-slot:[`item.classes`]="{ item }">
-        <router-link style="text-decoration: none" :to="'/class/' + (item.currentClass && item.currentClass.id)">
-          <span v-if="item.currentClass">{{ item.currentClass && item.currentClass.title }}</span>
-        </router-link>
-      </template>
-      <template v-slot:[`item.dob`]="{ item }">
-        <span>{{ item | ddmmyyyy }}</span>
+      <template v-slot:[`item.content`]="{ item }">
+        <span>{{ item.content }}</span>
       </template>
     </v-data-table>
   </v-card>
@@ -49,103 +28,78 @@
 
 <script>
 import { mapActions, mapState } from 'vuex'
-import CardStudentName from '@/components/basic/card/CardStudentName.vue'
-import ContactBookListActions from '@/modules/contactBook/ContactBookListActions.vue'
 
 const originHeaders = [
   {
-    text: 'Học sinh',
-    value: 'name',
+    text: 'Ngày',
+    value: 'time',
     align: 'left',
     sortable: false,
     show: true
   },
   {
-    text: 'Ngày sinh',
-    value: 'dob',
-    align: 'left',
-    sortable: false,
-    show: true
-  },
-  { text: 'Lớp', value: 'classes', align: 'left', sortable: false, show: true },
-  {
-    text: 'Hình thức sử dụng',
+    text: 'Hình thức gửi tin',
     value: 'senderMethod',
     align: 'left',
     sortable: false,
     show: true
   },
   {
-    text: 'SĐT đăng ký',
-    value: 'phone',
+    text: 'Dạng tin',
+    value: 'postType',
     align: 'left',
     sortable: false,
     show: true
   },
   {
-    text: 'Trạng thái',
-    value: 'status',
+    text: 'Nội dung',
+    value: 'content',
     align: 'left',
-    sortable: false,
-    show: true
-  },
-  {
-    text: '',
-    value: 'action',
-    align: 'center',
     sortable: false,
     show: true
   }
 ]
 export default {
-  components: {
-    CardStudentName,
-    ContactBookListActions
-  },
+  components: {},
   props: {
-    students: Array,
     loading: Boolean
   },
   data() {
     return {
       headers: originHeaders,
       originHeaders: originHeaders,
-      selectedStudent: {},
-      search: '',
-      configDialog: false,
-      configPasswordDialog: false,
-      studentTableOptions: {}
+      tableOptions: {}
     }
   },
-  async created() {},
+  async created() {
+    await this.refresh({})
+  },
   computed: {
     ...mapState('app', ['department']),
-    ...mapState('students', ['totalItems', 'pageText']),
+    ...mapState('StudentPostHistory', ['totalItems', 'pageText', 'historiesData']),
 
     footerTable() {
       let footer = {
-        'items-per-page-text': 'Học sinh mỗi trang',
+        'items-per-page-text': 'Hiển thị mỗi trang',
         'items-per-page-all-text': 'Tất cả',
         'items-per-page': 10,
         'page-text': this.pageText
       }
       if (this.totalItems > 100) {
-        footer['items-per-page-options'] = [5, 10, 15, 30]
+        footer['items-per-page-options'] = [5, 10, 15]
       }
       return footer
     }
   },
   methods: {
-    ...mapActions('students', [
-      'requestPageSettings',
-      'searchStudents',
-      'updateStudent',
-      'removeStudents',
-      'fetchStudents'
-    ])
+    ...mapActions('StudentPostHistory', ['requestPageSettings', 'searchHistories']),
+
+    async refresh(query) {
+      await this.searchHistories({ ...query })
+    }
   },
   watch: {
-    studentTableOptions: {
+    tableOptions: {
       handler(newOptions, oldOptions) {
         const itemPerPageChanged = newOptions.itemsPerPage !== oldOptions.itemsPerPage
         const pageChanged = newOptions.page !== oldOptions.page
@@ -159,20 +113,7 @@ export default {
       deep: true
     }
   },
-  filters: {
-    getContactBookStatus(item) {
-      if (!item.contactBook || !item.contactBook.status) return 'Chưa cài đặt'
-      if (item.contactBook.status === 'active') return 'Hoạt động'
-      if (item.contactBook.status === 'locked') return 'Đã khóa'
-      return 'Chưa cài đặt'
-    },
-    getContactBookStatusColor(item) {
-      if (!item.contactBook || !item.contactBook.status) return 'cancel'
-      if (item.contactBook.status === 'active') return 'success'
-      if (item.contactBook.status === 'locked') return 'error'
-      return 'cancel'
-    }
-  }
+  filters: {}
 }
 </script>
 <style scoped>

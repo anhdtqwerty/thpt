@@ -89,12 +89,14 @@ export const vueFilterRegister = () => {
         return 'Khen thưởng kỷ luật'
       case 'notification':
         return 'Thông báo'
-      case 'tuition':
+      case 'tuitionFee':
         return 'Học phí'
       case 'diligence':
         return 'Chuyên cần'
       case 'schedule':
         return 'Thời khóa biểu'
+      case 'onlineStudy':
+        return 'Học tập online'
       case 'other':
         return 'Khác'
       default:

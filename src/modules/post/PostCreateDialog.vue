@@ -80,16 +80,6 @@ export default {
       content: '',
       postType: 'notification',
       senderMethod: 'auto',
-      postTypes: [
-        { type: 'notification', title: 'Thông báo' },
-        { type: 'violation', title: 'KTKL' },
-        { type: 'mark', title: 'Sổ điểm' },
-        { type: 'tuitionFee', title: 'Học phí' },
-        { type: 'diligence', title: 'Chuyên cần' },
-        { type: 'schedule', title: 'Thời khóa biểu' },
-        { type: 'onlineStudy', title: 'Học tập online' },
-        { type: 'other', title: 'Khác' }
-      ],
       senderMethods: [
         { type: 'auto', title: 'Tự đông theo đăng ký' },
         { type: 'app', title: 'App' },
@@ -152,6 +142,8 @@ export default {
   },
   computed: {
     ...mapGetters('auth', ['user', 'profile']),
+    ...mapGetters('constant', ['postTypes']),
+
     postToOverview() {
       const { students, classes, grades, allSchool } = this.postTos || {}
       if (students) return `${students.length} học sinh`
