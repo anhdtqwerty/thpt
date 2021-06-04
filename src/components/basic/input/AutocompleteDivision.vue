@@ -39,7 +39,8 @@ export default {
     async fetchAllDivisions() {
       this.loading = true
       this.divisions = await Division.fetch({
-        ...this.filter
+        ...this.filter,
+        _limit: 9999
       })
       this.loading = false
     },

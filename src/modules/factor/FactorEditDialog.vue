@@ -36,7 +36,7 @@
       <v-divider></v-divider>
       <v-card-actions class="d-flex justify-space-between pa-6">
         <v-btn depressed outlined @click="cancel">Huỷ</v-btn>
-        <v-btn depressed color="primary" :loading="loading" @click="save">Lưu</v-btn>
+        <v-btn depressed color="primary" @click="save">Lưu</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -68,7 +68,7 @@ export default {
       try {
         const data = this.$refs.form.getData()
         if (!data) return
-        this.loading = true
+        this.$loading.active = true
 
         const factorSemester1 = data.factorSemester1
         const factorSemester2 = JSON.parse(JSON.stringify(factorSemester1))
@@ -82,7 +82,7 @@ export default {
       } catch (error) {
         this.$alert.updateError()
       } finally {
-        this.loading = false
+        this.$loading.active = false
       }
     },
     cancel() {

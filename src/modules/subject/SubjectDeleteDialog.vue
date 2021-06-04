@@ -7,7 +7,7 @@
         không thể khôi phục lại
       </v-card-text>
       <v-card-actions class="d-flex justify-space-between pa-6">
-        <v-btn depressed class="red white--text" :loading="loading" @click="onDelete(subject.id)">Xoá</v-btn>
+        <v-btn depressed class="red white--text" @click="onDelete(subject.id)">Xoá</v-btn>
         <v-btn depressed outlined @click="cancel()">Huỷ</v-btn>
       </v-card-actions>
     </v-card>
@@ -32,14 +32,14 @@ export default {
     ...mapActions('subjects', ['removeSubject']),
     async onDelete(id) {
       try {
-        this.loading = true
+        this.$loading.active = true
         await this.removeSubject(id)
         this.$router.back()
         this.dialog = false
       } catch (error) {
         this.$alert.deleteError()
       } finally {
-        this.loading = false
+        this.$loading.active = false
       }
     },
     cancel() {

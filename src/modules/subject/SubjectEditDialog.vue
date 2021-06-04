@@ -13,7 +13,7 @@
       <v-divider />
       <v-card-actions class="d-flex justify-space-between pa-6">
         <v-btn outlined class="gray--text" @click="cancel">HUỶ</v-btn>
-        <v-btn color="primary" :loading="loading" @click="save">LƯU</v-btn>
+        <v-btn color="primary" @click="save">LƯU</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -45,14 +45,14 @@ export default {
       try {
         const data = this.$refs.form.getData()
         if (!data) return
-        this.loading = true
+        this.$loading.active = true
         await this.updateSubject({ id: this.subject.id, ...data })
         this.$alert.success('Cập nhật thành công')
         this.dialog = false
       } catch (error) {
         this.$alert.updateError()
       } finally {
-        this.loading = false
+        this.$loading.active = false
       }
     },
     cancel() {

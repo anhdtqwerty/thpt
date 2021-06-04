@@ -27,7 +27,7 @@
         </v-col>
         <v-col cols="2">
           <p>Số tiết trên tuần</p>
-          <p>Tối thiểu {{ subject.data | maxWeeklyLesson }} / Tối đa {{ subject.data | minWeeklyLesson }}</p>
+          <p>Tối thiểu {{ subject.data | minWeeklyLesson }} / Tối đa {{ subject.data | maxWeeklyLesson }}</p>
         </v-col>
         <v-col cols="1.5">
           <p>Ghép lớp</p>
