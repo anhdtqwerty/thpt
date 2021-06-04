@@ -382,7 +382,7 @@ export default {
       },
       {
         title: 'Học phí',
-        value: 'tuition'
+        value: 'tuitionFee'
       },
       {
         title: 'Chuyên cần',
@@ -391,6 +391,10 @@ export default {
       {
         title: 'Thời khóa biểu',
         value: 'schedule'
+      },
+      {
+        title: 'Học tập online',
+        value: 'onlineStudy'
       },
       {
         title: 'Khác',

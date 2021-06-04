@@ -117,6 +117,7 @@ import { mapActions, mapGetters } from 'vuex'
 import readXlsxFile from 'read-excel-file'
 import { Post, Student, ContactBook, History } from '@/plugins/api'
 import { chunk } from 'lodash'
+import utils from '@/plugins/utils'
 
 const schema = {
   'MS học sinh': {
@@ -290,6 +291,7 @@ export default {
               const params = {
                 staff: this.profile.id,
                 content: student.msgContent,
+                keywords: utils.clearUnicode(student.msgContent),
                 type: 'other',
                 senderMethod: 'sms',
                 config: 'immediately'

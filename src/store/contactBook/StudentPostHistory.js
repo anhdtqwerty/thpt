@@ -1,4 +1,4 @@
-import { History } from '@/plugins/api'
+import { History, Student } from '@/plugins/api'
 import _ from 'lodash'
 import loading from '../../plugins/loading'
 
@@ -9,7 +9,8 @@ export default {
     pageText: '',
     itemsPerPage: 10,
     searchParams: {},
-    totalItems: 0
+    totalItems: 0,
+    student: {}
   },
   actions: {
     async searchHistories({ commit, state, dispatch }, query) {
@@ -28,6 +29,7 @@ export default {
       if (state.searchParams) {
         const searchParams = {
           ...state.searchParams,
+          student: state.student.id,
           _start: (page - 1) * itemsPerPage,
           _limit: itemsPerPage,
           _sort: 'createdAt:DESC'
@@ -64,22 +66,14 @@ export default {
 
       loading.active = false
     },
-    async updateHistory({ commit }, id) {
-      const h = await History.fetchOne(id)
-      commit('updateHistory', h)
+    async fetchStudent({ commit }, studentId) {
+      const student = await Student.fetchOne(studentId)
+      commit('changeState', { student })
     }
   },
   mutations: {
     setPageText(state, pageText) {
       state.pageText = pageText
-    },
-    updateHistory(state, history) {
-      const i = state.historiesData.findIndex(({ id }) => history.id === id)
-      if (i > -1) {
-        state.historiesData = state.historiesData.splice(i, 1, history)
-      } else {
-        state.historiesData.unshift(history)
-      }
     }
   },
   getters: {}
