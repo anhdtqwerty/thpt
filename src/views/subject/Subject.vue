@@ -14,7 +14,7 @@
     <v-card class="pa-4" v-if="subject">
       <v-row>
         <v-col cols="4">
-          <p>môn học</p>
+          <p>Môn học</p>
           <h1>{{ subject.title }}</h1>
         </v-col>
         <v-col cols="1.5">

@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="dialog" width="400px" :fullscreen="$vuetify.breakpoint.smAndDown">
     <v-card>
-      <v-card-title color="red">Xoá đầu điểm này </v-card-title>
+      <v-card-title color="red">Xoá đầu điểm này ?</v-card-title>
       <v-card-text>
         Đầu điểm này sẽ bị xoá khỏi cấu hình điểm của môn và các thông tin về điểm của môn học này sẽ bị thay đổi
       </v-card-text>

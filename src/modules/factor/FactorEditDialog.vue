@@ -19,7 +19,7 @@
           </div>
           <div class="d-flex flex-column mr-10">
             <span>Ban</span>
-            <h3>{{ subject.division && subject.division.tite }}</h3>
+            <h3>{{ subject.division && subject.division.title }}</h3>
           </div>
           <div class="d-flex flex-column mr-10">
             <span>Đánh giá theo</span>
