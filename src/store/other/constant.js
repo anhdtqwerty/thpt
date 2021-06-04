@@ -369,16 +369,16 @@ export default {
     ],
     postTypes: [
       {
+        title: 'Thông báo',
+        value: 'notification'
+      },
+      {
         title: 'Điểm số',
         value: 'mark'
       },
       {
         title: 'Khen thưởng kỷ luật',
         value: 'violation'
-      },
-      {
-        title: 'Thông báo',
-        value: 'notification'
       },
       {
         title: 'Học phí',

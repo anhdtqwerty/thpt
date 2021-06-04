@@ -22,7 +22,7 @@
             Vui lòng kiểm tra thời khóa biểu và danh sách lớp dưới đây trước khi tiến hành thao tác này.
           </p>
         </v-card>
-        <v-card outlined flat class="ma-1 mt-4 pa-4 elevation-1">
+        <v-card outlined flat class="mx-0 my-4 pa-4 elevation-0">
           <div class="d-flex">
             <AutocompleteGrade
               return-object
@@ -46,6 +46,7 @@
               return-object
               required
               dense
+              hide-details
               clearable
               outlined
               :filter="divisionFilter"

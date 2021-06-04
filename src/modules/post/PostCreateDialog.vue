@@ -29,7 +29,7 @@
               <v-col cols="12" sm="9">
                 <v-radio-group v-model="postType" class="ma-0" hide-details>
                   <div class="d-flex flex-wrap">
-                    <v-radio class="mr-4" v-for="p in postTypes" :key="p.type" :label="p.title" :value="p.type" />
+                    <v-radio class="mr-4" v-for="p in postTypes" :key="p.type" :label="p.title" :value="p.value" />
                   </div>
                 </v-radio-group>
               </v-col>

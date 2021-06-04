@@ -2,7 +2,7 @@
   <v-form>
     <v-row>
       <v-col cols="12" xs="12" sm="12" md="10">
-        <v-row>
+        <v-row class="mb-0">
           <v-col md="4">
             <AutocompleteGrade
               v-model="grade"
@@ -51,7 +51,7 @@
     </v-row>
     <v-row>
       <v-col cols="12" xs="12" sm="12" md="10">
-        <v-row>
+        <v-row class="mb-0">
           <v-col md="4">
             <DateIOSPicker
               label="Từ ngày"
@@ -96,7 +96,7 @@
           </v-btn>
           <div
             @click="advanceSearch = true"
-            class="d-none d-md-flex blue--text justify-end mt-2"
+            class="d-none d-md-flex primary--text justify-end mt-2"
             style="white-space: nowrap; cursor: pointer;"
           >
             Chọn tìm kiếm nâng cao
@@ -157,7 +157,7 @@
           </v-btn>
           <div
             @click="advanceSearch = false"
-            class="d-none d-md-flex blue--text justify-end mt-2"
+            class="d-none d-md-flex primary--text justify-end mt-2"
             style="white-space: nowrap; cursor: pointer;"
           >
             Ẩn tìm kiếm nâng cao
