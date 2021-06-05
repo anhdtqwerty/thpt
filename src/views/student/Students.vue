@@ -99,8 +99,8 @@ export default {
       const data = students.map(item => {
         item.status = filters.getStatus(item.status)
         item.currentClass = filters.getCurrentClass(item.currentClass)
-        item.gender = filters.getGender(item.gender)
-        item.dob = filters.formatDate(item.dob)
+        item.gender = filters.gender(item.gender)
+        item.dob = filters.ddmmyyyy(item.dob)
         return item
       })
       utils.exportExcel(data, excelHeader, 'Student_List')

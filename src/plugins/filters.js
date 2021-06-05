@@ -2,6 +2,7 @@ import moment from 'moment'
 import Vue from 'vue'
 
 export const vueFilterRegister = () => {
+  Vue.filter('ordinalNumber', (item, list) => list.indexOf(item) + 1)
   Vue.filter('ddmmyyyy', isoStr => (isoStr ? moment(isoStr).format('DD/MM/YYYY') : ''))
   Vue.filter('ddmmyyyyhhmm', isoStr => (isoStr ? moment(isoStr).format('DD/MM/YYYY HH:mm') : ''))
   Vue.filter('gender', gender => {

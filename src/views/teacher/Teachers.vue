@@ -46,10 +46,10 @@
           <span v-if="item.subject">{{ item.subject | getTeacherSubject }}</span>
         </template>
         <template v-slot:[`item.metadata.dob`]="{ item }">
-          {{ item.metadata.dob | formatDate }}
+          {{ item.metadata.dob | ddmmyyyy }}
         </template>
         <template v-slot:[`item.gender`]="{ item }">
-          {{ item.gender | getGender }}
+          {{ item.gender | gender }}
         </template>
       </v-data-table>
     </v-card>
@@ -177,11 +177,11 @@ export default {
       // map on an array modify the original array => need to clone a new array
       const teacherss = JSON.parse(JSON.stringify(this.teachers))
       const data = teacherss.map(item => {
-        item.gender = filters.getGender(item.gender)
+        item.gender = filters.gender(item.gender)
         if (item.subject) {
           item.subject = filters.getTeacherSubject(item.subject)
         }
-        item.metadata.dob = filters.formatDate(item.metadata.dob)
+        item.metadata.dob = filters.ddmmyyyy(item.metadata.dob)
         item.metadata.type = filters.getTeacherType(item.metadata.type)
         item.status = filters.getStatus(item.status)
         return item
@@ -190,18 +190,8 @@ export default {
     }
   },
   filters: {
-    getGender(gender) {
-      if (gender === 'male') {
-        return 'Nam'
-      } else if (gender === 'female') {
-        return 'Nữ'
-      }
-    },
     getTeacherType(type) {
       return type === 'long-tern' ? 'Dài hạn' : type === 'short-tern' ? 'Ngắn hạn' : ''
-    },
-    formatDate(date) {
-      return moment(date).format('DD/MM/YYYY')
     },
     getStatus(status) {
       return status === 'active' ? 'Đang dạy' : status === 'block' ? 'Không dạy' : ''
