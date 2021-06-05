@@ -68,16 +68,26 @@ export default {
   },
   methods: {
     exportExcel(tableName) {
-      let excelHeader
+      const filters = this.$options.filters
+      let excelHeader, fileName
+      const students = JSON.parse(JSON.stringify(this.students))
+      const data = students.map(item => {
+        item.index = filters.ordinalNumber(item, students)
+        item.status = filters.status(item.status)
+        item.dob = filters.ddmmyyyy(item.dob)
+        item.gender = filters.gender(item.gender)
+        return item
+      })
       switch (tableName) {
         case 'STUDENT_TABLE':
           excelHeader = this.$refs.studentTable.headers.map(({ text, value }) => ({ text, value }))
-          utils.exportExcel(this.students, excelHeader, 'Student_List')
+          fileName = 'Class_Student_List'
           break
         case 'PARENT_TABLE':
           excelHeader = this.$refs.parentDataTable.headers.map(({ text, value }) => ({ text, value }))
-          utils.exportExcel(this.students, excelHeader, 'Parent_List')
+          fileName = 'Parent_List'
       }
+      utils.exportExcel(data, excelHeader, fileName)
     }
   },
   computed: mapGetters('classDetail', ['students'])

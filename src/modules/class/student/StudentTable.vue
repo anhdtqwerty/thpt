@@ -12,7 +12,7 @@
     class="mt-3"
   >
     <template v-slot:[`item.index`]="{ item }">
-      {{ students.indexOf(item) + 1 }}
+      {{ item | ordinalNumber(students) }}
     </template>
     <template v-slot:[`item.status`]="{ item }">
       <v-chip :color="item.status | statusColor" dark>{{ item.status | status }}</v-chip>

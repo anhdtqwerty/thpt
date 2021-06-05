@@ -24,9 +24,9 @@
         <span v-if="item.currentClass">{{ item.currentClass | getCurrentClass }}</span>
       </router-link>
     </template>
-    <template v-slot:[`item.gender`]="{ item }">{{ item.gender | getGender }}</template>
+    <template v-slot:[`item.gender`]="{ item }">{{ item.gender | gender }}</template>
     <template v-slot:[`item.dob`]="{ item }">
-      <span>{{ item.dob | formatDate }}</span>
+      <span>{{ item.dob | ddmmyyyy }}</span>
     </template>
     <template v-slot:[`item.action`]="{ item }">
       <student-list-actions :item="item"></student-list-actions>
@@ -192,12 +192,6 @@ export default {
     },
     getCurrentClass(currentClass) {
       return currentClass == null ? '' : currentClass.title
-    },
-    getGender(gender) {
-      return gender === 'male' ? 'Nam' : gender === 'female' ? 'Nữ' : 'Khác'
-    },
-    formatDate(date) {
-      return moment(date).format('DD/MM/YYYY')
     }
   },
   watch: {
