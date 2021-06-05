@@ -37,7 +37,7 @@
       required
       dense
       class="required"
-      :rules="[$rules.required]"
+      :rules="[$rules.required, titleRule]"
     >
       <span slot="prepend-inner" class="mt-1">{{ gradeText }}</span>
     </v-text-field>
@@ -45,7 +45,7 @@
   </v-form>
 </template>
 <script>
-import { get } from 'lodash'
+import { get, isEmpty } from 'lodash'
 import AutocompleteGrade from '@/components/basic/input/AutocompleteGrade'
 import AutocompleteDivision from '@/components/basic/input/AutocompleteDivision'
 import { textHelpers } from '@/helpers/TextHelper.js'
@@ -70,7 +70,10 @@ export default {
     grade: {},
     division: {},
     title: '',
-    description: ''
+    description: '',
+    titleRule: v => {
+      return isEmpty(v) || !String(textHelpers.removeSpaces(v)).includes(' ') || 'Tên lớp không chứa khoảng trống'
+    }
   }),
   computed: {
     getCourseItems() {
