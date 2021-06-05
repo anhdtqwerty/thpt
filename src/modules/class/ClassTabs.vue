@@ -71,8 +71,8 @@ export default {
       const filters = this.$options.filters
       let excelHeader, fileName
       const students = JSON.parse(JSON.stringify(this.students))
-      const data = students.map(item => {
-        item.index = filters.ordinalNumber(item, students)
+      const data = students.map((item, index) => {
+        item.index = index + 1
         item.status = filters.status(item.status)
         item.dob = filters.ddmmyyyy(item.dob)
         item.gender = filters.gender(item.gender)
