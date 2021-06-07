@@ -125,7 +125,7 @@ export default {
         }
         this.dialog = false
         this.$emit('done')
-        this.$alert.success('Gửi tin nhắn thành công')
+        this.$alert.success('Đã gửi tin nhắn, xem chi tiết tại màn hình lịch sử gửi tin')
         this.reset()
       } catch (error) {
       } finally {

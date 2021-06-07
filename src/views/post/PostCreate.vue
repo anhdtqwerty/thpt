@@ -2,19 +2,11 @@
   <div>
     <div class="pa-4 d-flex justify-space-between align-center">
       <div>
-        <Breadcrumbs
-          headline="Gửi tin nhắn"
-          :link="[{ text: 'Gửi tin nhắn', href: '../post-send' }]"
-        />
+        <Breadcrumbs headline="Gửi tin nhắn" :link="[{ text: 'Gửi tin nhắn', href: '../post-send' }]" />
       </div>
       <v-spacer></v-spacer>
-      <v-btn
-        class="elevation-0"
-        color="primary"
-        @click="sendExcelDialog = !sendExcelDialog"
-      >
-        <v-icon>mdi-file-excel</v-icon
-        ><span class="ml-1">Gửi theo File Excel</span>
+      <v-btn class="elevation-0" color="primary" @click="sendExcelDialog = !sendExcelDialog">
+        <v-icon>mdi-file-excel</v-icon><span class="ml-1">Gửi theo File Excel</span>
       </v-btn>
     </div>
     <v-card class="px-md-6 mx-md-4 elevation-1">
@@ -61,24 +53,23 @@ export default {
     Breadcrumbs,
     AllSchoolPostCreate,
     GradePostCreate,
-    ClassPostCreate,
+    ClassPostCreate
   },
   data() {
     return {
       tab: 0,
       sendDialog: false,
       sendExcelDialog: false,
-      postTos: {},
+      postTos: {}
     }
   },
   methods: {
     sendPost({ students, classes, grades, allSchool }) {
       this.postTos = { students, classes, grades, allSchool }
       this.sendDialog = !this.sendDialog
-    },
-  },
+    }
+  }
 }
 </script>
 
-<style lang='scss' scoped>
-</style>
+<style lang="scss" scoped></style>

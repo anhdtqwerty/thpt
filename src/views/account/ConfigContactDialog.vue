@@ -268,6 +268,11 @@ export default {
         this.isApp = student.contactBook.isApp
         const phones = student.contactBook.phones.split(',')
         this.phones = phones.map(p => p.trim())
+      } else {
+        this.phoneNum = 0
+        this.isSms = true
+        this.isApp = false
+        this.phones = []
       }
     }
   }
