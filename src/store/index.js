@@ -70,6 +70,7 @@ import ContactBook from './contactBook/ContactBook'
 import SmsHistory from './smsHistory/SmsHistory'
 import AppHistory from './appHistory/AppHistory'
 import StudentPostHistory from './contactBook/StudentPostHistory'
+import Generation from '@/store/generation/Generation.js'
 
 Vue.use(Vuex)
 
@@ -126,7 +127,8 @@ export default createStore(Vuex.Store, {
     ContactBook,
     SmsHistory,
     AppHistory,
-    StudentPostHistory
+    StudentPostHistory,
+    Generation
   },
   mixins: {
     mutations: {
