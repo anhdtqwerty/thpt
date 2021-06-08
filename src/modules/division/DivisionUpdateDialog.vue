@@ -47,7 +47,7 @@ export default {
       dialog: false,
       loading: false,
       title: '',
-      academicLevel: ''
+      academicLevel: {}
     }
   },
   created() {
@@ -63,7 +63,7 @@ export default {
       if (!this.$refs.form.validate()) return
       try {
         this.loading = true
-        await this.updateDivision({ id: this.division.id, title: this.title, academicLevel: this.academicLevel })
+        await this.updateDivision({ id: this.division.id, title: this.title, academicLevel: this.academicLevel.id })
         this.$alert.updateSuccess()
         this.dialog = false
       } catch (error) {
