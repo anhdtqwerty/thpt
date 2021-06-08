@@ -46,7 +46,7 @@ export default {
     return {
       dialog: false,
       loading: false,
-      academicLevel: '',
+      academicLevel: {},
       title: ''
     }
   },
@@ -57,7 +57,7 @@ export default {
       if (!this.$refs.form.validate()) return
       try {
         this.loading = true
-        await this.createSubjectGroup({ title: this.title, academicLevel: this.academicLevel })
+        await this.createSubjectGroup({ title: this.title, academicLevel: this.academicLevel.id })
         this.$alert.addSuccess()
         this.reset()
         this.dialog = false

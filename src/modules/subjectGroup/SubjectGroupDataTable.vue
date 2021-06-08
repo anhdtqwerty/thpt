@@ -9,7 +9,7 @@
       }"
     >
       <template v-slot:[`item.academicLevel`]="{ item }">
-        <span>{{ item.academicLevel | getAcademicLevel }}</span>
+        <span>{{ item.academicLevel.type | getAcademicLevel }}</span>
       </template>
       <template v-slot:[`item.actions`]="{ item }">
         <SubjectGroupListAction v-if="!(item.config && item.config.default)" :selected="item" />

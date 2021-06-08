@@ -86,12 +86,12 @@ export default {
     ...mapState('constant', ['subjectsStatus']),
 
     divisionFilter() {
-      return { academicLevel: get(this.grade, 'academicLevel') }
+      return { academicLevel: get(this.grade, 'academicLevel.id') }
     },
     subjectTitleFilter() {
       return {
         grade: get(this.grade, 'id'),
-        division: this.division,
+        division: this.division
       }
     }
   },
@@ -109,7 +109,7 @@ export default {
       }
     },
     gradeChanged(grade) {
-      if (grade && this.grade && get(this.grade, 'academicLevel') !== get(grade, 'academicLevel')) {
+      if (grade && this.grade && get(this.grade, 'academicLevel.id') !== get(grade, 'academicLevel.id')) {
         this.division = ''
       }
       if (grade && this.subject && get(grade, 'id') !== this.subject.grade.id) {

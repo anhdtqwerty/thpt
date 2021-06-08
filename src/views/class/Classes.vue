@@ -9,9 +9,9 @@
           <v-icon left>mdi-file-excel</v-icon> Xuất Excel
         </v-btn>
         <v-btn color="primary" @click="dialog = !dialog"><v-icon left>add</v-icon>{{ addButtonText }}</v-btn>
-        <v-btn v-if="selected.length" dark color="amber" @click="sendState = !sendState" class="mx-2">
+        <!-- <v-btn v-if="selected.length" dark color="amber" @click="sendState = !sendState" class="mx-2">
           <v-icon left>mdi-message-processing</v-icon>Gửi SMS
-        </v-btn>
+        </v-btn> -->
         <v-btn v-if="selected.length" color="green" @click="onUpdate('running')" dark class="mr-2"
           ><v-icon left>mdi-lock-open</v-icon>Mở</v-btn
         >
@@ -31,7 +31,7 @@
     </v-card>
 
     <new-class-dialog :state="dialog" @done="requestPageSettings({})" style="margin: 0 20px"></new-class-dialog>
-    <classes-send-s-m-s-dialog :data="selected" :state="sendState"></classes-send-s-m-s-dialog>
+    <!-- <classes-send-s-m-s-dialog :data="selected" :state="sendState"></classes-send-s-m-s-dialog> -->
   </div>
 </template>
 
@@ -41,7 +41,7 @@ import { mapActions, mapState, mapGetters } from 'vuex'
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import NewClassDialog from '@/modules/class/ClassNewDialog'
 import ClassFilter from '@/modules/class/ClassFilter'
-import ClassesSendSMSDialog from '@/modules/sms/ClassesSendSMSDialog'
+// import ClassesSendSMSDialog from '@/modules/sms/ClassesSendSMSDialog'
 import moment from 'moment'
 import { get } from 'lodash'
 import utils from '@/plugins/utils'
@@ -52,7 +52,7 @@ export default {
     ClassFilter,
     NewClassDialog,
     Breadcrumbs,
-    ClassesSendSMSDialog,
+    // ClassesSendSMSDialog,
     ClassesDataTable
   },
   props: {

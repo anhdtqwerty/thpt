@@ -97,13 +97,13 @@ export default {
     ...mapState('postCreate', ['classes']),
 
     divisionFilter() {
-      return { academicLevel: get(this.grade, 'academicLevel') }
+      return { academicLevel: get(this.grade, 'academicLevel.id') }
     }
   },
   methods: {
     ...mapActions('postCreate', ['fetchClassData']),
     gradeChanged(grade) {
-      if (get(this.grade, 'academicLevel') !== get(grade, 'academicLevel')) {
+      if (get(this.grade, 'academicLevel.id') !== get(grade, 'academicLevel.id')) {
         this.division = null
       }
       this.grade = grade
