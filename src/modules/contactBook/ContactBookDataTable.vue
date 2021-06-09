@@ -1,13 +1,14 @@
 <template>
   <v-card class="elevation-1 mt-6">
     <v-data-table
+      v-bind="this.$attrs"
       item-key="id"
       :options.sync="studentTableOptions"
       :server-items-length="totalItems"
       :headers="headers"
       :items="students"
-      :loading="loading"
       :items-per-page="10"
+      @input="$emit('update:selected', $event)"
       :footer-props="footerTable"
     >
       <template v-slot:[`item.name`]="{ item }">
@@ -20,7 +21,6 @@
         <span>{{ item | getNotificationMethod }}</span>
       </template>
       <template v-slot:[`item.phone`]="{ item }">
-        <!-- <span>{{ item | getContactBookPhones }}</span> -->
         <v-tooltip max-width="250px" bottom>
           <template v-slot:activator="{ on, attrs }">
             <div v-bind="attrs" v-on="on" class="d-inline-block text-truncate" style="max-width: 150px;">
@@ -103,24 +103,28 @@ export default {
     ContactBookListActions
   },
   props: {
-    students: Array,
-    loading: Boolean
+    propHeaders: {
+      type: Array,
+      default: () => []
+    }
   },
   data() {
     return {
-      headers: originHeaders,
-      originHeaders: originHeaders,
+      headers: this.propHeaders.length ? this.propHeaders : originHeaders,
       selectedStudent: {},
       search: '',
       configDialog: false,
       configPasswordDialog: false,
-      studentTableOptions: {}
+      studentTableOptions: {},
+      selected: []
     }
   },
-  async created() {},
+  async created() {
+    await this.refresh({ _sort: 'contactBook.createdAt:desc' })
+  },
   computed: {
     ...mapState('app', ['department']),
-    ...mapState('students', ['totalItems', 'pageText']),
+    ...mapState('students', ['students', 'totalItems', 'pageText']),
 
     footerTable() {
       let footer = {
@@ -142,7 +146,11 @@ export default {
       'updateStudent',
       'removeStudents',
       'fetchStudents'
-    ])
+    ]),
+
+    async refresh(query) {
+      await this.searchStudents({ department: this.department.id, ...query })
+    }
   },
   watch: {
     studentTableOptions: {

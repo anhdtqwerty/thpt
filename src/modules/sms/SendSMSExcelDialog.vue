@@ -330,7 +330,7 @@ export default {
           this.cancel()
         }
       } catch (error) {
-        this.$alert.error('Gửi tin nhắn thất bại!')
+        this.$alert.error('Gửi tin nhắn thất bại!, Lỗi: ', error)
       } finally {
         this.$loading.active = false
       }

@@ -1,27 +1,28 @@
 <template>
   <div>
     <div>
-      <v-card flat class='ma-1 mt-4 pa-4 elevation-1'>
-        <div class='d-flex'>
+      <v-card flat class="ma-1 mt-4 pa-4 elevation-1">
+        <div class="d-flex">
           <AutocompleteGrade
-            class='mr-2 flex-grow-1'
-            v-model='grade'
-            clear-icon='mdi-close'
-            item-text='title'
-            item-value='id'
-            label='Khối'
+            class="mr-2 flex-grow-1"
+            v-model="grade"
+            clear-icon="mdi-close"
+            item-text="title"
+            item-value="id"
+            label="Khối"
             clearable
             flat
             outlined
             dense
-            hide-details />
+            hide-details
+          />
           <AutocompleteClass
-            class='mr-2 flex-grow-1'
-            :filter='classFilter'
-            v-model='selectedClass'
-            clear-icon='mdi-close'
-            placeholder='Lớp'
-            label='Lớp'
+            class="mr-2 flex-grow-1"
+            :filter="classFilter"
+            v-model="selectedClass"
+            clear-icon="mdi-close"
+            placeholder="Lớp"
+            label="Lớp"
             clearable
             flat
             outlined
@@ -29,27 +30,29 @@
             hide-details
           />
           <v-text-field
-            class='mr-2 flex-grow-1'
-            v-model='studentName'
-            clear-icon='mdi-close'
-            label='Học sinh'
+            class="mr-2 flex-grow-1"
+            v-model="studentName"
+            clear-icon="mdi-close"
+            label="Học sinh"
             flat
             outlined
             dense
             clearable
             hide-details
           />
-          <v-btn color='primary' outlined @click='search'>Tìm kiếm</v-btn>
+          <v-btn color="primary" outlined @click="search">Tìm kiếm</v-btn>
         </div>
       </v-card>
-      <div class='d-flex justify-space-between ps-4 py-2'>
-          <span :class="selecteds.length ? 'text--primary' : 'text--disabled'">
-            {{ selecteds.length ? 'Đã chọn ' + selecteds.length + ' học sinh' : 'Chưa chọn' }}
-          </span>
-        <v-btn small color='primary' :disabled='!selecteds.length' @click="$emit('sendPost', { students: selecteds})">Gửi tin nhắn</v-btn>
+      <div class="d-flex justify-space-between ps-4 py-2">
+        <span :class="selecteds.length ? 'text--primary' : 'text--disabled'">
+          {{ selecteds.length ? 'Đã chọn ' + selecteds.length + ' học sinh' : 'Chưa chọn' }}
+        </span>
+        <v-btn small color="primary" :disabled="!selecteds.length" @click="$emit('sendPost', { students: selecteds })"
+          >Gửi tin nhắn</v-btn
+        >
       </div>
     </div>
-    <student-data-table showSelect ref='studentDataTable' :selected.sync='selecteds' />
+    <ContactBookDataTable showSelect ref="studentDataTable" :propHeaders="headers" :selected.sync="selecteds" />
   </div>
 </template>
 
@@ -58,10 +61,10 @@ import { mapActions, mapState } from 'vuex'
 import AutocompleteGrade from '@/components/basic/input/AutocompleteGrade'
 import AutocompleteClass from '@/components/basic/input/AutocompleteClass'
 import utils from '@/plugins/utils'
-import StudentDataTable from '@/modules/student/StudentDataTable'
+import ContactBookDataTable from '@/modules/contactBook/ContactBookDataTable.vue'
 
 export default {
-  components: { AutocompleteClass, AutocompleteGrade, StudentDataTable },
+  components: { AutocompleteClass, AutocompleteGrade, ContactBookDataTable },
   data() {
     return {
       selecteds: [],
@@ -69,9 +72,35 @@ export default {
       selectedClass: null,
       studentName: null,
       headers: [
-        { text: 'Nhóm nhận tin', value: 'title' },
-        // { text: 'Số lớp', value: 'classNo' },
-        { text: 'Số học sinh', value: 'studentNo' }
+        {
+          text: 'Học sinh',
+          value: 'name',
+          align: 'left',
+          sortable: false,
+          show: true
+        },
+        {
+          text: 'Ngày sinh',
+          value: 'dob',
+          align: 'left',
+          sortable: false,
+          show: true
+        },
+        { text: 'Lớp', value: 'classes', align: 'left', sortable: false, show: true },
+        {
+          text: 'Hình thức sử dụng',
+          value: 'senderMethod',
+          align: 'left',
+          sortable: false,
+          show: true
+        },
+        {
+          text: 'SĐT đăng ký',
+          value: 'phone',
+          align: 'left',
+          sortable: false,
+          show: true
+        }
       ]
     }
   },
@@ -98,6 +127,4 @@ export default {
 }
 </script>
 
-<style lang='scss' scoped>
-
-</style>
+<style lang="scss" scoped></style>

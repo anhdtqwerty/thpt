@@ -135,7 +135,7 @@ export default {
           if (rootState.auth.user && rootState.auth.user.id === transedUser.id) {
             commit('auth/setUser', transedUser, { root: true })
           }
-          alert.success('User updated!')
+          // alert.success('User updated!')
         })
         .catch(e => alert.error(e))
     },
