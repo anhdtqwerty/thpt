@@ -10,8 +10,8 @@
         </div>
       </router-link>
 
-      <div style="white-space: nowrap" v-else>{{ student.name }}</div>
-      <div style="white-space: nowrap">{{ student.code | getStudentCode }}</div>
+      <div class="black--text" style="white-space: nowrap" v-else>{{ student.name }}</div>
+      <div v-if="isShowCode" style="white-space: nowrap">{{ student.code | getStudentCode }}</div>
     </div>
   </div>
 </template>
@@ -24,7 +24,11 @@ export default {
     prepend: Object,
     append: Object,
     attendance: Object,
-    link: Boolean
+    link: Boolean,
+    isShowCode: {
+      type: Boolean,
+      default: true
+    }
   },
   computed: {
     avatar() {

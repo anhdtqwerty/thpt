@@ -1,18 +1,18 @@
 <template>
   <v-card>
     <div class="d-flex justify-space-between align-center pa-4">
-      <div class="font-weight-bold">Ngày {{currentDate}}</div>
+      <div class="font-weight-bold">Ngày {{ currentDate }}</div>
       <div>
-        <v-btn @click="checkinState=!checkinState" dark color="#0D47A1">
+        <v-btn @click="checkinState = !checkinState" dark color="#0D47A1">
           <v-icon left>add</v-icon>Thêm điểm danh
         </v-btn>
       </div>
     </div>
     <v-divider></v-divider>
-    <attendance-student-filter @onFilterChanged="refresh" class="pa-4" />
+    <AttendanceStudentFilter @onFilterChanged="refresh" class="pa-4" />
     <v-divider></v-divider>
-    <attendance-student-data-table :attendances="attendances" />
-    <attendance-new-dialog :state="checkinState" />
+    <AttendanceStudentDataTable class="mt-4" ref="table" />
+    <AttendanceNewDialog :state="checkinState" />
   </v-card>
 </template>
 
@@ -25,7 +25,7 @@ import AttendanceNewDialog from '@/modules/attendance/AttendanceNewDialog'
 export default {
   data() {
     return {
-      checkinState: false,
+      checkinState: false
     }
   },
   components: {
@@ -34,7 +34,7 @@ export default {
     AttendanceNewDialog
   },
   props: {
-    attendances: Array,
+    attendances: Array
   },
   computed: {
     currentDate() {
@@ -42,12 +42,11 @@ export default {
     }
   },
   methods: {
-    refresh() {
-      this.$emit('refresh')
-    },
-  },
+    refresh(query) {
+      this.$refs.table.refresh(query)
+    }
+  }
 }
 </script>
 
-<style>
-</style>
+<style></style>

@@ -4,10 +4,18 @@
       <v-col cols="12" md="10">
         <v-row>
           <v-col cols="12" md="4">
-            <autocomplete-grade clearable dense outlined label="Khối" hide-details @change="grade = $event" />
+            <AutocompleteGrade clearable dense outlined label="Khối" hide-details @change="grade = $event" />
           </v-col>
           <v-col cols="12" md="4" v-bind="$attrs">
-            <autocomplete-class clearable v-model="classes" dense outlined label="Lớp" hide-details :filter="gradeId" />
+            <AutocompleteClass
+              clearable
+              v-model="classData"
+              dense
+              outlined
+              label="Lớp"
+              hide-details
+              :filter="gradeId"
+            />
           </v-col>
           <v-col cols="12" md="4">
             <v-select
@@ -42,7 +50,7 @@ export default {
   components: { AutocompleteClass, AutocompleteGrade },
   data() {
     return {
-      classes: '',
+      classData: '',
       status: '',
       grade: ''
     }
@@ -56,9 +64,9 @@ export default {
   methods: {
     onFilterChanged() {
       this.$emit('onFilterChanged', {
-        grade: this.grade ? this.grade.id : '',
+        'class.grade': this.grade,
         status: this.status,
-        class: this.classes ? this.classes.id : ''
+        class: this.classData ? this.classData.id : ''
       })
     },
     change(data) {

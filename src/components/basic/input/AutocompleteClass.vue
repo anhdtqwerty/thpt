@@ -45,9 +45,9 @@ export default {
       this.loading = true
       this.classes = await Class.fetch({
         ...this.filter,
-
         department: this.department.id,
-        status: 'running'
+        status: 'running',
+        _sort: 'grade.gradeNumber:ASC'
       })
       if (this.changeClass && this.currentClass) {
         this.classes = this.classes.filter(c => get(c.grade, 'id') === this.currentClass.grade)

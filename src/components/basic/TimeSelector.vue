@@ -19,17 +19,9 @@
         readonly
         prepend-inner-icon="access_time"
         v-on="on"
-        v-on:input="$emit('input', $event)"
-        @change="$emit('change', time)"
       ></v-text-field>
     </template>
-    <v-time-picker
-      v-if="menu"
-      v-model="time"
-      color="#0D47A1"
-      full-width
-      @click:minute="$refs.menu.save(time)"
-    ></v-time-picker>
+    <v-time-picker v-if="menu" v-model="time" color="#0D47A1" full-width @click:minute="saveTime"></v-time-picker>
   </v-menu>
 </template>
 <script>
@@ -37,24 +29,33 @@ export default {
   props: {
     input: String,
     label: String,
+    defaultTime: {
+      type: String,
+      default: '09:00'
+    }
   },
   data: () => ({
-    time: '09:00',
-    menu: false,
+    time: '',
+    menu: false
   }),
   methods: {
     getData() {
       return this.time
     },
+    saveTime() {
+      this.$refs.menu.save(this.time)
+      this.$emit('change', this.time)
+    }
   },
   created() {
-    this.time = this.input || '09:00'
+    this.time = this.input || this.defaultTime
+    this.$emit('change', this.time)
   },
   watch: {
     input(input) {
-      this.time = input || '09:00'
-    },
-  },
+      this.time = input || this.defaultTime
+    }
+  }
 }
 </script>
 

@@ -248,16 +248,16 @@ export default {
     ],
     attendanceStatus: [
       {
-        title: 'Có Mặt',
-        status: 'attendance'
+        title: 'Chưa điểm danh',
+        status: 'absent'
       },
       {
-        title: 'Muộn',
+        title: 'Đi Muộn',
         status: 'late'
       },
       {
-        title: 'Vắng',
-        status: 'absent'
+        title: 'Đúng giờ',
+        status: 'onTime'
       }
     ],
     diligenceStatus: [

@@ -137,7 +137,7 @@ const routes = [
         name: 'attendances',
         component: Attendances,
         meta: {
-          title: 'Attendances',
+          title: 'Chuyên cần',
           auth: true
         }
       },
