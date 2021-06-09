@@ -4,7 +4,7 @@
       <v-card flat class="ma-1 mt-4 pa-4 elevation-1">
         <div class="d-flex">
           <AutocompleteGrade
-            class="mr-2 flex-grow-1"
+            class="mr-2"
             v-model="grade"
             clear-icon="mdi-close"
             item-text="title"
@@ -15,9 +15,10 @@
             outlined
             dense
             hide-details
+            @change="gradeChanged"
           />
           <AutocompleteClass
-            class="mr-2 flex-grow-1"
+            class="mr-2"
             :filter="classFilter"
             v-model="selectedClass"
             clear-icon="mdi-close"
@@ -28,16 +29,18 @@
             outlined
             dense
             hide-details
+            @change="student = null"
           />
-          <v-text-field
-            class="mr-2 flex-grow-1"
-            v-model="studentName"
-            clear-icon="mdi-close"
-            label="Học sinh"
-            flat
-            outlined
-            dense
+          <AutocompleteStudent
+            :syncedValue.sync="student"
             clearable
+            clear-icon="mdi-close"
+            outlined
+            class="mr-2"
+            label="Học sinh"
+            dense
+            deletable-chips
+            :filter="currentClassId"
             hide-details
           />
           <v-btn color="primary" outlined @click="search">Tìm kiếm</v-btn>
@@ -60,13 +63,15 @@
 import { mapActions, mapState } from 'vuex'
 import AutocompleteGrade from '@/components/basic/input/AutocompleteGrade'
 import AutocompleteClass from '@/components/basic/input/AutocompleteClass'
-import utils from '@/plugins/utils'
+import { get } from 'lodash'
 import ContactBookDataTable from '@/modules/contactBook/ContactBookDataTable.vue'
+import AutocompleteStudent from '@/components/basic/input/AutocompleteStudent.vue'
 
 export default {
-  components: { AutocompleteClass, AutocompleteGrade, ContactBookDataTable },
+  components: { AutocompleteClass, AutocompleteGrade, ContactBookDataTable, AutocompleteStudent },
   data() {
     return {
+      student: {},
       selecteds: [],
       grade: null,
       selectedClass: null,
@@ -108,16 +113,24 @@ export default {
     ...mapState('postCreate', ['students']),
     classFilter() {
       return this.grade ? { grade: this.grade } : {}
+    },
+    currentClassId() {
+      return { currentClass: get(this.selectedClass, 'id') }
     }
   },
   methods: {
     ...mapActions('postCreate', ['fetchStudentData']),
+    gradeChanged(grade) {
+      this.selectedClass = null
+      this.student = null
+      this.grade = grade
+    },
     search() {
       const params = {}
       try {
         if (this.grade) params['grade'] = this.grade
-        if (this.selectedClass) params['classes.id'] = this.selectedClass.id
-        if (this.studentName) params['name_contains'] = utils.clearUnicode(this.studentName)
+        if (this.selectedClass) params['currentClass.id'] = this.selectedClass.id
+        if (this.student) params['id'] = this.student.id
         this.$refs.studentDataTable.refresh(params)
       } catch (e) {
         console.error(e)

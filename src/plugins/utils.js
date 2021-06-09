@@ -266,9 +266,8 @@ export default {
     if (nameArr[nameArr.length - 1].length === 1) {
       nameArr = nameArr.splice(-1, 1)
     }
-    const tag1 = nameArr.slice(0, nameArr.length - 1).reduce((pre, cur) => pre + '_' + cur, nameArr[nameArr.length - 1])
-    const tag2 = nameClearedUnicode.replaceAll(' ', '_')
-    return tag1 + '|' + tag2
+    const tag1 = nameArr.slice(0, nameArr.length - 1).reduce((pre, cur) => pre + ' ' + cur, nameArr[nameArr.length - 1])
+    return tag1 + '|' + nameClearedUnicode
   },
   generateUserName(name = '') {
     let nameArr = name.split(' ')
