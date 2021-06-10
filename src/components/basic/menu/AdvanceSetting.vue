@@ -36,6 +36,10 @@
         <v-list-item-action></v-list-item-action>
         <v-list-item-title>Cấu hình thời khóa biểu</v-list-item-title>
       </v-list-item>
+      <v-list-item active-class="blue lighten-4 primary--text" class="px-0" link to="/academics">
+        <v-list-item-action></v-list-item-action>
+        <v-list-item-title>Cấp học</v-list-item-title>
+      </v-list-item>
     </v-list>
   </v-list-group>
 </template>

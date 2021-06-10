@@ -22,13 +22,13 @@
           <v-col cols="4" class="py-2 d-flex flex-column justify-end">
             <p class="text-caption mb-0">Bố / Người giám hộ</p>
             <p class="text-subtitle-2 mb-0">
-              {{ `${this.student.data.dadName} / ${this.student.data.dadPhone}` }}
+              {{ `${this.student.data.dadName || ''} / ${this.student.data.dadPhone || ''}` }}
             </p>
           </v-col>
           <v-col cols="4" class="py-2 d-flex flex-column justify-end">
             <p class="text-caption mb-0">Mẹ / Người giám hộ</p>
             <p class="text-subtitle-2 mb-0">
-              {{ `${this.student.data.momName} / ${this.student.data.momPhone}` }}
+              {{ `${this.student.data.momName || ''} / ${this.student.data.momPhone || ''}` }}
             </p>
           </v-col>
         </v-row>

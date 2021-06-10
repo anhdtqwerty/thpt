@@ -185,18 +185,8 @@ export default {
       let userNameIndex = utils.generateUserName(utils.clearUnicode(name))
       userNameIndex = utils.removeUnicode(userNameIndex).toLowerCase()
 
-      let userNo = 0
       const userMeta = await api.UserMeta.fetch()
-      if (!_.get(userMeta, 'indexUser')) {
-        const users = await api.User.search({
-          _sort: 'username_no:DESC',
-          _limit: 1,
-          type: 'student'
-        })
-        userNo = _.get(_.last(users), 'username_no', 0) + 1
-      } else {
-        userNo = _.get(userMeta, 'indexUser') + 1
-      }
+      const userNo = _.get(userMeta, 'indexUser', 0) + 1
 
       const code = `00000${userNo}`.substr(`00000${userNo}`.length - 5)
       return {

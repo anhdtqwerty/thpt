@@ -71,6 +71,7 @@ import SmsHistory from './smsHistory/SmsHistory'
 import AppHistory from './appHistory/AppHistory'
 import StudentPostHistory from './contactBook/StudentPostHistory'
 import AttendanceDetail from './student/AttendanceDetail'
+import AcademicLevel from './academicLevel/AcademicLevel'
 
 Vue.use(Vuex)
 
@@ -128,7 +129,8 @@ export default createStore(Vuex.Store, {
     SmsHistory,
     AppHistory,
     StudentPostHistory,
-    AttendanceDetail
+    AttendanceDetail,
+    AcademicLevel
   },
   mixins: {
     mutations: {
