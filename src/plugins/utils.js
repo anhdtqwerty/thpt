@@ -217,6 +217,7 @@ export default {
     return str.trim().toLocaleLowerCase()
   },
   clearUnicode(str = '') {
+    str = str || ''
     str = str.replace(/\s\s+/g, ' ').trim()
     str = str.toLowerCase()
     str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, 'a')

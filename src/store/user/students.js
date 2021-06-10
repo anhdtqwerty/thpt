@@ -111,19 +111,11 @@ export default {
       //   console.error(error)
       //   return
       // }
-      try {
-        const student = await api.Student.create({
-          ...userData,
-          code: userData.username
-        })
-
-        alert.success('Tạo học sinh thành công')
-        return student
-      } catch (error) {
-        // user = await api.User.remove(user.id)
-        alert.error('Tạo học sinh thất bại')
-        console.error(error)
-      }
+      const student = await api.Student.create({
+        ...userData,
+        code: userData.username
+      })
+      return student
     },
     async removeStudent({ commit }, student) {
       console.log(student)

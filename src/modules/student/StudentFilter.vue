@@ -147,6 +147,9 @@ export default {
     ],
     classData: ''
   }),
+  props: {
+    defaultFilters: Object
+  },
   computed: {
     ...mapState('constant', ['studentStatus'])
   },
@@ -166,6 +169,13 @@ export default {
         gender: this.gender,
         _sort: 'createdAt:desc'
       })
+    }
+  },
+  watch: {
+    defaultFilters(filters) {
+      if (filters) {
+        this.code = get(filters, 'code')
+      }
     }
   }
 }

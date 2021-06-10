@@ -168,6 +168,7 @@ export default {
     },
     reset() {
       this.$refs.form.reset()
+      this.removeImage()
     },
     resetValidation() {
       this.$refs.form.resetValidation()
