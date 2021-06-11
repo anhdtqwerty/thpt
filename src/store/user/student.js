@@ -19,7 +19,7 @@ export default {
     },
     marks: {
       // courseId: mark
-    },
+    }
   },
   actions: {
     uploadAvatar({ commit }, formData) {
@@ -31,7 +31,7 @@ export default {
         })
         .then(response => {
           commit('setAvatar', response[0])
-          alert.success('Tải ảnh thành công!')
+          // alert.success('Tải ảnh thành công!')
         })
         .catch(e => alert.error('Tải ảnh thất bại'))
     },
@@ -81,9 +81,7 @@ export default {
     },
     async removeStudent({ commit }, student) {
       if (student.user) {
-        await axios
-          .delete(USER_API + student.user.id)
-          .catch(e => alert.error(e))
+        await axios.delete(USER_API + student.user.id).catch(e => alert.error(e))
       }
       await axios
         .delete(STUDENT_API + student.id)
@@ -114,10 +112,7 @@ export default {
       state.avatar = avatar
     },
     setMarks(state, marks) {
-      state.marks = marks.reduce(
-        (acc, cur) => ({ ...acc, [_.get(cur, 'course.id', '')]: cur }),
-        {}
-      )
+      state.marks = marks.reduce((acc, cur) => ({ ...acc, [_.get(cur, 'course.id', '')]: cur }), {})
     },
     setMark(state, mark) {
       state.marks = {
@@ -154,11 +149,8 @@ export default {
       state.majors = majors
     },
     setClasses(state, classes) {
-      state.classes = classes.reduce(
-        (acc, cur) => ({ ...acc, [_.get(cur, 'course.id', '')]: cur }),
-        {}
-      )
-    },
+      state.classes = classes.reduce((acc, cur) => ({ ...acc, [_.get(cur, 'course.id', '')]: cur }), {})
+    }
   },
   getters: {
     logs: state => {

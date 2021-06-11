@@ -24,6 +24,7 @@ import { debounce } from 'lodash'
 import utils from '@/plugins/utils.js'
 import { Student } from '@/plugins/api'
 import CardStudentInfo from '@/components/basic/card/CardStudentInfo.vue'
+import { textHelpers } from '@/helpers/TextHelper'
 
 export default {
   components: {
@@ -79,7 +80,7 @@ export default {
       }
       const data = await api.Student.search({
         ...params,
-        code_contains: utils.removeUnicode(search),
+        tags_contains: textHelpers.removeSpaces(utils.clearUnicode(search)),
         _limit: 5,
         _sort: 'createdAt:DESC'
       })

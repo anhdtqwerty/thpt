@@ -84,7 +84,7 @@ export default {
       return this.grade ? this.grade.courses : []
     },
     divisionFilter() {
-      return { academicLevel: get(this.grade, 'academicLevel') }
+      return { academicLevel: get(this.grade, 'academicLevel.id') }
     },
     gradeText() {
       return textHelpers.getNumber(get(this.grade, 'title', ''))
@@ -92,7 +92,7 @@ export default {
   },
   methods: {
     gradeChanged(grade) {
-      if (get(this.grade, 'academicLevel') !== get(grade, 'academicLevel')) {
+      if (get(this.grade, 'academicLevel.id') !== get(grade, 'academicLevel.id')) {
         this.division = null
       }
       this.grade = grade

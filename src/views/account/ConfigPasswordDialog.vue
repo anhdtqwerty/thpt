@@ -90,6 +90,8 @@ export default {
   },
   computed: {
     ...mapGetters('noti', ['sms']),
+    ...mapGetters('auth', ['profile']),
+
     getPhoneNumArray() {
       return [...Array(this.phoneNum).keys()]
     }
@@ -126,11 +128,14 @@ export default {
                 senderMethod: 'sms',
                 type: 'other',
                 content,
-                keywords: utils.clearUnicode(content)
+                keywords: utils.clearUnicode(content),
+                staff: this.profile.id
               }
               await Post.create(post)
 
-              this.$alert.success('Cài đặt mật khẩu mới thành công')
+              this.$alert.success(
+                'Cài đặt mật khẩu mới thành công, xem chi tiết tin nhắn đã gửi tại màn hình lịch sử gửi tin'
+              )
               this.dialog = false
             } catch (error) {
               this.$alert.error('Cập nhật mật khẩu thất bại')

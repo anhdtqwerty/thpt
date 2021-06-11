@@ -2,6 +2,8 @@ import Vuex from 'vuex'
 import Vue from 'vue'
 import createPersistedState from 'vuex-persistedstate'
 
+import Dashboard from '@/store/dashboard/Dashboard.js'
+
 import classModule from './learning/class'
 import classDetail from './learning/classDetail'
 import category from './other/category'
@@ -71,6 +73,7 @@ import SmsHistory from './smsHistory/SmsHistory'
 import AppHistory from './appHistory/AppHistory'
 import StudentPostHistory from './contactBook/StudentPostHistory'
 import Generation from '@/store/generation/Generation.js'
+import AcademicLevel from './academicLevel/AcademicLevel'
 
 Vue.use(Vuex)
 
@@ -78,11 +81,18 @@ export default createStore(Vuex.Store, {
   plugins: [
     createPersistedState({
       key: 'lms',
-      paths: ['auth.user', 'auth.isAuthenticated', 'auth.jwt', 'app.currentGeneration', 'app.currentSemester']
+      paths: [
+        'auth.user',
+        'auth.isAuthenticated',
+        'auth.jwt',
+        'app.currentGeneration',
+        'app.currentSemester'
+      ]
     }),
     axiosPlugin
   ],
   modules: {
+    Dashboard,
     rest,
     attendance,
     auth,
@@ -128,7 +138,8 @@ export default createStore(Vuex.Store, {
     SmsHistory,
     AppHistory,
     StudentPostHistory,
-    Generation
+    Generation,
+    AcademicLevel
   },
   mixins: {
     mutations: {

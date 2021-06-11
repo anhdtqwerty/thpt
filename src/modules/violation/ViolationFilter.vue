@@ -26,7 +26,7 @@
               clearable
               clear-icon="mdi-close"
               outlined
-              placeholder="Tên học sinh"
+              placeholder="Học sinh"
               dense
               deletable-chips
               :filter="currentClassId"

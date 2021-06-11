@@ -38,7 +38,6 @@ export default {
     async fetchAllGrades() {
       this.grades = await Grade.fetch({
         ...this.filters,
-        // 'academic.status': 'active',
         _sort: 'gradeNumber:ASC',
         _limit: -1
       })

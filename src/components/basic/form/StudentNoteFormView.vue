@@ -7,13 +7,13 @@
         <p>{{ student.notes }}</p>
       </v-col>
       <v-col class="py-0" cols="12" md="6">
-        <v-subheader class="pa-0">Ngày vào đội</v-subheader>
+        <v-subheader style="width: 100%" class="pa-0">Ngày vào đội</v-subheader>
         <p>
           {{ student.data.youngJoinedDate | ddmmyyyy }}
         </p>
       </v-col>
       <v-col class="py-0" cols="12" md="6">
-        <v-subheader class="pa-0">Ngày vào đoàn</v-subheader>
+        <v-subheader style="width: 100%" class="pa-0">Ngày vào đoàn</v-subheader>
         <p>{{ student.data.communistJoinedDate | ddmmyyyy }}</p>
       </v-col>
     </v-row>

@@ -56,6 +56,7 @@ import Subjects from '@/views/subject/Subjects.vue'
 import Subject from '@/views/subject/Subject.vue'
 import Classes from '@/views/class/Classes'
 import TimeTableConfig from '@/views/timetable/TimeTableConfig.vue'
+import Academics from '@/views/academicLevel/Academics.vue'
 // -----------------------Advanced Setting---------------------------------
 import PostCreate from '@/views/post/PostCreate.vue'
 import PostCreateAuto from '@/views/post/PostCreateAuto.vue'
@@ -184,6 +185,15 @@ const routes = [
         name: 'SubjectGroups',
         meta: {
           title: 'Quản lý bộ môn',
+          auth: true
+        }
+      },
+      {
+        path: 'academics',
+        component: Academics,
+        name: 'Academics',
+        meta: {
+          title: 'Quản lý cấp học',
           auth: true
         }
       },

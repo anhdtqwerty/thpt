@@ -115,52 +115,57 @@ export default {
       const studentFamilyForm = this.$refs.studentFamilyForm.getData()
       this.classes.push(studentClassForm.class)
       const overide = this.defaultOveride || {}
-      const student = await this.createStudent({
-        generation: this.currentGeneration.id,
-        department: this.department.id,
-        classes: this.classes,
-        currentClass: studentClassForm.class,
-        grade: studentClassForm.grade,
-        name: studentGeneralForm.name,
-        formatedName: studentGeneralForm.formatedName,
-        tags: studentGeneralForm.tags,
-        username: studentGeneralForm.username,
-        username_indexing: studentGeneralForm.username_indexing,
-        username_no: studentGeneralForm.username_no,
-        password: '123123',
-        status: 'active',
-        address: studentContactForm.currentLive,
-        notes: studentNoteForm.notes,
-        phone: studentContactForm.phone,
-        email: `${studentGeneralForm.username}@ltvhn.edu.vn`,
-        gender: studentGeneralForm.gender,
-        dob: studentGeneralForm.dob,
-        data: {
-          ...studentGeneralForm,
-          ...studentContactForm,
-          ...studentFamilyForm,
-          ...studentNoteForm
-        },
-        ...overide,
-        type: 'student',
-        role: this.roleIdByName('Student')
-      })
+      try {
+        const student = await this.createStudent({
+          generation: this.currentGeneration.id,
+          department: this.department.id,
+          classes: this.classes,
+          currentClass: studentClassForm.class,
+          grade: studentClassForm.grade,
+          name: studentGeneralForm.name,
+          formatedName: studentGeneralForm.formatedName,
+          tags: studentGeneralForm.tags,
+          username: studentGeneralForm.username,
+          username_indexing: studentGeneralForm.username_indexing,
+          username_no: studentGeneralForm.username_no,
+          // password: '123123',
+          status: 'active',
+          address: studentContactForm.currentLive,
+          notes: studentNoteForm.notes,
+          phone: studentContactForm.phone,
+          email: studentContactForm.email,
+          gender: studentGeneralForm.gender,
+          dob: studentGeneralForm.dob,
+          data: {
+            ...studentGeneralForm,
+            ...studentContactForm,
+            ...studentFamilyForm,
+            ...studentNoteForm
+          },
+          ...overide,
+          type: 'student',
+          role: this.roleIdByName('Student')
+        })
 
-      if (studentGeneralForm.avatar) {
-        let formData = new FormData()
-        formData.append('files', studentGeneralForm.avatar)
-        formData.append('refId', student.id)
-        formData.append('ref', 'student')
-        formData.append('field', 'avatar')
-        this.uploadAvatar(formData)
+        if (studentGeneralForm.avatar) {
+          let formData = new FormData()
+          formData.append('files', studentGeneralForm.avatar)
+          formData.append('refId', student.id)
+          formData.append('ref', 'student')
+          formData.append('field', 'avatar')
+          this.uploadAvatar(formData)
+        }
+
+        this.dialog = false
+        this.reset()
+        this.$alert.success('Tạo mới học sinh thành công')
+        // this.$router.push(`/student/${student.id}`)
+        this.$emit('done', student)
+      } catch (error) {
+        this.$alert.addError()
+      } finally {
+        this.$loading.active = false
       }
-
-      this.dialog = false
-      this.reset()
-      // this.$router.push(`/student/${student.id}`)
-      this.$emit('done', student)
-
-      this.$loading.active = false
     },
     cancel() {
       this.dialog = false

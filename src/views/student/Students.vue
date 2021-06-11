@@ -15,14 +15,14 @@
     </div>
 
     <v-card outlined class="py-md-4 px-md-6 mx-md-4 mb-6 elevation-0">
-      <student-filter @onFilterChanged="refresh" />
+      <student-filter :defaultFilters="defaultStudentFilters" @onFilterChanged="refresh" />
     </v-card>
 
     <v-card outlined class="mx-md-4 elevation-0">
       <student-data-table ref="studentDataTable" :selected.sync="selected" />
     </v-card>
 
-    <student-new-dialog :state="createState" @done="requestPageSettings({})" />
+    <student-new-dialog :state="createState" @done="studentAdded" />
     <!-- <student-send-s-m-s-dialog
       :data="selected"
       :state="sendState"
@@ -53,7 +53,8 @@ export default {
     return {
       createState: false,
       sendState: false,
-      selected: []
+      selected: [],
+      defaultStudentFilters: {}
     }
   },
   computed: {
@@ -104,6 +105,11 @@ export default {
         return item
       })
       utils.exportExcel(data, excelHeader, 'Student_List')
+    },
+    async studentAdded(student) {
+      const code = this.$options.filters.getStudentCode(student.code)
+      this.defaultStudentFilters = { code }
+      await this.searchStudents({ code_contains: code })
     }
   }
 }
