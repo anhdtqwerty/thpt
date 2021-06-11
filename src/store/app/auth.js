@@ -22,7 +22,7 @@ export default {
         } else if (user.role.type === 'student') {
           router.push('/student-dashboard')
         } else {
-          router.push('/bill')
+          router.push('/dashboard')
         }
       } catch (error) {
         console.error('signIn', error)
@@ -50,11 +50,7 @@ export default {
       alert.success('Hãy kiểm tra mail của bạn')
     },
     async resetPassword({ commit }, { code, password, passwordConfirmation }) {
-      const { user, jwt } = await api.Auth.resetPassword(
-        code,
-        password,
-        passwordConfirmation
-      )
+      const { user, jwt } = await api.Auth.resetPassword(code, password, passwordConfirmation)
       commit('setUser', { user, jwt })
       if (user.role.type === 'teacher') {
         router.push('/teacher-dashboard')

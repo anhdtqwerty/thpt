@@ -9,7 +9,7 @@
           md="5"
           lg="5"
           xl="5"
-          style="background-color: #0D47A1"
+          style="background-color: white"
           class="hidden-sm-and-down d-flex flex-column justify-end align-center py-16"
           justify="center"
         >
@@ -19,19 +19,13 @@
         </v-col>
 
         <v-col class="white py-8" xs="12" sm="12" md="7" lg="7" xl="7">
-          <div
-            align="start"
-            class="mx-sm-4 px-sm-4 mx-md-10 px-md-10 xs-screen"
-          >
+          <div align="start" class="mx-sm-4 px-sm-4 mx-md-10 px-md-10 xs-screen">
             <v-form ref="form" class="mx-4">
-              <div
-                class="text-h3 text--darken-1 amber--text font-weight-bold text-center py-5"
-              >
+              <div class="text-h3 text--darken-1 amber--text font-weight-bold text-center py-5">
                 Đăng ký
               </div>
               <p class="text-subtitle-1">
-                Chúng tôi đã gửi cho bạn một mã bảo mật. Vui lòng kiểm tra email
-                để xác nhận
+                Chúng tôi đã gửi cho bạn một mã bảo mật. Vui lòng kiểm tra email để xác nhận
               </p>
               <br />
               <p class="text-subtitle-1">Nhập mã bảo mật</p>
@@ -43,16 +37,8 @@
                 type="text"
               />
             </v-form>
-            <v-card-actions
-              class="d-flex flex-column justify-content-center pt-8 pb-16"
-            >
-              <v-btn
-                color="#0D47A1"
-                class="px-12 white--text"
-                x-large
-                @click="submit"
-                >Xác Nhận</v-btn
-              >
+            <v-card-actions class="d-flex flex-column justify-content-center pt-8 pb-16">
+              <v-btn color="#0D47A1" class="px-12 white--text" x-large @click="submit">Xác Nhận</v-btn>
             </v-card-actions>
           </div>
         </v-col>

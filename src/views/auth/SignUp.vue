@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="fill-height pa-xs-0 d-flex align-center container-fluid"
-    style="height:100vh; overflow-x:hidden"
-  >
+  <div class="fill-height pa-xs-0 d-flex align-center container-fluid" style="height:100vh; overflow-x:hidden">
     <span class="auth-background hidden-sm-only hidden-xs-only"></span>
     <v-card class="pa-sm-auto mx-auto pa-xs-0 ma-xs-0" max-width="1024">
       <v-row no-gutters>
@@ -12,7 +9,8 @@
           md="5"
           lg="5"
           xl="5"
-          style="background-color: #0D47A1" class="hidden-sm-and-down d-flex flex-column justify-end align-center py-16"
+          style="background-color: white"
+          class="hidden-sm-and-down d-flex flex-column justify-end align-center py-16"
           justify="center"
         >
           <div class="px-sm-16">
@@ -21,14 +19,9 @@
         </v-col>
 
         <v-col class="white py-8" xs="12" sm="12" md="7" lg="7" xl="7">
-          <div
-            align="start"
-            class="mx-sm-4 px-sm-4 mx-md-10 px-md-10 xs-screen"
-          >
+          <div align="start" class="mx-sm-4 px-sm-4 mx-md-10 px-md-10 xs-screen">
             <v-form ref="form">
-              <div
-                class="text-h3 text--darken-1 amber--text font-weight-bold text-center pb-4"
-              >
+              <div class="text-h3 text--darken-1 amber--text font-weight-bold text-center pb-4">
                 Đăng ký
               </div>
               <v-text-field
@@ -76,15 +69,8 @@
               />
             </v-form>
 
-            <v-card-actions
-              class="d-flex flex-column justify-content-center pt-6"
-            >
-              <v-btn
-                href="/confirm-email"
-                color="#0D47A1"
-                class="px-12 white--text"
-                x-large
-                @click="submit"
+            <v-card-actions class="d-flex flex-column justify-content-center pt-6">
+              <v-btn href="/confirm-email" color="#0D47A1" class="px-12 white--text" x-large @click="submit"
                 >Đăng Ký</v-btn
               >
             </v-card-actions>

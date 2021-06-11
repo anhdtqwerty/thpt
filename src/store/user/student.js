@@ -1,7 +1,7 @@
 import axios from '@/plugins/axios'
 import alert from '@/plugins/alert'
 import _ from 'lodash'
-import { Class, Lead, Student, Log, Mark, Major, Subject } from '@/plugins/api'
+import { Class, Lead, Student, Log, Mark, Major, Subject, History } from '@/plugins/api'
 const STUDENT_API = '/students/'
 const USER_API = '/users/'
 const UPLOAD_API = '/upload/'
@@ -19,7 +19,8 @@ export default {
     },
     marks: {
       // courseId: mark
-    }
+    },
+    notifications: []
   },
   actions: {
     uploadAvatar({ commit }, formData) {
@@ -96,11 +97,15 @@ export default {
     async fetchSubjectMarks({ commit }, student) {
       const division = student.currentClass.division
       if (division) {
-        const subjects = await Subject.fetch({ 'divisions.id': division })
+        const subjects = await Subject.fetch({ division, grade: student.grade.id })
         const marks = await Mark.fetch({ class: student.currentClass.id, student: student.id })
         return { subjects, marks }
       }
       return {}
+    },
+    async fetchNotifications({ commit }, student) {
+      const notifications = await History.fetch({ student: student.id, _limit: 10, _sort: 'createdAt:DESC' })
+      commit('changeState', { notifications })
     }
   },
   mutations: {
@@ -176,6 +181,16 @@ export default {
     },
     getMarkByCourseId: state => courseId => {
       return state.mark[courseId] || {}
+    },
+    notifications: state => {
+      return state.notifications.map(n => {
+        if (n.postToType === 'student') n.to = 'Em ' + n.student.name
+        else if (n.postToType === 'class') n.to = 'Lớp ' + n.class.title
+        else if (n.postToType === 'grade') n.to = n.grade.title
+        else if (n.postToType === 'department') n.to = 'Học sinh toàn trường'
+
+        return n
+      })
     }
   }
 }

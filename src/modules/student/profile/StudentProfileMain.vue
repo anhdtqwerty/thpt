@@ -73,8 +73,12 @@
             <v-icon color="primary">mdi-bell-ring</v-icon>
             <span class="ml-2 text-subtitle-2">Tin nhắn, thông báo gần đây</span>
             <v-spacer></v-spacer>
-            <v-btn color="primary" text>Xem chi tiết</v-btn>
+            <v-btn color="primary" text to="/post-history">Xem thêm</v-btn>
           </v-card-title>
+          <v-divider></v-divider>
+          <v-card-text class="pa-0">
+            <StudentProfileNotifications :student="student" />
+          </v-card-text>
         </v-card>
       </v-col>
       <v-col cols="12">
@@ -95,7 +99,7 @@
 import ViolationDataTable from '@/modules/violation/ViolationDataTable'
 import AttendanceStudentDataTable from '@/modules/attendance/AttendanceStudentDataTable'
 import StudentProfileMarks from '@/modules/student/profile/StudentProfileMarks.vue'
-
+import StudentProfileNotifications from '@/modules/student/profile/StudentProfileNotifications.vue'
 import { mapActions, mapState, mapGetters } from 'vuex'
 
 export default {
@@ -141,7 +145,8 @@ export default {
   components: {
     StudentProfileMarks,
     ViolationDataTable,
-    AttendanceStudentDataTable
+    AttendanceStudentDataTable,
+    StudentProfileNotifications
   },
   props: {
     student: Object

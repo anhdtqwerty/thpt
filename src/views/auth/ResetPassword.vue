@@ -11,7 +11,7 @@
           xl="5"
           class="hidden-sm-and-down d-flex flex-column justify-end align-center py-16"
           justify="center"
-          style="background-color: #0D47A1"
+          style="background-color: white"
         >
           <div class="px-sm-16">
             <v-img width="250px" src="../../assets/logo.svg"></v-img>
@@ -37,23 +37,13 @@
                 :append-icon="checkPassword ? 'mdi-eye' : 'mdi-eye-off'"
                 @click:append="checkPassword = !checkPassword"
                 :type="checkPassword ? 'text' : 'password'"
-                :rules="[
-                  $rules.required,
-                  $rules.minLength(4),
-                  passwordConfirmationRule
-                ]"
+                :rules="[$rules.required, $rules.minLength(4), passwordConfirmationRule]"
                 validate-on-blur
                 @keyup.enter="submit"
               />
             </v-form>
             <div align="center" justify="center" class="pt-4">
-              <v-btn
-                color="#0D47A1"
-                class="px-12 white--text"
-                x-large
-                @click="submit"
-                >Thay đổi</v-btn
-              >
+              <v-btn color="#0D47A1" class="px-12 white--text" x-large @click="submit">Thay đổi</v-btn>
             </div>
           </div>
         </v-col>

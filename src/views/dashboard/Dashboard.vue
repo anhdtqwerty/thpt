@@ -10,10 +10,10 @@
     <v-card class="ma-4" outlined>
       <v-row>
         <v-col cols="6">
-          <v-col cols="12">
+          <v-col class="pl-4" cols="12">
             <h2>{{ currentGeneration.name }}</h2>
           </v-col>
-          <v-col cols="12">
+          <v-col class="pl-4" cols="12">
             {{ currentSemester.title }}
           </v-col>
         </v-col>

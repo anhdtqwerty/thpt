@@ -31,7 +31,7 @@ export default {
     posts: state => {
       return state.posts.map(p => {
         if (p.department) p.postToType = 'Toàn trường'
-        else if (p.grade) p.postToType = `Khối ${p.grade.title}`
+        else if (p.grade) p.postToType = p.grade.title
         else if (p.class) p.postToType = `Lớp ${p.class.title}`
         // else if (p.student) p.postToType = `Học sinh ${p.student.name}`
 

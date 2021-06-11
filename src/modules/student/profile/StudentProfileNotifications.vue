@@ -1,16 +1,19 @@
 <template>
   <v-container>
     <div class="d-flex flex-nowrap container">
-      <v-card outlined v-for="post in posts" :key="post.id" class="mr-4 subject elevation-0">
+      <v-card outlined v-for="notification in notifications" :key="notification.id" class="mr-4 subject elevation-0">
         <v-card-title class="title"
           ><div>
-            <div>{{ post.senderMethod | getSenderMethod }} - {{ post.postToType }}</div>
-            <p class="text-body-2">{{ post.createdAt | ddmmhhmm }}</p>
+            <div>{{ notification.senderMethod | getSenderMethod }} - {{ notification.postType | getPostType }}</div>
+            <div class="text-body-2">{{ notification.createdAt | ddmmhhmm }}</div>
+            <div class="text--secondary text-caption">
+              {{ notification.staff && notification.staff.name }} <v-icon>mdi-menu-right</v-icon> {{ notification.to }}
+            </div>
           </div>
         </v-card-title>
         <v-card-text class="d-flex">
-          <div class="mr-4">
-            <MaxLengthText :text="post.content" />
+          <div class="mr-4 text--primary">
+            <MaxLengthText :text="notification.content" />
           </div>
         </v-card-text>
       </v-card>
@@ -20,6 +23,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import MaxLengthText from '@/components/basic/read-more/MaxLengthText.vue'
+import { get } from 'lodash'
 
 export default {
   components: { MaxLengthText },
@@ -29,16 +33,24 @@ export default {
   data() {
     return {}
   },
-  async created() {
-    await this.fetchNotifications()
-  },
+  async created() {},
   computed: {
-    ...mapGetters('Dashboard', ['posts'])
+    ...mapGetters('student', ['notifications'])
   },
   methods: {
-    ...mapActions('Dashboard', ['fetchNotifications'])
+    ...mapActions('student', ['fetchNotifications']),
+    async fetchData() {
+      if (get(this.student, 'id')) {
+        await this.fetchNotifications(this.student)
+      }
+    }
   },
-  watch: {}
+  watch: {
+    student: {
+      handler: 'fetchData',
+      immediate: true
+    }
+  }
 }
 </script>
 <style scoped lang="scss">
