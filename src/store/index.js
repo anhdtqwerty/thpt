@@ -2,6 +2,8 @@ import Vuex from 'vuex'
 import Vue from 'vue'
 import createPersistedState from 'vuex-persistedstate'
 
+import Dashboard from '@/store/dashboard/Dashboard.js'
+
 import classModule from './learning/class'
 import classDetail from './learning/classDetail'
 import category from './other/category'
@@ -83,6 +85,7 @@ export default createStore(Vuex.Store, {
     axiosPlugin
   ],
   modules: {
+    Dashboard,
     rest,
     attendance,
     auth,
