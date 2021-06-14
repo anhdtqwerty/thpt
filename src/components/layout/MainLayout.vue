@@ -1,16 +1,8 @@
 <template>
   <v-app>
-    <navigation-drawer
-      width="212"
-      class="d-print-none"
-      :drawer="drawer"
-    ></navigation-drawer>
+    <navigation-drawer width="212" class="d-print-none" :drawer="drawer"></navigation-drawer>
     <plugin-confirm-dialog class="d-print-none" />
-    <main-toolbar
-      class="d-print-none"
-      v-if="!simpleLayout"
-      @toggle-drawer="toggleDrawer($event)"
-    />
+    <main-toolbar class="d-print-none" v-if="!simpleLayout" @toggle-drawer="toggleDrawer($event)" />
     <v-main class="d-print-none">
       <plugin-alert />
       <plugin-loading />
@@ -45,26 +37,23 @@ export default {
     PluginAlert,
     PluginLoading,
     Confirm,
-    NavigationDrawer,
+    NavigationDrawer
   },
   data() {
     return {
-      drawer: true,
+      drawer: true
     }
   },
   computed: {
     ...mapGetters('auth', ['user', 'profile', 'isAuthenticated']),
-    ...mapGetters('app', ['users', 'department', 'roles']),
+    ...mapGetters('app', ['department', 'roles']),
     simpleLayout() {
       const { meta = {}, matched = [] } = this.$route
-      return (
-        meta.auth === false ||
-        matched.some((route) => route.meta.auth === false)
-      )
+      return meta.auth === false || matched.some(route => route.meta.auth === false)
     },
     isDesktop() {
       return true
-    },
+    }
   },
   async created() {
     if (this.isAuthenticated) {
@@ -84,23 +73,12 @@ export default {
     }
   },
   methods: {
-    ...mapActions('app', [
-      'fetchRoles',
-      'fetchStaffs',
-      'setDepartment',
-      'fetchDepartment',
-      'setPolicies',
-    ]),
+    ...mapActions('app', ['fetchRoles', 'fetchStaffs', 'setDepartment', 'fetchDepartment', 'setPolicies']),
     ...mapActions('course', ['fetchCourses']),
-    ...mapActions('auth', [
-      'fetchProfile',
-      'fetchTeacher',
-      'fetchStudent',
-      'setRole',
-    ]),
-    toggleDrawer: function (updatedDrawer) {
+    ...mapActions('auth', ['fetchProfile', 'fetchTeacher', 'fetchStudent', 'setRole']),
+    toggleDrawer: function(updatedDrawer) {
       this.drawer = updatedDrawer
-    },
-  },
+    }
+  }
 }
 </script>

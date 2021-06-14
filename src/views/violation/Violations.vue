@@ -17,17 +17,19 @@
         <v-btn color="primary" @click="dialog = !dialog"> <v-icon left>add</v-icon> {{ btnTitle }} </v-btn>
       </div>
     </div>
-    <v-card class="mx-md-4 my-md-4 elevation-1"><violation-filter class="pa-4" @onFilterChanged="refresh" /> </v-card>
+    <v-card class="mx-md-4 my-md-4 elevation-1">
+      <ViolationFilter class="pa-4" @onFilterChanged="refresh" />
+    </v-card>
 
     <v-card class="mx-md-4 elevation-1">
-      <violation-data-table :violations="violations" ref="violationDataTable"> </violation-data-table>
+      <ViolationDataTable ref="violationDataTable" />
     </v-card>
     <violation-new-dialog :state="dialog"> </violation-new-dialog>
   </div>
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapState } from 'vuex'
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import ViolationFilter from '@/modules/violation/ViolationFilter.vue'
 import ViolationNewDialog from '@/modules/violation/ViolationNewDialog.vue'
@@ -59,27 +61,20 @@ export default {
       }
     }
   },
-  async created() {
-    await this.refresh({})
+  created() {},
+  mounted() {
+    let param = {}
+    if (this.$route.query.student) {
+      param.student = this.$route.query.student
+    }
+    this.refresh(param)
   },
   methods: {
-    ...mapActions('violation', ['fetchViolation']),
     updateDraw(draw) {
       this.draw = draw
     },
-    async refresh(query) {
-      this.loading = true
-      try {
-        await this.fetchViolation({
-          ...query,
-          _limit: 9999,
-          _sort: 'createdAt:desc'
-        })
-      } catch (err) {
-        console.log(err)
-      } finally {
-        this.loading = false
-      }
+    refresh(query) {
+      this.$refs.violationDataTable.refresh(query)
     },
     exportExcel() {
       const excelHeader = this.$refs.violationDataTable.originHeaders.map(({ text, value }) => ({ text, value }))

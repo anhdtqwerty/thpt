@@ -45,7 +45,7 @@
         :is="action.options[action.state]"
         :input="policy"
         :role="role || {}"
-        @cancel="action.state='select'"
+        @cancel="action.state = 'select'"
         @save="save"
       />
     </div>
@@ -68,14 +68,14 @@ export default {
     ClassPolicy,
     TeacherPolicy,
     StudentPolicy,
-    StaffPolicy,
+    StaffPolicy
   },
   props: {
     department: {
       type: [Object],
       required: true,
-      default: () => {},
-    },
+      default: () => {}
+    }
   },
   data() {
     return {
@@ -83,7 +83,7 @@ export default {
         StudentSettingImage,
         ClassSettingImage,
         TeacherSettingImage,
-        StaffSettingImage,
+        StaffSettingImage
       },
       action: {
         state: 'select',
@@ -92,12 +92,12 @@ export default {
           studentForm: StudentPolicy,
           classForm: ClassPolicy,
           staffForm: StaffPolicy,
-          teacherForm: TeacherPolicy,
-        },
+          teacherForm: TeacherPolicy
+        }
       },
       policy: {},
       tab: null,
-      description: '',
+      description: ''
     }
   },
   async created() {
@@ -105,8 +105,7 @@ export default {
     this.changeRole(this.roles[0])
   },
   computed: {
-    ...mapGetters('app', ['users']),
-    ...mapGetters('role', ['role', 'roles']),
+    ...mapGetters('role', ['role', 'roles'])
   },
   methods: {
     ...mapActions('role', ['fetchRoles', 'setRole']),
@@ -117,8 +116,8 @@ export default {
         ...this.department,
         policies: {
           ...this.department.policies,
-          ...data,
-        },
+          ...data
+        }
       })
     },
     cancel() {
@@ -132,7 +131,7 @@ export default {
       this.setRole(role)
       this.policy = _.get(this.department, 'policies.' + role.id)
     },
-    onClickCard (nameState) {
+    onClickCard(nameState) {
       switch (nameState) {
         case 'student': {
           this.action.state = 'studentForm'
@@ -149,7 +148,7 @@ export default {
         case 'teacher': {
           this.action.state = 'teacherForm'
           break
-        } 
+        }
         default: {
           this.aciton.state = 'select'
         }
@@ -159,8 +158,8 @@ export default {
   watch: {
     department(department) {
       this.reset()
-    },
-  },
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>

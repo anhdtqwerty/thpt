@@ -1,10 +1,5 @@
 <template>
-  <v-dialog
-    v-model="dialog"
-    width="600px"
-    :fullscreen="$vuetify.breakpoint.smAndDown"
-    scrollable
-  >
+  <v-dialog v-model="dialog" width="600px" :fullscreen="$vuetify.breakpoint.smAndDown" scrollable>
     <v-card>
       <v-card-title class="blue darken-4 white--text"
         ><v-toolbar-title>Sửa KTKL</v-toolbar-title>
@@ -15,23 +10,8 @@
         <violation-edit-form v-bind:violation="violation" ref="form" />
       </v-card-text>
       <v-card-actions class="d-flex justify-end">
-        <v-btn
-          class="blue--text"
-          color="#E3F2FD"
-          dark
-          depressed
-          @click="cancel"
-          >Hủy</v-btn
-        >
-        <v-btn
-          class="mx-2"
-          dark
-          depressed
-          color="#0D47A1"
-          :loading="loading"
-          @click="save()"
-          >Lưu</v-btn
-        >
+        <v-btn class="blue--text" color="#E3F2FD" dark depressed @click="cancel">Hủy</v-btn>
+        <v-btn class="mx-2" dark depressed color="#0D47A1" :loading="loading" @click="save()">Lưu</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -42,24 +22,24 @@ import { mapActions, mapState } from 'vuex'
 
 export default {
   components: {
-    ViolationEditForm,
+    ViolationEditForm
   },
   props: {
     state: Boolean,
-    violation: { type: Object, default: () => {} },
+    violation: { type: Object, default: () => {} }
   },
   data() {
     return {
       dialog: false,
-      loading: false,
+      loading: false
     }
   },
   computed: {
     ...mapState('app', ['roles', 'department']),
-    ...mapState('auth', ['user']),
+    ...mapState('auth', ['user'])
   },
   methods: {
-    ...mapActions('violation', ['updateViolation', 'fetchViolation']),
+    ...mapActions('violation', ['updateViolation']),
     async save() {
       this.loading = true
       const data = this.$refs.form.getData()
@@ -67,7 +47,7 @@ export default {
       await this.updateViolation({
         id: this.violation.id,
         class: this.classData,
-        ...data,
+        ...data
       })
       this.$alert.success('Cập nhật thành công')
       this.loading = false
@@ -76,12 +56,12 @@ export default {
     cancel() {
       this.dialog = false
       this.$refs.form.resetDefault()
-    },
+    }
   },
   watch: {
     state(state) {
       this.dialog = true
-    },
-  },
+    }
+  }
 }
 </script>

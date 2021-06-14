@@ -28,14 +28,7 @@
         class="ma-2"
       ></v-autocomplete>
 
-      <v-btn
-        class="ma-2"
-        dark
-        height="41"
-        color="amber dark-1"
-        depressed
-        @click="onFilterChanged"
-      >
+      <v-btn class="ma-2" dark height="41" color="amber dark-1" depressed @click="onFilterChanged">
         <v-icon class="" left>filter_alt</v-icon>Lọc
       </v-btn>
     </v-row>
@@ -45,10 +38,7 @@
         <v-icon left>filter_alt</v-icon>
       </v-btn>
 
-      <staff-filter-dialog
-        @onFilterChanged="onFilterDialogChanged"
-        :state="filterState"
-      />
+      <staff-filter-dialog @onFilterChanged="onFilterDialogChanged" :state="filterState" />
     </v-row>
   </div>
 </template>
@@ -72,7 +62,7 @@ export default {
     filterState: false
   }),
   computed: {
-    ...mapGetters('app', ['users', 'roles']),
+    ...mapGetters('app', ['roles']),
     roleList() {
       return this.roles.filter(role => {
         return role.type !== 'student' && role.type !== 'public'
@@ -94,11 +84,7 @@ export default {
       this.$emit('onFilterChanged', this.query)
     },
     onFilterDialogChanged(data) {
-      this.query = data.name
-        ? 'name_in=' + data.name + '&'
-        : '' + data.status
-        ? 'status_in=' + data.status
-        : ''
+      this.query = data.name ? 'name_in=' + data.name + '&' : '' + data.status ? 'status_in=' + data.status : ''
       this.$emit('onFilterChanged', this.query)
     }
   }

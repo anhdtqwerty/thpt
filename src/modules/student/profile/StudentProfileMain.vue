@@ -47,7 +47,7 @@
             <v-icon color="primary">mdi-star</v-icon>
             <span class="ml-2 text-subtitle-2">Khen thưởng kỷ luật</span>
             <v-spacer></v-spacer>
-            <v-btn color="primary" text to="/complimented">Xem chi tiết</v-btn>
+            <v-btn color="primary" text :to="`/complimented/?student=${student.id}`">Xem chi tiết</v-btn>
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text class="pa-0">
@@ -63,7 +63,7 @@
                 <span class="text-subtitle">Kỷ luật</span>
               </v-col>
             </v-row>
-            <violation-data-table :hideFooter="true" :headers="violationHeader" :violations="violations" />
+            <ViolationDataTable :hideFooter="true" :headers="violationHeader" ref="violationDataTable" />
           </v-card-text>
         </v-card>
       </v-col>
@@ -106,6 +106,8 @@ export default {
   data() {
     return {
       tab: null,
+      commendCount: 0,
+      violationCount: 0,
       violationHeader: [
         {
           text: 'Ngày',
@@ -154,31 +156,30 @@ export default {
   computed: {
     ...mapState('violation', ['violations']),
     ...mapGetters('attendance', ['attendances']),
-    commendCount() {
-      let count = 0
-      for (let item of this.violations) {
-        if (item.type === 'commendation') {
-          count++
-        }
-      }
-      return count
-    },
-    violationCount() {
-      let count = 0
-      for (let item of this.violations) {
-        if (item.type === 'violation') {
-          count++
-        }
-      }
-      return count
-    }
+    ...mapState('app', ['currentGeneration', 'currentSemester'])
   },
   async created() {
-    await this.fetchViolation({ student: this.student.id })
+    this.commendCount = await this.count({
+      student: this.student.id,
+      type: 'commendation',
+      generation: this.currentGeneration.id
+    })
+    this.violationCount = await this.count({
+      student: this.student.id,
+      type: 'violation',
+      generation: this.currentGeneration.id
+    })
     await this.fetchAttendances({ student: this.student.id })
   },
+  mounted() {
+    this.$refs.violationDataTable.refresh({
+      student: this.student.id,
+      _limit: 10,
+      generation: this.currentGeneration.id
+    })
+  },
   methods: {
-    ...mapActions('violation', ['fetchViolation']),
+    ...mapActions('violation', ['count']),
     ...mapActions('attendance', ['fetchAttendances'])
   }
 }

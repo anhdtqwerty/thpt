@@ -2,10 +2,7 @@
   <v-menu v-model="menu" open-on-hover offset-y>
     <template v-slot:activator="{ on }">
       <v-btn text v-on="on">
-        <v-avatar
-          :class="{ 'mr-4': !isXsScreen, 'mr-n6': isXsScreen }"
-          size="32"
-        >
+        <v-avatar :class="{ 'mr-4': !isXsScreen, 'mr-n6': isXsScreen }" size="32">
           <v-img :src="avatar" />
         </v-avatar>
         <div class="d-none d-sm-flex">
@@ -20,12 +17,8 @@
             <v-img :src="avatar" />
           </v-avatar>
           <v-list-item-content>
-            <v-list-item-title>{{
-              profile.name || 'Default Name'
-            }}</v-list-item-title>
-            <v-list-item-subtitle>{{
-              profile.code || 'Default code'
-            }}</v-list-item-subtitle>
+            <v-list-item-title>{{ profile.name || 'Default Name' }}</v-list-item-title>
+            <v-list-item-subtitle>{{ profile.code || 'Default code' }}</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -46,29 +39,29 @@
 import { mapGetters, mapActions } from 'vuex'
 import _ from 'lodash'
 export default {
-  data () {
+  data() {
     return {
       menu: null
     }
   },
   computed: {
-    ...mapGetters('app', ['users', 'department', 'roles']),
+    ...mapGetters('app', ['department', 'roles']),
     ...mapGetters('auth', ['profile', 'user']),
-    avatar () {
+    avatar() {
       return _.get(this.profile, 'avatar.url', '/default-avatar.png')
     },
-    isXsScreen () {
+    isXsScreen() {
       return this.$vuetify.breakpoint.xs
     }
   },
   methods: {
     ...mapActions('auth', ['forgotPassword']),
-    signOut () {
+    signOut() {
       if (this.$snapshot.validate()) {
         this.$store.dispatch('auth/signOut')
       }
     },
-    async changePassword () {
+    async changePassword() {
       const email = this.user.email
       if (
         email &&
@@ -84,5 +77,4 @@ export default {
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
