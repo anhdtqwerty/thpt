@@ -11,7 +11,7 @@
           xl="5"
           class="hidden-sm-and-down d-flex flex-column justify-end align-center py-16"
           justify="center"
-          style="background-color: white"
+          style="background-color: #0D47A1"
         >
           <div class="px-sm-16">
             <v-img width="250px" src="../../assets/logo.svg"></v-img>

@@ -2,7 +2,7 @@
   <v-main :class="{ 'auth-background': !$vuetify.breakpoint.xs }">
     <v-container class="pa-0" :class="{ 'elevation-1': !$vuetify.breakpoint.xs }" style="max-width:1000px;">
       <v-row>
-        <v-col style="background: white;" cols="12" md="5" class="logo">
+        <v-col style="background: #0D47A1;" cols="12" md="5" class="logo">
           <div class="py-16">
             <v-img width="250px" src="../../assets/logo.svg"></v-img>
           </div>

@@ -1,7 +1,7 @@
 <template>
   <v-app-bar app dense height="64px" class="elevation-2 white" :class="{ blue: isXsScreen, 'darken-4': isXsScreen }">
     <v-app-bar-nav-icon dark class="d-flex d-sm-none" @click.stop="toggleDrawer"></v-app-bar-nav-icon>
-    <v-toolbar-title style="background-color: white" class="pl-0">
+    <v-toolbar-title class="pl-0">
       <v-img class="d-flex d-sm-none " src="../../assets/logo.svg" height="32px" width="132px" contain></v-img>
     </v-toolbar-title>
     <v-spacer></v-spacer>

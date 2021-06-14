@@ -48,7 +48,13 @@
               </v-col>
             </v-row>
             <v-divider class="my-4" />
-            <v-textarea outlined label="Nội dung tin nhắn" v-model="content"></v-textarea>
+            <v-textarea
+              outlined
+              label="Nội dung tin nhắn"
+              v-model="content"
+              class="required mb-0"
+              :rules="[$rules.required]"
+            ></v-textarea>
           </div>
         </v-form>
       </v-card-text>
@@ -89,55 +95,66 @@ export default {
   },
   methods: {
     async create() {
-      try {
-        this.$loading.active = true
+      if (!this.$refs.form.validate()) return
+      this.$dialog.confirm({
+        title: 'Xác nhận gửi tin',
+        text: `Bạn có chắc chắn muốn gửi nội dung trên tới tất cả các sổ liên lạc điện tử đang được chọn ?`,
+        okText: 'Xác nhận',
+        cancelText: 'Hủy',
+        done: async () => {
+          try {
+            this.$loading.active = true
 
-        const params = {
-          staff: this.profile.id,
-          content: this.content,
-          keywords: utils.clearUnicode(this.content),
-          type: this.postType,
-          senderMethod: this.senderMethod,
-          config: 'immediately'
-        }
-        const { students, classes, grades, allSchool } = this.postTos || {}
+            const params = {
+              staff: this.profile.id,
+              content: this.content,
+              keywords: utils.clearUnicode(this.content),
+              type: this.postType,
+              senderMethod: this.senderMethod,
+              config: 'immediately'
+            }
+            const { students, classes, grades, allSchool } = this.postTos || {}
 
-        if (students) {
-          const groups = chunk(students, 5)
-          for (let subStudents of groups) {
-            await Promise.all(subStudents.map(s => ({ ...params, student: s.id })).map(p => Post.create(p)))
-          }
-        } else if (classes) {
-          const groups = chunk(classes, 5)
-          for (let subClasses of groups) {
-            await Promise.all(subClasses.map(c => ({ ...params, class: c.id })).map(p => Post.create(p)))
-          }
-        } else if (grades) {
-          const groups = chunk(grades, 5)
-          for (let subGrades of groups) {
-            await Promise.all(subGrades.map(g => ({ ...params, grade: g.id })).map(p => Post.create(p)))
-          }
-        } else if (allSchool) {
-          const departmentId = get(this.user.department, 'id')
-          if (departmentId) {
-            await Post.create({ ...params, department: departmentId })
+            if (students) {
+              const groups = chunk(students, 5)
+              for (let subStudents of groups) {
+                await Promise.all(subStudents.map(s => ({ ...params, student: s.id })).map(p => Post.create(p)))
+              }
+            } else if (classes) {
+              const groups = chunk(classes, 5)
+              for (let subClasses of groups) {
+                await Promise.all(subClasses.map(c => ({ ...params, class: c.id })).map(p => Post.create(p)))
+              }
+            } else if (grades) {
+              const groups = chunk(grades, 5)
+              for (let subGrades of groups) {
+                await Promise.all(subGrades.map(g => ({ ...params, grade: g.id })).map(p => Post.create(p)))
+              }
+            } else if (allSchool) {
+              const departmentId = get(this.user.department, 'id')
+              if (departmentId) {
+                await Post.create({ ...params, department: departmentId })
+              }
+            }
+            this.dialog = false
+            this.$emit('done')
+            this.$alert.success('Đã gửi tin nhắn, xem chi tiết tại màn hình lịch sử gửi tin')
+            this.reset()
+          } catch (error) {
+          } finally {
+            this.$loading.active = false
           }
         }
-        this.dialog = false
-        this.$emit('done')
-        this.$alert.success('Đã gửi tin nhắn, xem chi tiết tại màn hình lịch sử gửi tin')
-        this.reset()
-      } catch (error) {
-      } finally {
-        this.$loading.active = false
-      }
+      })
     },
     cancel() {
+      this.reset()
       this.dialog = false
       this.$emit('cancel')
     },
     reset() {
       this.content = ''
+      this.$refs.form.resetValidation()
     }
   },
   computed: {

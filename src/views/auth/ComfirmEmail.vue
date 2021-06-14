@@ -9,7 +9,7 @@
           md="5"
           lg="5"
           xl="5"
-          style="background-color: white"
+          style="background-color: #0D47A1"
           class="hidden-sm-and-down d-flex flex-column justify-end align-center py-16"
           justify="center"
         >

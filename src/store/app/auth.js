@@ -28,8 +28,8 @@ export default {
         console.error('signIn', error)
       }
     },
-    signOut() {
-      this.reset()
+    signOut({ commit }) {
+      commit('reset')
       router.push('signIn')
     },
     setRole({ commit }, role) {
@@ -78,6 +78,13 @@ export default {
     },
     setProfile(state, profile) {
       state.profile = _.get(profile, '0', {})
+    },
+    reset(state) {
+      state.user = null
+      state.jwt = null
+      state.profile = {}
+      state.role = {}
+      state.isAuthenticated = false
     }
   },
   getters: {
