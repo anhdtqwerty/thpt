@@ -18,7 +18,7 @@
       </div>
     </div>
     <v-card class="mx-md-4 my-md-4 elevation-1">
-      <ViolationFilter class="pa-4" @onFilterChanged="refresh" />
+      <ViolationFilter class="pa-4" @onFilterChanged="refresh" :defaultStudentId="defaultStudentId" />
     </v-card>
 
     <v-card class="mx-md-4 elevation-1">
@@ -48,11 +48,13 @@ export default {
       createState: false,
       filterState: false,
       dialog: false,
-      sendState: false
+      sendState: false,
+      defaultStudentId: ''
     }
   },
   computed: {
     ...mapState('violation', ['violations']),
+    ...mapState('app', ['currentGeneration', 'currentSemester']),
     btnTitle() {
       if (this.$vuetify.breakpoint.smAndDown) {
         return 'Thêm'
@@ -66,6 +68,8 @@ export default {
     let param = {}
     if (this.$route.query.student) {
       param.student = this.$route.query.student
+      param.generation = this.currentGeneration.id
+      this.defaultStudentId = this.$route.query.student
     }
     this.refresh(param)
   },

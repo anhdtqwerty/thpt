@@ -7,7 +7,9 @@
             <v-icon color="primary">mdi-clipboard-text</v-icon>
             <span class="ml-2 text-subtitle-2">Học tập</span>
             <v-spacer></v-spacer>
-            <v-btn color="primary" text>Xem chi tiết</v-btn>
+            <v-btn class="text-none" color="primary" text :to="`/student-mark/?student=${student.id}`"
+              >Xem chi tiết</v-btn
+            >
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text class="pa-0">
@@ -21,7 +23,7 @@
             <v-icon color="primary">mdi-calendar-account</v-icon>
             <span class="ml-2 text-subtitle-2">Chuyên cần</span>
             <v-spacer></v-spacer>
-            <v-btn color="primary" text>Xem chi tiết</v-btn>
+            <v-btn class="text-none" color="primary" text>Xem chi tiết</v-btn>
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text class="pa-0">
@@ -47,7 +49,9 @@
             <v-icon color="primary">mdi-star</v-icon>
             <span class="ml-2 text-subtitle-2">Khen thưởng kỷ luật</span>
             <v-spacer></v-spacer>
-            <v-btn color="primary" text :to="`/complimented/?student=${student.id}`">Xem chi tiết</v-btn>
+            <v-btn class="text-none" color="primary" text :to="`/complimented/?student=${student.id}`"
+              >Xem chi tiết</v-btn
+            >
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text class="pa-0">
@@ -73,7 +77,7 @@
             <v-icon color="primary">mdi-bell-ring</v-icon>
             <span class="ml-2 text-subtitle-2">Tin nhắn, thông báo gần đây</span>
             <v-spacer></v-spacer>
-            <v-btn color="primary" text to="/post-history">Xem thêm</v-btn>
+            <v-btn class="text-none" color="primary" text to="/post-history">Xem thêm</v-btn>
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text class="pa-0">
@@ -87,7 +91,7 @@
             <v-icon color="primary">mdi-laptop</v-icon>
             <span class="ml-2 text-subtitle-2">Học tập online</span>
             <v-spacer></v-spacer>
-            <v-btn color="primary" text>Xem chi tiết</v-btn>
+            <v-btn class="text-none" color="primary" text>Xem chi tiết</v-btn>
           </v-card-title>
         </v-card>
       </v-col>

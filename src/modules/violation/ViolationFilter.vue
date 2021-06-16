@@ -31,6 +31,8 @@
               deletable-chips
               :filter="currentClassId"
               hide-details
+              item-text="display"
+              item-value="id"
             />
           </v-col>
         </v-row>
@@ -52,6 +54,7 @@ import AutocompleteStudent from '@/components/basic/input/AutocompleteStudent.vu
 import AutocompleteClass from '@/components/basic/input/AutocompleteClass.vue'
 import DateRangeIOSPicker from '@/components/basic/picker/DateRangeIOSPicker.vue'
 import { get } from 'lodash'
+import { Student } from '../../plugins/api'
 
 export default {
   components: {
@@ -69,6 +72,12 @@ export default {
     dateData_lte: '',
     dateRange: []
   }),
+  props: {
+    defaultStudentId: {
+      type: String,
+      default: () => ''
+    }
+  },
   computed: {
     ...mapState('constant', ['classStatus']),
     currentClassId() {
@@ -98,6 +107,15 @@ export default {
       this.classData = ''
       this.student = ''
       this.dateRange = []
+    }
+  },
+  watch: {
+    async defaultStudentId(newValue) {
+      if (newValue) {
+        const student = await Student.fetchOne(newValue)
+        this.student = student
+        this.classData = student.currentClass
+      }
     }
   }
 }

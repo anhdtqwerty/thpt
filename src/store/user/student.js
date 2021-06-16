@@ -94,11 +94,11 @@ export default {
     setStudent({ commit }, student) {
       commit('setStudent', student)
     },
-    async fetchSubjectMarks({ commit }, student) {
+    async fetchSubjectMarks({ commit }, { student, ...params }) {
       const division = student.currentClass.division
       if (division) {
         const subjects = await Subject.fetch({ division, grade: student.grade.id })
-        const marks = await Mark.fetch({ class: student.currentClass.id, student: student.id })
+        const marks = await Mark.fetch({ ...params, class: student.currentClass.id, student: student.id })
         return { subjects, marks }
       }
       return {}
