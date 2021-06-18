@@ -16,7 +16,15 @@ export default {
     },
     async fetchGradeData({ commit }) {
       try {
-        const grades = await Grade.fetch()
+        let grades = await Grade.fetch()
+        const promises = grades.map(async g => {
+          const classNo = await Class.count({ grade: g.id })
+          const studentNo = await Student.count({ grade: g.id })
+          g.classNo = classNo
+          g.studentNo = studentNo
+          return g
+        })
+        grades = await Promise.all(promises)
         commit('changeState', { grades })
       } catch (error) {
         alert.error(error)

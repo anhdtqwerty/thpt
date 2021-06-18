@@ -71,7 +71,7 @@ export default {
       dialog: false,
       senderMethod: 'auto',
       senderMethods: [
-        { type: 'auto', title: 'Tự đông theo đăng ký' },
+        { type: 'auto', title: 'Tự động theo đăng ký' },
         { type: 'app', title: 'App' },
         { type: 'sms', title: 'SMS' }
       ]

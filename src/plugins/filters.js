@@ -5,6 +5,7 @@ export const vueFilterRegister = () => {
   Vue.filter('ordinalNumber', (item, list) => list.indexOf(item) + 1)
   Vue.filter('ddmmyyyy', isoStr => (isoStr ? moment(isoStr).format('DD/MM/YYYY') : ''))
   Vue.filter('ddmmyyyyhhmm', isoStr => (isoStr ? moment(isoStr).format('DD/MM/YYYY HH:mm') : ''))
+  Vue.filter('ddmmhhmm', isoStr => (isoStr ? moment(isoStr).format('DD/MM HH:mm') : '--:--'))
   Vue.filter('gender', gender => {
     if (gender === 'male') return 'Nam'
     else if (gender === 'female') return 'Nữ'
@@ -87,6 +88,12 @@ export const vueFilterRegister = () => {
     if (item.contactBook.isSms && item.contactBook.isApp) return 'APP và SMS'
     if (item.contactBook.isSms) return 'SMS'
     if (item.contactBook.isApp) return 'APP'
+  })
+  Vue.filter('getSenderMethod', senderMethod => {
+    if (!senderMethod) return ''
+    if (senderMethod === 'auto') return 'Tự động'
+    if (senderMethod === 'sms') return 'SMS'
+    if (senderMethod === 'app') return 'APP'
   })
   Vue.filter('getPostType', type => {
     switch (type) {

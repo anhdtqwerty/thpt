@@ -7,23 +7,18 @@
     :temporary="$vuetify.breakpoint.xs"
   >
     <div
-      style="background-color: #0D47A1"
+      style="background-color: white"
       class="d-flex align-center px-6"
       :class="{
         'mobile-drawer-logo': $vuetify.breakpoint.xs,
         'px-7': $vuetify.breakpoint.xs
       }"
     >
-    <div class="d-flex justify-center px-6">
-        <v-img 
-        height="64px"
-        src="../../assets/logo.svg"
-        contain
-        position="center"
-      ></v-img>
+      <div class="d-flex justify-center px-6">
+        <v-img height="64px" src="../../assets/logo-blue.svg" contain position="center"></v-img>
+      </div>
     </div>
-      
-    </div>
+    <v-divider></v-divider>
     <StudentToolbar></StudentToolbar>
     <TeacherToolbar></TeacherToolbar>
     <AdminToolbar></AdminToolbar>

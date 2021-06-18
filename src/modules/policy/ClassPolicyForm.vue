@@ -16,10 +16,7 @@
           v-model="policy['update-class-info']"
           :label="'Cho phép ' + role.description + ' cập nhật thông tin lớp học'"
         ></v-checkbox>
-        <v-checkbox
-          v-model="policy['delete-class']"
-          :label="'Cho phép ' + role.description + ' xóa lớp'"
-        ></v-checkbox>
+        <v-checkbox v-model="policy['delete-class']" :label="'Cho phép ' + role.description + ' xóa lớp'"></v-checkbox>
         <v-checkbox
           v-model="policy['cancel-class']"
           :label="'Cho phép ' + role.description + ' Dừng lớp, Hủy lớp'"
@@ -62,7 +59,7 @@ export default {
       type: [Object]
     }
   },
-  data () {
+  data() {
     return {
       policy: {
         'view-class': false,
@@ -75,27 +72,26 @@ export default {
       }
     }
   },
-  created: async function () {
+  created: async function() {
     this.policy = this.input || this.getDefaultPolicies()
   },
   computed: {
-    ...mapGetters('app', ['users']),
     ...mapGetters('role', ['role', 'roles'])
   },
   methods: {
-    save () {
+    save() {
       this.$emit('save', this.policy)
     },
-    cancel () {
+    cancel() {
       this.$emit('cancel')
     },
-    reset () {
+    reset() {
       this.policy = this.input
     },
-    changeRole (index) {
+    changeRole(index) {
       this.setRole(this.roles[index])
     },
-    getDefaultPolicies () {
+    getDefaultPolicies() {
       return {
         'view-class': false,
         'add-student-to-class': false,
@@ -108,12 +104,11 @@ export default {
     }
   },
   watch: {
-    input (input) {
+    input(input) {
       this.policy = input || this.getDefaultPolicies()
     }
   }
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

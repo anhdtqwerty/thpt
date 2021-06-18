@@ -23,8 +23,7 @@
             <v-form ref="form" class="mx-5">
               <h1 class="mx-2">Quên mật khẩu ?</h1>
               <p class="py-4 mx-2">
-                Nhập địa chỉ email của bạn, chúng tôi sẽ gửi tới bạn liên kết để
-                đặt lại mật khẩu
+                Nhập địa chỉ email của bạn, chúng tôi sẽ gửi tới bạn liên kết để đặt lại mật khẩu
               </p>
               <v-text-field
                 class="py-4 mx-2"
@@ -39,18 +38,10 @@
               />
             </v-form>
             <div align="center" justify="center">
-              <v-btn
-                href="/reset-password"
-                color="#0D47A1"
-                class="px-12 white--text"
-                x-large
-                @click="submit"
+              <v-btn href="/reset-password" color="#0D47A1" class="px-12 white--text" x-large @click="submit"
                 >Tiếp theo</v-btn
               >
-              <router-link
-                :to="'/signin'"
-                class="d-block mt-2 mb-3 text-decoration-none"
-                style="color:#0D47A1"
+              <router-link :to="'/signin'" class="d-block mt-2 mb-3 text-decoration-none" style="color:#0D47A1"
                 >Quay lại đăng nhập</router-link
               >
             </div>

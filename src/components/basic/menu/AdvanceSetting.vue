@@ -7,6 +7,10 @@
       <v-list-item-title>Nâng cao</v-list-item-title>
     </template>
     <v-list class="py-0">
+      <v-list-item active-class="blue lighten-4 primary--text" class="px-0" link to="/generation">
+        <v-list-item-action></v-list-item-action>
+        <v-list-item-title>Năm học</v-list-item-title>
+      </v-list-item>
       <v-list-item active-class="blue lighten-4 primary--text" class="px-0" link to="/subjectGroups">
         <v-list-item-action></v-list-item-action>
         <v-list-item-title>Bộ môn</v-list-item-title>
@@ -35,6 +39,10 @@
       <v-list-item active-class="blue lighten-4 primary--text" class="px-0" link to="/title-table/config">
         <v-list-item-action></v-list-item-action>
         <v-list-item-title>Cấu hình thời khóa biểu</v-list-item-title>
+      </v-list-item>
+      <v-list-item active-class="blue lighten-4 primary--text" class="px-0" link to="/academics">
+        <v-list-item-action></v-list-item-action>
+        <v-list-item-title>Cấp học</v-list-item-title>
       </v-list-item>
     </v-list>
   </v-list-group>

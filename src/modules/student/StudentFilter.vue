@@ -29,7 +29,15 @@
             />
           </v-col>
           <v-col cols="4">
-            <DateIOSPicker label="Ngày sinh" outlined dense hide-details outline :date.sync="dob" @onEnterPress="onFilterChanged"></DateIOSPicker>
+            <DateIOSPicker
+              label="Ngày sinh"
+              outlined
+              dense
+              hide-details
+              outline
+              :date.sync="dob"
+              @onEnterPress="onFilterChanged"
+            ></DateIOSPicker>
           </v-col>
           <v-col cols="4">
             <v-text-field
@@ -116,6 +124,7 @@ import DateIOSPicker from '@/components/basic/picker/DateIOSPicker'
 import AutocompleteClass from '@/components/basic/input/AutocompleteClass'
 import moment from 'moment'
 import { textHelpers } from '@/helpers/TextHelper'
+import utils from '@/plugins/utils'
 
 export default {
   components: {
@@ -138,13 +147,16 @@ export default {
     ],
     classData: ''
   }),
+  props: {
+    defaultFilters: Object
+  },
   computed: {
     ...mapState('constant', ['studentStatus'])
   },
   methods: {
     onFilterChanged() {
       this.$emit('onFilterChanged', {
-        name_contains: textHelpers.removeSpaces(this.name),
+        tags_contains: textHelpers.removeSpaces(utils.clearUnicode(this.name)),
         currentClass: get(this.classes, 'id', ''),
         dob_gte: moment(this.dob)
           .startOf('day')
@@ -157,6 +169,13 @@ export default {
         gender: this.gender,
         _sort: 'createdAt:desc'
       })
+    }
+  },
+  watch: {
+    defaultFilters(filters) {
+      if (filters) {
+        this.code = get(filters, 'code')
+      }
     }
   }
 }

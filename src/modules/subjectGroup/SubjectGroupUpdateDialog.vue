@@ -47,7 +47,7 @@ export default {
       dialog: false,
       loading: false,
       title: '',
-      academicLevel: ''
+      academicLevel: {}
     }
   },
   created() {
@@ -66,7 +66,7 @@ export default {
         await this.updateSubjectGroup({
           id: this.subjectGroup.id,
           title: this.title,
-          academicLevel: this.academicLevel
+          academicLevel: this.academicLevel.id
         })
         this.$alert.updateSuccess()
         this.dialog = false

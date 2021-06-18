@@ -22,14 +22,14 @@ export default {
         } else if (user.role.type === 'student') {
           router.push('/student-dashboard')
         } else {
-          router.push('/bill')
+          router.push('/dashboard')
         }
       } catch (error) {
         console.error('signIn', error)
       }
     },
-    signOut() {
-      this.reset()
+    signOut({ commit }) {
+      commit('reset')
       router.push('signIn')
     },
     setRole({ commit }, role) {
@@ -50,11 +50,7 @@ export default {
       alert.success('Hãy kiểm tra mail của bạn')
     },
     async resetPassword({ commit }, { code, password, passwordConfirmation }) {
-      const { user, jwt } = await api.Auth.resetPassword(
-        code,
-        password,
-        passwordConfirmation
-      )
+      const { user, jwt } = await api.Auth.resetPassword(code, password, passwordConfirmation)
       commit('setUser', { user, jwt })
       if (user.role.type === 'teacher') {
         router.push('/teacher-dashboard')
@@ -82,6 +78,13 @@ export default {
     },
     setProfile(state, profile) {
       state.profile = _.get(profile, '0', {})
+    },
+    reset(state) {
+      state.user = null
+      state.jwt = null
+      state.profile = {}
+      state.role = {}
+      state.isAuthenticated = false
     }
   },
   getters: {

@@ -8,7 +8,8 @@ export default {
     marks: [],
     student: [],
     semester: {},
-    subjects: []
+    subjects: [],
+    factors: []
   },
   actions: {
     async fetchMarks({ commit }, options) {
@@ -26,6 +27,9 @@ export default {
     },
     setSubjects({ commit }, subjects) {
       commit('setSubjects', subjects)
+    },
+    setFactors({ commit }, factors) {
+      commit('setFactors', factors)
     }
   },
   mutations: {
@@ -40,23 +44,39 @@ export default {
     },
     setSubjects(state, subjects) {
       state.subjects = subjects
+    },
+    setFactors(state, factors) {
+      state.factors = factors
     }
   },
   getters: {
     marks: state => {
+      // return state.subjects.reduce((acc, subject) => {
+      //   const marks = subject.factors
+      //     .filter(f => f.semesterType === state.semester.type) // Lọc cho đúng học kỳ
+      //     .sort((a, b) => a.index - b.index) // sắp xếp các cột đúng thứ tự. (miệng - 15 phút -....)
+      //     .reduce((acc, factor) => {
+      //       const markObject = state.marks
+      //         .filter(m => m.factor.id === factor.id) // tìm điểm theo factor tương ứng
+      //         .reduce((acc, mark) => ({ ...acc, [mark.data.index]: mark }), {}) // đánh dấu diểm theo index
+      //       const markByFactor = Array.from(Array(factor.quantity).keys()).map(index => markObject[index] || {}) // khớp điểm
+      //       return [...acc, ...markByFactor]
+      //     }, []) // build factor schema
+      //   return [...acc, { subject: subject, marks }]
+      // }, [])
+
       return state.subjects.reduce((acc, subject) => {
-        const marks = subject.factors
-          .filter(f => f.semesterType === state.semester.type) // Lọc cho đúng học kỳ
+        const marks = state.factors
           .sort((a, b) => a.index - b.index) // sắp xếp các cột đúng thứ tự. (miệng - 15 phút -....)
           .reduce((acc, factor) => {
             const markObject = state.marks
-              .filter(m => m.factor.id === factor.id) // tìm điểm theo factor tương ứng
+              .filter(
+                m => m.factor.type === factor.type && m.subject.id === subject.id && m.semester.id === state.semester.id
+              ) // tìm điểm theo điều kiện tương ứng
               .reduce((acc, mark) => ({ ...acc, [mark.data.index]: mark }), {}) // đánh dấu diểm theo index
-
             const markByFactor = Array.from(Array(factor.quantity).keys()).map(index => markObject[index] || {}) // khớp điểm
             return [...acc, ...markByFactor]
           }, []) // build factor schema
-
         return [...acc, { subject: subject, marks }]
       }, [])
     },

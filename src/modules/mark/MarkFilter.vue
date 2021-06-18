@@ -78,7 +78,7 @@ export default {
       return this.grade ? { grade: this.grade } : {}
     },
     subjectFilter() {
-      return { division: get(this.classData, 'division.id') }
+      return { division: get(this.classData, 'division.id'), grade: this.grade }
     }
   },
   methods: {

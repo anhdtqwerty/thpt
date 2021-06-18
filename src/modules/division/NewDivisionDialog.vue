@@ -46,7 +46,7 @@ export default {
       dialog: false,
       loading: false,
       title: '',
-      academicLevel: ''
+      academicLevel: {}
     }
   },
   computed: {
@@ -59,7 +59,7 @@ export default {
       if (!this.$refs.form.validate()) return
       try {
         this.loading = true
-        await this.createDivision({ title: this.title, academicLevel: this.academicLevel })
+        await this.createDivision({ title: this.title, academicLevel: this.academicLevel.id })
         this.$alert.addSuccess()
         this.reset()
         this.dialog = false

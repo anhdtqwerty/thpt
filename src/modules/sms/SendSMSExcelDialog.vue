@@ -275,7 +275,7 @@ export default {
     },
     async exportExcelTemplate() {
       this.$loading.active = true
-      window.location.href = `${this.$baseUrl}/sms.xlsx`
+      window.location.href = `${this.$baseUrl}sms.xlsx`
       this.$loading.active = false
     },
     async sendExcelSMSs() {
@@ -303,7 +303,7 @@ export default {
       }
       this.errorSMSs = await History.fetch({ post: { $in: posts.map(p => p.id) }, status: 'error' })
       if (this.errorSMSs.length === 0) {
-        this.$alert.success('Gửi tin nhắn thành công!')
+        this.$alert.success('Đã gửi tin nhắn, xem chi tiết tại màn hình lịch sử gửi tin')
         this.cancel()
       }
       this.step = 'noti'
@@ -326,11 +326,11 @@ export default {
         }
         this.errorSMSs = await History.fetch({ post: { $in: histories.map(p => p.id) }, status: 'error' })
         if (this.errorSMSs.length === 0) {
-          this.$alert.success('Gửi tin nhắn thành công!')
+          this.$alert.success('Đã gửi tin nhắn, xem chi tiết tại màn hình lịch sử gửi tin')
           this.cancel()
         }
       } catch (error) {
-        this.$alert.error('Gửi tin nhắn thất bại!')
+        this.$alert.error('Gửi tin nhắn thất bại!, Lỗi: ', error)
       } finally {
         this.$loading.active = false
       }

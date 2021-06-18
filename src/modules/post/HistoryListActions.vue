@@ -57,7 +57,7 @@ export default {
             this.$loading.active = true
             await ContactBook.resend(this.item.id)
             this.$emit('resend')
-            this.$alert.success('Gửi lại tin nhắn thành công')
+            this.$alert.success('Đã gửi lại tin nhắn, vui lòng xem chi tiết tại lịch sử gửi tin')
           } catch (error) {
             this.$alert.error('Gửi lại tin nhắn thất bại: ' + error)
           } finally {

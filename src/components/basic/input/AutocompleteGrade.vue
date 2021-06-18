@@ -38,7 +38,8 @@ export default {
     async fetchAllGrades() {
       this.grades = await Grade.fetch({
         ...this.filters,
-        _limit: 9999
+        _sort: 'gradeNumber:ASC',
+        _limit: -1
       })
     },
     async update(data) {},

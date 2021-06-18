@@ -1,7 +1,7 @@
 import axios from '@/plugins/axios'
 import alert from '@/plugins/alert'
 import _ from 'lodash'
-import { Class, Lead, Student, Log, Mark, Major, Subject } from '@/plugins/api'
+import { Class, Lead, Student, Log, Mark, Major, Subject, History } from '@/plugins/api'
 const STUDENT_API = '/students/'
 const USER_API = '/users/'
 const UPLOAD_API = '/upload/'
@@ -20,6 +20,7 @@ export default {
     marks: {
       // courseId: mark
     },
+    notifications: []
   },
   actions: {
     uploadAvatar({ commit }, formData) {
@@ -31,7 +32,7 @@ export default {
         })
         .then(response => {
           commit('setAvatar', response[0])
-          alert.success('Tải ảnh thành công!')
+          // alert.success('Tải ảnh thành công!')
         })
         .catch(e => alert.error('Tải ảnh thất bại'))
     },
@@ -81,9 +82,7 @@ export default {
     },
     async removeStudent({ commit }, student) {
       if (student.user) {
-        await axios
-          .delete(USER_API + student.user.id)
-          .catch(e => alert.error(e))
+        await axios.delete(USER_API + student.user.id).catch(e => alert.error(e))
       }
       await axios
         .delete(STUDENT_API + student.id)
@@ -95,14 +94,18 @@ export default {
     setStudent({ commit }, student) {
       commit('setStudent', student)
     },
-    async fetchSubjectMarks({ commit }, student) {
+    async fetchSubjectMarks({ commit }, { student, ...params }) {
       const division = student.currentClass.division
       if (division) {
-        const subjects = await Subject.fetch({ 'divisions.id': division })
-        const marks = await Mark.fetch({ class: student.currentClass.id, student: student.id })
+        const subjects = await Subject.fetch({ division, grade: student.grade.id })
+        const marks = await Mark.fetch({ ...params, class: student.currentClass.id, student: student.id })
         return { subjects, marks }
       }
       return {}
+    },
+    async fetchNotifications({ commit }, student) {
+      const notifications = await History.fetch({ student: student.id, _limit: 10, _sort: 'createdAt:DESC' })
+      commit('changeState', { notifications })
     }
   },
   mutations: {
@@ -114,10 +117,7 @@ export default {
       state.avatar = avatar
     },
     setMarks(state, marks) {
-      state.marks = marks.reduce(
-        (acc, cur) => ({ ...acc, [_.get(cur, 'course.id', '')]: cur }),
-        {}
-      )
+      state.marks = marks.reduce((acc, cur) => ({ ...acc, [_.get(cur, 'course.id', '')]: cur }), {})
     },
     setMark(state, mark) {
       state.marks = {
@@ -154,11 +154,8 @@ export default {
       state.majors = majors
     },
     setClasses(state, classes) {
-      state.classes = classes.reduce(
-        (acc, cur) => ({ ...acc, [_.get(cur, 'course.id', '')]: cur }),
-        {}
-      )
-    },
+      state.classes = classes.reduce((acc, cur) => ({ ...acc, [_.get(cur, 'course.id', '')]: cur }), {})
+    }
   },
   getters: {
     logs: state => {
@@ -184,6 +181,16 @@ export default {
     },
     getMarkByCourseId: state => courseId => {
       return state.mark[courseId] || {}
+    },
+    notifications: state => {
+      return state.notifications.map(n => {
+        if (n.postToType === 'student') n.to = 'Em ' + n.student.name
+        else if (n.postToType === 'class') n.to = 'Lớp ' + n.class.title
+        else if (n.postToType === 'grade') n.to = n.grade.title
+        else if (n.postToType === 'department') n.to = 'Học sinh toàn trường'
+
+        return n
+      })
     }
   }
 }

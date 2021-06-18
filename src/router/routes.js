@@ -58,10 +58,12 @@ import Subjects from '@/views/subject/Subjects.vue'
 import Subject from '@/views/subject/Subject.vue'
 import Classes from '@/views/class/Classes'
 import TimeTableConfig from '@/views/timetable/TimeTableConfig.vue'
+import Academics from '@/views/academicLevel/Academics.vue'
 // -----------------------Advanced Setting---------------------------------
 import PostCreate from '@/views/post/PostCreate.vue'
 import PostCreateAuto from '@/views/post/PostCreateAuto.vue'
 import PostCreateHistory from '@/views/post/PostCreateHistory.vue'
+import Generation from '@/views/generation/Generation.vue'
 // -----------------------Contact Book---------------------------------
 import ContactBook from '@/views/account/ContactBooks.vue'
 import StudentContactBookDetail from '@/modules/contactBook/StudentContactBookDetail.vue'
@@ -171,11 +173,29 @@ const routes = [
         }
       },
       {
+        path: 'generation',
+        component: Generation,
+        name: 'Generation',
+        meta: {
+          title: 'Năm học',
+          auth: true
+        }
+      },
+      {
         path: 'subjectGroups',
         component: SubjectGroups,
         name: 'SubjectGroups',
         meta: {
           title: 'Quản lý bộ môn',
+          auth: true
+        }
+      },
+      {
+        path: 'academics',
+        component: Academics,
+        name: 'Academics',
+        meta: {
+          title: 'Quản lý cấp học',
           auth: true
         }
       },
