@@ -62,7 +62,9 @@ export default {
     save(image) {
       if (this.user) {
         if (this.user.avatar) {
-          this.destroyAvatar(this.user.avatar.id)
+          this.type === 'teacher'
+            ? this.destroyTeacherAvatar(this.user.avatar.id)
+            : this.destroyStudentAvatar(this.user.avatar.id)
         }
         let formData = new FormData()
         formData.append('files', image)

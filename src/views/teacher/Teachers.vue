@@ -15,19 +15,19 @@
     </div>
 
     <v-card outlined class="py-md-4 px-md-6 mx-md-4 mb-6 elevation-0">
-      <teacher-filter @onFilterChanged="refresh"></teacher-filter>
+      <teacher-filter @onFilterChanged="refresh" ref="teacherFilter"></teacher-filter>
     </v-card>
     <v-card outlined class="py-md-4 px-md-6 mx-md-4 mb-6 elevation-0">
       <TeacherDataTable ref="teacherDataTable"
     /></v-card>
     <v-card outlined class="mx-md-4 elevation-0"> </v-card>
-    <NewTeacherDialog :state="createState" @done="requestPageSettings({})" />
+    <TeacherNewDialog :state="createState" @done="onFilter" />
   </div>
 </template>
 <script>
 import { mapState, mapActions } from 'vuex'
 import TeacherFilter from '@/modules/teacher/TeacherFilter.vue'
-import NewTeacherDialog from '@/modules/teacher/TeacherNewDialog'
+import TeacherNewDialog from '@/modules/teacher/TeacherNewDialog'
 import TeacherDataTable from '@/modules/teacher/TeacherDataTable'
 import Breadcrumbs from '@/components/layout/Breadcrumbs.vue'
 import Vuetify from 'vuetify'
@@ -41,7 +41,7 @@ export default {
     Breadcrumbs,
     TeacherDataTable,
     TeacherFilter,
-    NewTeacherDialog
+    TeacherNewDialog
   },
   data() {
     return {
@@ -68,12 +68,15 @@ export default {
     this.allTeachers = await this.fetchTeachers()
   },
   methods: {
-    ...mapActions('teachers', ['requestPageSettings', 'fetchTeachers']),
+    ...mapActions('teachers', ['fetchTeachers']),
     ...mapActions('teaching', ['fetchTeachings']),
     async refresh(query) {
       this.teachings = await this.fetchTeachings()
       this.allTeachers = await this.fetchTeachers()
       this.$refs.teacherDataTable.refresh(query)
+    },
+    onFilter() {
+      this.$refs.teacherFilter.onFilterChanged()
     },
     async exportExcel() {
       let excelHeader = this.$refs.teacherDataTable.headers.map(({ text, value }) => ({ text, value }))

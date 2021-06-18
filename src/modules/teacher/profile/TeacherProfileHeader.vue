@@ -2,7 +2,7 @@
   <v-card elevation="0" outlined>
     <v-row class="py-5 px-6" no-gutters>
       <v-col class="d-flex align-center" cols="2">
-        <UserAvatarPicker :user="teacher" type="staff" />
+        <UserAvatarPicker :user="teacher" type="teacher" />
       </v-col>
       <v-col class="d-flex flex-column" cols="8">
         <v-row no-gutters class="flex-column" style="height:100%">
