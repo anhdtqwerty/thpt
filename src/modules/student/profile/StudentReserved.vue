@@ -2,34 +2,18 @@
   <v-row class="pa-4">
     <v-col cols="12" md="4" class="text-center">
       <h2>{{ student.name }}</h2>
-      <user-avatar-picker :student="student" />
+      <user-avatar-picker :user="student" />
     </v-col>
 
     <v-col cols="12" md="4">
       <h3 class="mb-4">Thời gian bảo lưu</h3>
-      <date-picker
-        @update:date="updateStartDate"
-        :date="startDate"
-        label="Ngày bắt đầu"
-      ></date-picker>
-      <date-picker
-        @update:date="updateEndDate"
-        :date="endDate"
-        label="Ngày kết thúc"
-      ></date-picker>
+      <date-picker @update:date="updateStartDate" :date="startDate" label="Ngày bắt đầu"></date-picker>
+      <date-picker @update:date="updateEndDate" :date="endDate" label="Ngày kết thúc"></date-picker>
       <v-textarea v-model="notes" label="Ghi chú" outlined></v-textarea>
     </v-col>
 
     <v-col cols="12" md="4" class="text-right">
-      <v-btn
-        depressed
-        medium
-        color="primary"
-        class="mr-2"
-        @click="save"
-        :loading="loading"
-        >Bảo Lưu</v-btn
-      >
+      <v-btn depressed medium color="primary" class="mr-2" @click="save" :loading="loading">Bảo Lưu</v-btn>
       <v-btn depressed medium right @click="activeStudent">Kích hoạt</v-btn>
     </v-col>
   </v-row>
@@ -42,10 +26,10 @@ import UserAvatarPicker from '@/components/basic/picker/UserAvatarPicker'
 export default {
   components: {
     DatePicker,
-    UserAvatarPicker,
+    UserAvatarPicker
   },
   props: {
-    student: Object,
+    student: Object
   },
   data() {
     return {
@@ -53,7 +37,7 @@ export default {
       notes: '',
       loading: false,
       startDate: new Date().toISOString(),
-      endDate: new Date().toISOString(),
+      endDate: new Date().toISOString()
     }
   },
   created() {
@@ -75,8 +59,8 @@ export default {
         reservation: {
           notes: this.notes,
           startDate: this.startDate,
-          endDate: this.endDate,
-        },
+          endDate: this.endDate
+        }
       })
       this.loading = false
     },
@@ -85,7 +69,7 @@ export default {
       await this.updateStudent({
         id: this.student.id,
         status: 'active',
-        reservation: {},
+        reservation: {}
       })
       this.loading = false
     },
@@ -94,7 +78,7 @@ export default {
     },
     updateEndDate(value) {
       this.endDate = value
-    },
-  },
+    }
+  }
 }
 </script>

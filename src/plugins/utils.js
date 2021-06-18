@@ -260,7 +260,7 @@ export default {
     }
     return nameArr.slice(0, nameArr.length - 1).reduce((pre, cur) => pre + ' ' + cur, nameArr[nameArr.length - 1])
   },
-  generateStudentTags(name = '') {
+  generateUserTags(name = '') {
     const nameClearedUnicode = this.clearUnicode(name)
     let nameArr = nameClearedUnicode.split(' ')
     if (nameArr[nameArr.length - 1].length === 1) {

@@ -9,8 +9,7 @@ const DESTROY_API = '/upload/files/'
 export default {
   namespaced: true,
   state: {
-    teachers: {},
-    count: 0,
+    teacher: {},
     avatar: {}
   },
   actions: {
@@ -31,38 +30,15 @@ export default {
       return axios
         .delete(DESTROY_API + id)
         .then(staff => {
-          console.log('Remove success')
+          alert.success('Remove success')
+          commit('setAvatar', null)
         })
         .catch(e => alert.error(e))
     },
-    async fetchTeachers({ commit }, options) {
-      commit('setTeachers', await Teacher.fetch(options))
-    },
-    async countTeachers({ commit }, options) {
-      commit('setCount', await Teacher.count(options))
-    },
     async fetchTeacher({ commit }, teacherId) {
-      commit('setTeacher', await Teacher.fetchOne(teacherId))
-    },
-    async createTeacher({ commit }, data) {
-      try {
-        const user = await User.create({
-          username: data.username,
-          password: data.password,
-          email: data.email,
-          ...data
-        })
-        if (user) {
-          data.user = user.id
-          data.code = user.username
-          commit('setTeacher', await Teacher.create({ ...data }))
-          alert.success('Tạo Giáo Viên Thành Công!')
-        } else {
-          alert.error('Tạo Thất Bại!')
-        }
-      } catch (error) {
-        console.error(error)
-      }
+      commit('setTeacher', null)
+      const teacher = await Teacher.fetchOne(teacherId)
+      commit('setTeacher', teacher)
     },
     async removeTeacher({ commit }, teacher) {
       if (teacher.user) {
@@ -72,50 +48,17 @@ export default {
       commit('removeTeacher', teacher.id)
       alert.success('Xóa thành công!')
     },
-    setTeacher({ commit, state }, teacher) {
-      commit('setTeacher', teacher)
-    },
-    async removeTeachers({ dispatch }, items) {
-      await Promise.all(items.map(item => dispatch('removeTeacher', item)))
-    },
-    async updateTeachers({ dispatch }, items) {
-      await Promise.all(
-        items.map(item => dispatch('updateTeacher', { data: item }))
-      )
-    },
-
     async updateTeacher({ commit }, { id, ...teacher }) {
-      const updatedMajor = await Teacher.update(id, teacher)
-      commit('changeDeepState', {
-        teacher: {
-          [teacher.id]: updatedMajor
-        }
-      })
+      commit('setTeacher', await Teacher.update(id, teacher))
       alert.success('Cập nhật thành công!')
     }
   },
   mutations: {
-    setTeachers(state, teachers) {
-      state.teachers = teachers.reduce(
-        (accumulator, currentValue) => ({
-          ...accumulator,
-          [currentValue.id]: currentValue
-        }),
-        {}
-      )
-    },
     setTeacher(state, teacher) {
-      state.teachers = {
-        [teacher.id]: teacher,
-        ...state.teachers
-      }
+      state.teacher = teacher
     },
     removeTeacher(state, teacherId) {
-      delete state.teachers[teacherId]
-      state.teachers = { ...state.teachers }
-    },
-    setCount(state, count) {
-      state.count = count
+      state.teacher = null
     },
     setAvatar(state, avatar) {
       state.teacher = {
@@ -126,15 +69,6 @@ export default {
     }
   },
   getters: {
-    teachers: state => {
-      return Object.values(state.teachers)
-    },
-    teacher: state => id => {
-      return state.teachers[id]
-    },
-    count: state => {
-      return state.count
-    },
     avatar: state => {
       return state.avatar
     }

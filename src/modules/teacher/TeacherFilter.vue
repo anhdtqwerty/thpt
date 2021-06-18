@@ -1,12 +1,12 @@
 <template>
   <v-form>
-    <v-row no-gutters>
-      <v-col cols="12" md="8" v-if="!advanced">
-        <v-row no-gutters>
-          <v-col class="py-2 pr-4" cols="12" md="4">
+    <v-row class="py-3">
+      <v-col cols="10">
+        <v-row>
+          <v-col cols="4" class="pb-0">
             <v-text-field
               v-model="name"
-              label="Tên giáo viên"
+              label="Họ tên giáo viên"
               return-object
               clearable
               flat
@@ -16,25 +16,26 @@
               @keyup.enter="onFilterChanged"
             />
           </v-col>
-          <v-col class="py-2 pr-4" cols="12" md="4">
-            <v-select
-              :items="types"
-              item-text="title"
-              item-value="value"
-              v-model="type"
-              label="Loại cán bộ"
+          <v-col cols="4" class="pb-0">
+            <v-text-field
+              v-model="code"
+              clear-icon="mdi-close"
+              label="Mã số"
+              default=""
+              flat
               outlined
               dense
               clearable
               hide-details
-            ></v-select>
+              @keyup.enter="onFilterChanged"
+            />
           </v-col>
-          <v-col class="py-2 pr-4" cols="12" md="4">
-            <autocomplete-subject
-              v-model="subject"
+          <v-col cols="4" class="pb-0"
+            ><AutocompleteSubjectGroup
+              v-model="subjectGroup"
               clear-icon="mdi-close"
               label="Lĩnh vực"
-              clearable
+              item-text="title"
               outlined
               dense
               return-object
@@ -43,71 +44,37 @@
           </v-col>
         </v-row>
       </v-col>
-      <v-col cols="12" md="8" v-else>
-        <v-row no-gutters>
-          <v-col cols="12" md="4" class="pt-md-2">
-            <AutocompleteTeacher
-              prepend-inner-icon="mdi-magnify"
-              v-model="id"
-              item-text="name"
-              item-value="id"
-              clear-icon="mdi-close"
-              clearable
-              label="Tìm kiếm giáo viên"
-              outlined
-              dense
-              deletable-chips
-              :hide-details="$vuetify.breakpoint.smAndDown"
-              :class="{ 'mb-4': $vuetify.breakpoint.smAndDown }"
-              @change="onFilterChanged"
-            />
-          </v-col>
-        </v-row>
-      </v-col>
-      <v-col class="py-2 d-flex" cols="12" md="4">
-        <v-btn v-if="!advanced" height="40" color="#0D47A1" @click="onFilterChanged" outlined>
-          <v-icon left dark>mdi-filter-outline</v-icon>Lọc
+      <v-col class="d-flex justify-end align-center" cols="2">
+        <v-btn height="40" color="#0D47A1" @click="onFilterChanged" outlined>
+          Tìm kiếm
         </v-btn>
-        <v-spacer />
-        <v-checkbox class="mt-n1 pt-3" v-model="advanced" label="Tìm kiếm nhanh"></v-checkbox>
       </v-col>
     </v-row>
   </v-form>
 </template>
 
 <script>
-import AutocompleteTeacher from '@/components/basic/input/AutocompleteTeacher'
-import AutocompleteSubject from '@/components/basic/input/AutocompleteSubject'
+import AutocompleteSubjectGroup from '@/components/basic/input/AutocompleteSubjectGroup'
+import { textHelpers } from '@/helpers/TextHelper'
+import { get } from 'lodash'
 
 export default {
   components: {
-    AutocompleteTeacher,
-    AutocompleteSubject
+    AutocompleteSubjectGroup
   },
   data: () => ({
-    query: '',
     dialog: false,
     name: '',
-    subject: '',
-    type: '',
-    filterState: false,
-    types: [
-      { value: 'short-tern', title: 'Ngắn hạn' },
-      { value: 'long-tern', title: 'Dài hạn' }
-    ],
-    advanced: false
+    code: '',
+    subjectGroup: null
   }),
   methods: {
     onFilterChanged() {
       this.$emit('onFilterChanged', {
-        id: this.id,
-        name_contains: this.name,
-        subject: this.subject.id,
-        type: this.type
+        name_contains: this.name && textHelpers.removeSpaces(this.name),
+        code_contains: this.code && textHelpers.removeSpaces(this.code),
+        subjectGroup: get(this.subjectGroup, 'id')
       })
-    },
-    onFilterDialogChange(id) {
-      this.$emit('onFilterChanged', id)
     }
   }
 }

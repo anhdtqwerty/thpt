@@ -1,4 +1,5 @@
 import moment from 'moment'
+import { isEmpty } from 'lodash'
 
 export const inputRules = {
   required: v => (!!v && (typeof v !== 'string' || !!v.trim())) || v === 0 || 'Trường này là bắt buộc',
@@ -15,6 +16,7 @@ export const inputRules = {
   nospace: v => !v || !/ /.test(v) || 'Không được chứa khoảng trắng',
   notEmpty: v => !Array.isArray(v) || !!v.length || 'Required',
   date: v => moment(v, 'DD/MM/YYYY', true).isValid() || 'Ngày không hợp lệ',
+  yearNotRequired: v => isEmpty(v) || moment(v, 'YYYY', true).isValid() || 'Năm không hợp lệ',
   dateFromNow: v => moment().isAfter(moment(v, 'DDMMYYYY').toISOString()) || 'Không nhập ngày tương lai',
   markInput: v => !v || (parseFloat(v) >= 0 && parseFloat(v) <= 10) || 'Điểm phải trong khoảng từ 0 đến 10',
   vnPhone: v => !v || (v.length >= 10 && /(0[3|5|7|8|9])+([0-9]{8})\b/gi.test(v)) || 'Số điện thoại không hợp lệ'

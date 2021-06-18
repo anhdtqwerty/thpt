@@ -52,7 +52,7 @@
     </v-row>
     <v-row v-if="student" class="ma-2">
       <v-col class="d-flex align-center justify-center ml-3" cols="2">
-        <UserAvatarPicker :student="student" type="student" />
+        <UserAvatarPicker :user="student" type="student" />
       </v-col>
     </v-row>
     <v-row v-else class="my-4 mx-0">
@@ -152,7 +152,7 @@ export default {
       return {
         name: this.studentName,
         formatedName: utils.generateNameToSort(this.studentName),
-        tags: utils.generateStudentTags(this.studentName),
+        tags: utils.generateUserTags(this.studentName),
         username: this.username,
         user_indexing: this.username_indexing,
         username_no: this.username_no,

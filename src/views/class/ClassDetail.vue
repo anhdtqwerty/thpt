@@ -29,7 +29,7 @@
             <div>
               <div>Giáo viên chủ nhiệm</div>
               <div class="font-weight-bold">
-                {{ classData.teachers | getTeacher }}
+                {{ classData.headTeachers | getTeacher }}
               </div>
             </div>
             <div>
