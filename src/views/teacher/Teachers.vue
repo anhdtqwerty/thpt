@@ -71,9 +71,14 @@ export default {
     ...mapActions('teachers', ['fetchTeachers']),
     ...mapActions('teaching', ['fetchTeachings']),
     async refresh(query) {
-      this.teachings = await this.fetchTeachings()
-      this.allTeachers = await this.fetchTeachers()
-      this.$refs.teacherDataTable.refresh(query)
+      try {
+        this.$loading.active = true
+        this.teachings = await this.fetchTeachings()
+        this.allTeachers = await this.fetchTeachers()
+        this.$refs.teacherDataTable.refresh(query)
+      } catch {
+        this.$loading.active = false
+      }
     },
     onFilter() {
       this.$refs.teacherFilter.onFilterChanged()
