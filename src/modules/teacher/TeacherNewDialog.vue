@@ -1,8 +1,8 @@
 <template>
-  <v-dialog :fullscreen="isMobile" width="661" v-model="dialog" scrollable>
+  <v-dialog :fullscreen="isMobile" width="620" v-model="dialog" scrollable>
     <v-card>
       <v-card-title class="primary white--text">
-        <v-toolbar-title>THÊM GIÁO VIÊN</v-toolbar-title>
+        <v-toolbar-title>THÊM GIÁO VIÊN MỚI</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-btn dark icon>
           <v-icon @click="cancel">close</v-icon>
@@ -13,48 +13,33 @@
       <v-card-text>
         <v-form ref="form" class="pa-2">
           <h3 class="mb-2">1. Thông tin cơ bản</h3>
-          <teacher-general-form
-            :rules="rules"
-            ref="teacherGeneralForm"
-          ></teacher-general-form>
+          <teacher-general-form ref="teacherGeneralForm"></teacher-general-form>
           <h3 class="mb-2">2. Thông tin tại trường</h3>
           <teacher-school-form ref="teacherSchoolForm"></teacher-school-form>
           <h3 class="mb-2">3. Thông tin liên lạc</h3>
           <teacher-contact-form ref="teacherContactForm"></teacher-contact-form>
           <h3 class="mb-2">4. Thông tin chuyên môn</h3>
-          <teacher-specialize-form
-            ref="teacherSpecializeForm"
-          ></teacher-specialize-form>
-          <h3 class="mb-2">5. Thông tin đăng nhập</h3>
-          <login-info-form ref="loginInfoForm"></login-info-form>
+          <teacher-specialize-form ref="teacherSpecializeForm"></teacher-specialize-form>
+          <h3 class="mb-2">5. Thông tin ghi chú về giáo viên</h3>
+          <TeacherNoteForm ref="teacherNoteForm"></TeacherNoteForm>
         </v-form>
       </v-card-text>
-
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn
-          :loading="isLoading"
-          depressed
-          class="mx-8"
-          color="primary"
-          medium
-          @click="save"
-          :disabled="isLoading"
-        >
-          <span>Lưu</span>
-        </v-btn>
+      <v-divider></v-divider>
+      <v-card-actions class="d-flex justify-space-between pa-5">
+        <v-btn depressed outlined @click="cancel" class="grey--text">Huỷ</v-btn>
+        <v-btn depressed color="primary" @click="save">Lưu</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
-import { mapActions, mapState, mapGetters } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import TeacherGeneralForm from '@/components/basic/form/TeacherGeneralForm'
 import TeacherContactForm from '@/components/basic/form/TeacherContactForm'
 import TeacherSchoolForm from '@/components/basic/form/TeacherSchoolForm'
 import TeacherSpecializeForm from '@/components/basic/form/TeacherSpecializeForm'
-import LoginInfoForm from '@/components/basic/form/StaffLoginForm.vue'
+import TeacherNoteForm from '@/components/basic/form/TeacherNoteForm.vue'
 
 export default {
   components: {
@@ -62,123 +47,96 @@ export default {
     TeacherContactForm,
     TeacherSchoolForm,
     TeacherSpecializeForm,
-    LoginInfoForm,
+    TeacherNoteForm
   },
   data() {
     return {
       dialog: false,
-      loading: 0,
       name: '',
       phone: '',
       email: '',
-      lastemail: '',
       username: '',
       username_indexing: '',
       username_no: 0,
-      role: '',
-      majors: '',
-      show: false,
-      password: '',
-      emailError: '',
-      rules: {
-        required: (value) => !!value || 'Trường này không được để trống',
-        min: (v) => v.length >= 6 || 'Ít nhất 6 ký tự',
-        email: (v) => /.+@.+/.test(v) || 'Email chưa đúng định dạng',
-      },
-      isMobile: false,
+      isMobile: false
     }
   },
 
   beforeDestroy() {
     if (typeof window === 'undefined') return
-
     window.removeEventListener('resize', this.onResize, { passive: true })
   },
 
   mounted() {
     this.onResize()
-
     window.addEventListener('resize', this.onResize, { passive: true })
   },
   props: {
-    state: Boolean,
+    state: Boolean
   },
   computed: {
-    ...mapState('app', ['roles', 'department']),
-    ...mapGetters('app', ['roleIdByName']),
-    isLoading() {
-      return this.loading > 0
-    },
+    ...mapState('app', ['department'])
   },
   methods: {
-    ...mapActions('user', ['generateUserName', 'validateEmail']),
-    ...mapActions('teacher', ['createTeacher']),
+    ...mapActions('user', ['generateUserName']),
+    ...mapActions('teachers', ['createTeacher']),
+    ...mapActions('teacher', ['uploadAvatar']),
     async save() {
       if (
         !this.$refs.teacherGeneralForm.validate() ||
         !this.$refs.teacherSchoolForm.validate() ||
         !this.$refs.teacherContactForm.validate() ||
-        !this.$refs.teacherSpecializeForm.validate()
+        !this.$refs.teacherSpecializeForm.validate() ||
+        !this.$refs.teacherNoteForm.validate()
       ) {
         return
       }
       try {
+        this.$loading.active = true
         const teacherGeneralForm = this.$refs.teacherGeneralForm.getData()
         const teacherSchoolForm = this.$refs.teacherSchoolForm.getData()
         const teacherContactForm = this.$refs.teacherContactForm.getData()
         const teacherSpecializeForm = this.$refs.teacherSpecializeForm.getData()
-        const loginInfoForm = this.$refs.loginInfoForm.getData()
-        await this.createTeacher({
+        const teacherNoteForm = this.$refs.teacherNoteForm.getData()
+        const teacher = await this.createTeacher({
+          department: this.department.id,
           username: teacherGeneralForm.username,
           username_indexing: teacherGeneralForm.username_indexing,
           username_no: teacherGeneralForm.username_no,
-          password: loginInfoForm.password,
-          email: loginInfoForm.email,
           name: teacherGeneralForm.name,
-          address: teacherContactForm.currentLive,
-          gender: teacherGeneralForm.gender,
-          phone: loginInfoForm.phone,
+          password: '123123',
           status: 'active',
-          subject: teacherSpecializeForm.subject,
+          subjectGroup: teacherSpecializeForm.subjectGroup,
+          address: teacherContactForm.currentLive,
+          notes: teacherNoteForm.notes,
+          phone: teacherContactForm.phone,
+          email: teacherContactForm.email,
+          gender: teacherGeneralForm.gender,
+          dob: teacherGeneralForm.dob,
+          type: teacherSchoolForm.type,
           metadata: {
-            type: teacherSchoolForm.type,
             ...teacherContactForm,
             ...teacherSchoolForm,
             ...teacherSpecializeForm,
             ...teacherGeneralForm,
-          },
-          department: this.department.id,
-          type: 'staff',
+            ...teacherNoteForm
+          }
         })
+        if (teacherGeneralForm.avatar) {
+          let formData = new FormData()
+          formData.append('files', teacherGeneralForm.avatar)
+          formData.append('refId', teacher.id)
+          formData.append('ref', 'teacher')
+          formData.append('field', 'avatar')
+          this.uploadAvatar(formData)
+        }
+        this.$emit('done')
         this.dialog = false
         this.reset()
       } catch (e) {
         console.log(e)
-      }
-    },
-    async nameLostFocus() {
-      const {
-        username,
-        // eslint-disable-next-line
-        username_indexing,
-        // eslint-disable-next-line
-        username_no,
-      } = await this.generateUserName(this.name)
-      this.username = username
-      // eslint-disable-next-line
-      this.username_indexing = username_indexing
-      // eslint-disable-next-line
-      this.username_no = username_no
-    },
-    async emailLostFocus() {
-      try {
-        this.loading += 1
-        if (this.email !== this.lastemail) {
-          this.emailError = await this.validateEmail(this.email)
-        }
-        this.lastemail = this.email
       } finally {
-        this.loading -= 1
+        this.$loading.active = false
       }
     },
     cancel() {
@@ -190,7 +148,7 @@ export default {
       this.$refs.teacherSchoolForm.reset()
       this.$refs.teacherContactForm.reset()
       this.$refs.teacherSpecializeForm.reset()
-      this.$refs.loginInfoForm.reset()
+      this.$refs.teacherNoteForm.reset()
     },
     onResize() {
       if (window.innerWidth < 600) {
@@ -198,13 +156,13 @@ export default {
       } else {
         this.isMobile = false
       }
-    },
+    }
   },
   watch: {
     state(state) {
       this.dialog = true
-    },
-  },
+    }
+  }
 }
 </script>
 

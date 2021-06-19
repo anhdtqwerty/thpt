@@ -8,6 +8,7 @@
     v-on:input="$emit('input', $event)"
     @update:search-input="update"
     :loading="loading"
+    clearable
   ></v-autocomplete>
 </template>
 
@@ -36,7 +37,8 @@ export default {
     async fetchAllSubjectGroups() {
       this.loading = true
       this.subjectGroups = await SubjectGroup.fetch({
-        ...this.filter
+        ...this.filter,
+        _limit: -1
       })
       this.loading = false
     },

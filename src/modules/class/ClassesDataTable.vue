@@ -38,7 +38,7 @@
         {{ item.division | getDivision }}
       </p>
     </template>
-    <template v-slot:[`item.teachers`]="{ item }">
+    <template v-slot:[`item.headTeachers`]="{ item }">
       <p style="margin: 0; white-space: nowrap">
         {{ item | getTeacherNames }}
       </p>
@@ -76,7 +76,7 @@ const originHeaders = [
   },
   {
     text: 'Giáo viên chủ nhiệm',
-    value: 'teachers',
+    value: 'headTeachers',
     align: 'left',
     sortable: false,
     show: true
@@ -186,7 +186,7 @@ export default {
       return get(item, 'title', '')
     },
     getTeacherNames: classData => {
-      return classData.teachers.map(teacher => teacher.name).join(',')
+      return classData.headTeachers.map(teacher => teacher.name).join(',')
     },
     getDivision: division => {
       return division ? division.title : ''

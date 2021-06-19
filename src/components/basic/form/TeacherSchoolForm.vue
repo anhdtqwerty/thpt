@@ -1,38 +1,42 @@
 <template>
-  <v-form v-model="valid" ref="form" v-bind="this.$attrs">
+  <v-form ref="form" v-bind="this.$attrs">
     <v-row>
-      <v-col class="pb-0" cols="12" md="4">
+      <v-col class="pb-0" cols="12" md="6">
         <v-autocomplete
           :items="typeList"
           item-text="title"
           item-value="value"
-          ref="type"
           v-model="type"
           label="Loại cán bộ"
           outlined
+          :rules="[$rules.required]"
+          class="required"
           dense
         ></v-autocomplete>
       </v-col>
-      <v-col class="pb-0" cols="12" md="4">
+      <v-col class="pb-0" cols="12" md="6">
         <v-text-field
-          ref="schoolDate"
           v-model="schoolDate"
           label="Năm vào trường"
           outlined
           dense
+          required
+          :rules="[$rules.required, $rules.yearNotRequired]"
+          type="number"
+          class="required"
         ></v-text-field>
       </v-col>
-      <v-col class="pb-0" cols="12" md="4">
+      <v-col class="pt-0" cols="12" md="6">
         <v-select
-          auto-select-first
           :items="teacherStatus"
           item-text="title"
           item-value="value"
-          ref="status"
           v-model="status"
           label="Trạng thái hiện tại"
           outlined
           dense
+          :rules="[$rules.required]"
+          class="required"
         ></v-select>
       </v-col>
     </v-row>
@@ -40,46 +44,40 @@
 </template>
 
 <script>
-// import { get } from 'lodash'
+import { get } from 'lodash'
+
 export default {
-  props: {
-    teacher: {
-      type: [Object],
-      default: () => {},
-    },
-  },
+  props: { teacher: Object, formState: Boolean },
   data: () => ({
-    valid: true,
     type: '',
     schoolDate: '',
-    status: 'active',
+    status: '',
     teacherStatus: [
       { title: 'Đang dạy', value: 'active' },
-      { title: 'Không dạy', value: 'block' },
+      { title: 'Đã nghỉ', value: 'left' }
     ],
     typeList: [
-      { title: 'Ngắn hạn', value: 'short-tern' },
-      { title: 'Dài hạn', value: 'long-tern' },
-    ],
-    rules: {
-      required: (value) => !!value || 'Required.',
-      min: (v) => v.length >= 6 || 'Min 8 characters',
-      email: (v) => /.+@.+/.test(v) || 'E-mail must be valid',
-    },
+      { title: 'Thỉnh giảng', value: 'short-term' },
+      { title: 'Biên chế', value: 'long-term' }
+    ]
   }),
+  computed: {},
   created() {
-    if (this.teacher) {
-      this.type = this.teacher.metadata.type
-      this.schoolDate = this.teacher.metadata.schoolDate
-      this.status = this.teacher.status
-    }
+    this.initData()
   },
   methods: {
+    initData() {
+      if (this.teacher) {
+        this.type = this.teacher.type
+        this.schoolDate = get(this.teacher, 'metadata.schoolDate')
+        this.status = this.teacher.status
+      }
+    },
     getData() {
       return {
         type: this.type,
         schoolDate: this.schoolDate,
-        status: this.status,
+        status: this.status
       }
     },
     validate() {
@@ -91,12 +89,14 @@ export default {
     },
     resetValidation() {
       this.$refs.form.resetValidation()
-    },
+    }
   },
   watch: {
-    teacher(teacher) {
-      this.reset()
-    },
-  },
+    formState(formState) {
+      if (!formState) {
+        this.initData()
+      }
+    }
+  }
 }
 </script>

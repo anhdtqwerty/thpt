@@ -19,33 +19,26 @@ export default {
     teachers: []
   }),
   props: {
-    filters: Object,
+    filter: Object,
     options: Object,
     defaultTeachers: Array
   },
   computed: {
     ...mapGetters('app', ['department', 'roles', 'roleIdByName'])
   },
-  created () {
+  created() {
     this.teachers = this.defaultTeachers
     this.fetchAllTeachers()
   },
   methods: {
-    async fetchAllTeachers () {
+    async fetchAllTeachers() {
       this.teachers = await Teacher.fetch({
-        ...this.filters,
+        ...this.filter,
         department: this.department.id
       })
     },
-    async update (data) {
-      // this.teachers = await Teacher.fetch({
-      //   ...this.filters,
-      //   department: this.department.id,
-      //   role: this.roleIdByName('teacher'),
-      //   code_contains: data
-      // })
-    },
-    onChange (data) {
+    async update(data) {},
+    onChange(data) {
       this.$emit('change', data)
     }
   }

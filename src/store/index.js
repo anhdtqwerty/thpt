@@ -45,6 +45,9 @@ import departmentDashboard from '@/store/dashboard/departmentDashboard.js'
 import role from './app/role'
 import staff from './user/staff'
 import teacher from './user/teacher'
+import ownClassTeacher from './teacher/ownClassTeacher'
+import teaching from './teacher/teaching'
+import teachers from './user/teachers'
 import showcases from './department/showcases'
 import teacherDashboard from './dashboard/teacherDashboard'
 
@@ -100,6 +103,9 @@ export default createStore(Vuex.Store, {
     user,
     staff,
     teacher,
+    teachers,
+    teaching,
+    ownClassTeacher,
     class: classModule,
     generation,
     semester,

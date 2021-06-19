@@ -1,6 +1,6 @@
 import moment from 'moment'
 import Vue from 'vue'
-
+import _ from 'lodash'
 export const vueFilterRegister = () => {
   Vue.filter('ordinalNumber', (item, list) => list.indexOf(item) + 1)
   Vue.filter('ddmmyyyy', isoStr => (isoStr ? moment(isoStr).format('DD/MM/YYYY') : ''))
@@ -10,6 +10,9 @@ export const vueFilterRegister = () => {
     if (gender === 'male') return 'Nam'
     else if (gender === 'female') return 'Nữ'
     return 'Khác'
+  })
+  Vue.filter('_get', (any, path, defaultValue = '') => {
+    return _.get(any, path, defaultValue)
   })
   Vue.filter('status', status => {
     switch (status) {
@@ -38,6 +41,9 @@ export const vueFilterRegister = () => {
     }
   })
   Vue.filter('getStudentCode', code => {
+    return code.substr(0, 5)
+  })
+  Vue.filter('getTeacherCode', code => {
     return code.substr(0, 5)
   })
   Vue.filter('classStatusColor', status => {
@@ -141,6 +147,36 @@ export const vueFilterRegister = () => {
         return 'Điểm số'
       case 'evaluate':
         return 'Đánh giá'
+      default:
+        return ''
+    }
+  })
+  Vue.filter('teacherStatus', status => {
+    switch (status) {
+      case 'active':
+        return 'Đang dạy'
+      case 'left':
+        return 'Đã nghỉ'
+      default:
+        return ''
+    }
+  })
+  Vue.filter('teacherType', status => {
+    switch (status) {
+      case 'long-term':
+        return 'Biên chế'
+      case 'short-term':
+        return 'Thỉnh giảng'
+      default:
+        return ''
+    }
+  })
+  Vue.filter('teacherLevel', level => {
+    switch (level) {
+      case 'university-level':
+        return 'Đại học'
+      case 'college-level':
+        return 'Cao đẳng'
       default:
         return ''
     }

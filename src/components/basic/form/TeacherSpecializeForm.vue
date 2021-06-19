@@ -1,84 +1,90 @@
 <template>
-  <v-form v-model="valid" ref="form" v-bind="this.$attrs">
+  <v-form ref="form" v-bind="this.$attrs">
     <v-row>
       <v-col class="pb-0" cols="12" md="6">
-        <v-text-field
-          ref="level"
+        <v-autocomplete
+          :items="levelList"
+          item-text="title"
+          item-value="value"
           v-model="level"
           label="Trình độ"
           outlined
           dense
-        ></v-text-field>
+        />
       </v-col>
       <v-col class="pb-0" cols="12" md="6">
-        <v-text-field
-          ref="subject"
-          v-model="subject"
+        <AutocompleteSubjectGroup
+          v-model="subjectGroup"
           label="Lĩnh vực"
-          outlined
+          class="col-md-6 mr-4"
           dense
-        ></v-text-field>
+          hide-details
+          outlined
+        />
       </v-col>
     </v-row>
     <v-row>
       <v-col class="pb-0" cols="12" md="6">
-        <v-text-field
-          ref="trainingPlace"
-          v-model="trainingPlace"
-          label="Nơi đào tạo"
-          outlined
-          dense
-        ></v-text-field>
+        <v-text-field v-model="trainingPlace" label="Nơi đào tạo" outlined dense />
       </v-col>
       <v-col class="pb-0" cols="12" md="6">
         <v-text-field
-          ref="majorDate"
           v-model="majorDate"
           label="Năm vào ngành"
+          type="number"
+          :rules="[$rules.yearNotRequired]"
           outlined
           dense
-        ></v-text-field>
+        />
       </v-col>
     </v-row>
   </v-form>
 </template>
 
 <script>
-// import { get } from 'lodash'
+import { get } from 'lodash'
+import AutocompleteSubjectGroup from '@/components/basic/input/AutocompleteSubjectGroup'
+
 export default {
-  props: {
-    teacher: {
-      type: [Object],
-      default: () => {},
-    },
+  components: {
+    AutocompleteSubjectGroup
   },
+  props: { teacher: Object, formState: Boolean },
   data: () => ({
-    valid: true,
     level: '',
-    subject: '',
+    levelList: [
+      {
+        title: 'Đại học',
+        value: 'university-level'
+      },
+      {
+        title: 'Cao đẳng',
+        value: 'college-level'
+      }
+    ],
+    subjectGroup: '',
     trainingPlace: '',
-    majorDate: '',
-    rules: {
-      required: (value) => !!value || 'Required.',
-      min: (v) => v.length >= 6 || 'Min 8 characters',
-      email: (v) => /.+@.+/.test(v) || 'E-mail must be valid',
-    },
+    majorDate: ''
   }),
   created() {
-    if (this.teacher) {
-      this.level = this.teacher.metadata.level
-      this.subject = this.teacher.subject
-      this.trainingPlace = this.teacher.metadata.trainingPlace
-      this.majorDate = this.teacher.metadata.majorDate
-    }
+    this.initData()
   },
+
   methods: {
+    initData() {
+      if (this.teacher) {
+        this.level = get(this.teacher, 'metadata.level')
+        this.subjectGroup = this.teacher.subjectGroup
+        this.trainingPlace = get(this.teacher, 'metadata.trainingPlace')
+        this.majorDate = get(this.teacher, 'metadata.majorDate')
+      }
+    },
     getData() {
       return {
         level: this.level,
-        subject: this.subject,
+        subjectGroup: this.subjectGroup,
         trainingPlace: this.trainingPlace,
-        majorDate: this.majorDate,
+        majorDate: this.majorDate
       }
     },
     validate() {
@@ -89,12 +95,14 @@ export default {
     },
     resetValidation() {
       this.$refs.form.resetValidation()
-    },
+    }
   },
   watch: {
-    teacher(teacher) {
-      this.reset()
-    },
-  },
+    formState(formState) {
+      if (!formState) {
+        this.initData()
+      }
+    }
+  }
 }
 </script>

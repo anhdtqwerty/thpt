@@ -7,8 +7,7 @@
             <AutocompleteGrade dense hide-details outlined label="Khối" />
           </v-col>
           <v-col cols="12" md="4">
-            <v-select label="Chuyên cần" outlined dense clearable hide-details>
-            </v-select>
+            <v-select label="Chuyên cần" outlined dense clearable hide-details> </v-select>
           </v-col>
           <v-col cols="12" md="4">
             <DateRangeIOSPicker label="Thời gian" dense hide-details outlined />
@@ -40,7 +39,7 @@ export default {
     AutocompleteGrade,
     DateRangeIOSPicker,
     AutocompleteClass,
-    AutocompleteStudent,
+    AutocompleteStudent
   },
   data: () => ({
     query: '',
@@ -50,10 +49,10 @@ export default {
     type: '',
     filterState: false,
     types: [
-      { value: 'short-tern', title: 'Ngắn hạn' },
-      { value: 'long-tern', title: 'Dài hạn' },
+      { value: 'short-term', title: 'Thỉnh giảng' },
+      { value: 'long-term', title: 'Biên chế' }
     ],
-    advanced: false,
+    advanced: false
   }),
   methods: {
     onFilterChanged() {
@@ -61,12 +60,12 @@ export default {
         id: this.id,
         name_contains: this.name,
         subject: this.subject.id,
-        type: this.type,
+        type: this.type
       })
     },
     onFilterDialogChange(id) {
       this.$emit('onFilterChanged', id)
-    },
-  },
+    }
+  }
 }
 </script>
