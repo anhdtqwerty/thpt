@@ -14,6 +14,7 @@
       </v-col>
       <v-col class="pb-0" cols="12" md="6">
         <AutocompleteSubjectGroup
+          return-object
           v-model="subjectGroup"
           label="Lĩnh vực"
           class="col-md-6 mr-4"
@@ -62,7 +63,7 @@ export default {
         value: 'college-level'
       }
     ],
-    subjectGroup: '',
+    subjectGroup: null,
     trainingPlace: '',
     majorDate: ''
   }),

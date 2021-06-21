@@ -1,10 +1,7 @@
 <template>
   <div>
     <div v-if="teacher" class="pa-4 d-flex justify-space-between align-center">
-      <Breadcrumbs
-        :headline="teacher.name + ' - ' + teacher.code"
-        :link="[{ text: 'Giáo viên', href: '../teachers' }]"
-      />
+      <Breadcrumbs :headline="teacher.name" :link="[{ text: 'Giáo viên', href: '../teachers' }]" />
     </div>
     <teacher-profile v-if="teacher" />
   </div>

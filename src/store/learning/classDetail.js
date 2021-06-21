@@ -1,5 +1,5 @@
 import alert from '@/plugins/alert'
-import { Class, Attendance, Slot, Log, Mark } from '@/plugins/api'
+import { Class, Attendance, Slot, Log, Mark, Teachings, SubjectGroup } from '@/plugins/api'
 import _ from 'lodash'
 import utils from '../../plugins/utils'
 
@@ -15,15 +15,19 @@ export default {
     },
     logs: [],
     students: {},
-    marks: {}
+    marks: {},
+    teachings: {},
+    subjectGroups: {}
   },
   actions: {
     async initClass({ commit }, { id }) {
-      const [classData, slots, attendances, marks] = await Promise.all([
+      const [classData, slots, attendances, marks, teachings, subjectGroups] = await Promise.all([
         Class.fetchOne(id),
         Slot.fetch({ class: id }),
         Attendance.fetch({ class: id, _limit: -1 }),
-        Mark.fetch({ class: id })
+        Mark.fetch({ class: id }),
+        Teachings.fetch({ class: id }),
+        SubjectGroup.fetch({ _limit: -1 })
       ])
       commit('changeState', {
         classData,
@@ -33,7 +37,9 @@ export default {
           'key'
         ),
         students: _.keyBy(classData.students, 'id'),
-        marks: _.keyBy(marks, m => _.get(m, 'student.id', ''))
+        marks: _.keyBy(marks, m => _.get(m, 'student.id', '')),
+        teachings,
+        subjectGroups
       })
     },
     async fetchSlots({ commit }, params) {

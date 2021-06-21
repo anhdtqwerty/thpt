@@ -36,7 +36,7 @@
               <div>
                 <div style="height:22px" />
                 <v-select
-                  :items="statuslist"
+                  :items="statusList"
                   item-text="title"
                   item-value="value"
                   v-model="status"
@@ -62,7 +62,10 @@
 <script>
 import CardTeacherName from '@/components/basic/card/CardTeacherName.vue'
 import { mapActions } from 'vuex'
-
+const originalStatusList = [
+  { title: 'Đang dạy', value: 'active' },
+  { title: 'Đã nghỉ', value: 'left' }
+]
 export default {
   components: {
     CardTeacherName
@@ -74,11 +77,8 @@ export default {
   data() {
     return {
       dialog: false,
-      statuslist: [
-        { title: 'Đang dạy', value: 'active' },
-        { title: 'Đã nghỉ', value: 'left' }
-      ],
-      status: this.teacher.status || 'active'
+      statusList: originalStatusList,
+      status: this.teacher.status || this.statusList[0].value
     }
   },
   methods: {
@@ -104,7 +104,8 @@ export default {
   watch: {
     state(state) {
       this.dialog = true
-      this.status = this.teacher.status || 'active'
+      this.statusList = originalStatusList.filter(status => status.value !== this.teacher.status)
+      this.status = this.statusList[0].value
     }
   }
 }

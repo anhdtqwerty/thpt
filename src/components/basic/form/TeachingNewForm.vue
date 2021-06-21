@@ -141,6 +141,9 @@ export default {
       this.classData = null
       this.teacher = null
       this.subjectGroup = null
+    },
+    resetValidation() {
+      this.$refs.form.resetValidation()
     }
   },
   mounted() {
@@ -157,7 +160,10 @@ export default {
       } else {
         this.teachings = await this.fetchTeachings()
       }
-    }
+    },
+    classData: 'resetValidation',
+    grade: 'resetValidation',
+    subject: 'resetValidation'
   }
 }
 </script>

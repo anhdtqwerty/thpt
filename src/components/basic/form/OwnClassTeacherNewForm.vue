@@ -94,6 +94,9 @@ export default {
         this.classData = null
       }
       this.grade = grade
+    },
+    resetValidation() {
+      this.$refs.form.resetValidation()
     }
   },
   mounted() {
@@ -105,7 +108,9 @@ export default {
         this.resetData()
         this.$refs.form.reset()
       }
-    }
+    },
+    classData: 'resetValidation',
+    grade: 'resetValidation'
   }
 }
 </script>
