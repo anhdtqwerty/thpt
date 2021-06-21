@@ -18,27 +18,10 @@
         <v-text-field ref="province" v-model="province" label="Tỉnh/ Thành phố" outlined hide-details dense />
       </v-col>
       <v-col class="pb-0" cols="12" md="6">
-        <v-text-field
-          v-model="phone"
-          label="Điện thoại"
-          outlined
-          dense
-          type="number"
-          class="required"
-          min="0"
-          :rules="[$rules.required]"
-        />
+        <v-text-field v-model="phone" label="Điện thoại" outlined dense class="required" :rules="[$rules.required]" />
       </v-col>
       <v-col class="pb-0" cols="12" md="6">
-        <v-text-field
-          v-model="email"
-          label="Email"
-          outlined
-          dense
-          required
-          class="required"
-          :rules="[$rules.required, $rules.email]"
-        />
+        <v-text-field v-model="email" label="Email" outlined dense :rules="[$rules.email]" />
       </v-col>
     </v-row>
   </v-form>
@@ -46,6 +29,7 @@
 
 <script>
 import { get } from 'lodash'
+import { v4 as uuidv4 } from 'uuid'
 export default {
   props: {
     teacher: Object,
@@ -81,7 +65,7 @@ export default {
         province: this.province,
         district: this.district,
         phone: this.phone,
-        email: this.email
+        email: this.email ? this.email : uuidv4() + '@gmail.com'
       }
     },
     reset() {
