@@ -77,7 +77,7 @@ export default {
     ...mapState('division', ['divisions'])
   },
   methods: {
-    ...mapActions('division', ['createDivision', 'fetchDividions']),
+    ...mapActions('division', ['createDivision', 'fetchDivision']),
     async save() {
       if (!this.$refs.form.validate()) return
       try {
@@ -105,7 +105,7 @@ export default {
   },
   watch: {
     state(state) {
-      this.fetchDividions({})
+      this.fetchDivision({})
       this.dialog = true
     },
     academicLevel: 'resetValidation'
