@@ -1,5 +1,10 @@
 <template>
-  <v-dialog v-model="dialog" width="400px" :fullscreen="$vuetify.breakpoint.smAndDown" scrollable>
+  <v-dialog
+    v-model="dialog"
+    width="400px"
+    :fullscreen="$vuetify.breakpoint.smAndDown"
+    scrollable
+  >
     <v-card>
       <v-card-title class="blue darken-4 white--text"
         ><v-toolbar-title>THÊM BỘ MÔN MỚI</v-toolbar-title>
@@ -13,7 +18,7 @@
             dense
             v-model="title"
             class="required mt-4"
-            :rules="[$rules.required]"
+            :rules="[$rules.required, titleRule]"
             label="Tên bộ môn"
           />
           <RadioAcademicLevel @change="academicLevel = $event" />
@@ -21,9 +26,17 @@
       </v-card-text>
       <v-card-actions>
         <v-row class="ma-2" no-gutters>
-          <v-btn class="px-4" outlined light depressed @click="cancel">Hủy</v-btn>
+          <v-btn class="px-4" outlined light depressed @click="dialog = false"
+            >Hủy</v-btn
+          >
           <v-spacer></v-spacer>
-          <v-btn class="px-4" dark depressed color="#0D47A1" :loading="loading" @click="save"
+          <v-btn
+            class="px-4"
+            dark
+            depressed
+            color="#0D47A1"
+            :loading="loading"
+            @click="save"
             ><v-icon left>add</v-icon>Thêm</v-btn
           >
         </v-row>
@@ -33,8 +46,9 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import RadioAcademicLevel from '@/modules/academicLevel/RadioAcademicLevel.vue'
+import { textHelpers } from '@/helpers/TextHelper.js'
 export default {
   components: {
     RadioAcademicLevel
@@ -47,17 +61,33 @@ export default {
       dialog: false,
       loading: false,
       academicLevel: {},
-      title: ''
+      title: '',
+      division: '',
+      subjectgroup: '',
+      titleRule: v => {
+        const title = textHelpers.removeSpaces(v)
+        const g = this.subjectGroups.find(
+          g => g.title === title && g.academicLevel.id === this.academicLevel.id
+        )
+        return !g || 'Bộ môn này đã tồn tại'
+      }
     }
   },
-  computed: {},
+  computed: {
+    ...mapState('app', ['roles', 'department']),
+    ...mapState('auth', ['user']),
+    ...mapState('SubjectGroup', ['subjectGroups'])
+  },
   methods: {
-    ...mapActions('SubjectGroup', ['createSubjectGroup']),
+    ...mapActions('SubjectGroup', ['createSubjectGroup', 'fetchSubjectGroups']),
     async save() {
       if (!this.$refs.form.validate()) return
       try {
         this.loading = true
-        await this.createSubjectGroup({ title: this.title, academicLevel: this.academicLevel.id })
+        await this.createSubjectGroup({
+          title: this.title,
+          academicLevel: this.academicLevel.id
+        })
         this.$alert.addSuccess()
         this.reset()
         this.dialog = false
@@ -71,15 +101,16 @@ export default {
       this.title = ''
       this.$refs.form.resetValidation()
     },
-    cancel() {
-      this.dialog = false
-      this.reset()
+    resetValidation() {
+      this.$refs.form.resetValidation()
     }
   },
   watch: {
     state(state) {
+      this.fetchSubjectGroups({})
       this.dialog = true
-    }
+    },
+    academicLevel: 'resetValidation'
   }
 }
 </script>

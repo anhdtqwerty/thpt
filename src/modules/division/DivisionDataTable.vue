@@ -2,10 +2,15 @@
   <v-card class="mx-md-4 elevation-1">
     <v-data-table :headers="headers" :items="divisions" hide-default-footer>
       <template v-slot:[`item.academicLevel`]="{ item }">
-        <span>{{ item.academicLevel.type | getAcademicLevel }}</span>
+        <span>{{
+          item.academicLevel && item.academicLevel.type | getAcademicLevel
+        }}</span>
       </template>
       <template v-slot:[`item.actions`]="{ item }">
-        <DivisionActions v-if="!(item.config && item.config.default)" :selected="item" />
+        <DivisionActions
+          v-if="!(item.config && item.config.default)"
+          :selected="item"
+        />
       </template>
     </v-data-table>
   </v-card>
