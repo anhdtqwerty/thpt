@@ -24,7 +24,7 @@
           outlined
           dense
           class="required"
-          :rules="[$rules.required, rules.phone]"
+          :rules="[$rules.required, $rules.phone]"
         />
       </v-col>
       <v-col class="pb-0" cols="12" md="6">
@@ -48,10 +48,7 @@ export default {
     province: '',
     district: '',
     phone: '',
-    email: '',
-    rules: {
-      phone: v => textHelpers.getNumber(v) || 'Số điện thoại không hợp lệ'
-    }
+    email: ''
   }),
   computed: {},
   created() {
