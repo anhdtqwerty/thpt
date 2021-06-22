@@ -11,7 +11,14 @@
         <v-text-field v-model="district" label="Quận/Huyện" outlined hide-details dense></v-text-field>
       </v-col>
       <v-col class="pb-0" cols="12" md="6">
-        <v-text-field v-model="phone" label="Số điện thoại" outlined dense></v-text-field>
+        <v-text-field
+          v-model="phone"
+          label="Số điện thoại"
+          outlined
+          dense
+          required
+          :rules="[rules.phone]"
+        ></v-text-field>
       </v-col>
       <v-col class="pb-0" cols="12" md="6">
         <v-text-field v-model="email" label="Email" outlined dense></v-text-field>
@@ -22,6 +29,7 @@
 
 <script>
 // import { get } from 'lodash'
+import { textHelpers } from '@/helpers/TextHelper.js'
 export default {
   props: {
     student: {
@@ -39,7 +47,8 @@ export default {
     rules: {
       required: value => !!value || 'Required.',
       min: v => v.length >= 6 || 'Min 8 characters',
-      email: v => /.+@.+/.test(v) || 'E-mail must be valid'
+      email: v => /.+@.+/.test(v) || 'E-mail must be valid',
+      phone: v => textHelpers.getNumber(v) || 'Số điện thoại không hợp lệ'
     }
   }),
   created() {
