@@ -1,10 +1,5 @@
 <template>
-  <v-dialog
-    v-model="dialog"
-    width="400px"
-    :fullscreen="$vuetify.breakpoint.smAndDown"
-    scrollable
-  >
+  <v-dialog v-model="dialog" width="400px" :fullscreen="$vuetify.breakpoint.smAndDown" scrollable>
     <v-card>
       <v-card-title class="blue darken-4 white--text"
         ><v-toolbar-title>THÊM BỘ MÔN MỚI</v-toolbar-title>
@@ -26,17 +21,9 @@
       </v-card-text>
       <v-card-actions>
         <v-row class="ma-2" no-gutters>
-          <v-btn class="px-4" outlined light depressed @click="dialog = false"
-            >Hủy</v-btn
-          >
+          <v-btn class="px-4" outlined light depressed @click="dialog = false">Hủy</v-btn>
           <v-spacer></v-spacer>
-          <v-btn
-            class="px-4"
-            dark
-            depressed
-            color="#0D47A1"
-            :loading="loading"
-            @click="save"
+          <v-btn class="px-4" dark depressed color="#0D47A1" :loading="loading" @click="save"
             ><v-icon left>add</v-icon>Thêm</v-btn
           >
         </v-row>
@@ -64,9 +51,7 @@ export default {
       title: '',
       titleRule: v => {
         const title = textHelpers.removeSpaces(v)
-        const g = this.subjectGroups.find(
-          g => g.title === title && g.academicLevel.id === this.academicLevel.id
-        )
+        const g = this.subjectGroups.find(g => g.title === title && g.academicLevel.id === this.academicLevel.id)
         return !g || 'Bộ môn này đã tồn tại'
       }
     }

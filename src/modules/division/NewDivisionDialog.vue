@@ -1,10 +1,5 @@
 <template>
-  <v-dialog
-    v-model="dialog"
-    width="400px"
-    :fullscreen="$vuetify.breakpoint.smAndDown"
-    scrollable
-  >
+  <v-dialog v-model="dialog" width="400px" :fullscreen="$vuetify.breakpoint.smAndDown" scrollable>
     <v-card>
       <v-card-title class="blue darken-4 white--text"
         ><v-toolbar-title>THÊM BAN MỚI</v-toolbar-title>
@@ -26,17 +21,9 @@
       </v-card-text>
       <v-card-actions>
         <v-row class="ma-2" no-gutters>
-          <v-btn class="px-4" outlined light depressed @click="dialog = false"
-            >Hủy</v-btn
-          >
+          <v-btn class="px-4" outlined light depressed @click="dialog = false">Hủy</v-btn>
           <v-spacer></v-spacer>
-          <v-btn
-            class="px-6"
-            dark
-            depressed
-            color="#0D47A1"
-            :loading="loading"
-            @click="save"
+          <v-btn class="px-6" dark depressed color="#0D47A1" :loading="loading" @click="save"
             ><v-icon left>add</v-icon>Thêm</v-btn
           >
         </v-row>
@@ -64,9 +51,7 @@ export default {
       academicLevel: {},
       titleRule: v => {
         const title = textHelpers.removeSpaces(v)
-        const d = this.divisions.find(
-          d => d.title === title && d.academicLevel.id === this.academicLevel.id
-        )
+        const d = this.divisions.find(d => d.title === title && d.academicLevel.id === this.academicLevel.id)
         return !d || 'Phân ban này đã tồn tại'
       }
     }
