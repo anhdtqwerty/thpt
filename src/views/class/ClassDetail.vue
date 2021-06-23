@@ -68,7 +68,7 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import { get } from 'lodash'
+import { get, map } from 'lodash'
 import Breadcrumbs from '@/components/layout/Breadcrumbs.vue'
 import ClassUpdateDialog from '@/modules/class/ClassUpdateDialog.vue'
 import ClassTabs from '@/modules/class/ClassTabs.vue'
@@ -211,7 +211,7 @@ export default {
     },
     getTeacher(data) {
       if (!data || !data.length) return 'không có'
-      else return data[0].name
+      else return map(data, 'name').join(', ')
     },
     getGeneration(generation) {
       if (!generation) return 'không có'
