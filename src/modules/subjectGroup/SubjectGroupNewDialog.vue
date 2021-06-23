@@ -62,8 +62,6 @@ export default {
       loading: false,
       academicLevel: {},
       title: '',
-      division: '',
-      subjectgroup: '',
       titleRule: v => {
         const title = textHelpers.removeSpaces(v)
         const g = this.subjectGroups.find(
