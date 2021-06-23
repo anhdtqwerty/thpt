@@ -73,7 +73,6 @@ export default {
         min: v => v.length >= 6 || 'Ít nhất 6 ký tự',
         email: v => /.+@.+/.test(v) || 'Email chưa đúng định dạng',
         date: v => moment(v, 'DD/MM/YYYY', true).isValid() || 'Ngày sinh không hợp lệ',
-        phone: v => textHelpers.getNumber(v) || 'Số điện thoại không hợp lệ'
       }
     }
   },

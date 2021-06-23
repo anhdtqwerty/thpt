@@ -11,7 +11,7 @@
         <v-text-field v-model="district" label="Quận/Huyện" outlined hide-details dense></v-text-field>
       </v-col>
       <v-col class="pb-0" cols="12" md="6">
-        <v-text-field v-model="phone" label="Số điện thoại" outlined dense :rules="[rules.phone]"></v-text-field>
+        <v-text-field v-model="phone" label="Số điện thoại" outlined dense :rules="[$rules.phone]"></v-text-field>
       </v-col>
       <v-col class="pb-0" cols="12" md="6">
         <v-text-field v-model="email" label="Email" outlined dense></v-text-field>
@@ -19,10 +19,7 @@
     </v-row>
   </v-form>
 </template>
-
 <script>
-// import { get } from 'lodash'
-import { textHelpers } from '@/helpers/TextHelper.js'
 export default {
   props: {
     student: {

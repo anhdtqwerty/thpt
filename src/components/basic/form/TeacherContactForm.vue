@@ -37,7 +37,6 @@
 <script>
 import { get } from 'lodash'
 import { v4 as uuidv4 } from 'uuid'
-import { textHelpers } from '@/helpers/TextHelper.js'
 export default {
   props: {
     teacher: Object,
