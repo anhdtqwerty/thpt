@@ -24,6 +24,7 @@
 </template>
 <script>
 import { mapState } from 'vuex'
+import { get } from 'lodash'
 export default {
   data() {
     return {}
@@ -37,7 +38,7 @@ export default {
   filters: {
     getSubjectGroupName(id, subjectGroups) {
       const subjectGroup = subjectGroups.find(item => item.id === id)
-      return subjectGroup.title || ''
+      return get(subjectGroup, 'title ', 'Không có')
     }
   }
 }
