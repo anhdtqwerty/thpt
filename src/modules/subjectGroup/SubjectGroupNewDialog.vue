@@ -21,7 +21,7 @@
       </v-card-text>
       <v-card-actions>
         <v-row class="ma-2" no-gutters>
-          <v-btn class="px-4" outlined light depressed @click="dialog = false">Hủy</v-btn>
+          <v-btn class="px-4" outlined light depressed @click="cancle">Hủy</v-btn>
           <v-spacer></v-spacer>
           <v-btn class="px-4" dark depressed color="#0D47A1" :loading="loading" @click="save"
             ><v-icon left>add</v-icon>Thêm</v-btn
@@ -57,8 +57,6 @@ export default {
     }
   },
   computed: {
-    ...mapState('app', ['roles', 'department']),
-    ...mapState('auth', ['user']),
     ...mapState('SubjectGroup', ['subjectGroups'])
   },
   methods: {
@@ -84,10 +82,15 @@ export default {
       this.title = ''
       this.$refs.form.resetValidation()
     },
+    cancel() {
+      this.dialog = false
+      this.reset()
+    },
     resetValidation() {
       this.$refs.form.resetValidation()
     }
   },
+
   watch: {
     state(state) {
       this.fetchSubjectGroups({})

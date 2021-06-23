@@ -47,7 +47,6 @@ export default {
       dialog: false,
       loading: false,
       title: '',
-      division: '',
       academicLevel: {},
       titleRule: v => {
         const title = textHelpers.removeSpaces(v)
