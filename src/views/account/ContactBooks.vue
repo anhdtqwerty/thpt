@@ -88,13 +88,7 @@ export default {
     ...mapState('students', ['totalItems', 'students', 'pageText'])
   },
   methods: {
-    ...mapActions('students', [
-      'requestPageSettings',
-      'searchStudents',
-      'updateStudent',
-      'removeStudents',
-      'fetchStudents'
-    ]),
+    ...mapActions('students', ['requestPageSettings', 'searchStudents', 'updateStudent', 'removeStudents', 'fetchStudents']),
     async onFilterChanged(data) {
       this.$refs.table.refresh(data)
     }
