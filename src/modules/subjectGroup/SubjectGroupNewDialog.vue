@@ -21,7 +21,7 @@
       </v-card-text>
       <v-card-actions>
         <v-row class="ma-2" no-gutters>
-          <v-btn class="px-4" outlined light depressed @click="cancle">Hủy</v-btn>
+          <v-btn class="px-4" outlined light depressed @click="cancel">Hủy</v-btn>
           <v-spacer></v-spacer>
           <v-btn class="px-4" dark depressed color="#0D47A1" :loading="loading" @click="save"
             ><v-icon left>add</v-icon>Thêm</v-btn
