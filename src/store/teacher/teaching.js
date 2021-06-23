@@ -19,7 +19,15 @@ export default {
           grade: query.grade,
           subjectGroup: query.subjectGroup
         })
-        const classes = await Class.fetch({ _limit: -1, id: query.class, grade: query.grade, status: 'running' })
+        const classQuery = {
+          _limit: -1,
+          id: query.class,
+          grade: query.grade,
+          status: 'running',
+          generation: query.generation,
+          department: query.department
+        }
+        const classes = await Class.fetch(classQuery)
         const teachings = await Teachings.fetch({ _limit: -1, teacher: query.teacher })
         let teachingsTemp = []
         classes.map(c => {

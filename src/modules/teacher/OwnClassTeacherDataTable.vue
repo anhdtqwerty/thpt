@@ -37,7 +37,7 @@
   </v-data-table>
 </template>
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState, mapGetters } from 'vuex'
 import CardTeacherName from '@/components/basic/card/CardTeacherName.vue'
 
 const originHeaders = [
@@ -97,12 +97,13 @@ export default {
     }
   },
   computed: {
-    ...mapState('ownClassTeacher', ['ownClassTeacherData'])
+    ...mapState('ownClassTeacher', ['ownClassTeacherData']),
+    ...mapGetters('app', ['commonQuery'])
   },
   methods: {
     ...mapActions('ownClassTeacher', ['searchOwnClassTeacher']),
     refresh(query) {
-      this.searchOwnClassTeacher(query)
+      this.searchOwnClassTeacher({ ...query, ...this.commonQuery })
     }
   },
   created() {

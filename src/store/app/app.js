@@ -203,6 +203,12 @@ export default {
           return role.type.localeCompare(type) === 0
         }) || {}
       return id
+    },
+    commonQuery(state) {
+      return {
+        generation: state.currentGeneration.id,
+        department: state.department.id
+      }
     }
   }
 }

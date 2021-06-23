@@ -63,7 +63,7 @@ export default {
       this.$emit('onFilterChanged', {
         classId: get(this.classData, 'id'),
         teacher: this.teacher,
-        gradeId: this.grade
+        grade: this.grade
       })
     },
     gradeChanged(grade) {
