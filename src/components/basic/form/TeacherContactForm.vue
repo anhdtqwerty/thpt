@@ -18,7 +18,14 @@
         <v-text-field ref="province" v-model="province" label="Tỉnh/ Thành phố" outlined hide-details dense />
       </v-col>
       <v-col class="pb-0" cols="12" md="6">
-        <v-text-field v-model="phone" label="Điện thoại" outlined dense class="required" :rules="[$rules.required]" />
+        <v-text-field
+          v-model="phone"
+          label="Điện thoại"
+          outlined
+          dense
+          class="required"
+          :rules="[$rules.required, $rules.phone]"
+        />
       </v-col>
       <v-col class="pb-0" cols="12" md="6">
         <v-text-field v-model="email" label="Email" outlined dense :rules="[$rules.email]" />
