@@ -84,7 +84,7 @@
               flat
               outlined
               dense
-              hide-details
+              :rules="[$rules.phone]"
             />
           </v-col>
           <v-col md="4">
