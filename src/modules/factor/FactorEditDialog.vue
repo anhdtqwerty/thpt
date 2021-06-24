@@ -29,7 +29,7 @@
 
         <div class="d-flex flex-row pt-5">
           <p class="mr-5">Đầu điểm</p>
-          <p>Điểm kiểm tra miệng</p>
+          <p>Điểm kiểm tra {{ factor.title }}</p>
         </div>
         <FactorEditForm :factor="factor" ref="form" :state="dialog" />
       </v-card-text>

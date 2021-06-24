@@ -126,12 +126,7 @@ export default {
   },
   methods: {
     onFilterChanged() {
-      this.$emit('onFilterChanged', {
-        id: this.id,
-        name_contains: this.name,
-        subject: this.subject.id,
-        type: this.type
-      })
+      this.$emit('onFilterChanged', {})
     },
     gradeChanged(grade) {
       this.grade = grade

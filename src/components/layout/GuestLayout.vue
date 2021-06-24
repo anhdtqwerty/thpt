@@ -32,25 +32,17 @@ export default {
   },
   computed: {
     ...mapGetters('auth', ['user', 'profile', 'isAuthenticated']),
-    ...mapGetters('app', ['users', 'department', 'roles']),
+    ...mapGetters('app', ['department', 'roles']),
     simpleLayout() {
       const { meta = {}, matched = [] } = this.$route
-      return (
-        meta.auth === false || matched.some(route => route.meta.auth === false)
-      )
+      return meta.auth === false || matched.some(route => route.meta.auth === false)
     },
     isDesktop() {
       return true
     }
   },
   methods: {
-    ...mapActions('app', [
-      'fetchRoles',
-      'fetchStaffs',
-      'setDepartment',
-      'fetchDepartment',
-      'setPolicies'
-    ]),
+    ...mapActions('app', ['fetchRoles', 'fetchStaffs', 'setDepartment', 'fetchDepartment', 'setPolicies']),
     ...mapActions('course', ['fetchCourses']),
     ...mapActions('auth', ['fetchProfile', 'fetchTeacher', 'setRole']),
     toggleDrawer(...state) {

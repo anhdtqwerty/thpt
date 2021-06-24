@@ -4,12 +4,20 @@
       <v-col cols="12">
         <v-row class="basic-filter">
           <v-col cols="12" md="4">
-            <AutocompleteGrade placeholder="Khối" outlined dense hide-details @change="gradeChanged" />
+            <AutocompleteGrade
+              return-object
+              v-model="grade"
+              label="Khối"
+              outlined
+              dense
+              hide-details
+              @change="gradeChanged"
+            />
           </v-col>
           <v-col cols="12" md="4">
             <AutocompleteClass
               v-model="classData"
-              placeholder="Lớp"
+              label="Lớp"
               outlined
               dense
               hide-details
@@ -21,11 +29,13 @@
             <AutocompleteStudent
               :syncedValue.sync="student"
               return-object
-              placeholder="Học sinh"
+              label="Học sinh"
               outlined
               dense
               hide-details
               :filter="currentClassId"
+              item-text="display"
+              item-value="id"
             />
           </v-col>
         </v-row>
@@ -49,6 +59,7 @@ import AutocompleteGrade from '@/components/basic/input/AutocompleteGrade'
 import RadioSemester from '@/components/basic/input/RadioSemester'
 import AutocompleteStudent from '@/components/basic/input/AutocompleteStudent'
 import { get } from 'lodash'
+import { Student } from '../../../plugins/api'
 
 export default {
   components: {
@@ -64,11 +75,14 @@ export default {
     grade: '',
     student: {}
   }),
+  props: {
+    defaultStudentId: { type: String, default: () => '' }
+  },
   computed: {
     ...mapState('app', ['currentGeneration']),
 
     classFilter() {
-      return this.grade ? { grade: this.grade } : {}
+      return { grade: get(this.grade, 'id') }
     },
     currentClassId() {
       return { currentClass: get(this.classData, 'id') }
@@ -81,15 +95,31 @@ export default {
     onFilterChanged() {
       this.$emit('onFilterChanged', {
         class: this.classData,
-        grade: this.grade,
         semester: this.semesterData,
-        student: this.student
+        student: this.student,
+        grade: this.student.grade.id
       })
     },
     gradeChanged(grade) {
       this.grade = grade
       this.classData = null
       this.student = null
+    }
+  },
+  watch: {
+    async defaultStudentId(newValue) {
+      if (newValue) {
+        const student = await Student.fetchOne(newValue)
+        this.student = student
+        this.classData = student.currentClass
+        this.grade = student.grade
+        this.$emit('onFilterChanged', {
+          class: student.currentClass,
+          semester: this.semesterData,
+          student: student,
+          grade: student.grade.id
+        })
+      }
     }
   }
 }

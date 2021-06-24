@@ -41,7 +41,7 @@ export default {
     ...mapState('auth', ['user'])
   },
   methods: {
-    ...mapActions('violation', ['updateViolation', 'fetchViolation']),
+    ...mapActions('violation', ['updateViolation']),
     async save() {
       this.loading = true
       const data = this.$refs.form.getData()

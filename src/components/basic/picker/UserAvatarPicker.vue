@@ -21,7 +21,7 @@
 import { mapActions } from 'vuex'
 export default {
   props: {
-    student: Object,
+    user: Object,
     type: String
   },
   data: () => ({
@@ -30,14 +30,17 @@ export default {
   }),
   computed: {
     avatar() {
-      if (this.student && this.student.avatar) {
-        return this.student.avatar.url
+      if (this.user && this.user.avatar) {
+        return this.user.avatar.url
       }
       return this.url
     }
   },
   methods: {
-    ...mapActions('student', ['uploadAvatar', 'destroyAvatar']),
+    ...mapActions('student', { uploadStudentAvatar: 'uploadAvatar' }),
+    ...mapActions('student', { destroyStudentAvatar: 'destroyAvatar' }),
+    ...mapActions('teacher', { uploadTeacherAvatar: 'uploadAvatar' }),
+    ...mapActions('teacher', { destroyTeacherAvatar: 'destroyAvatar' }),
     onChange(file) {
       if (file) {
         this.save(file)
@@ -50,21 +53,25 @@ export default {
         okText: 'Có',
         cancelText: 'Hủy',
         done: () => {
-          this.destroyAvatar(this.student.avatar.id)
+          this.type === 'teacher'
+            ? this.destroyTeacherAvatar(this.user.avatar.id)
+            : this.destroyStudentAvatar(this.user.avatar.id)
         }
       })
     },
     save(image) {
-      if (this.student) {
-        if (this.student.avatar) {
-          this.destroyAvatar(this.student.avatar.id)
+      if (this.user) {
+        if (this.user.avatar) {
+          this.type === 'teacher'
+            ? this.destroyTeacherAvatar(this.user.avatar.id)
+            : this.destroyStudentAvatar(this.user.avatar.id)
         }
         let formData = new FormData()
         formData.append('files', image)
-        formData.append('refId', this.student.id)
+        formData.append('refId', this.user.id)
         formData.append('ref', this.type)
         formData.append('field', 'avatar')
-        this.uploadAvatar(formData)
+        this.type === 'teacher' ? this.uploadTeacherAvatar(formData) : this.uploadStudentAvatar(formData)
       }
     }
   },

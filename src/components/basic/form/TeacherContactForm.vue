@@ -1,72 +1,78 @@
 <template>
-  <v-form v-model="valid" ref="form" v-bind="this.$attrs">
+  <v-form ref="form" v-bind="this.$attrs">
     <v-row>
-      <v-col cols="12">
+      <v-col class="pb-0" cols="12">
         <v-text-field
-          ref="currentLive"
           v-model="currentLive"
-          label="Địa chỉ hiện tại"
+          label="Địa chỉ liên hệ hiện tại"
           outlined
           dense
-        ></v-text-field>
+          class="required"
+          :rules="[$rules.required]"
+        />
+      </v-col>
+      <v-col class="pt-0" cols="12" md="6">
+        <v-text-field v-model="district" label="Quận/ Huyện" outlined hide-details dense />
+      </v-col>
+      <v-col class="pt-0" cols="12" md="6">
+        <v-text-field ref="province" v-model="province" label="Tỉnh/ Thành phố" outlined hide-details dense />
+      </v-col>
+      <v-col class="pb-0" cols="12" md="6">
         <v-text-field
-          ref="province"
-          v-model="province"
-          label="Tỉnh/thành phố đang sống"
+          v-model="phone"
+          label="Điện thoại"
           outlined
           dense
-        ></v-text-field>
-        <v-text-field
-          ref="landlinePhone"
-          v-model="landlinePhone"
-          label="Điện thoại nhà riêng"
-          outlined
-          dense
-        ></v-text-field>
+          class="required"
+          :rules="[$rules.required, $rules.phone]"
+        />
+      </v-col>
+      <v-col class="pb-0" cols="12" md="6">
+        <v-text-field v-model="email" label="Email" outlined dense :rules="[$rules.email]" />
       </v-col>
     </v-row>
   </v-form>
 </template>
 
 <script>
-// import { get } from 'lodash'
+import { get } from 'lodash'
+import { v4 as uuidv4 } from 'uuid'
 export default {
   props: {
-    teacher: {
-      type: [Object],
-      default: () => {}
-    }
+    teacher: Object,
+    formState: Boolean
   },
   data: () => ({
-    valid: true,
     currentLive: '',
     province: '',
-    mobilePhone: '',
-    landlinePhone: '',
-    rules: {
-      required: value => !!value || 'Required.',
-      min: v => v.length >= 6 || 'Min 8 characters',
-      email: v => /.+@.+/.test(v) || 'E-mail must be valid'
-    }
+    district: '',
+    phone: '',
+    email: ''
   }),
+  computed: {},
   created() {
-    if (this.teacher) {
-      this.currentLive = this.teacher.metadata.currentLive
-      this.province = this.teacher.metadata.province
-      this.mobilePhone = this.teacher.metadata.mobilePhone
-      this.landlinePhone = this.teacher.metadata.landlinePhone
-    }
+    this.initData()
   },
   methods: {
     validate() {
       return this.$refs.form.validate()
     },
+    initData() {
+      if (this.teacher) {
+        this.currentLive = get(this.teacher, 'metadata.currentLive')
+        this.province = get(this.teacher, 'metadata.province')
+        this.district = get(this.teacher, 'metadata.district')
+        this.phone = this.teacher.phone
+        this.email = this.teacher.email
+      }
+    },
     getData() {
       return {
         currentLive: this.currentLive,
         province: this.province,
-        mobilePhone: this.mobilePhone,
-        landlinePhone: this.landlinePhone
+        district: this.district,
+        phone: this.phone,
+        email: this.email ? this.email : uuidv4() + '@gmail.com'
       }
     },
     reset() {
@@ -77,8 +83,10 @@ export default {
     }
   },
   watch: {
-    teacher(teacher) {
-      this.reset()
+    formState(formState) {
+      if (!formState) {
+        this.initData()
+      }
     }
   }
 }

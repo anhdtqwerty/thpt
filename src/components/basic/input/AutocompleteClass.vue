@@ -45,6 +45,7 @@ export default {
       this.loading = true
       this.classes = await Class.fetch({
         ...this.filter,
+        _limit: -1,
         department: this.department.id,
         status: 'running',
         _sort: 'grade.gradeNumber:ASC'

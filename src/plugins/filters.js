@@ -1,15 +1,19 @@
 import moment from 'moment'
 import Vue from 'vue'
-
+import _ from 'lodash'
 export const vueFilterRegister = () => {
   Vue.filter('ordinalNumber', (item, list) => list.indexOf(item) + 1)
   Vue.filter('ddmmyyyy', isoStr => (isoStr ? moment(isoStr).format('DD/MM/YYYY') : ''))
   Vue.filter('ddmmyyyyhhmm', isoStr => (isoStr ? moment(isoStr).format('DD/MM/YYYY HH:mm') : ''))
   Vue.filter('hhmm', isoStr => (isoStr ? moment(isoStr).format('HH:mm') : '--:--'))
+  Vue.filter('ddmmhhmm', isoStr => (isoStr ? moment(isoStr).format('DD/MM HH:mm') : '--:--'))
   Vue.filter('gender', gender => {
     if (gender === 'male') return 'Nam'
     else if (gender === 'female') return 'Nữ'
     return 'Khác'
+  })
+  Vue.filter('_get', (any, path, defaultValue = '') => {
+    return _.get(any, path, defaultValue)
   })
   Vue.filter('status', status => {
     switch (status) {
@@ -38,6 +42,9 @@ export const vueFilterRegister = () => {
     }
   })
   Vue.filter('getStudentCode', code => {
+    return code.substr(0, 5)
+  })
+  Vue.filter('getTeacherCode', code => {
     return code.substr(0, 5)
   })
   Vue.filter('classStatusColor', status => {
@@ -82,6 +89,12 @@ export const vueFilterRegister = () => {
     if (item.contactBook.isSms && item.contactBook.isApp) return 'APP và SMS'
     if (item.contactBook.isSms) return 'SMS'
     if (item.contactBook.isApp) return 'APP'
+  })
+  Vue.filter('getSenderMethod', senderMethod => {
+    if (!senderMethod) return ''
+    if (senderMethod === 'auto') return 'Tự động'
+    if (senderMethod === 'sms') return 'SMS'
+    if (senderMethod === 'app') return 'APP'
   })
   Vue.filter('getPostType', type => {
     switch (type) {
@@ -145,6 +158,14 @@ export const vueFilterRegister = () => {
         return 'Đi muộn'
       case 'onTime':
         return 'Đúng giờ'
+    }
+  })
+  Vue.filter('teacherStatus', status => {
+    switch (status) {
+      case 'active':
+        return 'Đang dạy'
+      case 'left':
+        return 'Đã nghỉ'
       default:
         return ''
     }
@@ -157,6 +178,26 @@ export const vueFilterRegister = () => {
         return '#46BE8A'
       default:
         return 'gray'
+    }
+  })
+  Vue.filter('teacherType', status => {
+    switch (status) {
+      case 'long-term':
+        return 'Biên chế'
+      case 'short-term':
+        return 'Thỉnh giảng'
+      default:
+        return ''
+    }
+  })
+  Vue.filter('teacherLevel', level => {
+    switch (level) {
+      case 'university-level':
+        return 'Đại học'
+      case 'college-level':
+        return 'Cao đẳng'
+      default:
+        return ''
     }
   })
 }

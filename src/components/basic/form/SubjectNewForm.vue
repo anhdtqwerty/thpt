@@ -167,7 +167,8 @@ export default {
       subjectGroup: '',
       defaultSubjectTypes: defaultSubjectTypes,
       titleRule: v => {
-        return !map(this.subjects, 'title').includes(v) || 'Đã có môn học này'
+        const title = textHelpers.removeSpaces(v)
+        return !map(this.subjects, 'title').includes(title) || 'Đã có môn học này'
       }
     }
   },

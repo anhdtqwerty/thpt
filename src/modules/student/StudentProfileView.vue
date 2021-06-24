@@ -1,7 +1,7 @@
 <template>
   <v-row no-gutters v-if="student">
     <v-col cols="12" md="4" class="text-center">
-      <user-avatar-picker :student="student" type="student" />
+      <user-avatar-picker :user="student" type="student" />
       <h2>{{ student.name }}</h2>
       <table class="info-student-general mx-6">
         <tr>
@@ -114,6 +114,7 @@
             <td>{{ student.data.dadEmail }}</td>
           </tr>
         </table>
+
         <h4>Thông tin về mẹ (Người giám hộ)</h4>
         <table>
           <tr>
@@ -147,11 +148,11 @@ import UserAvatarPicker from '@/components/basic/picker/UserAvatarPicker'
 
 export default {
   components: {
-    UserAvatarPicker,
+    UserAvatarPicker
   },
   props: {
-    student: Object,
-  },
+    student: Object
+  }
 }
 </script>
 

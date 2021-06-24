@@ -13,7 +13,7 @@
         <date-picker
           :disabled="!isYoung"
           :date.sync="youngJoinedDate"
-          :rules="[$rules.date]"
+          :rules="isYoung ? [$rules.date] : []"
           label="Ngày vào Đội"
           outlined
           dense
@@ -28,7 +28,7 @@
         <date-picker
           :disabled="!isCommunist"
           :date.sync="communistJoinedDate"
-          :rules="[$rules.date]"
+          :rules="isCommunist ? [$rules.date] : []"
           label="Ngày vào Đoàn"
           dense
           outlined

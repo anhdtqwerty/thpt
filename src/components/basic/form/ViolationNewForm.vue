@@ -69,7 +69,7 @@ import AutocompleteClass from '@/components/basic/input/AutocompleteClass.vue'
 import AutocompleteStudent from '@/components/basic/input/AutocompleteStudent.vue'
 import DateIOSPicker from '@/components/basic/picker/DateIOSPicker.vue'
 import RadioViolation from '@/modules/violation/RadioViolation.vue'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import { get } from 'lodash'
 import moment from 'moment'
 
@@ -91,6 +91,8 @@ export default {
   }),
   computed: {
     ...mapGetters('app', ['department']),
+    ...mapState('app', ['currentGeneration', 'currentSemester']),
+
     gradeId() {
       return { grade: get(this.grade, 'id') }
     },
@@ -131,7 +133,9 @@ export default {
           student: this.student,
           classData: this.classData,
           type: this.type,
-          date: this.time
+          date: this.time,
+          semester: this.currentSemester.id,
+          generation: this.currentGeneration.id
         }
       }
     },

@@ -28,6 +28,7 @@
 </template>
 <script>
 import { mapState } from 'vuex'
+import { get } from 'lodash'
 export default {
   components: {},
   data() {
@@ -49,10 +50,10 @@ export default {
     },
     getData() {
       if (this.$refs.form.validate()) {
-        const semester2Id = this.subject.factors.find(
-          f => f.type === this.factor.type && f.semesterType === 'semester-2'
-        ).id
+        const semester2 = this.subject.factors.find(f => f.type === this.factor.type && f.semesterType === 'semester-2')
+        const semester2Id = get(semester2, 'id')
         let factorClone = JSON.parse(JSON.stringify(this.factor))
+        factorClone.quantity = this.maxMark || 1
         if (factorClone && factorClone.data != null) {
           factorClone.data.minMark = this.minMark
           factorClone.data.maxMark = this.maxMark

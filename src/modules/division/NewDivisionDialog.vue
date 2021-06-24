@@ -13,7 +13,7 @@
             dense
             v-model="title"
             class="required mt-4"
-            :rules="[$rules.required]"
+            :rules="[$rules.required, titleRule]"
             label="Tên ban"
           />
           <RadioAcademicLevel @change="academicLevel = $event" />
@@ -35,6 +35,7 @@
 <script>
 import { mapActions, mapState } from 'vuex'
 import RadioAcademicLevel from '@/modules/academicLevel/RadioAcademicLevel.vue'
+import { textHelpers } from '@/helpers/TextHelper.js'
 
 export default {
   components: { RadioAcademicLevel },
@@ -46,20 +47,29 @@ export default {
       dialog: false,
       loading: false,
       title: '',
-      academicLevel: {}
+      academicLevel: {},
+      titleRule: v => {
+        const title = textHelpers.removeSpaces(v)
+        const d = this.divisions.find(d => d.title === title && d.academicLevel.id === this.academicLevel.id)
+        return !d || 'Phân ban này đã tồn tại'
+      }
     }
   },
   computed: {
     ...mapState('app', ['roles', 'department']),
-    ...mapState('auth', ['user'])
+    ...mapState('auth', ['user']),
+    ...mapState('division', ['divisions'])
   },
   methods: {
-    ...mapActions('division', ['createDivision']),
+    ...mapActions('division', ['createDivision', 'fetchDivision']),
     async save() {
       if (!this.$refs.form.validate()) return
       try {
         this.loading = true
-        await this.createDivision({ title: this.title, academicLevel: this.academicLevel.id })
+        await this.createDivision({
+          title: this.title,
+          academicLevel: this.academicLevel.id
+        })
         this.$alert.addSuccess()
         this.reset()
         this.dialog = false
@@ -72,12 +82,17 @@ export default {
     reset() {
       this.title = ''
       this.$refs.form.resetValidation()
+    },
+    resetValidation() {
+      this.$refs.form.resetValidation()
     }
   },
   watch: {
     state(state) {
+      this.fetchDivision({})
       this.dialog = true
-    }
+    },
+    academicLevel: 'resetValidation'
   }
 }
 </script>

@@ -7,6 +7,8 @@ import Staffs from '@/views/staff/Staffs'
 import Staff from '@/views/staff/Staff'
 // ---------------- TEACHER -------------------------------
 import Teachers from '@/views/teacher/Teachers'
+import Teaching from '@/views/teacher/Teaching'
+import OwnClassTeacher from '@/views/teacher/OwnClassTeacher'
 import TeacherDashboard from '@/views/teacher/Dashboard'
 import TeacherAttendance from '@/views/teacher/Attendances'
 import TeacherClasses from '@/views/teacher/Classes'
@@ -61,6 +63,7 @@ import Academics from '@/views/academicLevel/Academics.vue'
 import PostCreate from '@/views/post/PostCreate.vue'
 import PostCreateAuto from '@/views/post/PostCreateAuto.vue'
 import PostCreateHistory from '@/views/post/PostCreateHistory.vue'
+import Generation from '@/views/generation/Generation.vue'
 // -----------------------Contact Book---------------------------------
 import ContactBook from '@/views/account/ContactBooks.vue'
 import StudentContactBookDetail from '@/modules/contactBook/StudentContactBookDetail.vue'
@@ -166,6 +169,15 @@ const routes = [
         name: 'Generations',
         meta: {
           title: 'Niên khóa',
+          auth: true
+        }
+      },
+      {
+        path: 'generation',
+        component: Generation,
+        name: 'Generation',
+        meta: {
+          title: 'Năm học',
           auth: true
         }
       },
@@ -294,6 +306,26 @@ const routes = [
         props: { role: 'teacher' },
         meta: {
           title: 'Giáo Viên',
+          auth: true
+        }
+      },
+      {
+        path: 'teaching',
+        name: 'teaching',
+        component: Teaching,
+        props: { role: 'teacher' },
+        meta: {
+          title: 'Giảng dạy',
+          auth: true
+        }
+      },
+      {
+        path: 'ownClassTeacher',
+        name: 'ownClassTeacher',
+        component: OwnClassTeacher,
+        props: { role: 'teacher' },
+        meta: {
+          title: 'Chủ nhiệm',
           auth: true
         }
       },

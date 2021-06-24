@@ -2,6 +2,8 @@ import Vuex from 'vuex'
 import Vue from 'vue'
 import createPersistedState from 'vuex-persistedstate'
 
+import Dashboard from '@/store/dashboard/Dashboard.js'
+
 import classModule from './learning/class'
 import classDetail from './learning/classDetail'
 import category from './other/category'
@@ -43,6 +45,9 @@ import departmentDashboard from '@/store/dashboard/departmentDashboard.js'
 import role from './app/role'
 import staff from './user/staff'
 import teacher from './user/teacher'
+import ownClassTeacher from './teacher/ownClassTeacher'
+import teaching from './teacher/teaching'
+import teachers from './user/teachers'
 import showcases from './department/showcases'
 import teacherDashboard from './dashboard/teacherDashboard'
 
@@ -71,6 +76,7 @@ import SmsHistory from './smsHistory/SmsHistory'
 import AppHistory from './appHistory/AppHistory'
 import StudentPostHistory from './contactBook/StudentPostHistory'
 import AttendanceDetail from './student/AttendanceDetail'
+import Generation from '@/store/generation/Generation.js'
 import AcademicLevel from './academicLevel/AcademicLevel'
 
 Vue.use(Vuex)
@@ -84,6 +90,7 @@ export default createStore(Vuex.Store, {
     axiosPlugin
   ],
   modules: {
+    Dashboard,
     rest,
     attendance,
     auth,
@@ -91,6 +98,9 @@ export default createStore(Vuex.Store, {
     user,
     staff,
     teacher,
+    teachers,
+    teaching,
+    ownClassTeacher,
     class: classModule,
     generation,
     semester,
@@ -130,6 +140,7 @@ export default createStore(Vuex.Store, {
     AppHistory,
     StudentPostHistory,
     AttendanceDetail,
+    Generation,
     AcademicLevel
   },
   mixins: {

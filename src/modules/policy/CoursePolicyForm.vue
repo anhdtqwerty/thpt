@@ -37,7 +37,7 @@ export default {
       type: [Object]
     }
   },
-  data () {
+  data() {
     return {
       policy: {
         'view-class': false,
@@ -50,27 +50,26 @@ export default {
       }
     }
   },
-  created: async function () {
+  created: async function() {
     this.policy = this.input || this.getDefaultPolicies()
   },
   computed: {
-    ...mapGetters('app', ['users']),
     ...mapGetters('role', ['role', 'roles'])
   },
   methods: {
-    save () {
+    save() {
       this.$emit('save', this.policy)
     },
-    cancel () {
+    cancel() {
       this.$emit('cancel')
     },
-    reset () {
+    reset() {
       this.policy = this.input
     },
-    changeRole (index) {
+    changeRole(index) {
       this.setRole(this.roles[index])
     },
-    getDefaultPolicies () {
+    getDefaultPolicies() {
       return {
         'view-class': false,
         'add-student-to-class': false,
@@ -83,12 +82,11 @@ export default {
     }
   },
   watch: {
-    input (input) {
+    input(input) {
       this.policy = input || this.getDefaultPolicies()
     }
   }
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

@@ -32,7 +32,8 @@ export default {
   methods: {
     async fetchFactor() {
       this.factors = await Factor.fetch({
-        ...this.filter
+        ...this.filter,
+        _sort: 'index:ASC'
       })
     },
     onChange(data) {

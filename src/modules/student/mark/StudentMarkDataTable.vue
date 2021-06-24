@@ -4,10 +4,10 @@
       <thead>
         <tr>
           <th rowspan="2">Môn học</th>
-          <th class="semseter-header" :colspan="colspan || 30">{{ semester.title }}</th>
+          <th class="semseter-header" :colspan="30">{{ semester.title }}</th>
         </tr>
         <tr>
-          <td v-for="factor in factors" :key="factor.id" :colspan="factor.quantity || 1">
+          <td v-for="factor in factors" :key="factor.id" :colspan="factor.quantity">
             {{ factor.title }}
           </td>
         </tr>
@@ -41,7 +41,7 @@ import { mapState } from 'vuex'
 export default {
   data() {
     return {
-      colspan: 0
+      // colspan: 0
     }
   },
   components: {},
@@ -55,7 +55,7 @@ export default {
   },
   methods: {},
   created() {
-    if (this.subjectMarks) this.colspan = first(this.subjectMarks).marks.length
+    // if (this.subjectMarks) this.colspan = first(this.subjectMarks).marks.length
   }
 }
 </script>

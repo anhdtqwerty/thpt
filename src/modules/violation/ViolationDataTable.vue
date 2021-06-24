@@ -1,16 +1,15 @@
 <template>
   <v-data-table
+    :server-items-length="totalItems"
     :hide-default-footer="hideFooter"
     :loading="loading"
     :headers="headers ? headers : originHeaders"
+    :options.sync="tableOptions"
     :items="violations"
     item-key="id"
     v-model="selected"
     mobile-breakpoint="0"
-    :footer-props="{
-      'items-per-page-text': 'Khen thưởng kỷ luật mỗi trang',
-      'items-per-page-all-text': 'Tất cả'
-    }"
+    :footer-props="footerTable"
   >
     <template v-slot:[`item.action`]="{ item }">
       <violation-actions :selected="item"> </violation-actions>
@@ -33,21 +32,13 @@
         </span>
       </v-chip>
     </template>
-    <template v-if="!hideFooter" v-slot:top="{ pagination, options, updateOptions }">
-      <v-data-footer
-        :pagination="pagination"
-        :options="options"
-        @update:options="updateOptions"
-        items-per-page-text=""
-        items-per-page-all-text="Tất cả"
-      />
-    </template>
   </v-data-table>
 </template>
 
 <script>
 import ViolationActions from '@/modules/violation/ViolationListActions.vue'
 import CardStudentName from '@/components/basic/card/CardStudentName.vue'
+import { mapActions, mapState } from 'vuex'
 
 const originHeaders = [
   {
@@ -99,7 +90,8 @@ export default {
     return {
       originHeaders: originHeaders,
       selected: [],
-      loading: false
+      loading: false,
+      tableOptions: {}
     }
   },
   components: {
@@ -108,13 +100,48 @@ export default {
   },
   props: {
     headers: { type: Array, default: () => null },
-    violations: Array,
     hideFooter: { type: Boolean, default: () => false }
   },
+  computed: {
+    ...mapState('violation', ['violations', 'totalItems', 'pageText']),
+
+    footerTable() {
+      let footer = {
+        'items-per-page-text': 'Khen thưởng kỷ luật mỗi trang',
+        'items-per-page-all-text': 'Tất cả',
+        'items-per-page': 10,
+        'page-text': this.pageText
+      }
+      if (this.totalItems > 100) {
+        footer['items-per-page-options'] = [5, 10, 15]
+      }
+      return footer
+    }
+  },
   methods: {
+    ...mapActions('violation', ['searchViolations', 'requestPageSettings']),
+
     getColor(s) {
       if (s === 'violation') return 'orange'
       else return '#46BE8A'
+    },
+    refresh(query) {
+      this.searchViolations(query)
+    }
+  },
+  watch: {
+    tableOptions: {
+      handler(newOptions, oldOptions) {
+        const itemPerPageChanged = newOptions.itemsPerPage !== oldOptions.itemsPerPage
+        const pageChanged = newOptions.page !== oldOptions.page
+        if (pageChanged || itemPerPageChanged) {
+          this.requestPageSettings({
+            page: newOptions.page,
+            itemsPerPage: newOptions.itemsPerPage
+          })
+        }
+      },
+      deep: true
     }
   }
 }

@@ -32,7 +32,7 @@
   </v-container>
 </template>
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 
 export default {
   components: {},
@@ -48,11 +48,17 @@ export default {
   created() {
     //
   },
+  computed: {
+    ...mapState('app', ['currentGeneration'])
+  },
   methods: {
     ...mapActions('student', ['fetchSubjectMarks']),
     async fetchData() {
       if (this.student) {
-        const { subjects, marks } = await this.fetchSubjectMarks(this.student)
+        const { subjects, marks } = await this.fetchSubjectMarks({
+          student: this.student,
+          generation: this.currentGeneration.id
+        })
         this.subjectMarks = subjects.map(s => {
           const filteredMarks = marks.filter(m => m.subject.id === s.id)
           const factors = s.factors

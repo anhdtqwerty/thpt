@@ -9,8 +9,8 @@ export default {
   components: {},
   computed: {
     ...mapGetters('auth', ['user', 'profile', 'isAuthenticated']),
-    ...mapGetters('app', ['users', 'department', 'roles']),
-  },
+    ...mapGetters('app', ['department', 'roles'])
+  }
 }
 </script>
 <style>
