@@ -22,7 +22,13 @@
     <SubjectNewDialog :state="createSubject" />
 
     <v-card class="px-md-6 mx-md-4 elevation-1">
-      <v-data-table :headers="headers" :items="subjects" @click:row="onSelected" ref="subjectDataTable">
+      <v-data-table
+        :headers="headers"
+        :items="subjects"
+        @click:row="onSelected"
+        ref="subjectDataTable"
+        :footer-props="footerTable"
+      >
         <div slot="top" class="py-md-6">
           <SubjectFilter @onFilterChanged="refresh" />
         </div>
@@ -95,6 +101,18 @@ export default {
         default:
           return 'Thêm môn'
       }
+    },
+    footerTable() {
+      let footer = {
+        'items-per-page-text': 'Hiển thị mỗi trang',
+        'items-per-page-all-text': 'Tất cả',
+        'items-per-page': 10,
+        'page-text': this.pageText
+      }
+      if (this.totalItems > 100) {
+        footer['items-per-page-options'] = [5, 10, 15]
+      }
+      return footer
     }
   },
   async created() {

@@ -7,6 +7,7 @@
     :items="ownClassTeacherData"
     loading-text="Đang Tải"
     sort-by="name"
+    :footer-props="footerTable"
   >
     <template v-slot:[`item.title`]="{ item }">
       <router-link style="text-decoration: none" :to="'/class/' + item.id">
@@ -98,7 +99,16 @@ export default {
   },
   computed: {
     ...mapState('ownClassTeacher', ['ownClassTeacherData']),
-    ...mapGetters('app', ['commonQuery'])
+    ...mapGetters('app', ['commonQuery']),
+    footerTable() {
+      let footer = {
+        'items-per-page-text': 'Hiển thị mỗi trang',
+        'items-per-page-all-text': 'Tất cả',
+        'items-per-page': 10,
+        'page-text': this.pageText
+      }
+      return footer
+    }
   },
   methods: {
     ...mapActions('ownClassTeacher', ['searchOwnClassTeacher']),

@@ -19,7 +19,7 @@
     </div>
 
     <v-card class="px-md-6 mx-md-4 elevation-1">
-      <v-data-table :loading="loading" :headers="headers" :items="semesters" item-key="id">
+      <v-data-table :loading="loading" :headers="headers" :items="semesters" item-key="id" :footer-props="footerTable">
         <div slot="top" class="py-md-6">
           <div v-if="$vuetify.breakpoint.mdAndUp">
             <semester-filter @onFilterChanged="refresh"></semester-filter>
@@ -133,7 +133,19 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('semester', ['semesters'])
+    ...mapGetters('semester', ['semesters']),
+    footerTable() {
+      let footer = {
+        'items-per-page-text': 'Hiển thị mỗi trang',
+        'items-per-page-all-text': 'Tất cả',
+        'items-per-page': 10,
+        'page-text': this.pageText
+      }
+      if (this.totalItems > 100) {
+        footer['items-per-page-options'] = [5, 10, 15]
+      }
+      return footer
+    }
   },
   created() {
     this.loading = true

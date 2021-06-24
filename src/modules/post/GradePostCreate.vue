@@ -1,5 +1,13 @@
 <template>
-  <v-data-table v-model="selecteds" :headers="headers" :items="grades" item-key="title" show-select class="elevation-1">
+  <v-data-table
+    v-model="selecteds"
+    :headers="headers"
+    :items="grades"
+    item-key="title"
+    show-select
+    class="elevation-1"
+    :footer-props="footerTable"
+  >
     <div slot="top">
       <div class="d-flex justify-space-between ps-4 py-2">
         <span :class="selecteds.length ? 'text--primary' : 'text--disabled'">{{
@@ -35,7 +43,19 @@ export default {
   },
   computed: {
     ...mapGetters('postCreate', ['allSchoolItems']),
-    ...mapState('postCreate', ['grades'])
+    ...mapState('postCreate', ['grades']),
+    footerTable() {
+      let footer = {
+        'items-per-page-text': 'Hiển thị mỗi trang',
+        'items-per-page-all-text': 'Tất cả',
+        'items-per-page': 10,
+        'page-text': this.pageText
+      }
+      if (this.totalItems > 100) {
+        footer['items-per-page-options'] = [5, 10, 15]
+      }
+      return footer
+    }
   },
   methods: {
     ...mapActions('postCreate', ['fetchGradeData'])

@@ -1,16 +1,19 @@
 <template>
   <v-data-table
-    v-model='selecteds'
-    :headers='headers'
-    :items='allSchoolItems'
-    item-key='title'
+    v-model="selecteds"
+    :headers="headers"
+    :items="allSchoolItems"
+    item-key="title"
     show-select
-    class='elevation-1'
+    class="elevation-1"
+    :footer-props="footerTable"
   >
-    <div slot='top'>
-      <div class='d-flex justify-space-between ps-4 py-2'>
+    <div slot="top">
+      <div class="d-flex justify-space-between ps-4 py-2">
         <span :class="selecteds.length ? 'primary--text' : 'text--disabled'">Đã chọn toàn trường</span>
-        <v-btn small color='primary' :disabled='!selecteds.length'  @click="$emit('sendPost', { allSchool: true})">Gửi tin nhắn</v-btn>
+        <v-btn small color="primary" :disabled="!selecteds.length" @click="$emit('sendPost', { allSchool: true })"
+          >Gửi tin nhắn</v-btn
+        >
       </div>
     </div>
   </v-data-table>
@@ -34,7 +37,19 @@ export default {
     this.fetchAllSchoolData()
   },
   computed: {
-    ...mapGetters('postCreate', ['allSchoolItems'])
+    ...mapGetters('postCreate', ['allSchoolItems']),
+    footerTable() {
+      let footer = {
+        'items-per-page-text': 'Hiển thị mỗi trang',
+        'items-per-page-all-text': 'Tất cả',
+        'items-per-page': 10,
+        'page-text': this.pageText
+      }
+      if (this.totalItems > 100) {
+        footer['items-per-page-options'] = [5, 10, 15]
+      }
+      return footer
+    }
   },
   methods: {
     ...mapActions('postCreate', ['fetchAllSchoolData', 'sendAllSchoolPost'])
@@ -42,6 +57,4 @@ export default {
 }
 </script>
 
-<style lang='scss' scoped>
-
-</style>
+<style lang="scss" scoped></style>
