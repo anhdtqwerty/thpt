@@ -16,7 +16,14 @@
         <v-text-field ref="dadPhone" v-model="dadPhone" label="Số điện thoại bố" outlined dense></v-text-field>
       </v-col>
       <v-col class="pb-0" cols="12" md="6">
-        <v-text-field ref="dadEmail" v-model="dadEmail" label="Email Bố" dense outlined></v-text-field>
+        <v-text-field
+          ref="dadEmail"
+          v-model="dadEmail"
+          label="Email Bố"
+          dense
+          outlined
+          :rules="[$rules.email]"
+        ></v-text-field>
       </v-col>
     </v-row>
     <v-row class="mt-2">
@@ -35,7 +42,7 @@
         <v-text-field v-model="momPhone" label="Số điện thoại mẹ" outlined dense></v-text-field>
       </v-col>
       <v-col class="pb-0" cols="12" md="6">
-        <v-text-field v-model="momEmail" label="Email Mẹ" dense outlined></v-text-field>
+        <v-text-field v-model="momEmail" label="Email Mẹ" dense outlined :rules="[$rules.email]"></v-text-field>
       </v-col>
     </v-row>
   </v-form>
