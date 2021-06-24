@@ -10,7 +10,9 @@ export default {
   actions: {
     async searchOwnClassTeacher({ commit }, query) {
       loading.active = true
-      var data = await Class.fetch({ grade: query.gradeId, id: query.classId })
+      const { department, generation, classId, grade } = query
+      const classQuery = { grade, id: classId, generation, department }
+      var data = await Class.fetch(classQuery)
       if (query.teacher) {
         data = data.filter(item => map(item.headTeachers, 'id').includes(query.teacher.id))
         data.forEach(d => {

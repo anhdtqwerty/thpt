@@ -13,7 +13,7 @@
             dense
             v-model="title"
             class="required mt-4"
-            :rules="[$rules.required]"
+            :rules="[$rules.required, titleRule]"
             label="Tên bộ môn"
           />
           <RadioAcademicLevel @change="academicLevel = $event" />
@@ -33,8 +33,9 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import RadioAcademicLevel from '@/modules/academicLevel/RadioAcademicLevel.vue'
+import { textHelpers } from '@/helpers/TextHelper.js'
 export default {
   components: {
     RadioAcademicLevel
@@ -47,17 +48,27 @@ export default {
       dialog: false,
       loading: false,
       academicLevel: {},
-      title: ''
+      title: '',
+      titleRule: v => {
+        const title = textHelpers.removeSpaces(v)
+        const g = this.subjectGroups.find(g => g.title === title && g.academicLevel.id === this.academicLevel.id)
+        return !g || 'Bộ môn này đã tồn tại'
+      }
     }
   },
-  computed: {},
+  computed: {
+    ...mapState('SubjectGroup', ['subjectGroups'])
+  },
   methods: {
-    ...mapActions('SubjectGroup', ['createSubjectGroup']),
+    ...mapActions('SubjectGroup', ['createSubjectGroup', 'fetchSubjectGroups']),
     async save() {
       if (!this.$refs.form.validate()) return
       try {
         this.loading = true
-        await this.createSubjectGroup({ title: this.title, academicLevel: this.academicLevel.id })
+        await this.createSubjectGroup({
+          title: this.title,
+          academicLevel: this.academicLevel.id
+        })
         this.$alert.addSuccess()
         this.reset()
         this.dialog = false
@@ -74,12 +85,18 @@ export default {
     cancel() {
       this.dialog = false
       this.reset()
+    },
+    resetValidation() {
+      this.$refs.form.resetValidation()
     }
   },
+
   watch: {
     state(state) {
+      this.fetchSubjectGroups({})
       this.dialog = true
-    }
+    },
+    academicLevel: 'resetValidation'
   }
 }
 </script>
