@@ -5,16 +5,14 @@
     mobile-breakpoint="0"
     sort-by="name"
     :items="attendances"
-    :items-per-page="10"
+    :options.sync="tableOptions"
+    :server-items-length="totalItems"
     item-key="id"
     loading-text="Đang Tải"
+    :footer-props="footerTable"
     @click:row="handleClick"
-    :footer-props="{
-      'items-per-page-text': 'Học sinh mỗi trang',
-      'items-per-page-all-text': 'Tất cả'
-    }"
   >
-    <template v-if="!hideFooter" v-slot:top="{ pagination, options, updateOptions }">
+    <!-- <template v-if="!hideFooter" v-slot:top="{ pagination, options, updateOptions }">
       <v-data-footer
         :pagination="pagination"
         :options="options"
@@ -22,15 +20,18 @@
         items-per-page-text="Học sinh mỗi trang"
         items-per-page-all-text="Tất cả"
       />
-    </template>
+    </template> -->
     <template v-slot:[`item.student`]="{ item }">
       <CardStudentName :student="item.student" link />
     </template>
     <template v-slot:[`item.action`]="{ item }">
       <attendance-list-actions :item="item" />
     </template>
-    <template v-slot:[`item.checkin`]="{ item }">
-      <span>{{ item.checkin[0] }}</span>
+    <template v-slot:[`item.checkIn`]="{ item }">
+      <span>{{ item.checkin[0] | hhmm }}</span>
+    </template>
+    <template v-slot:[`item.checkOut`]="{ item }">
+      <span>{{ item.checkin[1] | hhmm }}</span>
     </template>
     <template v-slot:[`item.dob`]="{ item }">
       <span>{{ (item.student && item.student.dob) | ddmmyyyy }}</span>
@@ -40,10 +41,10 @@
         <span v-if="item.class">{{ item.class && item.class.title }}</span>
       </router-link>
     </template>
-    <template v-slot:[`item.type`]="{ item }">
-      <v-chip small label :color="getColor(item.type)" dark
-        ><span v-if="item.type">
-          {{ item.type === 'late' ? 'Đi muộn' : item.type === 'onTime' ? 'Đúng giờ' : '' }}
+    <template v-slot:[`item.status`]="{ item }">
+      <v-chip small label :color="getColor(item.status)" dark>
+        <span v-if="item.status">
+          {{ item.status | getAttendanceStatus }}
         </span>
       </v-chip>
     </template>
@@ -54,11 +55,13 @@
 import moment from 'moment'
 import AttendanceListActions from '@/modules/attendance/AttendanceListActions'
 import CardStudentName from '@/components/basic/card/CardStudentName.vue'
+import { mapActions, mapGetters, mapState } from 'vuex'
 
 export default {
   components: { AttendanceListActions, CardStudentName },
   data() {
     return {
+      tableOptions: {},
       originHeaders: [
         { text: 'Học sinh', value: 'student', width: 200, sortable: true },
         {
@@ -70,13 +73,13 @@ export default {
         { text: 'Lớp', value: 'class', width: 100, sortable: false },
         {
           text: 'Giờ đến',
-          value: 'checkin',
+          value: 'checkIn',
           width: 100,
           sortable: false
         },
         {
           text: 'Giờ về',
-          value: '09:00',
+          value: 'checkOut',
           width: 100,
           sortable: false
         },
@@ -91,11 +94,44 @@ export default {
     }
   },
   props: {
-    attendances: Array,
     hideFooter: { type: Boolean, default: () => false },
     headers: { type: Array, default: () => null }
   },
+  async created() {
+    await this.refresh({})
+  },
+  computed: {
+    ...mapState('attendance', ['pageText', 'totalItems']),
+    ...mapGetters('attendance', ['attendances']),
+
+    footerTable() {
+      let footer = {
+        'items-per-page-text': 'Hiển thị mỗi trang',
+        'items-per-page-all-text': 'Tất cả',
+        'items-per-page': 10,
+        'page-text': this.pageText
+      }
+      if (this.totalItems > 100) {
+        footer['items-per-page-options'] = [5, 10, 15]
+      }
+      return footer
+    }
+  },
   methods: {
+    ...mapActions('attendance', ['searchAttendances', 'requestPageSettings']),
+    async refresh(query) {
+      const start = moment()
+        .startOf('day')
+        .toISOString()
+      const end = moment()
+        .endOf('day')
+        .toISOString()
+
+      //console.log('query', { ...query, time_gte: start, time_lte: end })
+      const params = { time_gte: start, time_lte: end }
+      await this.searchAttendances({ ...query })
+    },
+
     formatTime(time, str) {
       return moment(time).format(str)
     },
@@ -106,8 +142,37 @@ export default {
       if (s === 'late') return 'orange'
       else return '#46BE8A'
     }
+    // getCheckIn(item) {
+    //   let time = ''
+    //   for (let i = 0; i < item.checkin.length; i += 2) {
+    //     time += `<div>${item.checkin[i] || `-:-`}</div><br/>`
+    //   }
+    //   return time
+    // },
+    // getCheckOut(item) {
+    //   let time = ''
+    //   for (let i = 1; i < item.checkin.length + 1; i += 2) {
+    //     time += `<div>${item.checkin[i] || `-:-`}</div><br/>`
+    //   }
+    //   return time
+    // }
+  },
+  watch: {
+    tableOptions: {
+      handler(newOptions, oldOptions) {
+        const itemPerPageChanged = newOptions.itemsPerPage !== oldOptions.itemsPerPage
+        const pageChanged = newOptions.page !== oldOptions.page
+        if (pageChanged || itemPerPageChanged) {
+          this.requestPageSettings({
+            page: newOptions.page,
+            itemsPerPage: newOptions.itemsPerPage
+          })
+        }
+      },
+      deep: true
+    }
   }
 }
 </script>
 
-<style></style>
+<style scoped></style>

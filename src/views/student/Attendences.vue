@@ -2,10 +2,7 @@
   <div>
     <div class="pa-4 d-flex justify-space-between align-center">
       <div>
-        <Breadcrumbs
-          headline="Chuyên cần"
-          :link="[{ text: 'Chuyên cần', href: '../attendances' }]"
-        />
+        <Breadcrumbs headline="Chuyên cần" :link="[{ text: 'Chuyên cần', href: '../attendances' }]" />
       </div>
     </div>
     <v-card outlined class="mx-md-4 elevation-0">
@@ -18,10 +15,10 @@
     <v-card outlined class="mx-md-4 elevation-0">
       <v-tabs-items v-model="tab">
         <v-tab-item :key="1">
-          <attendance-info :attendances="attendances" @refresh="refresh()" />
+          <AttendanceInfo />
         </v-tab-item>
         <v-tab-item :key="2">
-          <!-- <diligence-info :attendances="attendences"/> -->
+          <DiligenceInfo />
         </v-tab-item>
       </v-tabs-items>
     </v-card>
@@ -48,7 +45,7 @@ export default {
     Breadcrumbs,
     AttendanceStudentEditDialog,
     AttendanceInfo,
-    DiligenceInfo,
+    DiligenceInfo
   },
   data() {
     return {
@@ -58,25 +55,23 @@ export default {
       editClass: { title: '' },
       editInClass: '',
       editOutClass: '',
-      tab: null,
+      tab: null
     }
   },
   computed: {
     ...mapGetters('attendance', ['attendances']),
-    ...mapState('app', ['department']),
+    ...mapState('app', ['department'])
   },
   created() {
-    this.refresh({})
+    // this.refresh({})
   },
   methods: {
     ...mapActions('attendance', ['fetchAttendances']),
     refresh(query) {
       this.isLoading = true
-      this.fetchAttendances({ ...query }).then(
-        () => {
-          this.isLoading = false
-        }
-      )
+      this.fetchAttendances({ ...query }).then(() => {
+        this.isLoading = false
+      })
     },
     handleClick(data) {
       this.editState = !this.editState
@@ -84,10 +79,9 @@ export default {
       this.editStudent = data.student
       this.editInClass = data.checkin[0]
       this.editOutClass = data.checkin[1]
-    },
-  },
+    }
+  }
 }
 </script>
 
-<style>
-</style>
+<style></style>
