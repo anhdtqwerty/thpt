@@ -14,7 +14,7 @@
             dense
             v-model="title"
             class="required mt-4"
-            :rules="[$rules.required]"
+            :rules="[$rules.required, titleRule]"
             label="Tên ban"
           />
           <RadioAcademicLevel :defaultLevel="academicLevel" @change="academicLevel = $event" />
@@ -31,9 +31,9 @@
   </v-dialog>
 </template>
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import RadioAcademicLevel from '@/modules/academicLevel/RadioAcademicLevel.vue'
-
+import { textHelpers } from '@/helpers/TextHelper.js'
 export default {
   components: {
     RadioAcademicLevel
@@ -47,7 +47,12 @@ export default {
       dialog: false,
       loading: false,
       title: '',
-      academicLevel: {}
+      academicLevel: {},
+      titleRule: v => {
+        const title = textHelpers.removeSpaces(v)
+        const d = this.divisions.find(d => d.title === title && d.academicLevel.id === this.academicLevel.id)
+        return !d || 'Phân ban này đã tồn tại'
+      }
     }
   },
   created() {
@@ -56,7 +61,9 @@ export default {
       this.academicLevel = this.division.academicLevel
     }
   },
-  computed: {},
+  computed: {
+    ...mapState('division', ['divisions'])
+  },
   methods: {
     ...mapActions('division', ['updateDivision']),
     async save() {
@@ -72,14 +79,23 @@ export default {
         this.loading = false
       }
     },
+    reset() {
+      this.title = ''
+      this.$refs.form.resetValidation()
+    },
+    resetValidation() {
+      this.$refs.form && this.$refs.form.resetValidation()
+    },
     cancel() {
       this.dialog = false
+      this.reset()
     }
   },
   watch: {
     state(state) {
       this.dialog = true
-    }
+    },
+    academicLevel: 'resetValidation'
   }
 }
 </script>

@@ -90,7 +90,6 @@ export default {
       this.$refs.form.resetValidation()
     }
   },
-
   watch: {
     state(state) {
       this.fetchSubjectGroups({})
