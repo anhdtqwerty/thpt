@@ -84,7 +84,6 @@
               flat
               outlined
               dense
-              :rules="[$rules.phone]"
               @keyup.enter="onFilterChanged"
             />
           </v-col>
