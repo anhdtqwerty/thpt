@@ -57,10 +57,7 @@ export default {
     },
     getClass(data) {
       const title = get(data, 'class.title')
-      if (title) {
-        return `Lớp ${title}`
-      }
-      return ''
+      return title ? `Lớp ${title}` : ''
     }
   }
 }
