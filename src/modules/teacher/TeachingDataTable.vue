@@ -103,7 +103,7 @@ export default {
     ...mapGetters('app', ['commonQuery']),
     footerTable() {
       let footer = {
-        'items-per-page-text': 'Hiển thị mỗi trang',
+        'items-per-page-text': 'Giáo viên mỗi trang',
         'items-per-page-all-text': 'Tất cả',
         'items-per-page': 10,
         'page-text': this.pageText

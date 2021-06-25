@@ -128,7 +128,7 @@ export default {
     },
     footerTable() {
       let footer = {
-        'items-per-page-text': 'Hiển thị mỗi trang',
+        'items-per-page-text': 'Khóa mỗi trang',
         'items-per-page-all-text': 'Tất cả',
         'items-per-page': 10,
         'page-text': this.pageText

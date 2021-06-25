@@ -42,7 +42,13 @@
               <v-col cols="12" sm="9">
                 <v-radio-group v-model="senderMethod" class="ma-0" hide-details>
                   <div class="d-flex flex-wrap">
-                    <v-radio class="mr-4" v-for="m in senderMethods" :key="m.type" :label="m.title" :value="m.type" />
+                    <v-radio
+                      class="mr-4 col-col"
+                      v-for="m in senderMethods"
+                      :key="m.type"
+                      :label="m.title"
+                      :value="m.type"
+                    />
                   </div>
                 </v-radio-group>
               </v-col>
@@ -190,5 +196,9 @@ export default {
   width: 115px;
   height: 50px;
   padding-left: 0px;
+}
+.col-col {
+  width: 115px;
+  height: 50px;
 }
 </style>

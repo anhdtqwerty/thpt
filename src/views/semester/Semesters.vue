@@ -136,7 +136,7 @@ export default {
     ...mapGetters('semester', ['semesters']),
     footerTable() {
       let footer = {
-        'items-per-page-text': 'Hiển thị mỗi trang',
+        'items-per-page-text': 'Học kỳ mỗi trang',
         'items-per-page-all-text': 'Tất cả',
         'items-per-page': 10,
         'page-text': this.pageText
