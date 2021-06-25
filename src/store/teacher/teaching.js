@@ -28,7 +28,11 @@ export default {
           department: query.department
         }
         const classes = await Class.fetch(classQuery)
-        const teachings = await Teachings.fetch({ _limit: -1, teacher: query.teacher })
+        const teachings = await Teachings.fetch({
+          _limit: -1,
+          teacher: query.teacher,
+          generation: query.generation
+        })
         let teachingsTemp = []
         classes.map(c => {
           if (!c.grade) return

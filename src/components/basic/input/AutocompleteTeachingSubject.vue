@@ -28,7 +28,7 @@ export default {
     options: Object
   },
   computed: {
-    ...mapGetters('app', ['department'])
+    ...mapGetters('app', ['commonQuery'])
   },
   created() {
     if (this.defaultSubjects) {
@@ -41,7 +41,8 @@ export default {
       this.loading = true
       const teachings = await Teachings.fetch({
         ...this.filter,
-        _limit: 9999
+        _limit: 9999,
+        ...this.commonQuery
       })
       this.subjects = map(teachings, 'subject')
       this.loading = false

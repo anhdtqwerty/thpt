@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 import { map } from 'lodash'
 export default {
   components: {},
@@ -42,11 +42,12 @@ export default {
     }
   },
   computed: {
-    ...mapState('teacher', ['teacher'])
+    ...mapState('teacher', ['teacher']),
+    ...mapGetters('app', ['commonQuery'])
   },
   methods: { ...mapActions('teaching', ['fetchTeachings']) },
   async created() {
-    const res = await this.fetchTeachings()
+    const res = await this.fetchTeachings({ ...this.commonQuery })
     this.teachings = map(res, 'teacher.id')
   }
 }

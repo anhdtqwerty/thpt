@@ -46,7 +46,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('app', ['department', 'roles', 'roleIdByName'])
+    ...mapGetters('app', ['commonQuery'])
   },
   created() {
     this.teachers = this.defaultTeachers
@@ -56,7 +56,8 @@ export default {
     async fetchAllTeachers() {
       const teachings = await Teachings.fetch({
         ...this.filter,
-        _limit: 9999
+        _limit: 9999,
+        ...this.commonQuery
       })
       this.teachers = map(teachings, 'teacher')
     },

@@ -20,13 +20,13 @@ export default {
     subjectGroups: {}
   },
   actions: {
-    async initClass({ commit }, { id }) {
+    async initClass({ commit }, { id, generation }) {
       const [classData, slots, attendances, marks, teachings, subjectGroups] = await Promise.all([
         Class.fetchOne(id),
         Slot.fetch({ class: id }),
         Attendance.fetch({ class: id, _limit: -1 }),
         Mark.fetch({ class: id }),
-        Teachings.fetch({ class: id }),
+        Teachings.fetch({ class: id, generation }),
         SubjectGroup.fetch({ _limit: -1 })
       ])
       commit('changeState', {

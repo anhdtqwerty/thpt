@@ -71,7 +71,7 @@
 <script>
 import CardTeacherName from '@/components/basic/card/CardTeacherName.vue'
 import AutocompleteTeacherCard from '@/components/basic/input/AutocompleteTeacherCard.vue'
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState, mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -103,7 +103,8 @@ export default {
     }
   },
   computed: {
-    ...mapState('teaching', ['teachings'])
+    ...mapState('teaching', ['teachings']),
+    ...mapGetters('app', ['commonQuery'])
   },
 
   methods: {
@@ -117,7 +118,7 @@ export default {
         if (this.selectedTeaching.id) {
           await this.updateTeaching({ id: this.selectedTeaching.id, teacher: this.teacher })
         } else {
-          await this.createTeaching({ ...this.selectedTeaching, teacher: this.teacher })
+          await this.createTeaching({ ...this.selectedTeaching, teacher: this.teacher, ...this.commonQuery })
         }
         this.$alert.success('Cập nhật thành công')
         this.dialog = false

@@ -138,7 +138,7 @@ export default {
   },
   watch: {
     async state() {
-      await this.fetchTeachings({})
+      await this.fetchTeachings({ ...this.commonQuery })
       await this.fetchSlots({ ...this.commonQuery })
       this.$refs.form && this.$refs.form.resetValidation()
       this.dialog = true

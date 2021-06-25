@@ -64,7 +64,7 @@ import AutocompleteSubject from '@/components/basic/input/AutocompleteSubject'
 import AutocompleteClass from '@/components/basic/input/AutocompleteClass'
 import AutocompleteTeacherCard from '@/components/basic/input/AutocompleteTeacherCard'
 import { get } from 'lodash'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -98,6 +98,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters('app', ['commonQuery']),
     gradeId() {
       return { grade: get(this.grade, 'id') }
     },
@@ -150,7 +151,7 @@ export default {
     this.$refs.form.reset()
   },
   async created() {
-    this.teachings = await this.fetchTeachings()
+    this.teachings = await this.fetchTeachings({ ...this.commonQuery })
   },
   watch: {
     async state(state) {
@@ -158,7 +159,7 @@ export default {
         this.resetData()
         this.$refs.form.reset()
       } else {
-        this.teachings = await this.fetchTeachings()
+        this.teachings = await this.fetchTeachings({ ...this.commonQuery })
       }
     },
     classData: 'resetValidation',
