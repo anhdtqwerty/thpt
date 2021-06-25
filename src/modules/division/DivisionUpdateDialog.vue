@@ -65,7 +65,7 @@ export default {
     ...mapState('division', ['divisions'])
   },
   methods: {
-    ...mapActions('division', ['updateDivision', 'fetchDivision']),
+    ...mapActions('division', ['updateDivision']),
     async save() {
       if (!this.$refs.form.validate()) return
       try {

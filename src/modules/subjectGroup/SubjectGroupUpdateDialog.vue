@@ -65,7 +65,7 @@ export default {
     ...mapState('SubjectGroup', ['subjectGroups'])
   },
   methods: {
-    ...mapActions('SubjectGroup', ['updateSubjectGroup', 'fetchSubjectGroups']),
+    ...mapActions('SubjectGroup', ['updateSubjectGroup']),
     async save() {
       if (!this.$refs.form.validate()) return
       try {
