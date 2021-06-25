@@ -1,15 +1,17 @@
 <template>
-  <v-card>
+  <div>
     <div class="d-flex justify-end align-center pa-4">
       <v-btn color="primary" outlined class="text-uppercase" @click="exportExcel"
         ><v-icon left>mdi-file-excel</v-icon>Xuất Excel</v-btn
       >
     </div>
-    <v-divider></v-divider>
-    <diligence-filter @onFilterChanged="refresh" class="pa-4" />
-    <v-divider></v-divider>
-    <diligence-data-table :attendances="attendances" ref="diligenceDataTable" />
-  </v-card>
+    <v-card class="ma-4 mt-0" outlined>
+      <DiligenceFilter @onFilterChanged="refresh" />
+    </v-card>
+    <v-card class="ma-4" outlined>
+      <DiligenceDataTable :attendances="attendances" ref="diligenceDataTable" />
+    </v-card>
+  </div>
 </template>
 
 <script>

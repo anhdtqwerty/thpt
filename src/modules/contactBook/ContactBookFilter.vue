@@ -85,6 +85,7 @@
               outlined
               dense
               hide-details
+              @keyup.enter="onFilterChanged"
             />
           </v-col>
           <v-col md="4">

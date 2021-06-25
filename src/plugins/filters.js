@@ -5,6 +5,7 @@ export const vueFilterRegister = () => {
   Vue.filter('ordinalNumber', (item, list) => list.indexOf(item) + 1)
   Vue.filter('ddmmyyyy', isoStr => (isoStr ? moment(isoStr).format('DD/MM/YYYY') : ''))
   Vue.filter('ddmmyyyyhhmm', isoStr => (isoStr ? moment(isoStr).format('DD/MM/YYYY HH:mm') : ''))
+  Vue.filter('hhmm', isoStr => (isoStr ? moment(isoStr).format('HH:mm') : '--:--'))
   Vue.filter('ddmmhhmm', isoStr => (isoStr ? moment(isoStr).format('DD/MM HH:mm') : '--:--'))
   Vue.filter('gender', gender => {
     if (gender === 'male') return 'Nam'
@@ -151,6 +152,14 @@ export const vueFilterRegister = () => {
         return ''
     }
   })
+  Vue.filter('getAttendanceStatus', type => {
+    switch (type) {
+      case 'late':
+        return 'Đi muộn'
+      case 'onTime':
+        return 'Đúng giờ'
+    }
+  })
   Vue.filter('teacherStatus', status => {
     switch (status) {
       case 'active':
@@ -159,6 +168,16 @@ export const vueFilterRegister = () => {
         return 'Đã nghỉ'
       default:
         return ''
+    }
+  })
+  Vue.filter('getAttendanceStatusColor', type => {
+    switch (type) {
+      case 'late':
+        return 'orange'
+      case 'onTime':
+        return '#46BE8A'
+      default:
+        return 'gray'
     }
   })
   Vue.filter('teacherType', status => {

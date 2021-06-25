@@ -21,7 +21,7 @@
 
         <div>
           <span>Giáo viên hiện tại</span
-          ><v-icon v-if="selectedTeaching && selectedTeaching.teacher" small color="gray" @click="$emit('deleteState')"
+          ><v-icon v-if="selectedTeaching && selectedTeaching.teacher" small color="red" @click="$emit('deleteState')"
             >close</v-icon
           >
         </div>

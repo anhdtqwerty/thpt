@@ -3,15 +3,22 @@
     <p class="font-weight-regular">Ngày: {{ violation.date | ddmmyyyy }}</p>
     <v-row class="pb-3">
       <v-col cols="6">
-        <card-student-name :student="this.student" link />
+        <div class="text-caption my-0">Học sinh</div>
+        <CardStudentName :isShowCode="false" :student="student" />
       </v-col>
-      <v-col cols="4">
-        <div>Ngày sinh</div>
-        <h4>{{ student.dob | ddmmyyyy }}</h4>
-      </v-col>
-      <v-col cols="2">
-        <div>Lớp</div>
-        <h4>{{ classData && classData.title }}</h4>
+      <v-col class="d-flex justify-space-between align-center" cols="6">
+        <div>
+          <div class="text-caption my-0">Ngày sinh</div>
+          <span class="black--text">{{ student.dob | ddmmyyyy }}</span>
+        </div>
+        <div>
+          <div class="text-caption my-0">Mã số</div>
+          <span class="black--text">{{ student.code | getStudentCode }}</span>
+        </div>
+        <div>
+          <div class="text-caption my-0">Lớp</div>
+          <span class="black--text">{{ violation.class && violation.class.title }}</span>
+        </div>
       </v-col>
     </v-row>
     <RadioViolation :violation="violation.type" @change="type = $event" />

@@ -13,21 +13,21 @@
         <v-form ref="form" class="py-4">
           <v-row>
             <v-col cols="6">
-              <p class="text-caption my-0">Học sinh</p>
-              <card-student-name :student="item" />
+              <div class="text-caption my-0">Học sinh</div>
+              <CardStudentName :student="item" :isShowCode="false" />
             </v-col>
             <v-col class="d-flex justify-space-between align-center" cols="6">
               <div>
-                <p class="text-caption my-0">Ngày sinh</p>
-                <span>{{ item.dob | ddmmyyyy }}</span>
+                <div class="my-0">Ngày sinh</div>
+                <span class="black--text">{{ item.dob | ddmmyyyy }}</span>
               </div>
               <div>
-                <p class="text-caption my-0">Mã số</p>
-                <span>{{ item.code | getStudentCode }}</span>
+                <div class="text-caption my-0">Mã số</div>
+                <span class="black--text">{{ item.code | getStudentCode }}</span>
               </div>
               <div>
-                <p class="text-caption my-0">Lớp</p>
-                <span>{{ item.currentClass && item.currentClass.title }}</span>
+                <div class="text-caption my-0">Lớp</div>
+                <span class="black--text">{{ item.currentClass && item.currentClass.title }}</span>
               </div>
             </v-col>
           </v-row>

@@ -15,7 +15,7 @@
 
         <div>
           <span>Giáo viên chủ nhiệm hiện tại</span
-          ><v-icon v-if="selectedTeacher" small color="gray" @click="$emit('deleteState')">close</v-icon>
+          ><v-icon v-if="selectedTeacher" small color="red" @click="$emit('deleteState')">close</v-icon>
         </div>
         <v-form ref="form">
           <v-row>
