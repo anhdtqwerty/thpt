@@ -11,6 +11,7 @@
       :items="factors"
       :sort-by="['semesterType', 'index', 'multiply']"
       class="mt-3"
+      :footer-props="footerTable"
     >
       <template v-slot:[`item.action`]="{ item }">
         <FactorListActions :factor="item"></FactorListActions>
@@ -25,9 +26,9 @@ import FactorListActions from './FactorListActions'
 const defaultHeaders = [
   { text: 'Tên đầu điểm', value: 'title' },
   { text: 'Tên viết tắt', value: 'data.shortName' },
-  { text: 'Hệ số', value: 'multiply' },
-  { text: 'Số điểm tối thiểu trên học sinh', value: 'data.minMark' },
-  { text: 'Số điểm tối đa trên học sinh', value: 'data.maxMark' },
+  { text: 'Hệ số', value: 'multiply', align: 'center' },
+  { text: 'Số điểm tối thiểu trên học sinh', value: 'data.minMark', align: 'center' },
+  { text: 'Số điểm tối đa trên học sinh', value: 'data.maxMark', align: 'center' },
   { text: 'Thao tác', value: 'action' }
 ]
 export default {
@@ -47,7 +48,15 @@ export default {
     }
   },
   computed: {
-    ...mapState('factor', ['factors'])
+    ...mapState('factor', ['factors']),
+    footerTable() {
+      let footer = {
+        'items-per-page-text': 'Đầu điểm mỗi trang',
+        'items-per-page-all-text': 'Tất cả'
+      }
+
+      return footer
+    }
   },
   methods: {},
   filters: {
