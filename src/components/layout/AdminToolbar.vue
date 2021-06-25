@@ -4,12 +4,14 @@
     <Students />
     <Teachers />
     <Classes />
+    <TimeTables />
     <AdvanceSetting />
     <Posts />
   </v-list>
 </template>
 <script>
 import Classes from '@/components/basic/menu/Classes'
+import TimeTables from '@/components/basic/menu/TimeTables'
 import Students from '@/components/basic/menu/Students.vue'
 import Teachers from '@/components/basic/menu/Teachers.vue'
 import Dashboard from '@/components/basic/menu/Dashboard'
@@ -20,6 +22,7 @@ export default {
   components: {
     Dashboard,
     Classes,
+    TimeTables,
     Students,
     Teachers,
     AdvanceSetting,

@@ -6,6 +6,7 @@ import Dashboard from '@/store/dashboard/Dashboard.js'
 
 import classModule from './learning/class'
 import classDetail from './learning/classDetail'
+import timeTable from './learning/timeTable'
 import category from './other/category'
 import email from './notify/email'
 import search from './view/search.js'
@@ -84,13 +85,7 @@ export default createStore(Vuex.Store, {
   plugins: [
     createPersistedState({
       key: 'lms',
-      paths: [
-        'auth.user',
-        'auth.isAuthenticated',
-        'auth.jwt',
-        'app.currentGeneration',
-        'app.currentSemester'
-      ]
+      paths: ['auth.user', 'auth.isAuthenticated', 'auth.jwt', 'app.currentGeneration', 'app.currentSemester']
     }),
     axiosPlugin
   ],
@@ -121,6 +116,7 @@ export default createStore(Vuex.Store, {
     log,
     mark,
     classDetail,
+    timeTable,
     teacherDashboard,
     departmentDashboard,
     department,
