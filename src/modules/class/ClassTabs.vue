@@ -110,7 +110,6 @@ export default {
           fileName = 'Parent_List'
           break
         case 'TEACHER_TABLE':
-          console.log('Ggs')
           excelHeader = this.$refs.teacherTable.headers.map(({ text, value }) => ({ text, value }))
           data = this.teachings
           fileName = 'Teacher_List'

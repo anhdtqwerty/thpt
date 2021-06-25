@@ -111,7 +111,7 @@ export default {
       try {
         await this.fetchSubjects({
           ...query,
-          _limit: 9999,
+          _limit: -1,
           _sort: 'createdAt:DESC'
         })
       } catch (err) {

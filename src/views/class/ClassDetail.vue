@@ -93,6 +93,7 @@ export default {
   },
   computed: {
     ...mapGetters('classDetail', ['classData', 'slots', 'logs', 'attendances']),
+    ...mapGetters('app', ['commonQuery']),
     teacherNames() {
       if (!this.classData.teachers || this.classData.teachers.length === 0) {
         return ''
@@ -200,7 +201,7 @@ export default {
   },
   async created() {
     const classId = this.$route.params.id
-    await this.initClass({ id: classId })
+    await this.initClass({ id: classId, ...this.commonQuery })
   },
   filters: {
     getMajorName(data) {

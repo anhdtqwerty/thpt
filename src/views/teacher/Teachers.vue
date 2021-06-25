@@ -25,7 +25,7 @@
   </div>
 </template>
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 import TeacherFilter from '@/modules/teacher/TeacherFilter.vue'
 import TeacherNewDialog from '@/modules/teacher/TeacherNewDialog'
 import TeacherDataTable from '@/modules/teacher/TeacherDataTable'
@@ -53,6 +53,7 @@ export default {
   },
   computed: {
     ...mapState('teacher', ['teacher']),
+    ...mapGetters('app', ['commonQuery']),
     titleBtn() {
       switch (this.$vuetify.breakpoint.name) {
         case 'xs':
@@ -64,7 +65,7 @@ export default {
     }
   },
   async created() {
-    this.teachings = await this.fetchTeachings()
+    this.teachings = await this.fetchTeachings({ ...this.commonQuery })
     this.allTeachers = await this.fetchTeachers()
   },
   methods: {
@@ -73,7 +74,7 @@ export default {
     async refresh(query) {
       try {
         this.$loading.active = true
-        this.teachings = await this.fetchTeachings()
+        this.teachings = await this.fetchTeachings({ ...this.commonQuery })
         this.allTeachers = await this.fetchTeachers()
         this.$refs.teacherDataTable.refresh(query)
       } catch {

@@ -3,12 +3,11 @@
     v-bind="this.$attrs"
     item-text="name"
     :items="teachers"
-    return-object
+    item-value="id"
     @change="onChange"
     v-on:input="$emit('input', $event)"
+    @update:search-input="update"
     clearable
-    :loading="loading"
-    v-model="teacher"
   >
     <template v-slot:item="data">
       <v-list-item-content>
@@ -21,26 +20,22 @@
     </template>
   </v-autocomplete>
 </template>
-
 <script>
-import { Teacher } from '@/plugins/api'
-import CardTeacherInfo from '@/components/basic/card/CardTeacherInfo.vue'
 import { mapGetters } from 'vuex'
+import { Teachings } from '@/plugins/api'
+import { map } from 'lodash'
+import CardTeacherInfo from '@/components/basic/card/CardTeacherInfo.vue'
 
 export default {
   components: {
     CardTeacherInfo
   },
   data: () => ({
-    teachers: [],
-    loading: false,
-    teacher: ''
+    teachers: []
   }),
   props: {
     filter: Object,
-    options: Object,
-    defaultTeachers: Object,
-    defaultTeacher: Object,
+    defaultTeachers: Array,
     displayGender: {
       default: false,
       type: Boolean
@@ -50,37 +45,29 @@ export default {
       type: Boolean
     }
   },
-  watch: {
-    filter(filter) {
-      this.fetchTeachers(filter)
-    },
-    syncedValue(value) {
-      this.teacher = value
-    }
-  },
   computed: {
-    ...mapGetters('app', ['department', 'roles', 'roleIdByName'])
+    ...mapGetters('app', ['commonQuery'])
   },
   created() {
-    if (this.defaultTeachers) {
-      this.teachers = this.defaultTeachers
-    }
+    this.teachers = this.defaultTeachers
     this.fetchAllTeachers()
   },
   methods: {
     async fetchAllTeachers() {
-      this.teachers = await Teacher.fetch({
+      const teachings = await Teachings.fetch({
         ...this.filter,
-        department: this.department.id,
-        _limit: -1
+        _limit: -1,
+        ...this.commonQuery
       })
-      if (this.defaultTeacher) {
-        this.teachers = this.teachers.filter(item => item.id !== this.defaultTeacher.id)
-      }
+      this.teachers = map(teachings, 'teacher')
     },
+    async update(data) {},
     onChange(data) {
       this.$emit('change', data)
     }
+  },
+  watch: {
+    filter: 'fetchAllTeachers'
   }
 }
 </script>

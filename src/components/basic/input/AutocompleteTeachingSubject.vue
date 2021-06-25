@@ -14,7 +14,8 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { Subject } from '@/plugins/api'
+import { Teachings } from '@/plugins/api'
+import { map } from 'lodash'
 
 export default {
   data: () => ({
@@ -27,22 +28,23 @@ export default {
     options: Object
   },
   computed: {
-    ...mapGetters('app', ['department'])
+    ...mapGetters('app', ['commonQuery'])
   },
   created() {
     if (this.defaultSubjects) {
       this.subjects = this.defaultSubjects
     }
-
     this.fetchAllSubjects()
   },
   methods: {
     async fetchAllSubjects() {
       this.loading = true
-      this.subjects = await Subject.fetch({
+      const teachings = await Teachings.fetch({
         ...this.filter,
-        _limit: -1
+        _limit: -1,
+        ...this.commonQuery
       })
+      this.subjects = map(teachings, 'subject')
       this.loading = false
     },
     async update(data) {},
@@ -51,9 +53,7 @@ export default {
     }
   },
   watch: {
-    filter(filter) {
-      this.fetchAllSubjects()
-    },
+    filter: 'fetchAllSubjects',
     defaultSubjects(subjects) {
       this.subjects = subjects
     }

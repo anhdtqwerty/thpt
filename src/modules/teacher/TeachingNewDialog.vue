@@ -21,7 +21,7 @@
 </template>
 <script>
 import TeachingNewForm from '@/components/basic/form/TeachingNewForm'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { get } from 'lodash'
 
 export default {
@@ -42,7 +42,9 @@ export default {
       id: ''
     }
   },
-  computed: {},
+  computed: {
+    ...mapGetters('app', ['commonQuery'])
+  },
 
   methods: {
     ...mapActions('teaching', ['createTeaching']),
@@ -51,7 +53,7 @@ export default {
         const data = this.$refs.form.getData()
         if (!data) return
         this.$loading.active = true
-        await this.createTeaching(data)
+        await this.createTeaching({ ...data, ...this.commonQuery })
         this.$alert.success('Cập nhật thành công')
         this.dialog = false
         this.$emit('done')

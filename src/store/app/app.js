@@ -206,8 +206,7 @@ export default {
     },
     commonQuery(state) {
       return {
-        generation: state.currentGeneration.id,
-        department: state.department.id
+        generation: state.currentGeneration.id
       }
     }
   }

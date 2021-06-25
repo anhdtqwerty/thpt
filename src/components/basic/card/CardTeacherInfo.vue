@@ -3,20 +3,22 @@
     <div v-if="!$vuetify.breakpoint.mobile" class="image-wrapper mr-2">
       <img :src="avatar" alt="" />
     </div>
-    <div class="name-width">
-      <div style="white-space: nowrap">{{ teacher.name }}</div>
+    <div class="name-text">{{ teacher.name }}</div>
+    <div class="item-width ml-2">
+      <div class="text--disabled">Ngày sinh</div>
+      <div class="item-text">{{ teacher.dob | ddmmyyyy }}</div>
     </div>
-    <div class="dob-width ml-2">
-      <div class="text--disabled" style="white-space: nowrap">Ngày sinh</div>
-      <div style="white-space: nowrap">{{ teacher.dob | ddmmyyyy }}</div>
+    <div class="item-width ml-2" v-if="displayGender">
+      <div class="text--disabled">Giới tính</div>
+      <div class="item-text">{{ teacher.gender | gender }}</div>
     </div>
-    <div class="mx-2" v-if="displayGender">
-      <div class="text--disabled" style="white-space: nowrap">Giới tính</div>
-      <div style="white-space: nowrap">{{ teacher.gender | gender }}</div>
+    <div class="item-width ml-2" v-else>
+      <div class="text--disabled">Mã số</div>
+      <div class="item-text">{{ teacher.code | getTeacherCode }}</div>
     </div>
-    <div class="mx-2" v-else>
-      <div class="text--disabled" style="white-space: nowrap">Mã số</div>
-      <div style="white-space: nowrap">{{ teacher.code | getTeacherCode }}</div>
+    <div class="item-width mr-2" v-if="displaySubjectGroup">
+      <div class="text--disabled">Lĩnh vực</div>
+      <div class="item-text">{{ teacher | _get('subjectGroup.title') }}</div>
     </div>
   </div>
 </template>
@@ -27,6 +29,10 @@ export default {
   props: {
     teacher: Object,
     displayGender: {
+      default: false,
+      type: Boolean
+    },
+    displaySubjectGroup: {
       default: false,
       type: Boolean
     }
@@ -55,9 +61,21 @@ export default {
   }
 }
 .name-width {
-  min-width: 150px;
+  width: 200px;
 }
-.dob-width {
-  min-width: 100px;
+.name-text {
+  width: 200px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.item-width {
+  width: 100px;
+}
+.item-text {
+  width: 100px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 </style>
