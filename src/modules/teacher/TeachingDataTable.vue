@@ -7,8 +7,12 @@
     :items="teachings"
     loading-text="Đang Tải"
     sort-by="name"
-    :footer-props="footerTable"
+    :footer-props="{ 'items-per-page-text': 'Số giáo viên một trang' }"
   >
+    <template v-slot:[`footer.page-text`]="items">
+      {{ items.pageStart }} - {{ items.pageStop }} trên tổng
+      {{ items.itemsLength }}
+    </template>
     <template v-slot:[`item.class.title`]="{ item }">
       <router-link style="text-decoration: none" :to="'/class/' + (item.class && item.class.id)">
         <span v-if="item.class">{{ item.class && item.class.title }}</span>
@@ -100,19 +104,7 @@ export default {
   },
   computed: {
     ...mapState('teaching', ['teachings']),
-    ...mapGetters('app', ['commonQuery']),
-    footerTable() {
-      let footer = {
-        'items-per-page-text': 'Giáo viên mỗi trang',
-        'items-per-page-all-text': 'Tất cả',
-        'items-per-page': 10,
-        'page-text': this.pageText
-      }
-      if (this.totalItems > 100) {
-        footer['items-per-page-options'] = [5, 10, 15]
-      }
-      return footer
-    }
+    ...mapGetters('app', ['commonQuery'])
   },
   methods: {
     ...mapActions('teaching', ['searchTeaching']),

@@ -8,6 +8,10 @@
     class="elevation-1"
     :footer-props="footerTable"
   >
+    <template v-slot:[`footer.page-text`]="items">
+      {{ items.pageStart }} - {{ items.pageStop }} trên tổng
+      {{ items.itemsLength }}
+    </template>
     <div slot="top">
       <div class="d-flex justify-space-between ps-4 py-2">
         <span :class="selecteds.length ? 'primary--text' : 'text--disabled'">Đã chọn toàn trường</span>

@@ -9,6 +9,10 @@
     sort-by="name"
     :footer-props="footerTable"
   >
+    <template v-slot:[`footer.page-text`]="items">
+      {{ items.pageStart }} - {{ items.pageStop }} trên tổng
+      {{ items.itemsLength }}
+    </template>
     <template v-slot:[`item.title`]="{ item }">
       <router-link style="text-decoration: none" :to="'/class/' + item.id">
         {{ item.title }}

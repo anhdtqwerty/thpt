@@ -19,7 +19,17 @@
     </div>
 
     <v-card class="px-md-6 mx-md-4 elevation-1">
-      <v-data-table :loading="loading" :headers="headers" :items="semesters" item-key="id" :footer-props="footerTable">
+      <v-data-table
+        :loading="loading"
+        :headers="headers"
+        :items="semesters"
+        item-key="id"
+        :footer-props="{ 'items-per-page-text': 'Số học kỳ một trang' }"
+      >
+        <template v-slot:[`footer.page-text`]="items">
+          {{ items.pageStart }} - {{ items.pageStop }} trên tổng
+          {{ items.itemsLength }}
+        </template>
         <div slot="top" class="py-md-6">
           <div v-if="$vuetify.breakpoint.mdAndUp">
             <semester-filter @onFilterChanged="refresh"></semester-filter>
@@ -133,19 +143,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('semester', ['semesters']),
-    footerTable() {
-      let footer = {
-        'items-per-page-text': 'Học kỳ mỗi trang',
-        'items-per-page-all-text': 'Tất cả',
-        'items-per-page': 10,
-        'page-text': this.pageText
-      }
-      if (this.totalItems > 100) {
-        footer['items-per-page-options'] = [5, 10, 15]
-      }
-      return footer
-    }
+    ...mapGetters('semester', ['semesters'])
   },
   created() {
     this.loading = true

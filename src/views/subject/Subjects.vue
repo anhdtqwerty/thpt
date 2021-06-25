@@ -27,8 +27,12 @@
         :items="subjects"
         @click:row="onSelected"
         ref="subjectDataTable"
-        :footer-props="footerTable"
+        :footer-props="{ 'items-per-page-text': 'Số môn một trang' }"
       >
+        <template v-slot:[`footer.page-text`]="items">
+          {{ items.pageStart }} - {{ items.pageStop }} trên tổng
+          {{ items.itemsLength }}
+        </template>
         <div slot="top" class="py-md-6">
           <SubjectFilter @onFilterChanged="refresh" />
         </div>
@@ -101,18 +105,6 @@ export default {
         default:
           return 'Thêm môn'
       }
-    },
-    footerTable() {
-      let footer = {
-        'items-per-page-text': 'Môn học mỗi trang',
-        'items-per-page-all-text': 'Tất cả',
-        'items-per-page': 10,
-        'page-text': this.pageText
-      }
-      if (this.totalItems > 100) {
-        footer['items-per-page-options'] = [5, 10, 15]
-      }
-      return footer
     }
   },
   async created() {

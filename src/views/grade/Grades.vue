@@ -22,7 +22,11 @@
     <new-grade-dialog :state="createGrade" />
 
     <v-card class="px-md-6 mx-md-4 elevation-1">
-      <v-data-table :headers="headers" :items="grades" :footer-props="footerTable">
+      <v-data-table :headers="headers" :items="grades" :footer-props="{ 'items-per-page-text': 'Số khối một trang' }">
+        <template v-slot:[`footer.page-text`]="items">
+          {{ items.pageStart }} - {{ items.pageStop }} trên tổng
+          {{ items.itemsLength }}
+        </template>
         <div slot="top" class="py-md-3"></div>
         <template v-slot:item.actions="{ item }">
           <grade-list-actions :selected="item"> </grade-list-actions>
@@ -91,18 +95,6 @@ export default {
         default:
           return 'Thêm khối'
       }
-    },
-    footerTable() {
-      let footer = {
-        'items-per-page-text': 'Khối mỗi trang',
-        'items-per-page-all-text': 'Tất cả',
-        'items-per-page': 10,
-        'page-text': this.pageText
-      }
-      if (this.totalItems > 100) {
-        footer['items-per-page-options'] = [5, 10, 15]
-      }
-      return footer
     }
   },
   async created() {

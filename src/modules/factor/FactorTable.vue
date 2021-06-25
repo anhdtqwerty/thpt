@@ -11,8 +11,12 @@
       :items="factors"
       :sort-by="['semesterType', 'index', 'multiply']"
       class="mt-3"
-      :footer-props="footerTable"
+      :footer-props="{ 'items-per-page-text': 'Giáo viên một trang' }"
     >
+      <template v-slot:[`footer.page-text`]="items">
+        {{ items.pageStart }} - {{ items.pageStop }} trên tổng
+        {{ items.itemsLength }}
+      </template>
       <template v-slot:[`item.action`]="{ item }">
         <FactorListActions :factor="item"></FactorListActions>
       </template>
@@ -48,15 +52,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('factor', ['factors']),
-    footerTable() {
-      let footer = {
-        'items-per-page-text': 'Đầu điểm mỗi trang',
-        'items-per-page-all-text': 'Tất cả'
-      }
-
-      return footer
-    }
+    ...mapState('factor', ['factors'])
   },
   methods: {},
   filters: {

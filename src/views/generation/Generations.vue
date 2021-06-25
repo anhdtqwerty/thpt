@@ -20,7 +20,16 @@
       </div>
     </div>
     <v-card class="px-md-6 mx-md-4 elevation-1">
-      <v-data-table item-key="id" :headers="headers" :items="generations" :footer-props="footerTable">
+      <v-data-table
+        item-key="id"
+        :headers="headers"
+        :items="generations"
+        :footer-props="{ 'items-per-page-text': 'Số khóa một trang' }"
+      >
+        <template v-slot:[`footer.page-text`]="items">
+          {{ items.pageStart }} - {{ items.pageStop }} trên tổng
+          {{ items.itemsLength }}
+        </template>
         <div slot="top" class="py-md-3"></div>
         <template v-slot:[`item.actions`]="{ item }">
           <generation-list-actions :selected="item" @onEdit="onEditGeneration" />
@@ -125,18 +134,6 @@ export default {
         default:
           return 'Thêm niên khóa'
       }
-    },
-    footerTable() {
-      let footer = {
-        'items-per-page-text': 'Khóa mỗi trang',
-        'items-per-page-all-text': 'Tất cả',
-        'items-per-page': 10,
-        'page-text': this.pageText
-      }
-      if (this.totalItems > 100) {
-        footer['items-per-page-options'] = [5, 10, 15]
-      }
-      return footer
     }
   },
   methods: {
