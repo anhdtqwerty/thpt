@@ -41,7 +41,7 @@ export default {
       this.loading = true
       this.subjects = await Subject.fetch({
         ...this.filter,
-        _limit: 9999
+        _limit: -1
       })
       this.loading = false
     },

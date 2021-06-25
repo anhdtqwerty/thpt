@@ -41,7 +41,7 @@ export default {
       this.loading = true
       const teachings = await Teachings.fetch({
         ...this.filter,
-        _limit: 9999,
+        _limit: -1,
         ...this.commonQuery
       })
       this.subjects = map(teachings, 'subject')
