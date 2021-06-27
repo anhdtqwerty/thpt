@@ -111,7 +111,14 @@ export default {
   },
   methods: {
     classChanged(classData) {
-      if (this.subject && classData && classData.grade.id !== this.subject.grade.id) {
+      console.log('classdata', classData)
+      console.log('subject', this.subject)
+      if (
+        this.subject &&
+        classData &&
+        (classData.grade.id !== this.subject.grade.id ||
+          get(classData, 'division.id') !== get(this.subject, 'division.id'))
+      ) {
         this.subject = null
       }
     },

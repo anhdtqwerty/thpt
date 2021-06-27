@@ -14,9 +14,9 @@
               outlined
               dense
               hide-details
-              :filter="classFilter"
+              :filter="gradeId"
               :disabled="!grade"
-              @change="subjectData = null"
+              @change="classChanged"
             />
           </v-col>
           <v-col cols="12" md="4">
@@ -66,19 +66,21 @@ export default {
     RadioSemester
   },
   data: () => ({
-    classData: '',
-    subjectData: '',
+    classData: null,
+    subjectData: null,
     semesterData: '',
     grade: ''
   }),
   computed: {
     ...mapState('app', ['currentGeneration']),
-
-    classFilter() {
-      return this.grade ? { grade: this.grade } : {}
+    gradeId() {
+      return { grade: this.grade }
     },
     subjectFilter() {
-      return { division: get(this.classData, 'division.id'), grade: this.grade }
+      return {
+        grade: this.grade || get(this.classData, 'grade.id'),
+        division: get(this.classData, 'division.id')
+      }
     }
   },
   methods: {
@@ -93,10 +95,24 @@ export default {
         subject: this.subjectData.id
       })
     },
+    classChanged(classData) {
+      if (
+        this.subjectData &&
+        classData &&
+        (classData.grade.id !== this.subjectData.grade.id ||
+          get(classData, 'division.id') !== get(this.subjectData, 'division.id'))
+      ) {
+        this.subjectData = null
+      }
+    },
     gradeChanged(grade) {
+      if (this.classData && grade && this.classData.grade !== grade) {
+        this.classData = null
+      }
+      if (this.subject && grade && this.subject.subjectGroup.grade !== grade) {
+        this.subject = null
+      }
       this.grade = grade
-      this.classData = null
-      this.subjectData = null
     }
   }
 }
