@@ -111,8 +111,6 @@ export default {
   },
   methods: {
     classChanged(classData) {
-      console.log('classdata', classData)
-      console.log('subject', this.subject)
       if (
         this.subject &&
         classData &&
