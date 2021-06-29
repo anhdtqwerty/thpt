@@ -41,19 +41,7 @@ export default {
     this.fetchAllSchoolData()
   },
   computed: {
-    ...mapGetters('postCreate', ['allSchoolItems']),
-    footerTable() {
-      let footer = {
-        'items-per-page-text': 'Hiển thị mỗi trang',
-        'items-per-page-all-text': 'Tất cả',
-        'items-per-page': 10,
-        'page-text': this.pageText
-      }
-      if (this.totalItems > 100) {
-        footer['items-per-page-options'] = [5, 10, 15]
-      }
-      return footer
-    }
+    ...mapGetters('postCreate', ['allSchoolItems'])
   },
   methods: {
     ...mapActions('postCreate', ['fetchAllSchoolData', 'sendAllSchoolPost'])

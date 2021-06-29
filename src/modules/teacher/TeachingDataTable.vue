@@ -7,7 +7,7 @@
     :items="teachings"
     loading-text="Đang Tải"
     sort-by="name"
-    :footer-props="{ 'items-per-page-text': 'Số giáo viên một trang' }"
+    :footer-props="{ 'items-per-page-text': 'Hiển thị mỗi trang' }"
   >
     <template v-slot:[`footer.page-text`]="items">
       {{ items.pageStart }} - {{ items.pageStop }} trên tổng
