@@ -11,7 +11,7 @@
       :items="factors"
       :sort-by="['semesterType', 'index', 'multiply']"
       class="mt-3"
-      :footer-props="{ 'items-per-page-text': 'Đầu điểm' }"
+      :footer-props="{ 'items-per-page-text': 'Hiển thị mỗi trang', 'items-per-page-all-text': 'Tất cả' }"
     >
       <template v-slot:[`footer.page-text`]="items">
         {{ items.pageStart }} - {{ items.pageStop }} trên tổng

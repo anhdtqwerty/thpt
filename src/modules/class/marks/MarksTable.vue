@@ -1,14 +1,14 @@
 <template>
   <div>
     <v-data-table disableSort v-if="classData" :headers="headers" :items="data">
-      <template v-slot:item.student="{ item }">
+      <template v-slot:[`item.student`]="{ item }">
         <user-item :data="item.student" :to="'student/' + item.student.id"></user-item>
       </template>
-      <template v-slot:item.actions="{ item }">
+      <template v-slot:[`item.actions`]="{ item }">
         <v-icon small class="mr-2" @click.stop="add(item)">edit</v-icon>
       </template>
-      <template v-slot:item.total="{ item }">
-        <b class="subtitle-1 font-weight-bold">{{ item.total}}</b>
+      <template v-slot:[`item.total`]="{ item }">
+        <b class="subtitle-1 font-weight-bold">{{ item.total }}</b>
       </template>
     </v-data-table>
     <v-skeleton-loader
@@ -31,8 +31,8 @@ export default {
   props: {
     classData: Object
   },
-  created () {},
-  data () {
+  created() {},
+  data() {
     return {
       dialog: false,
       markDialog: false,
@@ -42,7 +42,7 @@ export default {
   computed: {
     ...mapGetters('classDetail', ['students']),
     ...mapState('classDetail', ['marks']),
-    data () {
+    data() {
       return this.students.map(s => {
         const mark = _.get(this.marks, `${s.id}`, {})
         return {
@@ -59,10 +59,10 @@ export default {
         }
       })
     },
-    markTemplate () {
+    markTemplate() {
       return _.get(this.classData, 'course.mark', [])
     },
-    headers () {
+    headers() {
       return [
         {
           text: 'Học Sinh',
@@ -75,11 +75,7 @@ export default {
           sortable: false,
           value: 'actions'
         },
-        ..._.get(
-          this.classData,
-          'course.mark',
-          _.get(this.classData, 'metadata.mark', [])
-        ).map(m => ({
+        ..._.get(this.classData, 'course.mark', _.get(this.classData, 'metadata.mark', [])).map(m => ({
           text: m.title,
           value: m.code + ''
         })),
@@ -92,13 +88,13 @@ export default {
     }
   },
   methods: {
-    add (item) {
+    add(item) {
       this.selected = item
       this.dialog = !this.dialog
     }
   },
   filters: {
-    total (mark) {
+    total(mark) {
       return Math.round((mark.total / mark.div) * 100) / 100
     }
   }

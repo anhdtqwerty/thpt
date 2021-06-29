@@ -7,7 +7,7 @@
     :items="ownClassTeacherData"
     loading-text="Đang Tải"
     sort-by="name"
-    :footer-props="footerTable"
+    :footer-props="{ 'items-per-page-text': 'Giáo viên mỗi trang', 'items-per-page-all-text': 'Tất cả' }"
   >
     <template v-slot:[`footer.page-text`]="items">
       {{ items.pageStart }} - {{ items.pageStop }} trên tổng
@@ -103,16 +103,7 @@ export default {
   },
   computed: {
     ...mapState('ownClassTeacher', ['ownClassTeacherData']),
-    ...mapGetters('app', ['commonQuery']),
-    footerTable() {
-      let footer = {
-        'items-per-page-text': 'Giáo viên mỗi trang',
-        'items-per-page-all-text': 'Tất cả',
-        'items-per-page': 10,
-        'page-text': this.pageText
-      }
-      return footer
-    }
+    ...mapGetters('app', ['commonQuery'])
   },
   methods: {
     ...mapActions('ownClassTeacher', ['searchOwnClassTeacher']),

@@ -6,7 +6,7 @@
     item-key="title"
     show-select
     class="elevation-1"
-    :footer-props="footerTable"
+    :footer-props="{ 'items-per-page-text': 'Hiển thị mỗi trang', 'items-per-page-all-text': 'Tất cả' }"
   >
     <template v-slot:[`footer.page-text`]="items">
       {{ items.pageStart }} - {{ items.pageStop }} trên tổng

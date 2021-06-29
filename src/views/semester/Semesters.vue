@@ -24,7 +24,7 @@
         :headers="headers"
         :items="semesters"
         item-key="id"
-        :footer-props="{ 'items-per-page-text': 'Số học kỳ một trang' }"
+        :footer-props="{ 'items-per-page-text': 'Số học kỳ một trang', 'items-per-page-all-text': 'Tất cả' }"
       >
         <template v-slot:[`footer.page-text`]="items">
           {{ items.pageStart }} - {{ items.pageStop }} trên tổng
@@ -64,7 +64,6 @@
 <script>
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import { mapActions, mapGetters } from 'vuex'
-import DropMenu from '@/modules/student/menu/Menu.vue'
 import SemesterFilter from '@/modules/semester/SemesterFilter'
 import SemesterNewDialog from '@/modules/semester/SemesterNewDialog'
 import SemesterFilterDialog from '@/modules/semester/SemesterFilterDialog'
@@ -128,7 +127,6 @@ const originHeaders = [
 export default {
   components: {
     Breadcrumbs,
-    DropMenu,
     SemesterFilter,
     SemesterNewDialog,
     SemesterFilterDialog,

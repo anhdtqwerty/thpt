@@ -27,7 +27,7 @@
         :items="subjects"
         @click:row="onSelected"
         ref="subjectDataTable"
-        :footer-props="{ 'items-per-page-text': 'Số môn một trang' }"
+        :footer-props="{ 'items-per-page-text': 'Số môn một trang', 'items-per-page-all-text': 'Tất cả' }"
       >
         <template v-slot:[`footer.page-text`]="items">
           {{ items.pageStart }} - {{ items.pageStop }} trên tổng
