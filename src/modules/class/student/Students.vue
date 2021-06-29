@@ -21,16 +21,16 @@
         <drop-menu></drop-menu>
       </v-flex>
     </v-layout>
-    <template v-slot:item.status="{ item }">
+    <template v-slot:[`item.status`]="{ item }">
       <v-chip :color="getColor(item.status)" dark>{{ item.status }}</v-chip>
     </template>
-    <template v-slot:item.name="{ item }">
+    <template v-slot:[`item.name`]="{ item }">
       <user-item :student="item" link></user-item>
     </template>
-    <template v-slot:item.gender="{ item }">{{
+    <template v-slot:[`item.gender`]="{ item }">{{
       item.gender === 'male' ? 'Nam' : item.gender === 'female' ? 'Nữ' : 'Khác'
     }}</template>
-    <template v-slot:item.action="{ item }">
+    <template v-slot:[`item.action`]="{ item }">
       <v-btn text icon @click="onStudentSelected(item)">
         <v-icon dense>mdi-pencil</v-icon>
       </v-btn>

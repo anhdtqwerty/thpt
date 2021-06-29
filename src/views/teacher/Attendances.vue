@@ -14,28 +14,28 @@
         :search="search"
         show-select
       >
-        <template v-slot:item.class.code="{ item }">
+        <template v-slot:[`item.class.code`]="{ item }">
           <router-link v-if="item.class" :to="'/class/' + item.class.id">{{ item.class.code }}</router-link>
         </template>
-        <template v-slot:item.teacher="{ item }">
+        <template v-slot:[`item.teacher`]="{ item }">
           <user-item v-if="item.teacher" :teacher="item.teacher" link></user-item>
           <user-item v-if="item.mentor" :teacher="item.mentor" link></user-item>
         </template>
-        <template v-slot:item.validator="{ item }">
+        <template v-slot:[`item.validator`]="{ item }">
           <user-item v-if="item.validator" :teacher="item.validator" link></user-item>
           <div v-else>Chưa chấm công</div>
         </template>
-        <template v-slot:item.slot.type="{ item }">
+        <template v-slot:[`item.slot.type`]="{ item }">
           <v-chip v-if="item.slot" small>{{ allSlotTypes[item.slot.type] }}</v-chip>
         </template>
-        <template v-slot:item.state="{ item }">
+        <template v-slot:[`item.state`]="{ item }">
           <v-chip small :color="getStateColor(item)">{{ allAttendanceStates[item.state || ''] }}</v-chip>
         </template>
-        <template v-slot:item.duration="{ item }"> {{ item.duration }}h </template>
-        <template v-slot:item.date="{ item }">
+        <template v-slot:[`item.duration`]="{ item }"> {{ item.duration }}h </template>
+        <template v-slot:[`item.date`]="{ item }">
           <div v-if="item.date">{{ item.date | getDate() }}</div>
         </template>
-        <template v-slot:item.status="{ item }">
+        <template v-slot:[`item.status`]="{ item }">
           <v-tooltip top>
             <template v-slot:activator="{ on }">
               <v-icon v-on="on" :color="getColor(item)">{{ item | getIcon(item) }} </v-icon>

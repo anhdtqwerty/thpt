@@ -36,13 +36,13 @@
         <div slot="top" class="py-md-6">
           <SubjectFilter @onFilterChanged="refresh" />
         </div>
-        <template v-slot:item.grade="{ item }">
+        <template v-slot:[`item.grade`]="{ item }">
           {{ item.grade | getGrade }}
         </template>
-        <template v-slot:item.markType="{ item }">
+        <template v-slot:[`item.markType`]="{ item }">
           {{ item.markType | getMarkType }}
         </template>
-        <template v-slot:item.type="{ item }">
+        <template v-slot:[`item.type`]="{ item }">
           {{ item.type | getSubjectType }}
         </template>
       </v-data-table>

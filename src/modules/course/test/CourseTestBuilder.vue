@@ -1,17 +1,17 @@
 <template>
   <div ref="form" class="pa-2">
     <v-data-table :headers="headers" :items="configs">
-      <template v-slot:item.action="{ item }">
+      <template v-slot:[`item.action`]="{ item }">
         <v-btn small icon @click="onClickEditIcon(item)">
           <v-icon small>edit</v-icon>
         </v-btn>
       </template>
-      <template v-slot:body.append>
+      <template v-slot:[`body.append`]>
         <tr style="border: none">
           <td colspan="100%">
             <v-btn small text @click="add">
               <v-icon class="mr-2">add</v-icon>
-              <span>Thêm cấu hình điẻm</span>
+              <span>Thêm cấu hình điểm</span>
             </v-btn>
           </td>
         </tr>
@@ -27,12 +27,7 @@
           </v-btn>
         </v-toolbar>
         <v-card-text v-if="confirm.currentItem" class="pa-5">
-          <v-text-field
-            v-model="confirm.currentItem.title"
-            :rules="titleRules"
-            label="Tiêu đề"
-            required
-          ></v-text-field>
+          <v-text-field v-model="confirm.currentItem.title" :rules="titleRules" label="Tiêu đề" required></v-text-field>
           <v-text-field
             v-model="confirm.currentItem.multiplier"
             :rules="multiplierRules"
@@ -50,9 +45,7 @@
         </v-card-text>
         <v-card-actions class="pa-5">
           <v-spacer />
-          <v-btn color="primary" text @click="confirm.isOpen = false"
-            >Hủy</v-btn
-          >
+          <v-btn color="primary" text @click="confirm.isOpen = false">Hủy</v-btn>
           <v-btn color="primary" @click="confirm.callback">Lưu</v-btn>
         </v-card-actions>
       </v-card>
@@ -124,17 +117,12 @@ export default {
           code: 4
         }
       ],
-      titleRules: [
-        v => !!v || 'Tiêu đề bắt buộc',
-        v => v.length <= 15 || 'Tiêu đề phải nhỏ hơn 15 ký tự'
-      ],
+      titleRules: [v => !!v || 'Tiêu đề bắt buộc', v => v.length <= 15 || 'Tiêu đề phải nhỏ hơn 15 ký tự'],
       multiplierRules: [
         v => !!v || 'Hệ số điểm bắt buộc',
         v => parseInt(v) > 0 || 'Hệ số phải là số tự nhiên lớn hơn 0'
       ],
-      minimumRules: [
-        v => parseInt(v) < 10 || 'Hệ số phải là số tự nhiên nhỏ hơn 10'
-      ]
+      minimumRules: [v => parseInt(v) < 10 || 'Hệ số phải là số tự nhiên nhỏ hơn 10']
     }
   },
   props: {

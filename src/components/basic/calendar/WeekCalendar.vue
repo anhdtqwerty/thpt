@@ -8,29 +8,19 @@
       hide-default-footer
       :loading="loading"
     >
-      <template
-        v-for="i in ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN']"
-        v-slot:[`header.${i}`]="{ header }"
-      >
+      <template v-for="i in ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN']" v-slot:[`header.${i}`]="{ header }">
         <div class="calendar__day-name" :key="`day-name-${i}`">
           {{ header.text }}
         </div>
-        <div
-          class="calendar__day-value"
-          :class="{ active: isCurrentDate(header.dateobj) }"
-          :key="`day-value-${i}`"
-        >
+        <div class="calendar__day-value" :class="{ active: isCurrentDate(header.dateobj) }" :key="`day-value-${i}`">
           {{ header.dateAndMonth }}
         </div>
       </template>
 
-      <template v-slot:item.group="{ item }">
+      <template v-slot:[`item.group`]="{ item }">
         <div class="calendar__group">{{ item.group }}</div>
       </template>
-      <template
-        v-for="i in ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN']"
-        v-slot:[`item.${i}`]="{ item }"
-      >
+      <template v-for="i in ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN']" v-slot:[`item.${i}`]="{ item }">
         <div v-if="item[i] && item[i] instanceof Array && !loading" :key="i">
           <template v-for="(event, index) in item[i]">
             <v-chip
@@ -77,9 +67,7 @@
               {{ item.group }}
             </td>
             <td>
-              <template
-                v-for="(event, index) in item[mobileControllData.currentTab]"
-              >
+              <template v-for="(event, index) in item[mobileControllData.currentTab]">
                 <v-chip
                   class="mb-2"
                   style="width: 100%"

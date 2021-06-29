@@ -1,12 +1,12 @@
 <template>
   <v-card>
     <v-card-title>
-      <v-btn color="primary" dark class="mb-2" @click="dialog=!dialog">Upload tài liệu</v-btn>
+      <v-btn color="primary" dark class="mb-2" @click="dialog = !dialog">Upload tài liệu</v-btn>
       <v-spacer></v-spacer>
       <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
     </v-card-title>
     <v-data-table :headers="headers" :items="desserts" :search="search">
-      <template v-slot:item.action="{ item }">
+      <template v-slot:[`item.action`]="{ item }">
         <v-icon small class="mr-2" @click="editItem(item)">edit</v-icon>
         <v-icon small @click="deleteItem(item)">delete</v-icon>
       </template>
@@ -19,7 +19,7 @@
 import UploadDialog from '@/modules/course/library/UploadDialog'
 export default {
   components: { UploadDialog },
-  data () {
+  data() {
     return {
       dialog: false,
       search: '',

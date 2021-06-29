@@ -5,10 +5,10 @@
     </v-flex>
     <v-flex xs12 sm9 md9>
       <v-data-table item-key="id" v-model="selected" :headers="headers" :items="classes" :search="search" show-select>
-        <template v-slot:item.status="{ item }">
+        <template v-slot:[`item.status`]="{ item }">
           <v-chip small :color="getColor(item.status)" dark>{{ item.status | classStatus }}</v-chip>
         </template>
-        <template v-slot:item.code="{ item }">
+        <template v-slot:[`item.code`]="{ item }">
           <v-tooltip top>
             <template v-slot:activator="{ on }">
               <div v-on="on">
@@ -18,7 +18,7 @@
             <span>Xem Lớp</span>
           </v-tooltip>
         </template>
-        <template v-slot:item.course="{ item }">
+        <template v-slot:[`item.course`]="{ item }">
           <v-tooltip top>
             <template v-slot:activator="{ on }">
               <div v-on="on">
@@ -30,7 +30,7 @@
             <span>Xem Khóa Học</span>
           </v-tooltip>
         </template>
-        <template v-slot:item.major="{ item }">
+        <template v-slot:[`item.major`]="{ item }">
           <v-tooltip top>
             <template v-slot:activator="{ on }">
               <div v-on="on">
