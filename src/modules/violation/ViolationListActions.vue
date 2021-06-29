@@ -37,7 +37,7 @@ export default {
     ...mapState('violation', ['violations'])
   },
   methods: {
-    ...mapActions('violation', ['removeViolation', 'updateDivision']),
+    ...mapActions('violation', ['removeViolation', 'updateDivision', 'refresh']),
     onRemove() {
       this.$dialog.confirm({
         title: 'Xóa',
@@ -46,6 +46,7 @@ export default {
         cancelText: 'Không',
         done: async () => {
           await this.removeViolation(this.selected.id)
+          this.refresh({})
         }
       })
     },

@@ -167,7 +167,7 @@ export default {
       this.searchClasses({
         department: this.department.id,
         generation: this.currentGeneration.id,
-        _sort: 'createdAt:desc, startTime:desc',
+        _sort: 'title:asc',
         ...query
       })
     }

@@ -1,31 +1,18 @@
 <template>
-  <v-dialog
-    v-model="dialog"
-    width="600"
-    :fullscreen="$vuetify.breakpoint.smAndDown"
-    scrollable
-  >
-    <v-card >
+  <v-dialog v-model="dialog" width="600" :fullscreen="$vuetify.breakpoint.smAndDown" scrollable>
+    <v-card>
       <v-card-title class="primary white--text "
         ><v-toolbar-title>THÊM KHEN THƯỞNG KỈ LUẬT</v-toolbar-title>
         <v-spacer />
         <v-icon color="white" @click="dialog = false">close</v-icon>
       </v-card-title>
       <v-card-text>
-        <violation-new-form
-        ref="form"
-      />
+        <violation-new-form ref="form" />
       </v-card-text>
       <v-divider></v-divider>
       <v-card-actions>
         <v-spacer />
-        <v-btn
-          depressed
-          color="primary"
-          class="ma-2 white--text"
-          @click="save"
-          >Lưu</v-btn
-        >
+        <v-btn depressed color="primary" class="ma-2 white--text" @click="save">Lưu</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -39,7 +26,7 @@ export default {
   components: {
     ViolationNewForm
   },
-   props: {
+  props: {
     state: Boolean
   },
   data() {
@@ -53,7 +40,7 @@ export default {
     ...mapState('auth', ['user'])
   },
   methods: {
-    ...mapActions('violation', ['createViolation']),
+    ...mapActions('violation', ['createViolation', 'refresh']),
     async save() {
       if (!this.$refs.form.validate()) return
       this.loading = true
@@ -63,6 +50,7 @@ export default {
       this.$refs.form.resetDefault()
       this.loading = false
       this.dialog = false
+      this.refresh({})
     }
   },
   watch: {
