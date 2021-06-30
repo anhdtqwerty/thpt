@@ -78,10 +78,10 @@ export default {
         alert.error(e)
       }
     },
-    async removeViolation({ commit }, params) {
+    async removeViolation({ commit }, id) {
       try {
-        await Violation.remove(params.id)
-        commit('removeViolation', params.id)
+        await Violation.remove()
+        commit('removeViolation', id)
         alert.success('Xóa thành công!')
       } catch (e) {
         alert.error(e)

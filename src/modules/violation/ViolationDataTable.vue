@@ -123,12 +123,12 @@ export default {
     ...mapActions('violation', ['searchViolations', 'requestPageSettings']),
     async onRemoveViolation() {
       this.loading = true
-      await this.requestPageSettings({ page: this.page })
+      await this.requestPageSettings({ itemsPerPage: this.itemsPerPage, page: this.page })
       this.loading = false
     },
     async oncreateViolation() {
       this.loading = true
-      await this.requestPageSettings({ page: this.page })
+      await this.requestPageSettings({ itemsPerPage: this.itemsPerPage, page: this.page })
       this.loading = false
     },
     getColor(s) {
