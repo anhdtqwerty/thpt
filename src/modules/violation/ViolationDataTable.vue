@@ -11,8 +11,12 @@
     mobile-breakpoint="0"
     :footer-props="footerTable"
   >
+    <template v-slot:[`footer.page-text`]="items">
+      {{ items.pageStart }} - {{ items.pageStop }} trên tổng
+      {{ items.itemsLength }}
+    </template>
     <template v-slot:[`item.action`]="{ item }">
-      <violation-actions :selected="item"> </violation-actions>
+      <violation-actions :selected="item" :currentPage="currentPage"> </violation-actions>
     </template>
     <template v-slot:[`item.date`]="{ item }">
       {{ item.date | ddmmyyyy }}
@@ -91,7 +95,8 @@ export default {
       originHeaders: originHeaders,
       selected: [],
       loading: false,
-      tableOptions: {}
+      tableOptions: {},
+      currentPage: 0
     }
   },
   components: {
@@ -135,6 +140,7 @@ export default {
         const itemPerPageChanged = newOptions.itemsPerPage !== oldOptions.itemsPerPage
         const pageChanged = newOptions.page !== oldOptions.page
         if (pageChanged || itemPerPageChanged) {
+          this.currentPage = newOptions.page
           this.requestPageSettings({
             page: newOptions.page,
             itemsPerPage: newOptions.itemsPerPage

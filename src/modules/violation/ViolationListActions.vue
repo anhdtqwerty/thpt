@@ -25,7 +25,8 @@ export default {
     ViolationUpdateDialog
   },
   props: {
-    selected: { type: Object, default: () => [] }
+    selected: { type: Object, default: () => [] },
+    currentPage: Number
   },
   data() {
     return {
@@ -45,8 +46,7 @@ export default {
         okText: 'Có',
         cancelText: 'Không',
         done: async () => {
-          await this.removeViolation(this.selected.id)
-          this.refresh({})
+          await this.removeViolation({ id: this.selected.id, currentPage: this.currentPage })
         }
       })
     },

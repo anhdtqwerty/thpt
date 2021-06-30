@@ -76,10 +76,10 @@ export default {
         alert.error(e)
       }
     },
-    async removeViolation({ commit }, id) {
+    async removeViolation({ commit }, params) {
       try {
-        await Violation.remove(id)
-        commit('removeViolation', id)
+        await Violation.remove(params.id)
+        commit('removeViolation', params)
         alert.success('Xóa thành công!')
       } catch (e) {
         alert.error(e)
@@ -100,9 +100,6 @@ export default {
       } catch (e) {
         alert.error(e)
       }
-    },
-    refresh(){
-      location.reload();
     }
   },
   mutations: {
@@ -111,9 +108,11 @@ export default {
     },
     removeViolation(state, id) {
       state.violations = state.violations.filter(violation => violation.id !== id)
+      state.totalItems = state.totalItems - 1
     },
     createViolation(state, violation) {
       state.violations = [violation, ...state.violations]
+      state.totalItems = state.totalItems + 1
     },
     updateViolation(state, violation) {
       state.violations = state.violations.map(v => {

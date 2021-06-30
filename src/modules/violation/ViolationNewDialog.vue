@@ -40,7 +40,7 @@ export default {
     ...mapState('auth', ['user'])
   },
   methods: {
-    ...mapActions('violation', ['createViolation', 'refresh']),
+    ...mapActions('violation', ['createViolation']),
     async save() {
       if (!this.$refs.form.validate()) return
       this.loading = true
@@ -50,7 +50,6 @@ export default {
       this.$refs.form.resetDefault()
       this.loading = false
       this.dialog = false
-      this.refresh({})
     }
   },
   watch: {
