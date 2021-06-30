@@ -121,7 +121,16 @@ export default {
   },
   methods: {
     ...mapActions('violation', ['searchViolations', 'requestPageSettings']),
-
+    async onRemoveViolation() {
+      this.loading = true
+      await this.requestPageSettings({ page: this.page })
+      this.loading = false
+    },
+    async oncreateViolation() {
+      this.loading = true
+      await this.requestPageSettings({ page: this.page })
+      this.loading = false
+    },
     getColor(s) {
       if (s === 'violation') return 'orange'
       else return '#46BE8A'

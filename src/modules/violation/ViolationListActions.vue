@@ -19,14 +19,12 @@
 <script>
 import { mapActions, mapState } from 'vuex'
 import ViolationUpdateDialog from '@/modules/violation/ViolationUpdateDialog.vue'
-
 export default {
   components: {
     ViolationUpdateDialog
   },
   props: {
-    selected: { type: Object, default: () => [] },
-    currentPage: Number
+    selected: { type: Object, default: () => [] }
   },
   data() {
     return {
@@ -35,10 +33,10 @@ export default {
     }
   },
   computed: {
-    ...mapState('violation', ['violations'])
+    ...mapState('violation', ['violations', 'page'])
   },
   methods: {
-    ...mapActions('violation', ['removeViolation', 'updateDivision', 'refresh']),
+    ...mapActions('violation', ['removeViolation', 'updateDivision', 'requestPageSettings']),
     onRemove() {
       this.$dialog.confirm({
         title: 'Xóa',
@@ -46,7 +44,8 @@ export default {
         okText: 'Có',
         cancelText: 'Không',
         done: async () => {
-          await this.removeViolation({ id: this.selected.id, currentPage: this.currentPage })
+          await this.removeViolation({ id: this.selected.id, page: this.page })
+          await this.requestPageSettings({ page: this.page })
         }
       })
     },

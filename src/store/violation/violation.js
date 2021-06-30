@@ -10,7 +10,8 @@ export default {
     pageText: '',
     itemsPerPage: 10,
     searchParams: {},
-    totalItems: 0
+    totalItems: 0,
+    page: 1
   },
   actions: {
     async searchViolations({ commit, state, dispatch }, query) {
@@ -42,7 +43,8 @@ export default {
             violations,
             totalItems,
             itemsPerPage,
-            searchParams
+            searchParams,
+            page
           })
           const pageStart = (page - 1) * itemsPerPage + 1
           let pageStop = page * itemsPerPage
@@ -79,7 +81,7 @@ export default {
     async removeViolation({ commit }, params) {
       try {
         await Violation.remove(params.id)
-        commit('removeViolation', params)
+        commit('removeViolation', params.id)
         alert.success('Xóa thành công!')
       } catch (e) {
         alert.error(e)
@@ -108,11 +110,9 @@ export default {
     },
     removeViolation(state, id) {
       state.violations = state.violations.filter(violation => violation.id !== id)
-      state.totalItems = state.totalItems - 1
     },
     createViolation(state, violation) {
       state.violations = [violation, ...state.violations]
-      state.totalItems = state.totalItems + 1
     },
     updateViolation(state, violation) {
       state.violations = state.violations.map(v => {
