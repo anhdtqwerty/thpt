@@ -1,9 +1,5 @@
 <template>
-  <div
-    class="d-flex flex-row flex-nowrap align-center py-2"
-    :key="student && student.id"
-    @click="$emit('change', student)"
-  >
+  <div class="d-flex flex-row flex-nowrap align-center py-2" :key="student.id" @click="$emit('change', student)">
     <div v-if="!$vuetify.breakpoint.mobile" class="image-wrapper mr-2">
       <img :src="avatar" alt="" />
     </div>

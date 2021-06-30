@@ -11,10 +11,6 @@
     mobile-breakpoint="0"
     :footer-props="footerTable"
   >
-    <template v-slot:[`footer.page-text`]="items">
-      {{ items.pageStart }} - {{ items.pageStop }} trên tổng
-      {{ items.itemsLength }}
-    </template>
     <template v-slot:[`item.action`]="{ item }">
       <violation-actions :selected="item" :currentPage="currentPage"> </violation-actions>
     </template>
