@@ -28,10 +28,7 @@
         <template v-slot:top>
           <v-row>
             <v-col cols="11" md="12" class="text-right">
-              <setting-table-header
-                :default-headers="originHeaders"
-                @change="headers = $event"
-              />
+              <setting-table-header :default-headers="originHeaders" @change="headers = $event" />
               <KebapMenu v-if="!$vuetify.breakpoint.xs">
                 <v-list>
                   <v-list-item>
@@ -56,9 +53,7 @@
         </template>
 
         <template v-slot:[`item.status`]="{ item }">
-          <v-chip label :color="getColor(item.status)" dark>{{
-            item.status
-          }}</v-chip>
+          <v-chip label :color="getColor(item.status)" dark>{{ item.status }}</v-chip>
         </template>
 
         <template v-slot:[`item.actions`]="{ item }">
@@ -76,7 +71,6 @@ import StaffFilter from '@/modules/staff/StaffFilter'
 import Breadcrumbs from '@/components/basic/Breadcrumbs'
 import NewStaffDialog from '@/modules/staff/NewStaffDialog'
 import KebapMenu from '@/components/basic/menu/KebapMenu.vue'
-import SettingTableHeader from '@/components/basic/table/SettingHeaders'
 import ExportExcel from '@/components/basic/ExportExcel'
 const originHeaders = [
   { text: 'Tên', value: 'name', align: 'left', sortable: false, show: true },
@@ -106,7 +100,6 @@ export default {
     Breadcrumbs,
     NewStaffDialog,
     KebapMenu,
-    SettingTableHeader,
     ExportExcel
   },
   props: {
@@ -153,13 +146,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('staff', [
-      'fetchStaffs',
-      'fetchStaffsCount',
-      'setStaff',
-      'setStaffs',
-      'updateStaffs'
-    ]),
+    ...mapActions('staff', ['fetchStaffs', 'fetchStaffsCount', 'setStaff', 'setStaffs', 'updateStaffs']),
     updateDraw(draw) {
       this.draw = draw
     },
@@ -179,11 +166,9 @@ export default {
       //     this.isLoading = false
       //   })
       // } else {
-      this.fetchStaffs('?department=' + this.department.id + '&' + query).then(
-        () => {
-          this.isLoading = false
-        }
-      )
+      this.fetchStaffs('?department=' + this.department.id + '&' + query).then(() => {
+        this.isLoading = false
+      })
     }
     // }
   }
