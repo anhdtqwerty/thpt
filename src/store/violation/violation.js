@@ -80,7 +80,7 @@ export default {
     },
     async removeViolation({ commit }, id) {
       try {
-        await Violation.remove()
+        await Violation.remove(id)
         commit('removeViolation', id)
         alert.success('Xóa thành công!')
       } catch (e) {

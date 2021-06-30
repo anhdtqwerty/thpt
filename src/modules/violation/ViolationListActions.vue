@@ -44,7 +44,7 @@ export default {
         okText: 'Có',
         cancelText: 'Không',
         done: async () => {
-          await this.removeViolation({ id: this.selected.id })
+          await this.removeViolation(this.selected.id)
           await this.requestPageSettings({ itemsPerPage: this.itemsPerPage, page: this.page })
         }
       })
