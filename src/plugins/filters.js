@@ -152,14 +152,10 @@ export const vueFilterRegister = () => {
         return ''
     }
   })
-  Vue.filter('getAttendanceStatus', type => {
-    switch (type) {
-      case 'late':
-        return 'Đi muộn'
-      case 'onTime':
-        return 'Đúng giờ'
-    }
-  })
+  // Vue.filter('getAttendanceStatus ', attendance => {
+  //   if (attendance) return 'Có mặt'
+  //   return 'Chưa điểm danh'
+  // })
   Vue.filter('teacherStatus', status => {
     switch (status) {
       case 'active':
@@ -170,16 +166,10 @@ export const vueFilterRegister = () => {
         return ''
     }
   })
-  Vue.filter('getAttendanceStatusColor', type => {
-    switch (type) {
-      case 'late':
-        return 'orange'
-      case 'onTime':
-        return '#46BE8A'
-      default:
-        return 'gray'
-    }
-  })
+  // Vue.filter('getAttendanceStatusColor', attendance => {
+  //   if (!attendance) return '#FD6B6B'
+  //   return '#46BE8A'
+  // })
   Vue.filter('teacherType', status => {
     switch (status) {
       case 'long-term':

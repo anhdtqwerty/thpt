@@ -33,7 +33,7 @@ export default {
   computed: {},
   methods: {
     refresh() {
-      this.$emit('refresh')
+      this.$refs.diligenceDataTable.refresh()
     },
     exportExcel() {
       const excelHeader = this.$refs.diligenceDataTable.headers.map(({ text, value }) => ({ text, value }))

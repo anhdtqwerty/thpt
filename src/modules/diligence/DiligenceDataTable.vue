@@ -3,42 +3,35 @@
     mobile-breakpoint="0"
     item-key="id"
     :options.sync="tableOptions"
+    :server-items-length="totalItems"
     :headers="headers"
+    :items="studentDiligences"
     :footer-props="footerTable"
+    :items-per-page="10"
     v-bind="this.$attrs"
   >
-    <template v-slot:[`item.time`]="{ item }">
-      {{ item.createdAt | ddmmyyyy }}
+    <template v-slot:[`item.student`]="{ item }">
+      <CardStudentName :student="item.student" link />
     </template>
-    <template v-slot:[`item.postType`]="{ item }">
-      {{ item.postType | getPostType }}
+    <template v-slot:[`item.dob`]="{ item }">
+      {{ item.student.dob | ddmmyyyy }}
     </template>
-    <template v-slot:[`item.config`]="{ item }">
-      {{ item.config | getConfig }}
+    <template v-slot:[`item.class`]="{ item }">
+      {{ item.student | _get('currentClass.title') }}
     </template>
-    <template v-slot:[`item.receiver`]="{ item }">
-      <card-student-name :student="item.student" link />
+    <template v-slot:[`item.absentNo`]="{ item }">
+      {{ item.diligences.length }}
     </template>
-    <template v-slot:[`item.status`]="{ item }">
-      <v-chip small class="white--text" v-if="item.status" :color="item.status | getSendNotiStatusColor" label>
-        {{ item.status | getSendNotiStatus }}
-      </v-chip>
+    <template v-slot:[`item.valid`]="{ item }">
+      {{ item.diligences.filter(d => d.type === 'valid').length }}
     </template>
-    <template v-slot:[`item.currentClass`]="{ item }">
-      <router-link style="text-decoration: none" :to="'/class/' + (item.class && item.class.id)">
-        <span v-if="item.class">{{ item.class && item.class.title }}</span>
-      </router-link>
+    <template v-slot:[`item.invalid`]="{ item }">
+      {{ item.diligences.filter(d => d.type === 'invalid').length }}
     </template>
     <template v-slot:[`item.action`]="{ item }">
-      <HistoryListActions :item="item" @resend="resend" />
-    </template>
-    <template v-slot:[`item.content`]="{ item }">
-      <v-tooltip max-width="250px" bottom>
-        <template v-slot:activator="{ on, attrs }">
-          <p v-bind="attrs" v-on="on" class="nowrap ma-0">{{ item.content }}</p>
-        </template>
-        <span>{{ item.content }}</span>
-      </v-tooltip>
+      <v-btn class="elevation-0" icon>
+        <v-icon>mdi-pencil</v-icon>
+      </v-btn>
     </template>
   </v-data-table>
 </template>
@@ -50,7 +43,7 @@ import { mapActions } from 'vuex'
 const originHeaders = [
   {
     text: 'Học sinh',
-    value: 'student.name',
+    value: 'student',
     align: 'left',
     sortable: true,
     show: true
@@ -71,21 +64,21 @@ const originHeaders = [
   },
   {
     text: 'Số ngày nghỉ',
-    value: 'class',
+    value: 'absentNo',
     align: 'center',
     sortable: false,
     show: true
   },
   {
     text: 'Có phép',
-    value: '',
+    value: 'valid',
     align: 'center',
     sortable: false,
     show: true
   },
   {
     text: 'Không phép',
-    value: '',
+    value: 'invalid',
     align: 'center',
     sortable: false,
     show: true
@@ -113,7 +106,7 @@ export default {
   computed: {
     footerTable() {
       let footer = {
-        'items-per-page-text': 'Hiển thị mỗi trang',
+        'items-per-page-text': 'Học sinh mỗi trang',
         'items-per-page-all-text': 'Tất cả',
         'items-per-page': 10,
         'page-text': this.pageText
@@ -125,8 +118,10 @@ export default {
     }
   },
   methods: {
-    ...mapActions('AppHistory', ['requestPageSettings', 'searchHistories']),
-    async refresh(query) {}
+    ...mapActions('Diligence', ['requestPageSettings', 'searchDiligences']),
+    async refresh(query) {
+      await this.searchDiligences({ ...query, generation: this.currentGeneration.id })
+    }
   },
   async created() {
     await this.refresh({})

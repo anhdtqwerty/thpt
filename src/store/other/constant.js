@@ -252,13 +252,17 @@ export default {
         status: 'absent'
       },
       {
-        title: 'Đi Muộn',
-        status: 'late'
-      },
-      {
-        title: 'Đúng giờ',
-        status: 'onTime'
+        title: 'Có mặt',
+        status: 'attendance'
       }
+      // {
+      //   title: 'Đi Muộn',
+      //   status: 'late'
+      // },
+      // {
+      //   title: 'Đúng giờ',
+      //   status: 'onTime'
+      // }
     ],
     diligenceStatus: [
       {

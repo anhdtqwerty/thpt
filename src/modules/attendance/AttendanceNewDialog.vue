@@ -59,9 +59,9 @@
                 :rules="[$rules.required]"
               />
             </v-col>
-            <v-col cols="6">
+            <!-- <v-col cols="6">
               <v-checkbox class="my-0" label="Đi học muộn" v-model="late"></v-checkbox>
-            </v-col>
+            </v-col> -->
           </v-row>
         </v-form>
       </v-card-text>
@@ -142,9 +142,11 @@ export default {
             status: this.late ? 'late' : 'onTime'
           })
           this.$alert.addSuccess()
+          this.$emit('attendanceAdded')
           this.reset()
           this.dialog = false
         } catch (error) {
+          console.error(error)
           this.$alert.addError()
         } finally {
           this.$loading.active = false

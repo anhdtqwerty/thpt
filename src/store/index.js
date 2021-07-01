@@ -79,6 +79,7 @@ import StudentPostHistory from './contactBook/StudentPostHistory'
 import AttendanceDetail from './student/AttendanceDetail'
 import Generation from '@/store/generation/Generation.js'
 import AcademicLevel from './academicLevel/AcademicLevel'
+import Diligence from './student/Diligence'
 
 Vue.use(Vuex)
 
@@ -143,7 +144,8 @@ export default createStore(Vuex.Store, {
     StudentPostHistory,
     AttendanceDetail,
     Generation,
-    AcademicLevel
+    AcademicLevel,
+    Diligence
   },
   mixins: {
     mutations: {
