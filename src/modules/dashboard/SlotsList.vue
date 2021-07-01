@@ -102,8 +102,8 @@ export default {
             moment(s.startTime).hour() < 12
               ? 'green'
               : moment(s.startTime).hour() < 18
-              ? 'orange'
-              : '#727272',
+                ? 'orange'
+                : '#727272',
           data: s,
           timestamp: moment(s.startTime).format(`YYYY-MM-DD HH:mm`),
           timed: false

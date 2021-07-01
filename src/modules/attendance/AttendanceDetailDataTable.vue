@@ -45,7 +45,6 @@
 </template>
 
 <script>
-import moment from 'moment'
 import AttendanceListActions from '@/modules/attendance/AttendanceListActions'
 import { mapActions, mapState } from 'vuex'
 

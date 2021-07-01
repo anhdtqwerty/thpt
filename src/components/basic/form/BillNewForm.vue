@@ -1,7 +1,7 @@
 <template>
   <v-form ref="form" v-model="valid">
     <currency-input
-      outlined     
+      outlined
       v-model="customerPaid"
       label="Nhập số tiền khách trả"
       dense

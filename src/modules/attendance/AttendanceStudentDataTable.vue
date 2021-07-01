@@ -127,7 +127,7 @@ export default {
         .endOf('day')
         .toISOString()
 
-      //console.log('query', { ...query, time_gte: start, time_lte: end })
+      // console.log('query', { ...query, time_gte: start, time_lte: end })
       const params = { time_gte: start, time_lte: end }
       await this.searchAttendances({ ...query })
     },

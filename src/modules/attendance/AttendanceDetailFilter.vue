@@ -39,7 +39,6 @@
 <script>
 import DateIOSPicker from '@/components/basic/picker/DateIOSPicker.vue'
 import moment from 'moment'
-import { mapState } from 'vuex'
 
 export default {
   components: { DateIOSPicker },
