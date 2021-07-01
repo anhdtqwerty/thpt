@@ -54,7 +54,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import _ from 'lodash'
+import { get } from 'lodash'
 import ClassPolicy from '@/modules/policy/ClassPolicyForm'
 import StudentPolicy from '@/modules/policy/StudentPolicyForm'
 import TeacherPolicy from '@/modules/policy/TeacherPolicyForm'
@@ -129,7 +129,7 @@ export default {
     reset() {},
     changeRole(role) {
       this.setRole(role)
-      this.policy = _.get(this.department, 'policies.' + role.id)
+      this.policy = get(this.department, 'policies.' + role.id)
     },
     onClickCard(nameState) {
       switch (nameState) {
