@@ -75,10 +75,9 @@
 </template>
 
 <script>
-import { mapActions, mapState, mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 import CardStudentName from '@/components/basic/card/CardStudentName'
 import TimeSelector from '@/components/basic/TimeSelector'
-import { get } from 'lodash'
 import moment from 'moment'
 
 export default {

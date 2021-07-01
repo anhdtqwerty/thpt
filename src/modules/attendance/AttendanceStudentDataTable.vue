@@ -120,15 +120,12 @@ export default {
   methods: {
     ...mapActions('attendance', ['searchAttendances', 'requestPageSettings']),
     async refresh(query) {
-      const start = moment()
+      moment()
         .startOf('day')
         .toISOString()
-      const end = moment()
+      moment()
         .endOf('day')
         .toISOString()
-
-      // console.log('query', { ...query, time_gte: start, time_lte: end })
-      const params = { time_gte: start, time_lte: end }
       await this.searchAttendances({ ...query })
     },
 
