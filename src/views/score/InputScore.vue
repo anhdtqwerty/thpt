@@ -44,27 +44,13 @@
               </v-col>
               <v-col cols="0" md="1" class="pa-0 ma-0"></v-col>
               <v-col cols="12" md="2">
-                <v-btn
-                  color="primary"
-                  depressed
-                  style="width: 100%"
-                  @click="onClickSearch"
-                  >Tìm kiếm</v-btn
-                >
+                <v-btn color="primary" depressed style="width: 100%" @click="onClickSearch">Tìm kiếm</v-btn>
               </v-col>
             </v-row>
 
-            <div
-              class="text-right font-weight-medium"
-              style="cursor: pointer"
-              @click="onChangeFilterMode"
-            >
-              <span class="primary--text">{{
-                this.filterOptions[this.filterMode].label
-              }}</span>
-              <v-icon color="primary">{{
-                this.filterOptions[this.filterMode].icon
-              }}</v-icon>
+            <div class="text-right font-weight-medium" style="cursor: pointer" @click="onChangeFilterMode">
+              <span class="primary--text">{{ this.filterOptions[this.filterMode].label }}</span>
+              <v-icon color="primary">{{ this.filterOptions[this.filterMode].icon }}</v-icon>
             </div>
 
             <v-row class="advance-filter" v-if="filterMode === 'advanced'">
@@ -106,12 +92,7 @@
                 />
               </v-col>
               <v-col cols="12" md="4">
-                <v-btn
-                  color="primary"
-                  style="width: 100%"
-                  @click="onClickSearch"
-                  >Tìm kiếm</v-btn
-                >
+                <v-btn color="primary" style="width: 100%" @click="onClickSearch">Tìm kiếm</v-btn>
               </v-col>
             </v-row>
           </v-col>
@@ -120,13 +101,7 @@
     </v-card>
     <v-card class="px-md-6 mx-md-4 elevation-1 mb-2">
       <v-card-text>
-        <template
-          v-if="
-            filterInputs.subjectObj &&
-              filterInputs.classObj &&
-              filterInputs.factorObj
-          "
-        >
+        <template v-if="filterInputs.subjectObj && filterInputs.classObj && filterInputs.factorObj">
           <div class="table-label primary--text mb-3">
             <div>
               <div class="mb-5">
@@ -146,15 +121,8 @@
               <v-btn color="success" @click="onClickSaveButton">Lưu</v-btn>
             </div>
           </div>
-          <v-data-table
-            :headers="originHeaders"
-            :items="items"
-            :loading="loading"
-          >
-            <template
-              v-if="filterInputs.subjectObj.markType === 'evaluate'"
-              v-slot:item.mark="{ item }"
-            >
+          <v-data-table :headers="originHeaders" :items="items" :loading="loading">
+            <template v-if="filterInputs.subjectObj.markType === 'evaluate'" v-slot:item.mark="{ item }">
               <v-select
                 class="mark-input"
                 v-for="mark in item.marks"
@@ -194,7 +162,7 @@
 
 <script>
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
-import _ from 'lodash'
+import { get, groupBy } from 'lodash'
 import AutocompleteClass from '@/components/basic/input/AutocompleteClass'
 import AutocompleteSubject from '@/components/basic/input/AutocompleteSubject'
 import AutocompleteFactor from '@/components/basic/input/AutocompleteFactor'
@@ -270,10 +238,7 @@ export default {
       }
     },
     marks(data) {
-      const groupedMark = _.groupBy(
-        this.generateDataTable(Object.values(data)),
-        'studentId'
-      )
+      const groupedMark = groupBy(this.generateDataTable(Object.values(data)), 'studentId')
       const accumulatedMark = mapPropObj(groupedMark)(accumulateMark)
       this.items = Object.values(accumulatedMark)
     }
@@ -281,12 +246,10 @@ export default {
   computed: {
     ...mapState('mark', ['marks']),
     titleTable() {
-      const subjectTitle = _.get(this.filterInputs, 'subjectObj.title')
-      const classTitle = _.get(this.filterInputs, 'classObj.title')
-      const factorTitle = _.get(this.filterInputs, 'factorObj.title')
-      return `Nhập điểm ${[subjectTitle, classTitle, factorTitle]
-        .filter(Boolean)
-        .join(' - ')}`
+      const subjectTitle = get(this.filterInputs, 'subjectObj.title')
+      const classTitle = get(this.filterInputs, 'classObj.title')
+      const factorTitle = get(this.filterInputs, 'factorObj.title')
+      return `Nhập điểm ${[subjectTitle, classTitle, factorTitle].filter(Boolean).join(' - ')}`
     }
   },
   methods: {
@@ -349,12 +312,12 @@ export default {
     },
     onClickSearch() {
       const data = this.filterInputs
-      const classId = _.get(data, 'classObj.id')
-      const subjectId = _.get(data, 'subjectObj.id')
-      const factorId = _.get(data, 'factorObj.id')
-      const factorTitle = _.get(data, 'factorObj.title')
-      const semesterId = _.get(data, 'semesterObj.id')
-      const studentId = _.get(data, 'studentObj.id')
+      const classId = get(data, 'classObj.id')
+      const subjectId = get(data, 'subjectObj.id')
+      const factorId = get(data, 'factorObj.id')
+      const factorTitle = get(data, 'factorObj.title')
+      const semesterId = get(data, 'semesterObj.id')
+      const studentId = get(data, 'studentObj.id')
 
       this.originHeaders = this.originHeaders.map((item, index) => {
         if (index === 3) {
