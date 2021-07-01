@@ -5,8 +5,6 @@
       mobile-breakpoint="0"
       sort-by="name"
       :items="attendances"
-      :options.sync="tableOptions"
-      :server-items-length="totalItems"
       item-key="id"
       loading-text="Đang Tải"
       hide-default-footer
@@ -21,16 +19,18 @@
           :page-text="pageText"
         />
       </template>
-      <template v-slot:[`item.action`]="{ item }">
-        <attendance-list-actions :item="item" />
-      </template>
-      <template v-slot:[`item.checkIn`]="{ item }">
-        <span>{{ item.checkin[0] | hhmm }}</span>
-      </template>
-      <template v-slot:[`item.checkOut`]="{ item }">
-        <span>{{ item.checkin[1] | hhmm }}</span>
-      </template>
+
       <template v-slot:[`item.time`]="{ item }">
+        <div v-if="item">
+          <div class="pt-2" style="height: 36px" v-for="index in evenNumbers(item)" :key="index">
+            {{ item.checkin[index] | hhmm }} / {{ item.checkin[index + 1] | hhmm }}
+          </div>
+        </div>
+        <div v-else>
+          --:-- / --:--
+        </div>
+      </template>
+      <template v-slot:[`item.date`]="{ item }">
         <span>{{ item.time | ddmmyyyy }}</span>
       </template>
       <template v-slot:[`item.status`]="{ item }">
@@ -46,51 +46,61 @@
 
 <script>
 import moment from 'moment'
-import AttendanceListActions from '@/modules/attendance/AttendanceListActions'
 import { mapActions, mapState } from 'vuex'
 
 export default {
-  components: { AttendanceListActions },
+  components: {},
   data() {
     return {
       tableOptions: {},
       originHeaders: [
         {
           text: 'Ngày',
+          value: 'date',
+          sortable: false
+        },
+        {
+          text: 'Giờ đến / Giờ về',
           value: 'time',
-          width: 100,
           sortable: false
         },
-        {
-          text: 'Giờ đến',
-          value: 'checkIn',
-          width: 100,
-          sortable: false
-        },
-        {
-          text: 'Giờ về',
-          value: 'checkOut',
-          width: 100,
-          sortable: false
-        },
-        { text: 'Trạng thái', value: 'status', width: 100, sortable: false }
+
+        { text: 'Trạng thái', value: 'status', sortable: false }
       ],
       loading: false
     }
   },
   props: {
-    hideFooter: { type: Boolean, default: () => false }
+    hideFooter: { type: Boolean, default: () => false },
+    student: Object
   },
   async created() {
     await this.refresh({})
   },
   computed: {
-    ...mapState('AttendanceDetail', ['attendances', 'pageText', 'totalItems'])
+    ...mapState('AttendanceDetail', ['attendances', 'pageText', 'totalItems']),
+    ...mapState('app', ['currentGeneration'])
   },
   methods: {
-    ...mapActions('AttendanceDetail', ['searchAttendances', 'requestPageSettings']),
+    ...mapActions('AttendanceDetail', ['searchAttendances', 'requestPageSettings', 'fetchAttendances']),
     async refresh(query) {
-      await this.searchAttendances({ ...query })
+      await this.fetchAttendances({ ...query, student: this.student.id })
+    },
+    evenNumbers(item) {
+      if (item) {
+        return [...Array(item.checkin.length)].map((_, i) => i).filter(i => i % 2 === 0)
+      }
+      return [0]
+    }
+  },
+  filters: {
+    getAttendanceStatus(attendance) {
+      if (attendance) return 'Có mặt'
+      return 'Chưa điểm danh'
+    },
+    getAttendanceStatusColor(attendance) {
+      if (!attendance) return '#FD6B6B'
+      return '#46BE8A'
     }
   },
   watch: {

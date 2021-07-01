@@ -21,7 +21,12 @@
       </v-list>
     </v-menu>
 
-    <AttendanceEditDialog :item="item" :state="editDialog" />
+    <AttendanceEditDialog
+      :item="item"
+      :checkinIndex="checkinIndex"
+      :state="editDialog"
+      @attendanceUpdated="$emit('attendanceUpdated')"
+    />
     <AttendanceDetailDialog :student="item.student" :state="detailDialog" />
   </div>
 </template>
@@ -32,7 +37,8 @@ import AttendanceDetailDialog from '@/modules/attendance/AttendanceDetailDialog.
 
 export default {
   props: {
-    item: Object
+    item: Object,
+    checkinIndex: Number
   },
   components: {
     AttendanceEditDialog,

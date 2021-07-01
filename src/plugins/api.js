@@ -39,6 +39,7 @@ const CONTACT_BOOK_API = '/contact-books/'
 const SMS_API = '/sms/'
 const HISTORY_API = '/histories/'
 const ACADEMIC_LEVEL_API = '/academic-levels/'
+const DILIGENCE_API = '/diligences/'
 
 const APIHelper = api => ({
   search: (params, option) => axios.get(api, { params: utils.filterObject(params) }, option),
@@ -106,6 +107,7 @@ export const ContactBook = {
 export const Sms = APIHelper(SMS_API)
 export const History = APIHelper(HISTORY_API)
 export const AcademicLevel = APIHelper(ACADEMIC_LEVEL_API)
+export const Diligence = APIHelper(DILIGENCE_API)
 
 export const Upload = {
   upload: formData =>
@@ -147,5 +149,6 @@ export default {
   ContactBook,
   Sms,
   History,
-  AcademicLevel
+  AcademicLevel,
+  Diligence
 }

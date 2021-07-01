@@ -6,7 +6,7 @@
       </div>
     </div>
     <v-card outlined class="mx-md-4 elevation-0">
-      <v-tabs grow color="primary" v-model="tab">
+      <v-tabs color="primary" v-model="tab">
         <v-tab :key="1">Điểm danh</v-tab>
         <v-tab :key="2">Chuyên cần</v-tab>
       </v-tabs>

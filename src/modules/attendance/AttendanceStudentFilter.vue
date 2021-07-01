@@ -64,9 +64,9 @@ export default {
   methods: {
     onFilterChanged() {
       this.$emit('onFilterChanged', {
-        'class.grade': this.grade,
+        grade: this.grade,
         status: this.status,
-        class: this.classData ? this.classData.id : ''
+        class: this.classData ? this.classData : {}
       })
     },
     change(data) {
