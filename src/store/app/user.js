@@ -2,7 +2,7 @@ import axios from '@/plugins/axios'
 import alert from '@/plugins/alert'
 import utils from '@/plugins/utils'
 import api from '../../plugins/api'
-import { get, last } from 'lodash'
+import _ from 'lodash'
 
 const USER_API = '/users/'
 const USER_COUNT_API = '/users/count/'
@@ -174,7 +174,7 @@ export default {
         type: 'staff'
       })
       console.log(users)
-      if (users.length) userNo = get(last(users), 'username_no', 0) + 1
+      if (users.length) userNo = _.get(_.last(users), 'username_no', 0) + 1
       return {
         username: `${userNameIndex}${userNo || ''}`,
         username_indexing: userNameIndex,
@@ -186,7 +186,7 @@ export default {
       userNameIndex = utils.removeUnicode(userNameIndex).toLowerCase()
 
       const userMeta = await api.UserMeta.fetch()
-      const userNo = get(userMeta, 'indexUser', 0) + 1
+      const userNo = _.get(userMeta, 'indexUser', 0) + 1
 
       const code = `00000${userNo}`.substr(`00000${userNo}`.length - 5)
       return {

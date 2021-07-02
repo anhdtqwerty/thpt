@@ -1,7 +1,13 @@
 <template>
   <div>
     <mark-create-dialog :student="student" :course="courseSelected" :state="createMarkDialog"></mark-create-dialog>
-    <v-data-table :headers="headers" :items="coursesList" :items-per-page="5" dense class="nowrap">
+    <v-data-table
+      :headers="headers"
+      :items="coursesList"
+      :items-per-page="5"
+      dense
+      class="nowrap"
+    >
       <template v-slot:[`item.status`]="{ item }">
         <v-chip label small :color="getColor(item.status)" dark>{{ item.status }}</v-chip>
       </template>
@@ -24,7 +30,7 @@
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex'
 import MarkCreateDialog from '@/modules/student/class/MarkCreateDialog.vue'
-import { get } from 'lodash'
+import _ from 'lodash'
 export default {
   props: {
     major: Object
@@ -44,7 +50,7 @@ export default {
       { text: 'Mã Lớp', value: 'classCode' },
       { text: 'Điểm', value: 'mark' },
       { text: 'Trạng Thái', value: 'status' },
-      { text: 'Chấm điểm', value: 'actions', width: '5px', align: 'center' }
+      { text: 'Chấm điểm', value: 'actions', width: '5px', align: 'center' },
     ]
   }),
   components: {
@@ -54,10 +60,10 @@ export default {
     ...mapState('app', ['department']),
     ...mapState('student', ['marks', 'classes']),
     ...mapGetters('student', ['student']),
-    coursesList() {
+    coursesList () {
       return this.major.courses.map(c => {
-        const mark = get(this.marks, `${c.id}`, null)
-        const clazz = get(this.classes, `${c.id}`, null)
+        const mark = _.get(this.marks, `${c.id}`, null)
+        const clazz = _.get(this.classes, `${c.id}`, null)
         return {
           ...c,
           mark,
@@ -69,7 +75,7 @@ export default {
   },
   methods: {
     ...mapActions('student', ['fetchMarks']),
-    openCreateMarkDialog(course) {
+    openCreateMarkDialog (course) {
       this.createMarkDialog = !this.createMarkDialog
       this.courseSelected = course
     },
@@ -77,7 +83,7 @@ export default {
       if (!mark || !mark.status) {
         if (clazz) {
           if (clazz.status === 'done') {
-            return get(mark, 'value', 0) < 5 ? 'failed' : 'passed'
+            return _.get(mark, 'value', 0) < 5 ? 'failed' : 'passed'
           } else {
             return 'learning'
           }
@@ -92,7 +98,7 @@ export default {
       return mark ? mark.value : ''
     },
     getClass: course => {
-      return get(course, 'class.code', '')
+      return _.get(course, 'class.code', '')
     },
     getColor: status => {
       if (status === 'learning') {
@@ -102,7 +108,7 @@ export default {
       } else if (status === 'failed') {
         return 'red'
       } else return 'transparent'
-    }
-  }
+    },
+  },
 }
 </script>

@@ -1,7 +1,7 @@
 import axios from '@/plugins/axios'
 import alert from '@/plugins/alert'
 import api from '@/plugins/api'
-import { keyBy } from 'lodash'
+import _ from 'lodash'
 const PRODUCT_API = '/students/'
 export default {
   namespaced: true,
@@ -20,16 +20,16 @@ export default {
   actions: {
     async fetchGrades({ commit }, options) {
       const gradeList = await api.Grade.fetch(options)
-      commit('changeState', { grade: keyBy(gradeList, 'code') })
+      commit('changeState', { grade: _.keyBy(gradeList, 'code') })
     },
     async fetchClasses({ commit }, options) {
       const classes = await api.Class.fetch(options)
       console.log(classes)
-      commit('changeState', { classes: keyBy(classes, 'title') })
+      commit('changeState', { classes: _.keyBy(classes, 'title') })
     },
     async fetchGenerations({ commit }, options) {
       const generationList = await api.Generation.fetch(options)
-      commit('changeState', { generations: keyBy(generationList, 'code') })
+      commit('changeState', { generations: _.keyBy(generationList, 'code') })
     },
     async createStudent({ state, dispatch, commit }, userData) {
       let user = {}
@@ -99,7 +99,7 @@ export default {
               : `random${Date.now()}@quanlylop.com`
           })
         } else {
-          const { username } = await dispatch(
+          const { username, username_indexing, username_no } = await dispatch(
             'user/generateStudentCode',
             student.name,
             {
@@ -114,6 +114,8 @@ export default {
               ? student.email
               : `random${Date.now()}@quanlylop.com`,
             username,
+            username_indexing,
+            username_no,
             gender: student.gender === 'Nữ' ? 'female' : 'male',
             data: { ...student }
           })

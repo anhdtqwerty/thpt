@@ -1,7 +1,7 @@
 import moment from 'moment'
 import { saveAs } from 'file-saver'
 import * as XLSX from 'xlsx'
-import { get } from 'lodash'
+import _ from 'lodash'
 var ChuSo = [' không ', ' một ', ' hai ', ' ba ', ' bốn ', ' năm ', ' sáu ', ' bảy ', ' tám ', ' chín ']
 var Tien = ['', ' nghìn', ' triệu', ' tỷ', ' nghìn tỷ', ' triệu tỷ']
 function DocSo3ChuSo(baso) {
@@ -320,7 +320,7 @@ export default {
         if (h.text === undefined || h.value === undefined || h.value === 'actions') {
           return
         }
-        dataRow[h.text] = get(item, h.value, '')
+        dataRow[h.text] = _.get(item, h.value, '')
       })
       return dataRow
     })

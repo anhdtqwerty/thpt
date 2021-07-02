@@ -41,8 +41,18 @@
       outlined
       label="Tình Trạng"
     ></v-select>
-    <date-selector label="Hạn Trả" :date="deadlineValue" @change="onDeadlineChange"></date-selector>
-    <v-text-field ref="date" dense :value="displaydate" label="Ngày Mượn" disabled></v-text-field>
+    <date-selector
+      label="Hạn Trả"
+      :date="deadlineValue"
+      @change="onDeadlineChange"
+    ></date-selector>
+    <v-text-field
+      ref="date"
+      dense
+      :value="displaydate"
+      label="Ngày Mượn"
+      disabled
+    ></v-text-field>
   </v-form>
 </template>
 
@@ -52,7 +62,7 @@ import AutocompleteStudent from '@/components/basic/input/AutocompleteStudent.vu
 import AutocompleteTeacher from '@/components/basic/input/AutocompleteTeacher'
 import AutocompleteStaff from '@/components/basic/input/AutocompleteStaff'
 import DateSelector from '@/components/basic/DateSelector.vue'
-import { get } from 'lodash'
+import _ from 'lodash'
 import moment from 'moment'
 export default {
   components: {
@@ -144,17 +154,17 @@ export default {
     },
     getData() {
       console.log({
-        teacher: get(this.teacher, 'id', null),
-        student: get(this.student, 'id', null),
-        staff: get(this.staff, 'id', null),
+        teacher: _.get(this.teacher, 'id', null),
+        student: _.get(this.student, 'id', null),
+        staff: _.get(this.staff, 'id', null),
         status: this.status,
         deadline: this.deadline,
         date: this.date
       })
       return {
-        teacher: get(this.teacher, 'id', null),
-        student: get(this.student, 'id', null),
-        staff: get(this.staff, 'id', null),
+        teacher: _.get(this.teacher, 'id', null),
+        student: _.get(this.student, 'id', null),
+        staff: _.get(this.staff, 'id', null),
         status: this.status,
         deadline: this.deadline,
         date: this.date

@@ -37,13 +37,15 @@ import { mapActions, mapState } from 'vuex'
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import NewGradeDialog from '@/modules/grade/NewGradeDialog.vue'
 import GradeListActions from '@/modules/grade/GradeListActions.vue'
+import DropMenu from '@/modules/student/menu/Menu.vue'
 import utils from '@/plugins/utils'
 
 export default {
   components: {
     NewGradeDialog,
     Breadcrumbs,
-    GradeListActions
+    GradeListActions,
+    DropMenu
   },
   props: {
     role: String

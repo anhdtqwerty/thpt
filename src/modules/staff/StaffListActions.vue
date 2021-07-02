@@ -26,7 +26,7 @@
         <v-list-item @click.stop="enableStaff">
           <v-icon left>mdi-lock-open-outline</v-icon>
           <v-list-item-title>Mở khóa</v-list-item-title>
-        </v-list-item>
+        </v-list-item>                                
       </v-list>
     </v-menu>
 
@@ -77,10 +77,10 @@ export default {
       'sendSMS'
     ]),
     disableStaff () {
-      this.updateStaff({ id: this.item.id, status: 'block' })
+      this.updateStaff({id:this.item.id,status:'block'})
     },
     enableStaff () {
-      this.updateStaff({ id: this.item.id, status: 'active' })
+      this.updateStaff({id:this.item.id,status:'active'})
     },
     onRemove(staff) {
       this.$dialog.confirm({

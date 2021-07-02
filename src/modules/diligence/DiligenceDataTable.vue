@@ -38,7 +38,7 @@
 
 <script>
 import CardStudentName from '@/components/basic/card/CardStudentName.vue'
-import { mapActions } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 
 const originHeaders = [
   {
@@ -104,6 +104,8 @@ export default {
     CardStudentName
   },
   computed: {
+    ...mapState('app', ['currentGeneration']),
+    ...mapState('Diligence', ['studentDiligences', 'totalItems', 'pageText']),
     footerTable() {
       let footer = {
         'items-per-page-text': 'Học sinh mỗi trang',

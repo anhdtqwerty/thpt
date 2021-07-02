@@ -29,7 +29,7 @@ import PluginAlert from '@/components/plugin/PluginAlert'
 import PluginLoading from '@/components/plugin/PluginLoading'
 import Confirm from '@/components/plugin/Confirm'
 import NavigationDrawer from '@/components/layout/NavigationDrawer.vue'
-import { get } from 'lodash'
+import _ from 'lodash'
 export default {
   components: {
     MainToolbar,
@@ -69,7 +69,7 @@ export default {
 
       this.fetchDepartment(this.department.id)
       this.setRole(this.user.role)
-      this.setPolicies(get(this.department.policies, this.user.role.id))
+      this.setPolicies(_.get(this.department.policies, this.user.role.id))
     }
   },
   methods: {

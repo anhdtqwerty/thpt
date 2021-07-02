@@ -1,5 +1,5 @@
 import { History } from '@/plugins/api'
-import { rangeRight } from 'lodash'
+import _ from 'lodash'
 import loading from '../../plugins/loading'
 
 export default {
@@ -51,7 +51,7 @@ export default {
           const pageText = `${pageStart}-${pageStop} trên ${totalItems}`
           commit('setPageText', pageText)
         } else {
-          var pages = rangeRight(1, page)
+          var pages = _.rangeRight(1, page)
           for (let index = 0; index < pages; index++) {
             const selectedPage = pages[index]
             if (totalItems > (selectedPage - 1) * itemsPerPage) {

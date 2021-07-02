@@ -26,7 +26,7 @@
 <script>
 import { mapActions, mapState } from 'vuex'
 import ChangeClassDialog from '@/modules/student/ChangeClassDialog.vue'
-import { isEmpty } from 'lodash'
+import _ from 'lodash'
 
 export default {
   components: {
@@ -49,11 +49,13 @@ export default {
   computed: {
     ...mapState('student', ['students']),
     sendingName() {
-      const { name } = this.students.find(student => student.phone === this.sending)
+      const { name } = this.students.find(
+        student => student.phone === this.sending
+      )
       return name
     },
     multipleAction() {
-      return !isEmpty(this.selected)
+      return !_.isEmpty(this.selected)
     }
   },
   methods: {
@@ -93,7 +95,9 @@ export default {
         okText: 'Có',
         cancelText: 'Không',
         done: async () => {
-          await this.updateStudents(this.selected.map(s => ({ id: s.id, status: 'reserved' })))
+          await this.updateStudents(
+            this.selected.map(s => ({ id: s.id, status: 'reserved' }))
+          )
           this.$emit('removed')
         }
       })
@@ -109,7 +113,9 @@ export default {
         okText: 'Có',
         cancelText: 'Không',
         done: async () => {
-          await this.updateStudents(this.selected.map(s => ({ id: s.id, status: 'active' })))
+          await this.updateStudents(
+            this.selected.map(s => ({ id: s.id, status: 'active' }))
+          )
           this.$emit('removed')
         }
       })

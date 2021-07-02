@@ -1,5 +1,9 @@
 <template>
-  <v-dialog :fullscreen="$vuetify.breakpoint.mobile" width="661" v-model="dialog">
+  <v-dialog
+    :fullscreen="$vuetify.breakpoint.mobile"
+    width="661"
+    v-model="dialog"
+  >
     <v-card>
       <v-card-title>
         <v-toolbar color="#0D47A1" dark dense class="elevation-0 mb-6">
@@ -39,13 +43,25 @@
             outlined
             placeholder="Ngày kết thúc"
           ></date-iso-picker>
-          <v-textarea v-model="notes" outlined placeholder="Ghi chú"></v-textarea>
+          <v-textarea
+            v-model="notes"
+            outlined
+            placeholder="Ghi chú"
+          ></v-textarea>
         </v-form>
       </v-card-text>
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn :loading="isLoading" depressed color="#0D47A1" medium dark :disabled="isLoading" @click="save">
+        <v-btn
+          :loading="isLoading"
+          depressed
+          color="#0D47A1"
+          medium
+          dark
+          :disabled="isLoading"
+          @click="save"
+        >
           <span>Lưu</span>
         </v-btn>
       </v-card-actions>
@@ -54,7 +70,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapState, mapGetters } from 'vuex'
 import AutocompleteGeneration from '@/components/basic/input/AutocompleteGeneration.vue'
 import DateIsoPicker from '@/components/basic/picker/DateIOSPicker'
 
@@ -66,23 +82,23 @@ export default {
       loading: 0,
       show: false,
       rules: {
-        required: value => !!value || 'Required.'
+        required: (value) => !!value || 'Required.',
       },
       generation: '',
       semester: '',
       startDate: '',
       endDate: '',
       notes: '',
-      title: ''
+      title: '',
     }
   },
   props: {
-    state: Boolean
+    state: Boolean,
   },
   computed: {
     isLoading() {
       return this.loading > 0
-    }
+    },
   },
   methods: {
     ...mapActions('semester', ['createSemester']),
@@ -94,8 +110,8 @@ export default {
         config: {
           startDate: this.startDate,
           endDate: this.endDate,
-          notes: this.notes
-        }
+          notes: this.notes,
+        },
       }
       await this.createSemester({ ...data })
       this.$alert.success('Tạo học kỳ mới thành công')
@@ -112,12 +128,12 @@ export default {
       this.startDate = ''
       this.endDate = ''
       this.notes = ''
-    }
+    },
   },
   watch: {
     state(state) {
       this.dialog = true
-    }
-  }
+    },
+  },
 }
 </script>

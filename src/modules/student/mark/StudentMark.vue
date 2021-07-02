@@ -28,13 +28,21 @@
             </tr>
             <tr>
               <td>Đi học muộn</td>
-              <td>{{ attendance.late }}/{{ attendance.total }} ({{ (attendance.late / attendance.total) * 100 }}%)</td>
+              <td>
+                {{ attendance.late }}/{{ attendance.total }} ({{
+                  (attendance.late / attendance.total) * 100
+                }}%)
+              </td>
             </tr>
             <tr>
               <td>Nghỉ học</td>
               <td>
-                {{ attendance.total - attendance.late - attendance.attendant }}/{{ attendance.total }} ({{
-                  ((attendance.total - attendance.late - attendance.attendant) / attendance.total) * 100
+                {{
+                  attendance.total - attendance.late - attendance.attendant
+                }}/{{ attendance.total }} ({{
+                  ((attendance.total - attendance.late - attendance.attendant) /
+                    attendance.total) *
+                    100
                 }}%)
               </td>
             </tr>
@@ -77,7 +85,7 @@
 
 <script>
 import { Attendance } from '@/plugins/api'
-import { get } from 'lodash'
+import _ from 'lodash'
 export default {
   props: {
     mark: Object
@@ -115,7 +123,7 @@ export default {
           late: 0,
           attendant: 0,
           absent: 0,
-          total: get(this.mark, 'course.data.count', 0)
+          total: _.get(this.mark, 'course.data.count', 0)
         }
       )
     }
