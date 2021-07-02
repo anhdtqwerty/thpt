@@ -75,12 +75,12 @@ export default {
       this.query = this.name
         ? 'name_in=' + this.name + '&'
         : '' + this.status
-        ? this.status
+          ? this.status
             .map(item => {
               return 'status_in=' + item
             })
             .join('&')
-        : ''
+          : ''
       this.$emit('onFilterChanged', this.query)
     },
     onFilterDialogChanged(data) {

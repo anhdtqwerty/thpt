@@ -39,7 +39,7 @@ export default {
   components: {
     ViolationNewForm
   },
-   props: {
+  props: {
     state: Boolean
   },
   data() {

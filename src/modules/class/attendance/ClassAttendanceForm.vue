@@ -30,7 +30,7 @@
 <script>
 import CardStudentName from '@/components/basic/card/CardStudentImage.vue'
 import { mapActions, mapState } from 'vuex'
-import _ from 'lodash'
+import { get } from 'lodash'
 import moment from 'moment'
 export default {
   components: {
@@ -62,7 +62,7 @@ export default {
       }
     ]
   }),
-  created () {
+  created() {
     this.refresh()
   },
   computed: {
@@ -70,18 +70,14 @@ export default {
   },
   methods: {
     ...mapActions('classDetail', ['createAttendance']),
-    refresh () {
+    refresh() {
       this.data = [
         ...this.slotData.teachers.map(student => {
           return {
             student,
             type: 'teacher-attendance',
             slot: this.slotData,
-            attendance: _.get(
-              this.attendances,
-              `${this.slotData.id + student.id}.status`,
-              ''
-            )
+            attendance: get(this.attendances, `${this.slotData.id + student.id}.status`, '')
           }
         }),
         ...this.slotData.mentors.map(student => {
@@ -89,11 +85,7 @@ export default {
             student,
             type: 'mentor-attendance',
             slot: this.slotData,
-            attendance: _.get(
-              this.attendances,
-              `${this.slotData.id + student.id}.status`,
-              ''
-            )
+            attendance: get(this.attendances, `${this.slotData.id + student.id}.status`, '')
           }
         }),
         ...this.classData.students.map(student => {
@@ -101,42 +93,35 @@ export default {
             student,
             type: 'student-attendance',
             slot: this.slotData,
-            attendance: _.get(
-              this.attendances,
-              `${this.slotData.id + student.id}.status`,
-              ''
-            )
+            attendance: get(this.attendances, `${this.slotData.id + student.id}.status`, '')
           }
         })
       ]
     },
-    getData () {
+    getData() {
       return this.data.map(att => ({
         slot: this.slotData.id,
         slotType: this.slotData.type,
         date: this.slotData.startTime,
-        duration: moment
-          .duration(moment(this.slotData.endTime).diff(this.slotData.startTime))
-          .asHours(),
+        duration: moment.duration(moment(this.slotData.endTime).diff(this.slotData.startTime)).asHours(),
         student: att.type === 'student-attendance' ? att.student.id : null,
         teacher: att.type === 'teacher-attendance' ? att.student.id : null,
         mentor: att.type === 'mentor-attendance' ? att.student.id : null,
         userId: att.student.id,
         class: this.classData.id,
-        course: _.get(this.classData, 'course.id'),
-        department: _.get(this.classData, 'department.id,'),
+        course: get(this.classData, 'course.id'),
+        department: get(this.classData, 'department.id,'),
         status: att.attendance,
         type: att.type
       }))
     }
   },
   watch: {
-    async slotData (slotData) {
+    async slotData(slotData) {
       this.refresh()
     }
   }
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

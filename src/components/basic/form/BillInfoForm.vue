@@ -36,7 +36,7 @@
         </v-simple-table>
         </v-col>
       </v-row>
-        
+
         <v-row >
           <v-col class="d-flex justify-center">
             <h5 cl>Người lập phiếu</h5>

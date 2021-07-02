@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import { get } from 'lodash'
 
 export const mapPropObj = obj => fn => {
   const newObj = {}
@@ -23,7 +23,7 @@ export const toggle = (onValue, offValue) => value => {
   return value === onValue ? offValue : onValue
 }
 
-export const getMultiplePath = paths => obj => paths.map(path => _.get(obj, path))
+export const getMultiplePath = paths => obj => paths.map(path => get(obj, path))
 
 export const pipe = (...fns) => x => fns.reduce((f, g) => g(f), x)
 

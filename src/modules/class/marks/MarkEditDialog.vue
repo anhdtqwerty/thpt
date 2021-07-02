@@ -31,7 +31,7 @@
 
 <script>
 import { mapActions, mapState } from 'vuex'
-import _ from 'lodash'
+import { get } from 'lodash'
 export default {
   props: {
     state: Boolean,
@@ -53,12 +53,12 @@ export default {
     save() {
       this.createMark({
         data: {
-          student: _.get(this.student, 'id'),
+          student: get(this.student, 'id'),
           ...this.marks[this.student.id],
           class: this.classData.id,
-          course: _.get(this.classData, 'course.id'),
-          major: _.get(this.classData, 'major.id'),
-          department: _.get(this.classData, 'department.id'),
+          course: get(this.classData, 'course.id'),
+          major: get(this.classData, 'major.id'),
+          department: get(this.classData, 'department.id'),
           data: this.markTemplate.map(t => ({
             ...t,
             code: t.code + '',
@@ -72,15 +72,12 @@ export default {
     },
     refresh() {
       if (!this.student) return
-      this.tem = _.get(this.marks, `${this.student.id}.data`, []).reduce(
-        (acc, cur) => {
-          return {
-            ...acc,
-            [cur.code]: cur.value
-          }
-        },
-        {}
-      )
+      this.tem = get(this.marks, `${this.student.id}.data`, []).reduce((acc, cur) => {
+        return {
+          ...acc,
+          [cur.code]: cur.value
+        }
+      }, {})
     },
     cancel() {
       this.dialog = false

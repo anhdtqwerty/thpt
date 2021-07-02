@@ -35,7 +35,6 @@
   </div>
 </template>
 <script>
-import { first } from 'lodash'
 import { mapState } from 'vuex'
 
 export default {

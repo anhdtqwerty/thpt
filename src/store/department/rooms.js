@@ -1,6 +1,6 @@
 import alert from '@/plugins/alert'
 import { Room, Upload } from '@/plugins/api'
-import _ from 'lodash'
+import { set } from 'lodash'
 export default {
   namespaced: true,
   state: {
@@ -99,7 +99,7 @@ export default {
       state.rooms = { ...state.rooms }
     },
     setAvatar (state, { roomId, avatar }) {
-      _.set(state.rooms, `${roomId}.avatar`, avatar)
+      set(state.rooms, `${roomId}.avatar`, avatar)
       state.rooms = { ...state.rooms }
     }
   },

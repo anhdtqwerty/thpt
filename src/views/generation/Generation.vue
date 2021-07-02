@@ -49,13 +49,10 @@
   </div>
 </template>
 <script>
-import { mapActions, mapState, mapGetters } from 'vuex'
-import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import OpenGeneration from '@/views/generation/OpenGeneration.vue'
 
 export default {
   components: {
-    Breadcrumbs,
     OpenGeneration
   },
   props: {

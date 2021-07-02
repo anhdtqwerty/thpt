@@ -33,13 +33,11 @@
   </v-form>
 </template>
 <script>
-import TextFieldCode from '@/components/basic/input/TextFieldCode'
 import AutocompleteGrade from '@/components/basic/input/AutocompleteGrade'
 import AutocompleteSubject from '@/components/basic/input/AutocompleteSubject.vue'
 import { mapGetters } from 'vuex'
 export default {
   components: {
-    TextFieldCode,
     AutocompleteGrade,
     AutocompleteSubject
   },

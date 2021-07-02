@@ -14,7 +14,7 @@
         </v-list-item-icon>
         <v-list-item-title class="ml-3">Phân Quyền</v-list-item-title>
       </v-list-item>
-    
+
     </v-list>
   </v-list-group>
 </template>

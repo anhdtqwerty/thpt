@@ -2,7 +2,7 @@
 import alert from '@/plugins/alert'
 import { Diligence, Student } from '@/plugins/api'
 import loading from '../../plugins/loading'
-import { keyBy, rangeRight } from 'lodash'
+import { keyBy } from 'lodash'
 import moment from 'moment'
 
 export default {
@@ -106,7 +106,6 @@ export default {
       if (query && query.status) diligenceParam.status = query.status
       const diligences = await Diligence.fetch(diligenceParam)
 
-      let list = []
       const studentDiligences = students.map(student => {
         const diligence = diligences.find(a => a.student.id === student.id)
         return { student, diligence }
