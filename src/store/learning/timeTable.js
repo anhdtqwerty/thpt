@@ -1,6 +1,6 @@
 import alert from '@/plugins/alert'
 import { Slot, Teachings } from '@/plugins/api'
-import { keyBy } from 'lodash'
+import _ from 'lodash'
 export default {
   namespaced: true,
   state: {
@@ -55,13 +55,13 @@ export default {
       state.teachings = teachings
     },
     setTeacherSlots(state, slots) {
-      state.teacherSlots = keyBy(
+      state.teacherSlots = _.keyBy(
         slots.map(s => ({ key: `${s.index}-${s.day}`, ...s })),
         'key'
       )
     },
     setClassSlots(state, slots) {
-      state.classSlots = keyBy(
+      state.classSlots = _.keyBy(
         slots.map(s => ({ key: `${s.index}-${s.day}`, ...s })),
         'key'
       )

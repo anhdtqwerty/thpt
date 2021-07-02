@@ -11,7 +11,7 @@
         size="10"
         button-class="btn"
         :prefill="avatar"
-        :custom-strings="{ upload: '<h1>Bummer!</h1>', drag: 'Kéo vào để upload avatar' }"
+        :custom-strings="{ upload: '<h1>Bummer!</h1>', drag: 'Kéo vào để upload avatar'}"
         @change="onChange"
       ></picture-input>
     </v-card-text>
@@ -22,7 +22,7 @@
 import PictureInput from 'vue-picture-input'
 import imageCompression from 'browser-image-compression'
 import { mapActions, mapGetters } from 'vuex'
-import { get } from 'lodash'
+import _ from 'lodash'
 
 export default {
   components: {
@@ -41,18 +41,18 @@ export default {
   }),
   computed: {
     ...mapGetters('upload', ['url']),
-    avatar() {
-      return get(this.staff, 'avatar.url', '/default-avatar.png')
+    avatar () {
+      return _.get(this.staff, 'avatar.url', '/default-avatar.png')
     }
   },
   methods: {
     ...mapActions('upload', ['upload', 'destroy']),
-    async onChange(image) {
+    async onChange (image) {
       if (image) {
         this.save(this.$refs.pictureInput.file)
       }
     },
-    async save(image) {
+    async save (image) {
       if (this.staff.avatar) this.destroy(this.staff.avatar.id)
       let formData = new FormData()
       formData.append('files', image)
@@ -61,11 +61,11 @@ export default {
       formData.append('field', 'avatar')
       this.upload(formData)
     },
-    cancel() {
+    cancel () {
       this.image = this.staff.avatar
       this.$emit('cancel')
     },
-    async compress(image) {
+    async compress (image) {
       const options = {
         maxSizeMB: 0.02,
         maxWidthOrHeight: 200,
@@ -74,14 +74,14 @@ export default {
       return imageCompression(image, options)
     }
   },
-  created() {
+  created () {
     this.image = this.staff.avatar || ''
   },
   watch: {
-    staff(staff) {
+    staff (staff) {
       this.image = staff.avatar
     },
-    url(url) {
+    url (url) {
       console.log(url)
     }
   }

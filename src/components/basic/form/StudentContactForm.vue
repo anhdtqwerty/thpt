@@ -5,29 +5,10 @@
         <v-text-field v-model="currentLive" label="Địa chỉ hiện tại" outlined hide-details dense></v-text-field>
       </v-col>
       <v-col class="pb-0" cols="12" md="6">
-        <v-autocomplete
-          v-model="province"
-          label="Tỉnh/Thành phố"
-          :items="provinces"
-          item-text="name"
-          @change="onChangePrivince"
-          outlined
-          dense
-          hide-details
-          return-object
-        ></v-autocomplete>
+        <v-text-field v-model="province" label="Tỉnh/Thành phố" outlined dense hide-details></v-text-field>
       </v-col>
       <v-col class="pb-0" cols="12" md="6">
-        <v-autocomplete
-          v-model="district"
-          label="Quận/Huyện"
-          :items="currentProvinceDistricts"
-          item-text="name"
-          outlined
-          hide-details
-          dense
-          return-object
-        ></v-autocomplete>
+        <v-text-field v-model="district" label="Quận/Huyện" outlined hide-details dense></v-text-field>
       </v-col>
       <v-col class="pb-0" cols="12" md="6">
         <v-text-field v-model="phone" label="Số điện thoại" outlined dense :rules="[$rules.phone]"></v-text-field>
@@ -39,8 +20,6 @@
   </v-form>
 </template>
 <script>
-import { province } from '@/jsons/province'
-import { district } from '@/jsons/district'
 export default {
   props: {
     student: {
@@ -51,11 +30,8 @@ export default {
   data: () => ({
     valid: true,
     currentLive: '',
-    provinces: [],
-    province: {},
-    districts: [],
-    currentProvinceDistricts: [],
-    district: {},
+    province: '',
+    district: '',
     phone: '',
     email: '',
     rules: {
@@ -67,18 +43,13 @@ export default {
   created() {
     if (this.student) {
       this.currentLive = this.student.data.currentLive
-      this.provinces = this.student.data.province
+      this.province = this.student.data.province
       this.district = this.student.data.district
       this.phone = this.student.phone
       this.email = this.student.email
     }
-    this.provinces = province
-    this.districts = district
   },
   methods: {
-    onChangePrivince() {
-      this.currentProvinceDistricts = this.districts.filter(d => d.parent_code === this.province.code)
-    },
     validate() {
       return this.$refs.form.validate()
     },

@@ -1,6 +1,6 @@
 import moment from 'moment'
 import Vue from 'vue'
-import { get } from 'lodash'
+import _ from 'lodash'
 export const vueFilterRegister = () => {
   Vue.filter('ordinalNumber', (item, list) => list.indexOf(item) + 1)
   Vue.filter('ddmmyyyy', isoStr => (isoStr ? moment(isoStr).format('DD/MM/YYYY') : ''))
@@ -13,7 +13,7 @@ export const vueFilterRegister = () => {
     return 'Khác'
   })
   Vue.filter('_get', (any, path, defaultValue = '') => {
-    return get(any, path, defaultValue)
+    return _.get(any, path, defaultValue)
   })
   Vue.filter('status', status => {
     switch (status) {

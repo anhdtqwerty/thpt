@@ -44,6 +44,8 @@ import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import GenerationListActions from '@/modules/generation/GenerationListActions'
 import NewGenerationDialog from '@/modules/generation/NewGenerationDialog'
 import GenerationUpdateDialog from '@/modules/generation/GenerationUpdateDialog'
+import DropMenu from '@/modules/student/menu/Menu.vue'
+import SettingTableHeader from '@/components/basic/table/SettingHeaders'
 import moment from 'moment'
 import { get } from 'lodash'
 import utils from '@/plugins/utils'
@@ -92,7 +94,9 @@ export default {
     GenerationListActions,
     NewGenerationDialog,
     GenerationUpdateDialog,
-    Breadcrumbs
+    Breadcrumbs,
+    DropMenu,
+    SettingTableHeader
   },
   props: {
     role: String

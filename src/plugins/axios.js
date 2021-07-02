@@ -2,7 +2,7 @@ import axios from 'axios'
 import qs from 'qs'
 import loading from './loading'
 import alert from '@/plugins/alert'
-import { first } from 'lodash'
+import _ from 'lodash'
 const CONNECTION_FAIL_MSG = 'Connection fail'
 
 axios.defaults.baseURL = process.env.VUE_APP_API_ENDPOINT
@@ -108,9 +108,9 @@ export const axiosPlugin = store => {
           }
         } else if (message) {
           if (Array.isArray(message)) {
-            errMsg = first(message)
+            errMsg = _.first(message)
             if (errMsg) errMsg = errMsg.messages
-            if (errMsg) errMsg = first(errMsg)
+            if (errMsg) errMsg = _.first(errMsg)
             if (errMsg) errMsg = errMsg.message
           } else {
             errMsg = message

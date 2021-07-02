@@ -44,7 +44,7 @@
           outlined
         ></v-text-field>
       </v-col>
-    </v-row>
+    </v-row>      
   </v-form>
 </template>
 

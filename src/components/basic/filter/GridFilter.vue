@@ -137,11 +137,10 @@ export default {
               compInfo.props.itemValue = item.config.itemValue || 'value'
               compInfo.props.items = item.config.items
             }
-            if (item.config.rules) {
+            if (item.config.rules)
               compInfo.props.rules = item.config.rules
                 .map(this.convertRule)
                 .filter(this.ruleIsFunction)
-            }
             if (item.config.label) compInfo.props.label = item.config.label
             compInfo.props.hideDetails = this.hideDetails
 

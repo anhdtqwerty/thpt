@@ -1,15 +1,23 @@
 <template>
-  <div v-if="staff" class="d-flex flex-row align-center pa-1" :key="staff.id" @click="$emit('change', staff)">
+  <div
+    v-if="staff"
+    class="d-flex flex-row align-center pa-1"
+    :key="staff.id"
+    @click="$emit('change', staff)"
+  >
     <v-avatar class="mr-2" size="36">
       <v-img :src="avatar"></v-img>
     </v-avatar>
     <div>
       <router-link :to="'/staff/' + staff.id">
-        <div style="white-space: nowrap !important;">{{ staff.name }}</div>
+        <div style="white-space: nowrap !important;">{{staff.name}}</div>
       </router-link>
     </div>
   </div>
-  <div v-else class="d-flex flex-row align-center pa-1">
+  <div
+    v-else
+    class="d-flex flex-row align-center pa-1"
+  >
     <v-avatar class="mr-2" size="36">
       <v-img :src="avatar"></v-img>
     </v-avatar>
@@ -17,7 +25,7 @@
   </div>
 </template>
 <script>
-import { get } from 'lodash'
+import _ from 'lodash'
 
 export default {
   props: {
@@ -28,11 +36,16 @@ export default {
     link: Boolean
   },
   computed: {
-    avatar() {
-      return get(this.staff, 'avatar.url', '/default-avatar.png')
+    avatar () {
+      return _.get(
+        this.staff,
+        'avatar.url',
+        '/default-avatar.png'
+      )
     }
   }
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+</style>

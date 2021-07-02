@@ -37,7 +37,7 @@ import studentDashboard from './dashboard/studentDashboard'
 import student from './user/student'
 import studentImporter from './importer/studentImporter.js'
 import attendance from './student/attendance'
-import { setWith } from 'lodash'
+import _ from 'lodash'
 /**
  * DEPARTMENT
  */
@@ -158,7 +158,7 @@ export default createStore(Vuex.Store, {
         Object.entries(changed).forEach(([firstChildName, diff]) => {
           const firstChildValue = { ...state[firstChildName] }
           Object.entries(diff).forEach(([path, diffValue]) => {
-            setWith(firstChildValue, path, diffValue)
+            _.setWith(firstChildValue, path, diffValue)
           })
           state[firstChildName] = firstChildValue
         })

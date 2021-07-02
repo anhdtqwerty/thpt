@@ -1,6 +1,6 @@
 import axios from '@/plugins/axios'
 import alert from '@/plugins/alert'
-import { get } from 'lodash'
+import _ from 'lodash'
 import { Class, Lead, Student, Log, Mark, Major, Subject, History } from '@/plugins/api'
 const STUDENT_API = '/students/'
 const USER_API = '/users/'
@@ -117,7 +117,7 @@ export default {
       state.avatar = avatar
     },
     setMarks(state, marks) {
-      state.marks = marks.reduce((acc, cur) => ({ ...acc, [get(cur, 'course.id', '')]: cur }), {})
+      state.marks = marks.reduce((acc, cur) => ({ ...acc, [_.get(cur, 'course.id', '')]: cur }), {})
     },
     setMark(state, mark) {
       state.marks = {
@@ -154,7 +154,7 @@ export default {
       state.majors = majors
     },
     setClasses(state, classes) {
-      state.classes = classes.reduce((acc, cur) => ({ ...acc, [get(cur, 'course.id', '')]: cur }), {})
+      state.classes = classes.reduce((acc, cur) => ({ ...acc, [_.get(cur, 'course.id', '')]: cur }), {})
     }
   },
   getters: {

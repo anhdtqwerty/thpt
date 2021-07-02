@@ -4,7 +4,10 @@
       <div>
         <Breadcrumbs
           headline="Điểm danh"
-          :link="[{ text: 'Điểm danh', href: '../attendances' }, { text: 'Chi tiết điểm danh' }]"
+          :link="[
+            { text: 'Điểm danh', href: '../attendances' },
+            { text: 'Chi tiết điểm danh' },
+          ]"
         />
       </div>
     </div>
@@ -43,16 +46,16 @@
 <script>
 import Breadcrumbs from '@/components/layout/Breadcrumbs.vue'
 import AttendanceStudentFilter from '@/modules/attendance/AttendanceStudentFilter.vue'
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapState, mapGetters } from 'vuex'
 import moment from 'moment'
 
 export default {
   components: {
     Breadcrumbs,
-    AttendanceStudentFilter
+    AttendanceStudentFilter,
   },
   props: {
-    student: Object
+    student: Object,
   },
   data() {
     return {
@@ -63,34 +66,34 @@ export default {
           value: 'checkin.inClass',
           width: 100,
           align: 'center',
-          sortable: false
+          sortable: false,
         },
         {
           text: 'Giờ về',
           value: 'checkin.outClass',
           width: 100,
           align: 'center',
-          sortable: false
+          sortable: false,
         },
         {
           text: 'Ghi chú',
           value: 'data',
           width: 300,
           align: 'center',
-          sortable: false
+          sortable: false,
         },
-        { text: 'Hành động', value: 'action', width: 100, sortable: false }
+        { text: 'Hành động', value: 'action', width: 100, sortable: false },
       ],
       isLoading: true,
       editState: false,
       editStudent: '',
       editClass: '',
       editInClass: '',
-      editOutClass: ''
+      editOutClass: '',
     }
   },
   computed: {
-    ...mapGetters('attendance', ['attendances'])
+    ...mapGetters('attendance', ['attendances']),
   },
   created() {
     this.refresh({})
@@ -112,9 +115,10 @@ export default {
       this.editStudent = data.student
       this.editInClass = data.inClass
       this.editOutClass = data.outClass
-    }
-  }
+    },
+  },
 }
 </script>
 
-<style></style>
+<style>
+</style>

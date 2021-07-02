@@ -2,7 +2,7 @@ import alert from '@/plugins/alert'
 import router from '@/router'
 import api from '../../plugins/api'
 import { Teacher, Student } from '@/plugins/api'
-import { get } from 'lodash'
+import _ from 'lodash'
 export default {
   namespaced: true,
   state: {
@@ -77,7 +77,7 @@ export default {
       state.role = role
     },
     setProfile(state, profile) {
-      state.profile = get(profile, '0', {})
+      state.profile = _.get(profile, '0', {})
     },
     reset(state) {
       state.user = null

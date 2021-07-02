@@ -3,10 +3,7 @@
     <div class="pa-4 d-flex justify-space-between align-center">
       <Breadcrumbs
         headline="Sổ điểm"
-        :link="[
-          { text: 'Điểm số', href: '/marks' },
-          { text: 'Số điểm', href: '/marks' }
-        ]"
+        :link="[ { text: 'Điểm số', href: '/marks' }, { text: 'Số điểm', href: '/marks' }]"
       />
     </div>
     <v-card class="px-md-6 mx-md-4 elevation-1 mb-2">
@@ -35,13 +32,26 @@
               </v-col>
               <v-col cols="0" md="2" class="pa-0 ma-0"></v-col>
               <v-col cols="12" md="2">
-                <v-btn color="primary" style="width: 100%" @click="onClickSearchButton">Tìm kiếm</v-btn>
+                <v-btn
+                  color="primary"
+                  style="width: 100%"
+                  @click="onClickSearchButton"
+                  >Tìm kiếm</v-btn
+                >
               </v-col>
             </v-row>
 
-            <div class="text-right font-weight-medium" style="cursor: pointer" @click="onChangeFilterMode">
-              <span class="primary--text">{{ this.filterOptions[this.filterMode].label }}</span>
-              <v-icon color="primary">{{ this.filterOptions[this.filterMode].icon }}</v-icon>
+            <div
+              class="text-right font-weight-medium"
+              style="cursor: pointer"
+              @click="onChangeFilterMode"
+            >
+              <span class="primary--text">{{
+                this.filterOptions[this.filterMode].label
+              }}</span>
+              <v-icon color="primary">{{
+                this.filterOptions[this.filterMode].icon
+              }}</v-icon>
             </div>
 
             <v-row class="advance-filter" v-if="filterMode === 'advanced'">
@@ -74,7 +84,12 @@
                 />
               </v-col>
               <v-col cols="12" md="4">
-                <v-btn color="primary" style="width: 100%" @click="onClickSearchButton">Tìm kiếm</v-btn>
+                <v-btn
+                  color="primary"
+                  style="width: 100%"
+                  @click="onClickSearchButton"
+                  >Tìm kiếm</v-btn
+                >
               </v-col>
             </v-row>
           </v-col>
@@ -130,7 +145,9 @@
                   <td>{{ item.fullName }}</td>
                   <template v-for="(semester, indexSemester) in headers">
                     <template v-if="semester.type !== 'year'">
-                      <template v-for="(factor, indexFactor) in refrencesInfo.factors">
+                      <template
+                        v-for="(factor, indexFactor) in refrencesInfo.factors"
+                      >
                         <td
                           class="mark-td"
                           v-for="index in factor.quantity"
@@ -139,16 +156,28 @@
                           {{
                             filterInputs.subjectObj.markType === 'evaluate'
                               ? getEvaluateMark(
-                                  filterMarkByFactorAndSemeter(semester.type)(factor.id)(item.marks)[index - 1]
+                                  filterMarkByFactorAndSemeter(semester.type)(
+                                    factor.id
+                                  )(item.marks)[index - 1]
                                 )
-                              : getMark(filterMarkByFactorAndSemeter(semester.type)(factor.id)(item.marks)[index - 1])
+                              : getMark(
+                                  filterMarkByFactorAndSemeter(semester.type)(
+                                    factor.id
+                                  )(item.marks)[index - 1]
+                                )
                           }}
                         </td>
                       </template>
                     </template>
                     <template v-else>
                       <td class="mark-td" :key="`${indexSemester}`">
-                        {{ getMark(filterMarkByFactorAndSemeter('year')('avgYear')(item.marks)) }}
+                        {{
+                          getMark(
+                            filterMarkByFactorAndSemeter('year')('avgYear')(
+                              item.marks
+                            )
+                          )
+                        }}
                       </td>
                     </template>
                   </template>
@@ -165,13 +194,20 @@
 <script>
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import DropMenu from '@/modules/student/menu/Menu.vue'
-import { get, groupBy } from 'lodash'
+import _ from 'lodash'
 import AutocompleteClass from '@/components/basic/input/AutocompleteClass'
 import AutocompleteSubject from '@/components/basic/input/AutocompleteSubject'
 import AutocompleteGrade from '@/components/basic/input/AutocompleteGrade'
 import { mapState, mapActions } from 'vuex'
 import { Semester, Factor } from '@/plugins/api'
-import { mapPropObj, evaluateAvgMark, toggle, getMultiplePath, pipe, trace } from './helpers'
+import {
+  mapPropObj,
+  evaluateAvgMark,
+  toggle,
+  getMultiplePath,
+  pipe,
+  trace
+} from './helpers'
 import scoreMixin from './mixins'
 
 const CONSTANTS = {
@@ -187,22 +223,22 @@ const CONSTANTS = {
   MULTIPLIER_2: 2
 }
 const transformSemestersToHeader = item => ({
-  text: get(item, 'title'),
-  id: get(item, 'id'),
-  type: get(item, 'type'),
+  text: _.get(item, 'title'),
+  id: _.get(item, 'id'),
+  type: _.get(item, 'type'),
   show: true
 })
 
 const transformMarksToTableRecord = item => ({
-  studentId: get(item, 'student.id'),
-  fullName: get(item, 'student.name'),
+  studentId: _.get(item, 'student.id'),
+  fullName: _.get(item, 'student.name'),
   mark: {
-    id: get(item, 'id'),
-    semesterId: get(item, 'semester.id'),
-    semesterType: get(item, 'semester.type'),
-    factorId: get(item, 'factor.id'),
-    multiply: get(item, 'factor.multiply', 1),
-    value: get(item, 'value')
+    id: _.get(item, 'id'),
+    semesterId: _.get(item, 'semester.id'),
+    semesterType: _.get(item, 'semester.type'),
+    factorId: _.get(item, 'factor.id'),
+    multiply: _.get(item, 'factor.multiply', 1),
+    value: _.get(item, 'value')
   }
 })
 
@@ -220,14 +256,17 @@ const filterMarkSemester = semesterType => marks => {
   return marks.filter(mark => mark.semesterType === semesterType)
 }
 
-const computeAvgMarkSemester = semesterType => pipe(filterMarkSemester(semesterType), evaluateAvgMark)
+const computeAvgMarkSemester = semesterType =>
+  pipe(filterMarkSemester(semesterType), evaluateAvgMark)
 const computeAvgMarkSemester1 = computeAvgMarkSemester(CONSTANTS.SEMESTER_1)
 const computeAvgMarkSemester2 = computeAvgMarkSemester(CONSTANTS.SEMESTER_2)
 
 const computedAvgMarkForEachStudent = ({ marks, ...info }) => {
   const avgSemester1 = computeAvgMarkSemester1(marks)
   const avgSemester2 = computeAvgMarkSemester2(marks)
-  const avgYear = CONSTANTS.MULTIPLIER_1 * avgSemester1 + CONSTANTS.MULTIPLIER_2 * avgSemester2
+  const avgYear =
+    CONSTANTS.MULTIPLIER_1 * avgSemester1 +
+    CONSTANTS.MULTIPLIER_2 * avgSemester2
   const yearMarkObj = {
     semesterType: CONSTANTS.SEMESTER_YEAR,
     factorId: CONSTANTS.FACTOR_YEAR_ID,
@@ -240,11 +279,18 @@ const computedAvgMarkForEachStudent = ({ marks, ...info }) => {
 }
 
 const formatMarks = marks => marks.map(transformMarksToTableRecord)
-const groupMarkByStudentId = marks => groupBy(marks, 'studentId')
-const reduceMarkByStudent = marksByStudentObj => mapPropObj(marksByStudentObj)(accumulateMark)
-const computeAvgMark = marksByStudentObj => mapPropObj(marksByStudentObj)(computedAvgMarkForEachStudent)
+const groupMarkByStudentId = marks => _.groupBy(marks, 'studentId')
+const reduceMarkByStudent = marksByStudentObj =>
+  mapPropObj(marksByStudentObj)(accumulateMark)
+const computeAvgMark = marksByStudentObj =>
+  mapPropObj(marksByStudentObj)(computedAvgMarkForEachStudent)
 
-const handleMarkFlow = pipe(formatMarks, groupMarkByStudentId, reduceMarkByStudent, computeAvgMark)
+const handleMarkFlow = pipe(
+  formatMarks,
+  groupMarkByStudentId,
+  reduceMarkByStudent,
+  computeAvgMark
+)
 
 export default {
   components: {
@@ -288,8 +334,13 @@ export default {
     },
     refrencesInfo: {
       handler({ factors, semesters }) {
-        const markNumber = factors.reduce((acc, item) => acc + Number(item.quantity), 0)
-        this.originHeaders = semesters.map(transformSemestersToHeader).map(item => ({ ...item, expand: markNumber }))
+        const markNumber = factors.reduce(
+          (acc, item) => acc + Number(item.quantity),
+          0
+        )
+        this.originHeaders = semesters
+          .map(transformSemestersToHeader)
+          .map(item => ({ ...item, expand: markNumber }))
         this.originHeaders.push({
           text: 'Cả năm',
           id: Date.now(),
@@ -307,25 +358,32 @@ export default {
   computed: {
     ...mapState('mark', ['marks']),
     titleTable() {
-      const subjectTitle = get(this.filterInputs, 'subjectObj.title')
-      const classTitle = get(this.filterInputs, 'classObj.title')
-      return `Bảng điểm ${[subjectTitle, classTitle].filter(Boolean).join(' - ')}`
+      const subjectTitle = _.get(this.filterInputs, 'subjectObj.title')
+      const classTitle = _.get(this.filterInputs, 'classObj.title')
+      return `Bảng điểm ${[subjectTitle, classTitle]
+        .filter(Boolean)
+        .join(' - ')}`
     }
   },
   methods: {
     ...mapActions('mark', ['fetchMarks', 'updateMarks']),
     getEvaluateMark(obj) {
       if (!obj) return CONSTANTS.MARK_FAIL
-      return get(obj, 'value') ? CONSTANTS.MARK_PASS : CONSTANTS.MARK_FAIL
+      return _.get(obj, 'value') ? CONSTANTS.MARK_PASS : CONSTANTS.MARK_FAIL
     },
     getMark(obj) {
-      return get(obj, 'value', 0)
+      return _.get(obj, 'value', 0)
     },
     filterMarkByFactorAndSemeter: semesterType => factorId => marks => {
-      return marks.filter(item => item.factorId === factorId && item.semesterType === semesterType)
+      return marks.filter(
+        item => item.factorId === factorId && item.semesterType === semesterType
+      )
     },
     onChangeFilterMode() {
-      this.filterMode = toggle(CONSTANTS.FILTER_MODE_NORMAL, CONSTANTS.FILTER_MODE_ADVANCED)(this.filterMode)
+      this.filterMode = toggle(
+        CONSTANTS.FILTER_MODE_NORMAL,
+        CONSTANTS.FILTER_MODE_ADVANCED
+      )(this.filterMode)
     },
     onClickSearchButton() {
       const [classId, subjectId, studentId, gradeId] = getMultiplePath([
@@ -346,10 +404,12 @@ export default {
     }
   },
   created() {
-    Promise.all([Semester.fetch({}), Factor.fetch({})]).then(([semesters, factors]) => {
-      this.refrencesInfo.semesters = semesters
-      this.refrencesInfo.factors = factors
-    })
+    Promise.all([Semester.fetch({}), Factor.fetch({})]).then(
+      ([semesters, factors]) => {
+        this.refrencesInfo.semesters = semesters
+        this.refrencesInfo.factors = factors
+      }
+    )
   }
 }
 </script>

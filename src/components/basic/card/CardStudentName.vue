@@ -20,7 +20,7 @@
   </div>
 </template>
 <script>
-import { get } from 'lodash'
+import _ from 'lodash'
 
 export default {
   props: {
@@ -36,7 +36,7 @@ export default {
   },
   computed: {
     avatar() {
-      return get(this.student, 'avatar.url', '/default-avatar.png')
+      return _.get(this.student, 'avatar.url', '/default-avatar.png')
     }
   },
   methods: {}

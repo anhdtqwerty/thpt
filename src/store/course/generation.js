@@ -1,6 +1,6 @@
 import alert from '@/plugins/alert'
 import { Generation, Upload } from '@/plugins/api'
-import { set } from 'lodash'
+import _ from 'lodash'
 export default {
   namespaced: true,
   state: {
@@ -99,7 +99,7 @@ export default {
       state.generations = { ...state.generations }
     },
     setAvatar(state, { generationId, avatar }) {
-      set(state.generations, `${generationId}.avatar`, avatar)
+      _.set(state.generations, `${generationId}.avatar`, avatar)
       state.generations = { ...state.generations }
     }
   },

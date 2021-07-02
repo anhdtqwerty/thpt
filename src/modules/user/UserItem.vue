@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { get } from 'lodash'
+import _ from 'lodash'
 export default {
   props: {
     to: String,
@@ -18,8 +18,8 @@ export default {
     }
   },
   computed: {
-    avatar() {
-      return get(this.data, 'avatar.url', '/default-avatar.png')
+    avatar () {
+      return _.get(this.data, 'avatar.url', '/default-avatar.png')
     }
   }
 }

@@ -35,7 +35,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import { get } from 'lodash'
+import _ from 'lodash'
 export default {
   data() {
     return { menu: null }
@@ -44,7 +44,7 @@ export default {
     ...mapGetters('app', ['department', 'roles']),
     ...mapGetters('auth', ['profile']),
     avatar() {
-      return get(this.profile, 'teacher.avatar.url', '/default-avatar.png')
+      return _.get(this.profile, 'teacher.avatar.url', '/default-avatar.png')
     },
     isXsScreen() {
       return this.$vuetify.breakpoint.xs

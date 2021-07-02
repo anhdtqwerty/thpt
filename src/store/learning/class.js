@@ -1,6 +1,6 @@
 import alert from '@/plugins/alert'
 import { Class } from '@/plugins/api'
-import { get, keyBy, rangeRight } from 'lodash'
+import _ from 'lodash'
 import loading from '../../plugins/loading'
 
 export default {
@@ -59,7 +59,7 @@ export default {
           const pageText = `${pageStart}-${pageStop} trên ${totalItems}`
           commit('setPageText', pageText)
         } else {
-          var pages = rangeRight(1, page)
+          var pages = _.rangeRight(1, page)
           for (let index = 0; index < pages; index++) {
             const selectedPage = pages[index]
             if (totalItems > (selectedPage - 1) * itemsPerPage) {
@@ -127,7 +127,7 @@ export default {
       state.search = search
     },
     setClasses(state, classes) {
-      state.classes = keyBy(classes, 'id')
+      state.classes = _.keyBy(classes, 'id')
     },
     setClass(state, classData) {
       state.classes = {
@@ -140,7 +140,7 @@ export default {
         if (classData.id === c.id) return classData
         else return c
       })
-      state.classes = keyBy(classes, 'id')
+      state.classes = _.keyBy(classes, 'id')
     },
     countClasses(state, count) {
       state.count = count
@@ -158,7 +158,7 @@ export default {
       return Object.values(state.classes)
     },
     classData: state => classId => {
-      return get(state.classes, `${classId}.data`, {})
+      return _.get(state.classes, `${classId}.data`, {})
     },
     count: state => {
       return state.count

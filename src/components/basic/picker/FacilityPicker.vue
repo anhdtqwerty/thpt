@@ -53,10 +53,10 @@ export default {
       return this.listImg[this.index] || this.url
     },
     listImg() {
-      if (this.facility.imgs) {
-        return this.facility.imgs.map(f => f.url)
-      }
-      return this.url
+        if (this.facility.imgs) {
+            return this.facility.imgs.map(f => f.url)
+        }
+        return this.url
     }
   },
   methods: {
