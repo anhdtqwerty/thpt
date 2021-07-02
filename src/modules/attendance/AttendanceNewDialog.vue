@@ -136,10 +136,11 @@ export default {
         try {
           this.$loading.active = true
           await this.checkinAttendance({
-            student: this.student.id,
-            class: this.student.currentClass.id,
+            student: this.student,
+            // class: this.student.currentClass.,
             time: this.time,
-            status: this.late ? 'late' : 'onTime'
+            // status: this.late ? 'late' : 'onTime'
+            status: 'attendance'
           })
           this.$alert.addSuccess()
           this.$emit('attendanceAdded')

@@ -77,7 +77,6 @@ export default {
         status: 'active',
         _limit: -1
       }
-      console.log('qery', query)
       if (query) {
         if (query.class) studentParams.currentClass = query.class.id
         if (query.grade) studentParams.grade = query.grade
