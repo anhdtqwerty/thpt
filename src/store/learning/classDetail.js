@@ -1,6 +1,6 @@
 import alert from '@/plugins/alert'
 import { Class, Attendance, Slot, Log, Mark, Teachings, SubjectGroup } from '@/plugins/api'
-import _ from 'lodash'
+import { get, keyBy } from 'lodash'
 import utils from '../../plugins/utils'
 
 export default {
@@ -31,13 +31,13 @@ export default {
       ])
       commit('changeState', {
         classData,
-        attendances: _.keyBy(attendances, a => a.id + a.userId),
-        slots: _.keyBy(
+        attendances: keyBy(attendances, a => a.id + a.userId),
+        slots: keyBy(
           slots.map(s => ({ key: `${s.index}-${s.day}`, ...s })),
           'key'
         ),
-        students: _.keyBy(classData.students, 'id'),
-        marks: _.keyBy(marks, m => _.get(m, 'student.id', '')),
+        students: keyBy(classData.students, 'id'),
+        marks: keyBy(marks, m => get(m, 'student.id', '')),
         teachings,
         subjectGroups
       })
@@ -104,7 +104,7 @@ export default {
   mutations: {
     setClass(state, classData) {
       state.classData = classData
-      state.students = _.keyBy(classData.students, 'id')
+      state.students = keyBy(classData.students, 'id')
     },
     setAttendances(state, attendances) {
       state.attendances = attendances.reduce(
@@ -137,7 +137,7 @@ export default {
       }
     },
     setSlots(state, slots) {
-      state.slots = _.keyBy(
+      state.slots = keyBy(
         slots.map(s => ({ key: `${s.index}-${s.day}`, ...s })),
         'key'
       )
