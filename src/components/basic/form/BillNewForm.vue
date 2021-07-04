@@ -1,12 +1,6 @@
 <template>
   <v-form ref="form" v-model="valid">
-    <currency-input
-      outlined     
-      v-model="customerPaid"
-      label="Nhập số tiền khách trả"
-      dense
-      class="py-2"
-    ></currency-input>
+    <currency-input outlined v-model="customerPaid" label="Nhập số tiền khách trả" dense class="py-2"></currency-input>
     <autocomplete-student
       v-model="student"
       label="Tìm kiếm học sinh"
@@ -18,7 +12,7 @@
     />
     <v-text-field v-model="customerName" label="Họ Tên Người Nộp Tiền" outlined dense></v-text-field>
     <v-text-field v-model="customerPhone" label="SDT Người Nộp Tiền" outlined dense></v-text-field>
-    <date-picker  label="Chọn Ngày" outlined dense></date-picker>
+    <date-picker label="Chọn Ngày" outlined dense></date-picker>
     <v-select
       v-model="paymentType"
       :items="paymentTypes"
@@ -36,11 +30,11 @@ import { mapState } from 'vuex'
 import CurrencyInput from '@/components/basic/input/CurrencyInput.vue'
 import AutocompleteStudent from '@/components/basic/input/AutocompleteStudent.vue'
 import DatePicker from '@/components/basic/picker/DateIOSPicker.vue'
-import _ from 'lodash'
+import { get } from 'lodash'
 export default {
   components: { CurrencyInput, AutocompleteStudent, DatePicker },
   props: {},
-  data () {
+  data() {
     return {
       valid: true,
       date: new Date().toISOString(),
@@ -52,20 +46,20 @@ export default {
       customerPaid: 0
     }
   },
-  created () {},
+  created() {},
   computed: {
     ...mapState('constant', ['billStatus', 'paymentTypes'])
   },
   methods: {
-    selectStudent (student) {
+    selectStudent(student) {
       this.student = student
       this.customerName = student.name
       this.customerPhone = student.phone
     },
-    getValues () {
+    getValues() {
       return {
         notes: this.notes,
-        student: _.get(this.student, 'id'),
+        student: get(this.student, 'id'),
         paymentType: this.paymentType,
         customerPaid: parseInt(this.customerPaid),
         customerName: this.customerName,
@@ -74,10 +68,10 @@ export default {
         code: 'HD-' + Math.round(Date.now() / 1000)
       }
     },
-    save () {
+    save() {
       this.$emit('save', this.getValues())
     },
-    reset () {
+    reset() {
       this.student = null
       this.customerName = ''
       this.customerPhone = ''
@@ -97,6 +91,6 @@ export default {
 td {
   padding-left: 0 !important;
 }
-.v-text-field{
+.v-text-field {
 }
 </style>
