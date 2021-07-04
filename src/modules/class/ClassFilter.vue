@@ -95,7 +95,7 @@ export default {
         grade: get(this.grade, 'id'),
         division: this.division,
         teachers: this.teacher,
-        _sort: 'createdAt:desc'
+        _sort: 'createdAt:DESC'
       })
     },
     gradeChanged(grade) {

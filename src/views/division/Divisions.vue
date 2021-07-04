@@ -94,7 +94,7 @@ export default {
       this.draw = draw
     },
     refresh() {
-      this.fetchDivision({ _sort: 'createdAt:desc' })
+      this.fetchDivision({ _sort: 'createdAt:DESC' })
     },
     onDivisionSelected(division) {
       this.setDivision(division)

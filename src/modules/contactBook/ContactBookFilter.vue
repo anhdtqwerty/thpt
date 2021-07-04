@@ -156,10 +156,10 @@ export default {
       }
       if (this.status === 'inactive') {
         params['contactBook_null'] = true
-        params['_sort'] = 'createdAt:desc'
+        params['_sort'] = 'createdAt:DESC'
       } else {
         params['contactBook.status'] = this.status
-        params['_sort'] = 'contactBook.createdAt:desc'
+        params['_sort'] = 'contactBook.createdAt:DESC'
       }
 
       this.$emit('onFilterChanged', { ...params })

@@ -101,7 +101,7 @@ export default {
       this.draw = draw
     },
     refresh() {
-      this.fetchGrades({ _sort: 'createdAt:desc' })
+      this.fetchGrades({ _sort: 'createdAt:DESC' })
     },
     onGradeSelected(grade) {
       this.setGrade(grade)

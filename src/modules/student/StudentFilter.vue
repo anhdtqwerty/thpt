@@ -167,7 +167,7 @@ export default {
         code_contains: textHelpers.removeSpaces(this.code),
         status: this.status,
         gender: this.gender,
-        _sort: 'createdAt:desc'
+        _sort: 'createdAt:DESC'
       })
     }
   },

@@ -37,12 +37,7 @@
             />
           </v-col>
           <v-col class="mt-4" cols="12">
-            <date-iso-picker
-              placeholder="Ngày sinh"
-              outlined
-              outline
-              :date.sync="dob"
-            ></date-iso-picker>
+            <date-iso-picker placeholder="Ngày sinh" outlined outline :date.sync="dob"></date-iso-picker>
           </v-col>
           <v-col class="mt-4" cols="12">
             <v-text-field
@@ -142,7 +137,7 @@ export default {
         code_contains: this.code,
         status: this.status,
         gender: this.gender,
-        _sort: 'createdAt:desc'
+        _sort: 'createdAt:DESC'
       })
       this.cancel()
     },
