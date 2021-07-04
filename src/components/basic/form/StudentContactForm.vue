@@ -33,14 +33,13 @@
         <v-text-field v-model="phone" label="Số điện thoại" outlined dense :rules="[$rules.phone]"></v-text-field>
       </v-col>
       <v-col class="pb-0" cols="12" md="6">
-        <v-text-field v-model="email" label="Email" outlined dense"></v-text-field>
+        <v-text-field v-model="email" label="Email" outlined dense></v-text-field>
       </v-col>
     </v-row>
   </v-form>
 </template>
 <script>
-import { province } from '@/jsons/province.js'
-import { district } from '@/jsons/district.js'
+import { provinceList } from '@/json/provinceObject.js'
 export default {
   props: {
     student: {
@@ -72,12 +71,20 @@ export default {
       this.phone = this.student.phone
       this.email = this.student.email
     }
-    this.provinces = province
-    this.districts = district
+    provinceList.forEach(element => {
+      this.provinces.push(element.name)
+    })
   },
+  mounted() {},
   methods: {
     onChangePrivince() {
-      this.currentProvinceDistricts = this.districts.filter(d => d.parent_code === this.province.code)
+      this.currentProvinceDistricts = provinceList.filter(d => d.name === this.province)
+      if (this.currentProvinceDistricts.length > 0) {
+        let item = this.currentProvinceDistricts[0].districts
+        item.forEach(i => {
+          this.currentProvinceDistricts.push(i.name)
+        })
+      }
     },
     validate() {
       return this.$refs.form.validate()
