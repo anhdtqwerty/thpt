@@ -54,7 +54,6 @@
 <script>
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import { mapActions, mapGetters } from 'vuex'
-import DropMenu from '@/modules/student/menu/Menu.vue'
 import SemesterFilter from '@/modules/semester/SemesterFilter'
 import SemesterNewDialog from '@/modules/semester/SemesterNewDialog'
 import SemesterFilterDialog from '@/modules/semester/SemesterFilterDialog'
@@ -118,7 +117,6 @@ const originHeaders = [
 export default {
   components: {
     Breadcrumbs,
-    DropMenu,
     SemesterFilter,
     SemesterNewDialog,
     SemesterFilterDialog,
