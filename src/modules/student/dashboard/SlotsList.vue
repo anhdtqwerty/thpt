@@ -25,12 +25,7 @@
           @click:event="showEvent"
           @change="updateRange"
         ></v-calendar>
-        <v-menu
-          v-model="selectedOpen"
-          :close-on-content-click="false"
-          :activator="selectedElement"
-          offset-x
-        >
+        <v-menu v-model="selectedOpen" :close-on-content-click="false" :activator="selectedElement" offset-x>
           <slot-card :data="selectedEvent.data"></slot-card>
         </v-menu>
       </v-sheet>
@@ -39,7 +34,7 @@
 </template>
 
 <script>
-import _ from 'lodash'
+import { get } from 'lodash'
 import moment from 'moment'
 import SlotCard from '@/modules/student/dashboard/SlotCard.vue'
 export default {
@@ -57,15 +52,15 @@ export default {
     selectedOpen: false
   }),
   computed: {
-    events () {
+    events() {
       return this.slots.map(s => ({
-        name: _.get(s, 'class.code'),
+        name: get(s, 'class.code'),
         start: moment(s.startTime).format('YYYY-MM-DD hh:mm:ss'),
         color: 'primary',
         data: s
       }))
     },
-    title () {
+    title() {
       const { start, end } = this
       if (!start || !end) {
         return ''
@@ -74,7 +69,7 @@ export default {
       const startYear = start.year
       return `${startMonth} ${startYear}`
     },
-    monthFormatter () {
+    monthFormatter() {
       return this.$refs.calendar.getFormatter({
         timeZone: 'UTC',
         month: 'long'
@@ -88,24 +83,24 @@ export default {
     remove: Boolean,
     headers: Array
   },
-  mounted () {
+  mounted() {
     this.$refs.calendar.checkChange()
   },
   methods: {
-    viewDay ({ date }) {
+    viewDay({ date }) {
       this.focus = date
       this.type = 'day'
     },
-    getEventColor (event) {
+    getEventColor(event) {
       return event.color
     },
-    prev () {
+    prev() {
       this.$refs.calendar.prev()
     },
-    next () {
+    next() {
       this.$refs.calendar.next()
     },
-    showEvent ({ nativeEvent, event }) {
+    showEvent({ nativeEvent, event }) {
       const open = () => {
         this.selectedEvent = event
         this.selectedElement = nativeEvent.target
@@ -119,7 +114,7 @@ export default {
       }
       nativeEvent.stopPropagation()
     },
-    updateRange ({ start, end }) {
+    updateRange({ start, end }) {
       this.start = start
       this.end = end
     }

@@ -39,8 +39,7 @@
                   @click:append="on.click"
                 ></v-text-field>
               </template>
-              <v-date-picker v-model="date" type="month" no-title scrollable>
-              </v-date-picker>
+              <v-date-picker v-model="date" type="month" no-title scrollable> </v-date-picker>
             </v-menu>
           </div>
         </v-toolbar>
@@ -60,10 +59,7 @@
           offset-x
           :max-width="320"
         >
-          <slot-card
-            :data="selectedEvent.data"
-            @close="selectedOpen = false"
-          ></slot-card>
+          <slot-card :data="selectedEvent.data" @close="selectedOpen = false"></slot-card>
         </v-dialog>
       </v-sheet>
     </v-col>
@@ -71,7 +67,7 @@
 </template>
 
 <script>
-import _ from 'lodash'
+import { get } from 'lodash'
 import moment from 'moment'
 import SlotCard from '@/modules/dashboard/SlotCard.vue'
 import WeekCalendar from '@/components/basic/calendar/WeekCalendar'
@@ -96,14 +92,9 @@ export default {
     events() {
       return this.slots.map(s => {
         return {
-          name: _.get(s, 'class.code'),
+          name: get(s, 'class.code'),
           start: moment(s.startTime).format(`YYYY-MM-DD`),
-          color:
-            moment(s.startTime).hour() < 12
-              ? 'green'
-              : moment(s.startTime).hour() < 18
-              ? 'orange'
-              : '#727272',
+          color: moment(s.startTime).hour() < 12 ? 'green' : moment(s.startTime).hour() < 18 ? 'orange' : '#727272',
           data: s,
           timestamp: moment(s.startTime).format(`YYYY-MM-DD HH:mm`),
           timed: false
@@ -158,10 +149,7 @@ export default {
       this.$emit('change', { start, end })
     },
     convertDateToString(date) {
-      if (
-        moment(this.startWeek).format(`MM YYYY`) ===
-        moment(this.endWeek).format(`MM YYYY`)
-      ) {
+      if (moment(this.startWeek).format(`MM YYYY`) === moment(this.endWeek).format(`MM YYYY`)) {
         return 'Tháng ' + moment(this.startWeek).format(`MM YYYY`)
       } else {
         return (

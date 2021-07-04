@@ -5,7 +5,7 @@
       v-for="(item, index) in teachers"
       :key="index"
       :student="item"
-      :append="{icon :getIcon(item), color: getColor(item)}"
+      :append="{ icon: getIcon(item), color: getColor(item) }"
     ></student-list-item>
     <v-subheader>Học Sinh</v-subheader>
     <v-list v-if="!classData.students">
@@ -19,7 +19,7 @@
       v-for="(item, index) in students"
       :key="index"
       :student="item"
-      :append="{icon :getIcon(item), color: getColor(item)}"
+      :append="{ icon: getIcon(item), color: getColor(item) }"
     ></student-list-item>
   </v-list>
 </template>
@@ -27,7 +27,7 @@
 <script>
 import StudentListItem from '@/components/basic/list/StudentListItem'
 import { mapState } from 'vuex'
-import _ from 'lodash'
+import { get } from 'lodash'
 
 export default {
   components: {
@@ -58,40 +58,29 @@ export default {
   }),
   computed: {
     ...mapState('app', ['department']),
-    students () {
+    students() {
       return this.classData.students.map(student => ({
         ...student,
-        attendance: _.get(
-          this.slotData,
-          `attendances.${student.id + this.slotData.id}.status`,
-          'absent'
-        )
+        attendance: get(this.slotData, `attendances.${student.id + this.slotData.id}.status`, 'absent')
       }))
     },
-    teachers () {
-      return [
-        ...(this.classData.teachers || []),
-        ...(this.classData.mentors || [])
-      ].map(teacher => ({
+    teachers() {
+      return [...(this.classData.teachers || []), ...(this.classData.mentors || [])].map(teacher => ({
         ...teacher,
-        attendance: _.get(
-          this.slotData,
-          `attendances.${teacher.id + this.slotData.id}.status`,
-          'absent'
-        )
+        attendance: get(this.slotData, `attendances.${teacher.id + this.slotData.id}.status`, 'absent')
       }))
     }
   },
   methods: {
-    refresh () {
+    refresh() {
       this.attendance = this.slotData.attendances
     },
-    getIcon (data) {
+    getIcon(data) {
       if (data.attendance === 'attendance') return 'mdi-check'
       if (data.attendance === 'absent') return 'mdi-close'
       else return 'mdi-close'
     },
-    getColor (data) {
+    getColor(data) {
       if (data.attendance === 'attendance') return 'green'
       if (data.attendance === 'absent') return 'red'
       if (data.attendance === 'late') return 'orange'
@@ -99,7 +88,7 @@ export default {
     }
   },
   watch: {
-    staff (staff) {
+    staff(staff) {
       this.name = staff.name
       this.email = staff.email
       this.parentName = staff.parentName
@@ -107,15 +96,14 @@ export default {
       this.school = staff.school
       this.address = staff.address
     },
-    async slotData (slotData) {
+    async slotData(slotData) {
       this.refresh()
     },
-    async classData (classData) {
+    async classData(classData) {
       this.refresh()
     }
   }
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
