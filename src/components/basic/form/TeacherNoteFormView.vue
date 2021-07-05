@@ -9,11 +9,11 @@
         </p>
       </v-col>
       <v-col class="d-flex align-center py-0" cols="12">
-        <v-subheader class="px-0">Ngày vào đội</v-subheader>
+        <v-subheader class="px-0">Ngày vào Đội</v-subheader>
         <p class="mb-0">{{ teacher | _get('metadata.youngJoinedDate') | ddmmyyyy }}</p>
       </v-col>
       <v-col class="d-flex align-center py-0" cols="12">
-        <v-subheader class="px-0">Ngày vào đoàn</v-subheader>
+        <v-subheader class="px-0">Ngày vào Đoàn</v-subheader>
         <p class="mb-0">{{ teacher | _get('metadata.communistJoinedDate') | ddmmyyyy }}</p>
       </v-col>
     </v-row>

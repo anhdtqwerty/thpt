@@ -14,7 +14,7 @@
         <v-text-field v-model="phone" label="Số điện thoại" outlined dense :rules="[$rules.phone]"></v-text-field>
       </v-col>
       <v-col class="pb-0" cols="12" md="6">
-        <v-text-field v-model="email" label="Email" outlined dense></v-text-field>
+        <v-text-field v-model="email" label="Email" outlined dense :rules="[rules.email]"></v-text-field>
       </v-col>
     </v-row>
   </v-form>
