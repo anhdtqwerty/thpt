@@ -119,17 +119,6 @@ export default {
   },
   methods: {
     ...mapActions('attendance', ['searchAttendances', 'requestPageSettings']),
-    async refresh(query) {
-      const start = moment()
-        .startOf('day')
-        .toISOString()
-      const end = moment()
-        .endOf('day')
-        .toISOString()
-      const params = { time_gte: start, time_lte: end }
-      await this.searchAttendances({ ...query })
-    },
-
     formatTime(time, str) {
       return moment(time).format(str)
     },
