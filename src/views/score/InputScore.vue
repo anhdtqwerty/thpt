@@ -162,7 +162,7 @@
 
 <script>
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
-import _ from 'lodash'
+import { groupBy, get } from 'lodash'
 import AutocompleteClass from '@/components/basic/input/AutocompleteClass'
 import AutocompleteSubject from '@/components/basic/input/AutocompleteSubject'
 import AutocompleteFactor from '@/components/basic/input/AutocompleteFactor'
@@ -238,7 +238,7 @@ export default {
       }
     },
     marks(data) {
-      const groupedMark = _.groupBy(this.generateDataTable(Object.values(data)), 'studentId')
+      const groupedMark = groupBy(this.generateDataTable(Object.values(data)), 'studentId')
       const accumulatedMark = mapPropObj(groupedMark)(accumulateMark)
       this.items = Object.values(accumulatedMark)
     }
@@ -246,9 +246,9 @@ export default {
   computed: {
     ...mapState('mark', ['marks']),
     titleTable() {
-      const subjectTitle = _.get(this.filterInputs, 'subjectObj.title')
-      const classTitle = _.get(this.filterInputs, 'classObj.title')
-      const factorTitle = _.get(this.filterInputs, 'factorObj.title')
+      const subjectTitle = get(this.filterInputs, 'subjectObj.title')
+      const classTitle = get(this.filterInputs, 'classObj.title')
+      const factorTitle = get(this.filterInputs, 'factorObj.title')
       return `Nhập điểm ${[subjectTitle, classTitle, factorTitle].filter(Boolean).join(' - ')}`
     }
   },
@@ -312,12 +312,12 @@ export default {
     },
     onClickSearch() {
       const data = this.filterInputs
-      const classId = _.get(data, 'classObj.id')
-      const subjectId = _.get(data, 'subjectObj.id')
-      const factorId = _.get(data, 'factorObj.id')
-      const factorTitle = _.get(data, 'factorObj.title')
-      const semesterId = _.get(data, 'semesterObj.id')
-      const studentId = _.get(data, 'studentObj.id')
+      const classId = get(data, 'classObj.id')
+      const subjectId = get(data, 'subjectObj.id')
+      const factorId = get(data, 'factorObj.id')
+      const factorTitle = get(data, 'factorObj.title')
+      const semesterId = get(data, 'semesterObj.id')
+      const studentId = get(data, 'studentObj.id')
 
       this.originHeaders = this.originHeaders.map((item, index) => {
         if (index === 3) {

@@ -21,14 +21,14 @@
 </template>
 
 <script>
-import _ from 'lodash'
+import { get } from 'lodash'
 export default {
   props: {
     major: Object
   },
   computed: {
     url() {
-      return _.get(this.major, 'avatar.url', '/cover-default.jpg')
+      return get(this.major, 'avatar.url', '/cover-default.jpg')
     }
   }
 }

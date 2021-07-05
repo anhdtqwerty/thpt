@@ -42,7 +42,7 @@
 
 <script>
 import CardStudentName from '@/components/basic/card/CardStudentName.vue'
-import { mapState, mapActions, mapGetters } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 const originHeaders = [
   {

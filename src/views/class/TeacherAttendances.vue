@@ -26,8 +26,9 @@
                   v-on="on"
                   style="color: gray;  pointer-events: none;text-decoration: underline;}"
                   @click="openAttendanceDialog(item.slot)"
-                >{{item.text}}</span>
-                <p v-else class="subtitle-1" style="color: gray; margin: 0">{{item.text}}</p>
+                  >{{ item.text }}</span
+                >
+                <p v-else class="subtitle-1" style="color: gray; margin: 0">{{ item.text }}</p>
               </template>
               <span>Điểm Danh</span>
             </v-tooltip>
@@ -46,7 +47,8 @@
                   v-on="on"
                   @click="takeAttendance(item.user, data)"
                   :color="getColor(data)"
-                >{{ data | getIcon(data) }}</v-icon>
+                  >{{ data | getIcon(data) }}</v-icon
+                >
               </template>
               <span>{{ data | getTooltips(data) }}</span>
             </v-tooltip>
@@ -60,7 +62,7 @@
 <script>
 import moment from 'moment'
 import { mapActions, mapState, mapGetters } from 'vuex'
-import _ from 'lodash'
+import { get } from 'lodash'
 import UserItem from '@/modules/user/UserItem'
 import ClassAttendanceDialog from '@/modules/class/attendance/ClassAttendanceDialog'
 
@@ -73,7 +75,7 @@ export default {
     classData: Object,
     slots: Array
   },
-  data () {
+  data() {
     return {
       attendanceDialogState: false,
       selectedSlot: {}
@@ -83,7 +85,7 @@ export default {
     ...mapState('app', ['department']),
     ...mapGetters('rest', ['requesting']),
     ...mapGetters('classDetail', ['attendances']),
-    headers () {
+    headers() {
       return [
         { text: 'Giáo Viên', value: 'user', align: 'left', sortable: false },
         ...this.slots.map(slot => {
@@ -92,33 +94,23 @@ export default {
             value: slot.code,
             align: 'left',
             sortable: false,
-            isFuture: moment(slot.startTime).isAfter(
-              moment().format('YYYY-MM-DD'),
-              'date'
-            ),
+            isFuture: moment(slot.startTime).isAfter(moment().format('YYYY-MM-DD'), 'date'),
             slot
           }
         })
       ]
     },
-    items () {
-      const teachers = _.get(this.classData, `teachers`, [])
+    items() {
+      const teachers = get(this.classData, `teachers`, [])
       return teachers.map(teacher => ({
         user: teacher,
         slots: this.slots.map(slot => {
-          const attendance = _.get(
-            this.attendances,
-            `${slot.id + teacher.id}`,
-            {}
-          )
+          const attendance = get(this.attendances, `${slot.id + teacher.id}`, {})
           return {
             ...attendance,
             ...slot,
             mergedId: `${teacher.id}_${slot.id}`,
-            isFuture: moment(slot.startTime).isAfter(
-              moment().format('YYYY-MM-DD'),
-              'date'
-            ),
+            isFuture: moment(slot.startTime).isAfter(moment().format('YYYY-MM-DD'), 'date'),
             status: attendance.status,
             dataType: 'teacher-attendance'
           }
@@ -127,12 +119,8 @@ export default {
     }
   },
   methods: {
-    ...mapActions('classDetail', [
-      'fetchClass',
-      'updateClass',
-      'createAttendance'
-    ]),
-    getColor (slot) {
+    ...mapActions('classDetail', ['fetchClass', 'updateClass', 'createAttendance']),
+    getColor(slot) {
       if (slot.isFuture) return 'gray'
       if (slot.status === 'attendance') return 'green'
       if (slot.status === 'absent') return 'red'
@@ -140,7 +128,7 @@ export default {
       else return 'red'
     },
 
-    takeAttendance (student, data) {
+    takeAttendance(student, data) {
       // this.createAttendance({
       //   data: {
       //     slot: data.id,
@@ -152,7 +140,7 @@ export default {
       //     teacher: student.id,
       //     userId: student.id,
       //     class: this.classData.id,
-      //     course: _.get(this.classData, 'course.id'),
+      //     course: get(this.classData, 'course.id'),
       //     department: this.department.id,
       //     status: data.status === 'attendance' ? 'absent' : 'attendance',
       //     type: 'teacher-attendance'
@@ -162,20 +150,20 @@ export default {
       //   }
       // })
     },
-    openAttendanceDialog (slot) {
+    openAttendanceDialog(slot) {
       // this.attendanceDialogState = !this.attendanceDialogState
       // this.selectedSlot = slot
     }
   },
   filters: {
-    getIcon (data) {
+    getIcon(data) {
       if (data.status === 'attendance') return 'mdi-check'
       if (data.status === 'absent') return 'mdi-close'
       if (data.status === 'late') return 'mdi-exclamation'
       if (!data.status) return ''
       else return 'mdi-close'
     },
-    getTooltips (slot) {
+    getTooltips(slot) {
       if (slot.status === 'attendance') return 'Có mặt'
       if (slot.status === 'absent') return 'Nghỉ'
       if (slot.status === 'late') return 'Đi Muộn'

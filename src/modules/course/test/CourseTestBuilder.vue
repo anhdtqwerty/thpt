@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import _ from 'lodash'
+import { get, cloneDeep } from 'lodash'
 export default {
   data() {
     return {
@@ -137,7 +137,7 @@ export default {
       }))
     },
     reset() {
-      this.configs = _.get(this.course, 'mark', [])
+      this.configs = get(this.course, 'mark', [])
       if (!this.configs.length) {
         this.configs = this.defaultconfig
       }
@@ -155,7 +155,7 @@ export default {
     },
     onClickEditIcon(item) {
       this.confirm.isOpen = true
-      this.confirm.currentItem = _.cloneDeep(item)
+      this.confirm.currentItem = cloneDeep(item)
       this.confirm.callback = () => {
         Object.assign(item, this.confirm.currentItem)
         this.confirm.currentItem = null

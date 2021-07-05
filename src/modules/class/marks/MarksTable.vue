@@ -25,7 +25,7 @@
 import { mapGetters, mapState } from 'vuex'
 import UserItem from '@/modules/user/UserItem'
 import MarkEditDialog from '@/modules/class/marks/MarkEditDialog'
-import _ from 'lodash'
+import { get } from 'lodash'
 export default {
   components: { UserItem, MarkEditDialog },
   props: {
@@ -44,11 +44,11 @@ export default {
     ...mapState('classDetail', ['marks']),
     data() {
       return this.students.map(s => {
-        const mark = _.get(this.marks, `${s.id}`, {})
+        const mark = get(this.marks, `${s.id}`, {})
         return {
           mark,
           student: s,
-          ..._.get(mark, 'data', []).reduce(
+          ...get(mark, 'data', []).reduce(
             (acc, cur) => ({
               ...acc,
               [cur.code + '']: cur.value
@@ -60,7 +60,7 @@ export default {
       })
     },
     markTemplate() {
-      return _.get(this.classData, 'course.mark', [])
+      return get(this.classData, 'course.mark', [])
     },
     headers() {
       return [
@@ -75,7 +75,7 @@ export default {
           sortable: false,
           value: 'actions'
         },
-        ..._.get(this.classData, 'course.mark', _.get(this.classData, 'metadata.mark', [])).map(m => ({
+        ...get(this.classData, 'course.mark', get(this.classData, 'metadata.mark', [])).map(m => ({
           text: m.title,
           value: m.code + ''
         })),

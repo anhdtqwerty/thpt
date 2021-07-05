@@ -1,7 +1,7 @@
 <template>
   <div v-if="majors.length">
     <div v-for="major in majors" :key="major.id">
-      <h2 class="headline" style="color:gray">{{major.title}}</h2>
+      <h2 class="headline" style="color:gray">{{ major.title }}</h2>
       <student-courses :major="major" :student="student" />
     </div>
   </div>
@@ -16,7 +16,7 @@
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex'
 import StudentCourses from '@/modules/student/learning/StudentLearningCourses.vue'
-import _ from 'lodash'
+import { get } from 'lodash'
 export default {
   props: {
     studentId: String
@@ -30,7 +30,7 @@ export default {
     ...mapGetters('student', ['student', 'marks', 'majors', 'classes']),
     ...mapGetters('auth', ['user'])
   },
-  async created () {
+  async created() {
     this.refresh()
   },
   data: () => ({
@@ -40,10 +40,10 @@ export default {
   }),
   methods: {
     ...mapActions('transcript', ['fetchTranscript']),
-    updateDraw (draw) {
+    updateDraw(draw) {
       this.draw = draw
     },
-    onSelected (mark) {
+    onSelected(mark) {
       this.dialog = !this.dialog
       this.selected = mark
     },
@@ -54,13 +54,13 @@ export default {
       return mark.value < 5 ? 'Faied' : 'Passed'
     },
     getCover: clazz => {
-      return _.get(clazz, 'course.cover.src', '/cover-default.jpg')
+      return get(clazz, 'course.cover.src', '/cover-default.jpg')
     },
 
     getCourse: clazz => {
       return clazz ? clazz.course : {}
     },
-    async refresh (query) {
+    async refresh(query) {
       this.loading = true
       await this.fetchTranscript({ student: this.studentId })
       this.loading = false
@@ -69,5 +69,4 @@ export default {
 }
 </script>
 
-<style>
-</style>
+<style></style>

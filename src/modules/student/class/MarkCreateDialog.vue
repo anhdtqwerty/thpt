@@ -12,7 +12,7 @@
         </v-toolbar>
         <v-divider />
         <v-card-text>
-          <small>*Nhập điểm cho học sinh {{student.name}}</small>
+          <small>*Nhập điểm cho học sinh {{ student.name }}</small>
           <v-text-field v-model="value" label="Nhập điểm tổng kết"></v-text-field>
           <v-select v-model="status" :items="['passed', 'failed', 'learning']" label="Chọn trạng thái"></v-select>
         </v-card-text>
@@ -28,51 +28,50 @@
 
 <script>
 import { mapActions } from 'vuex'
-import _ from 'lodash'
+import { get } from 'lodash'
 export default {
   props: {
     state: Boolean,
     student: Object,
     course: Object
   },
-  computed: {
-  },
+  computed: {},
   data: () => ({
     dialog: false,
     value: 0,
     status: 'passed'
   }),
-  created () {
+  created() {
     this.refresh()
   },
   methods: {
     ...mapActions('student', ['createMark']),
-    save () {
+    save() {
       this.createMark({
         data: {
-          student: _.get(this.student, 'id'),
+          student: get(this.student, 'id'),
           course: this.course.id,
-          department: _.get(this.student, 'department.id'),
+          department: get(this.student, 'department.id'),
           value: this.value,
           status: this.status
         }
       })
       this.dialog = false
     },
-    refresh () {
+    refresh() {
       if (!this.student) return
       this.value = 0
       this.status = 'passed'
     },
-    cancel () {
+    cancel() {
       this.dialog = false
     }
   },
   watch: {
-    state (state) {
+    state(state) {
       this.dialog = true
     },
-    student (student) {
+    student(student) {
       this.refresh()
     }
   }

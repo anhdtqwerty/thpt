@@ -48,7 +48,6 @@
 </template>
 
 <script>
-import moment from 'moment'
 import { mapActions, mapState } from 'vuex'
 
 export default {
