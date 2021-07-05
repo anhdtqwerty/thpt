@@ -10,7 +10,7 @@
       </v-card-title>
       <v-divider />
       <AttendanceDetailFilter />
-      <AttendanceDetailDataTable />
+      <AttendanceDetailDataTable :student="student" />
     </v-card>
   </v-dialog>
 </template>

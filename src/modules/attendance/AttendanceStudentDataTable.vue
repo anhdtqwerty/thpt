@@ -3,14 +3,10 @@
     :hide-default-footer="hideFooter"
     :headers="headers ? headers : originHeaders"
     mobile-breakpoint="0"
-    sort-by="name"
-    :items="attendances"
-    :options.sync="tableOptions"
-    :server-items-length="totalItems"
+    :items="hideFooter ? attendances : studentAttendances"
     item-key="id"
     loading-text="Đang Tải"
-    :footer-props="footerTable"
-    @click:row="handleClick"
+    :footer-props="{ 'items-per-page-text': 'Học sinh mỗi trang', 'items-per-page-options': [5, 10, 15] }"
   >
     <template v-slot:[`footer.page-text`]="items">
       {{ items.pageStart }} - {{ items.pageStop }} trên tổng
@@ -25,30 +21,42 @@
         items-per-page-all-text="Tất cả"
       />
     </template> -->
+    <template v-slot:[`footer.page-text`]="items">
+      {{ items.pageStart }} - {{ items.pageStop }} trên {{ items.itemsLength }}
+    </template>
     <template v-slot:[`item.student`]="{ item }">
       <CardStudentName :student="item.student" link />
     </template>
     <template v-slot:[`item.action`]="{ item }">
-      <attendance-list-actions :item="item" />
+      <div v-for="index in evenNumbers(item)" :key="index">
+        <AttendanceListActions :item="item" :checkinIndex="index" @attendanceUpdated="refresh" />
+      </div>
     </template>
-    <template v-slot:[`item.checkIn`]="{ item }">
-      <span>{{ item.checkin[0] | hhmm }}</span>
-    </template>
-    <template v-slot:[`item.checkOut`]="{ item }">
-      <span>{{ item.checkin[1] | hhmm }}</span>
+    <template v-slot:[`item.time`]="{ item }">
+      <div v-if="item.attendance">
+        <div class="pt-2" style="height: 36px" v-for="index in evenNumbers(item)" :key="index">
+          {{ item.attendance.checkin[index] | hhmm }} / {{ item.attendance.checkin[index + 1] | hhmm }}
+        </div>
+      </div>
+      <div v-else>
+        --:-- / --:--
+      </div>
     </template>
     <template v-slot:[`item.dob`]="{ item }">
       <span>{{ (item.student && item.student.dob) | ddmmyyyy }}</span>
     </template>
     <template v-slot:[`item.class`]="{ item }">
-      <router-link style="text-decoration: none" :to="'/class/' + (item.class && item.class.id)">
-        <span v-if="item.class">{{ item.class && item.class.title }}</span>
+      <router-link
+        style="text-decoration: none"
+        :to="'/class/' + (item.student.currentClass && item.student.currentClass.id)"
+      >
+        <span v-if="item.student.currentClass">{{ item.student.currentClass && item.student.currentClass.title }}</span>
       </router-link>
     </template>
     <template v-slot:[`item.status`]="{ item }">
-      <v-chip small label :color="getColor(item.status)" dark>
-        <span v-if="item.status">
-          {{ item.status | getAttendanceStatus }}
+      <v-chip small label :color="item.attendance | getAttendanceStatusColor" dark>
+        <span>
+          {{ item.attendance | getAttendanceStatus }}
         </span>
       </v-chip>
     </template>
@@ -76,18 +84,12 @@ export default {
         },
         { text: 'Lớp', value: 'class', width: 100, sortable: false },
         {
-          text: 'Giờ đến',
-          value: 'checkIn',
-          width: 100,
-          sortable: false
+          text: 'Giờ đến / Giờ về',
+          value: 'time',
+          sortable: false,
+          align: 'center'
         },
-        {
-          text: 'Giờ về',
-          value: 'checkOut',
-          width: 100,
-          sortable: false
-        },
-        { text: 'Trạng thái', value: 'status', width: 100, sortable: false },
+        { text: 'Trạng thái', value: 'status', sortable: false, align: 'center' },
         { text: 'Hành động', value: 'action', width: 100, sortable: false }
       ]
       // attendances: [
@@ -105,7 +107,7 @@ export default {
     await this.refresh({})
   },
   computed: {
-    ...mapState('attendance', ['pageText', 'totalItems']),
+    ...mapState('attendance', ['pageText', 'totalItems', 'studentAttendances']),
     ...mapGetters('attendance', ['attendances']),
 
     footerTable() {
@@ -122,18 +124,18 @@ export default {
     }
   },
   methods: {
-    ...mapActions('attendance', ['searchAttendances', 'requestPageSettings']),
+    ...mapActions('attendance', ['searchAttendances', 'requestPageSettings', 'fetchStudentAttendances']),
     async refresh(query) {
-      const start = moment()
-        .startOf('day')
-        .toISOString()
-      const end = moment()
-        .endOf('day')
-        .toISOString()
-
-      //console.log('query', { ...query, time_gte: start, time_lte: end })
-      const params = { time_gte: start, time_lte: end }
-      await this.searchAttendances({ ...query })
+      // const start = moment()
+      //   .startOf('day')
+      //   .toISOString()
+      // const end = moment()
+      //   .endOf('day')
+      //   .toISOString()
+      // console.log('query', { ...query, time_gte: start, time_lte: end })
+      // const params = { time_gte: start, time_lte: end }
+      // await this.searchAttendances({ ...query })
+      await this.fetchStudentAttendances(query)
     },
 
     formatTime(time, str) {
@@ -145,6 +147,12 @@ export default {
     getColor(s) {
       if (s === 'late') return 'orange'
       else return '#46BE8A'
+    },
+    evenNumbers(item) {
+      if (item.attendance) {
+        return [...Array(item.attendance.checkin.length)].map((_, i) => i).filter(i => i % 2 === 0)
+      }
+      return [0]
     }
     // getCheckIn(item) {
     //   let time = ''
@@ -160,6 +168,16 @@ export default {
     //   }
     //   return time
     // }
+  },
+  filters: {
+    getAttendanceStatus(attendance) {
+      if (attendance) return 'Có mặt'
+      return 'Chưa điểm danh'
+    },
+    getAttendanceStatusColor(attendance) {
+      if (!attendance) return '#FD6B6B'
+      return '#46BE8A'
+    }
   },
   watch: {
     tableOptions: {

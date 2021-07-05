@@ -12,7 +12,11 @@
   >
     <template v-slot:item="data">
       <v-list-item-content>
-        <CardTeacherInfo :displayGender="displayGender" :teacher="data.item" />
+        <CardTeacherInfo
+          :displayGender="displayGender"
+          :teacher="data.item"
+          :displaySubjectGroup="displaySubjectGroup"
+        />
       </v-list-item-content>
     </template>
   </v-autocomplete>
@@ -38,6 +42,10 @@ export default {
     defaultTeachers: Object,
     defaultTeacher: Object,
     displayGender: {
+      default: false,
+      type: Boolean
+    },
+    displaySubjectGroup: {
       default: false,
       type: Boolean
     }
