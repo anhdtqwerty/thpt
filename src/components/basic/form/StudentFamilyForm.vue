@@ -29,7 +29,7 @@
           label="Email Bố"
           dense
           outlined
-          :rules="[rules.email]"
+          :rules="[$rules.email]"
         ></v-text-field>
       </v-col>
     </v-row>
@@ -49,7 +49,7 @@
         <v-text-field v-model="momPhone" label="Số điện thoại mẹ" outlined dense :rules="[$rules.phone]"></v-text-field>
       </v-col>
       <v-col class="pb-0" cols="12" md="6">
-        <v-text-field v-model="momEmail" label="Email Mẹ" dense outlined :rules="[rules.email]"></v-text-field>
+        <v-text-field v-model="momEmail" label="Email Mẹ" dense outlined :rules="[$rules.email]"></v-text-field>
       </v-col>
     </v-row>
   </v-form>
@@ -77,8 +77,7 @@ export default {
     momCompany: '',
     rules: {
       required: value => !!value || 'Required.',
-      min: v => v.length >= 6 || 'Min 8 characters',
-      email: v => /.+@.+/.test(v) || 'E-mail must be valid'
+      min: v => v.length >= 6 || 'Min 8 characters'
     }
   }),
   created() {

@@ -59,8 +59,7 @@ export default {
     email: '',
     rules: {
       required: value => !!value || 'Required.',
-      min: v => v.length >= 6 || 'Min 8 characters',
-      email: v => /.+@.+/.test(v) || 'E-mail must be valid'
+      min: v => v.length >= 6 || 'Min 8 characters'
     }
   }),
   created() {
@@ -82,7 +81,7 @@ export default {
       if (this.currentProvinceDistricts.length > 0) {
         let item = this.currentProvinceDistricts[0].districts
         item.forEach(i => {
-          this.currentProvinceDistricts.push(i.name)
+          this.currentProvinceDistricts.push(i.nameWithType)
         })
       }
     },

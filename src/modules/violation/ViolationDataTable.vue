@@ -12,7 +12,7 @@
     :footer-props="footerTable"
   >
     <template v-slot:[`item.action`]="{ item }">
-      <violation-actions :selected="item" :currentPage="currentPage"> </violation-actions>
+      <violation-actions :selected="item"> </violation-actions>
     </template>
     <template v-slot:[`item.date`]="{ item }">
       {{ item.date | ddmmyyyy }}
@@ -91,8 +91,8 @@ export default {
       originHeaders: originHeaders,
       selected: [],
       loading: false,
-      tableOptions: {},
-      currentPage: 0
+      tableOptions: {}
+      // currentPage: 0
     }
   },
   components: {
@@ -121,16 +121,16 @@ export default {
   },
   methods: {
     ...mapActions('violation', ['searchViolations', 'requestPageSettings']),
-    async onRemoveViolation() {
-      this.loading = true
-      await this.requestPageSettings({ itemsPerPage: this.itemsPerPage, page: this.page })
-      this.loading = false
-    },
-    async oncreateViolation() {
-      this.loading = true
-      await this.requestPageSettings({ itemsPerPage: this.itemsPerPage, page: this.page })
-      this.loading = false
-    },
+    // async onRemoveViolation() {
+    //   this.loading = true
+    //   await this.requestPageSettings({ itemsPerPage: this.itemsPerPage, page: this.page })
+    //   this.loading = false
+    // },
+    // async oncreateViolation() {
+    //   this.loading = true
+    //   await this.requestPageSettings({ itemsPerPage: this.itemsPerPage, page: this.page })
+    //   this.loading = false
+    // },
     getColor(s) {
       if (s === 'violation') return 'orange'
       else return '#46BE8A'
