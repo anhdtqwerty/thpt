@@ -1,8 +1,9 @@
 // import axios from '@/plugins/axios'
 import alert from '@/plugins/alert'
-import { Attendance } from '@/plugins/api'
+import { Attendance, Student } from '@/plugins/api'
 import loading from '../../plugins/loading'
 import { keyBy, rangeRight } from 'lodash'
+import moment from 'moment'
 
 export default {
   namespaced: true,
@@ -11,7 +12,8 @@ export default {
     pageText: '',
     itemsPerPage: 10,
     searchParams: {},
-    totalItems: 0
+    totalItems: 0,
+    studentAttendances: []
   },
   actions: {
     async searchAttendances({ commit, state, dispatch }, query) {
@@ -69,6 +71,39 @@ export default {
 
     async fetchAttendances({ commit }, options) {
       commit('setAttendances', await Attendance.fetch(options))
+    },
+    async fetchStudentAttendances({ commit }, query) {
+      const studentParams = {
+        status: 'active',
+        _limit: -1
+      }
+      if (query) {
+        if (query.class) studentParams.currentClass = query.class.id
+        if (query.grade) studentParams.grade = query.grade
+      }
+      const students = await Student.fetch(studentParams)
+
+      const time = moment()
+        .startOf('day')
+        .toISOString()
+      const attendanceParam = {
+        time_gte: time,
+        _limit: -1
+      }
+
+      const attendances = await Attendance.fetch(attendanceParam)
+
+      let studentAttendances = students.map(student => {
+        const attendance = attendances.find(a => a.student.id === student.id)
+        return { student, attendance }
+      })
+
+      if (query && query.status) {
+        if (query.status === 'attendance') studentAttendances = studentAttendances.filter(sa => sa.attendance)
+        else studentAttendances = studentAttendances.filter(sa => !sa.attendance)
+      }
+
+      commit('changeState', { studentAttendances })
     },
     async checkinAttendance({ commit }, data) {
       commit('setAttendance', await Attendance.checkin(data))

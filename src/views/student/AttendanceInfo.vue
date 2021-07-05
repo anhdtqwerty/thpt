@@ -12,7 +12,7 @@
     <AttendanceStudentFilter @onFilterChanged="refresh" class="pa-4" />
     <v-divider></v-divider>
     <AttendanceStudentDataTable class="mt-4" ref="table" />
-    <AttendanceNewDialog :state="checkinState" />
+    <AttendanceNewDialog :state="checkinState" @attendanceAdded="refresh" />
   </v-card>
 </template>
 

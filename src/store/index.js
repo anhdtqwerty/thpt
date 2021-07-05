@@ -6,6 +6,7 @@ import Dashboard from '@/store/dashboard/Dashboard.js'
 
 import classModule from './learning/class'
 import classDetail from './learning/classDetail'
+import timeTable from './learning/timeTable'
 import category from './other/category'
 import email from './notify/email'
 import search from './view/search.js'
@@ -78,6 +79,7 @@ import StudentPostHistory from './contactBook/StudentPostHistory'
 import AttendanceDetail from './student/AttendanceDetail'
 import Generation from '@/store/generation/Generation.js'
 import AcademicLevel from './academicLevel/AcademicLevel'
+import Diligence from './student/Diligence'
 
 Vue.use(Vuex)
 
@@ -116,6 +118,7 @@ export default createStore(Vuex.Store, {
     log,
     mark,
     classDetail,
+    timeTable,
     teacherDashboard,
     departmentDashboard,
     department,
@@ -141,7 +144,8 @@ export default createStore(Vuex.Store, {
     StudentPostHistory,
     AttendanceDetail,
     Generation,
-    AcademicLevel
+    AcademicLevel,
+    Diligence
   },
   mixins: {
     mutations: {
