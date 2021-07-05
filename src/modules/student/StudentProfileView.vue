@@ -76,11 +76,11 @@
         <div>{{ student.notes }}</div>
         <table>
           <tr>
-            <td>Ngày vào đội</td>
+            <td>Ngày vào Đội</td>
             <td>{{ student.data.youngJoinedDate }}</td>
           </tr>
           <tr>
-            <td>Ngày vào đoàn</td>
+            <td>Ngày vào Đoàn</td>
             <td>{{ student.data.communistJoinedDate }}</td>
           </tr>
           <tr>

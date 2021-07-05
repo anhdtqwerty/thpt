@@ -120,7 +120,7 @@ export default {
       }
     },
     filterSubject() {
-      return { division: get(this.classData, 'division.id'), grade: this.classData.grade }
+      return { division: get(this.classData, 'division.id'), grade: get(this.classData, 'grade') }
     }
   },
   created() {
