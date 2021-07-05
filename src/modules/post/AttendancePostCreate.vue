@@ -11,6 +11,10 @@
       'items-per-page-all-text': 'Tất cả'
     }"
   >
+    <template v-slot:[`footer.page-text`]="items">
+      {{ items.pageStart }} - {{ items.pageStop }} trên
+      {{ items.itemsLength }}
+    </template>
     <div slot="top">
       <div>
         <v-card flat class="px-4 pt-4 mt-4" outlined>

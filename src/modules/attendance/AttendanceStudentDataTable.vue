@@ -12,6 +12,10 @@
     :footer-props="footerTable"
     @click:row="handleClick"
   >
+    <template v-slot:[`footer.page-text`]="items">
+      {{ items.pageStart }} - {{ items.pageStop }} trên tổng
+      {{ items.itemsLength }}
+    </template>
     <!-- <template v-if="!hideFooter" v-slot:top="{ pagination, options, updateOptions }">
       <v-data-footer
         :pagination="pagination"

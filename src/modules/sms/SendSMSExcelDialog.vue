@@ -50,7 +50,15 @@
               :headers="originHeaders"
               :items="excelSMSs"
               sort-by="name"
+              :footer-props="{
+                'items-per-page-text': 'Hiển thị mỗi trang',
+                'items-per-page-all-text': 'Tất cả'
+              }"
             >
+              <template v-slot:[`footer.page-text`]="items">
+                {{ items.pageStart }} - {{ items.pageStop }} trên
+                {{ items.itemsLength }}
+              </template>
               <template v-slot:[`item.studentCode`]="{ item }">
                 {{ item.studentCode }}
               </template>
@@ -79,7 +87,15 @@
               :headers="errorHeaders"
               :items="errorSMSs"
               sort-by="name"
+              :footer-props="{
+                'items-per-page-text': 'Hiển thị mỗi trang',
+                'items-per-page-all-text': 'Tất cả'
+              }"
             >
+              <template v-slot:[`footer.page-text`]="items">
+                {{ items.pageStart }} - {{ items.pageStop }} trên tổng
+                {{ items.itemsLength }}
+              </template>
               <template v-slot:[`item.index`]="{ item }">
                 {{ errorSMSs.indexOf(item) + 1 }}
               </template>

@@ -21,6 +21,10 @@
           :page-text="pageText"
         />
       </template>
+      <template v-slot:[`footer.page-text`]="items">
+        {{ items.pageStart }} - {{ items.pageStop }} trên tổng
+        {{ items.itemsLength }}
+      </template>
       <template v-slot:[`item.action`]="{ item }">
         <attendance-list-actions :item="item" />
       </template>
