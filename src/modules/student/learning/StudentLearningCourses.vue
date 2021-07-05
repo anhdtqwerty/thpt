@@ -1,15 +1,9 @@
 <template>
   <div>
     <student-mark-dialog :mark="selected" :state="dialog"></student-mark-dialog>
-    <v-data-table
-      :headers="headers"
-      :items="coursesList"
-      :items-per-page="20"
-      @click:row="onSelected"
-      dense
-    >
+    <v-data-table :headers="headers" :items="coursesList" :items-per-page="20" @click:row="onSelected" dense>
       <template v-slot:item.status="{ item }">
-        <b :style="'color: '+getColor(item)" dark>{{ getStatus(item) }}</b>
+        <b :style="'color: ' + getColor(item)" dark>{{ getStatus(item) }}</b>
       </template>
       <template v-slot:item.course="{ item }">
         <router-link :to="'/course/' + item.id" dark>{{ item.title }}</router-link>
@@ -27,7 +21,7 @@
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex'
 import StudentMarkDialog from '@/modules/student/mark/StudentMarkDialog.vue'
-import _ from 'lodash'
+import { get } from 'lodash'
 export default {
   props: {
     major: Object
@@ -57,19 +51,17 @@ export default {
     ...mapState('app', ['department']),
     ...mapState('student', ['marks', 'classes']),
     ...mapGetters('student', ['student']),
-    coursesList () {
+    coursesList() {
       return this.major.courses.map(c => {
         return {
           ...c
-          // mark: _.get(this.marks, `${c.id}`, null),
-          // class: _.get(this.classes, `${c.id}`, null)
         }
       })
     }
   },
   methods: {
     ...mapActions('student', ['fetchMarks']),
-    onSelected (course) {
+    onSelected(course) {
       if (!course.mark) return
       this.dialog = !this.dialog
       this.selected = course.mark
@@ -77,7 +69,7 @@ export default {
     getStatus: course => {
       if (course.class) {
         if (course.class.status === 'done') {
-          return _.get(course, 'mark.value', 0) < 5 ? 'Failed' : 'Passed'
+          return get(course, 'mark.value', 0) < 5 ? 'Failed' : 'Passed'
         } else {
           return 'Learning'
         }
@@ -89,15 +81,15 @@ export default {
       return mark ? mark.value : ''
     },
     getClass: course => {
-      return _.get(course, 'class.code', '')
+      return get(course, 'class.code', '')
     },
     getCover: clazz => {
-      return _.get(clazz, 'avatar.url', '/cover-default.jpg')
+      return get(clazz, 'avatar.url', '/cover-default.jpg')
     },
     getColor: course => {
       if (course.class) {
         if (course.class.status === 'done') {
-          return _.get(course, 'mark.value', 0) < 5 ? 'red' : 'green'
+          return get(course, 'mark.value', 0) < 5 ? 'red' : 'green'
         } else {
           return '#1976d2'
         }
@@ -120,5 +112,4 @@ export default {
 }
 </script>
 
-<style>
-</style>
+<style></style>

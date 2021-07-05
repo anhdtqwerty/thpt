@@ -10,25 +10,12 @@
       locale="vi"
       class="elevation-0 mx-n2"
     ></v-date-picker>
-    <div
-      class="mb-2 justify-space-around"
-      :class="{ 'd-flex': $vuetify.breakpoint.mdAndUp }"
-    >
+    <div class="mb-2 justify-space-around" :class="{ 'd-flex': $vuetify.breakpoint.mdAndUp }">
       <div>
-        <time-selector
-          ref="start"
-          v-model="startTime"
-          label="Chọn giờ bắt đầu"
-          input="09:00"
-        ></time-selector>
+        <time-selector ref="start" v-model="startTime" label="Chọn giờ bắt đầu" input="09:00"></time-selector>
       </div>
       <div>
-        <time-selector
-          ref="end"
-          v-model="endTime"
-          label="Chọn giờ kết thúc"
-          input="11:00"
-        ></time-selector>
+        <time-selector ref="end" v-model="endTime" label="Chọn giờ kết thúc" input="11:00"></time-selector>
       </div>
     </div>
     <autocomplete-teacher
@@ -66,13 +53,7 @@
       flat
       dense
     ></v-select>
-    <v-text-field
-      :value="profile.name"
-      label="Người Tạo"
-      disabled
-      dense
-      outlined
-    ></v-text-field>
+    <v-text-field :value="profile.name" label="Người Tạo" disabled dense outlined></v-text-field>
   </v-form>
 </template>
 
@@ -81,7 +62,7 @@ import TimeSelector from '@/components/basic/TimeSelector'
 import AutocompleteTeacher from '@/components/basic/input/AutocompleteTeacher'
 import { mapGetters, mapActions } from 'vuex'
 import moment from 'moment'
-import _ from 'lodash'
+import { get } from 'lodash'
 
 export default {
   components: {
@@ -129,14 +110,8 @@ export default {
       this.endTime = this.$refs.end.getData()
       return this.dates.map(date => ({
         code: `${this.classData.code}-${date}-${this.startTime}`,
-        startTime: moment(
-          date + ' ' + this.startTime,
-          'YYYY-MM-DD HH:mm'
-        ).toISOString(),
-        endTime: moment(
-          date + ' ' + this.endTime,
-          'YYYY-MM-DD HH:mm'
-        ).toISOString(),
+        startTime: moment(date + ' ' + this.startTime, 'YYYY-MM-DD HH:mm').toISOString(),
+        endTime: moment(date + ' ' + this.endTime, 'YYYY-MM-DD HH:mm').toISOString(),
         teachers: this.teachers,
         mentors: this.mentors,
         staff: this.profile.id,
@@ -146,9 +121,9 @@ export default {
         department: this.classData.department.id,
         class: this.classData.id,
         tags: this.classData.tags,
-        generation: _.get(this.classData, 'generation.id'),
-        rootMajor: _.get(this.classData, 'rootMajor.id'),
-        major: _.get(this.classData, 'major.id')
+        generation: get(this.classData, 'generation.id'),
+        rootMajor: get(this.classData, 'rootMajor.id'),
+        major: get(this.classData, 'major.id')
       }))
     }
   },

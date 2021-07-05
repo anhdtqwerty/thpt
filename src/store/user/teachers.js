@@ -2,7 +2,7 @@
 import alert from '@/plugins/alert'
 import loading from '../../plugins/loading'
 import { Teacher, User } from '@/plugins/api'
-import _ from 'lodash'
+import { rangeRight } from 'lodash'
 
 export default {
   namespaced: true,
@@ -46,7 +46,7 @@ export default {
           const pageText = `${pageStart}-${pageStop} trên ${totalItems}`
           commit('setPageText', pageText)
         } else {
-          var pages = _.rangeRight(1, page)
+          var pages = rangeRight(1, page)
           for (let index = 0; index < pages; index++) {
             const selectedPage = pages[index]
             if (totalItems > (selectedPage - 1) * itemsPerPage) {

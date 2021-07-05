@@ -15,7 +15,7 @@
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex'
 import StudentCourses from '@/modules/student/class/Courses.vue'
-import _ from 'lodash'
+import { get } from 'lodash'
 export default {
   props: {
     studentId: String
@@ -28,7 +28,7 @@ export default {
     ...mapGetters('student', ['student', 'marks', 'majors', 'classes']),
     ...mapGetters('auth', ['user'])
   },
-  async created () {
+  async created() {
     await this.fetchStudent(this.studentId)
     this.refresh()
   },
@@ -38,16 +38,11 @@ export default {
     loading: false
   }),
   methods: {
-    ...mapActions('student', [
-      'fetchMarks',
-      'fetchMajors',
-      'fetchStudent',
-      'fetchClasses'
-    ]),
-    updateDraw (draw) {
+    ...mapActions('student', ['fetchMarks', 'fetchMajors', 'fetchStudent', 'fetchClasses']),
+    updateDraw(draw) {
       this.draw = draw
     },
-    onSelected (mark) {
+    onSelected(mark) {
       this.dialog = !this.dialog
       this.selected = mark
     },
@@ -58,13 +53,13 @@ export default {
       return mark.value < 5 ? 'Faied' : 'Passed'
     },
     getCover: clazz => {
-      return _.get(clazz, 'course.cover.src', '/cover-default.jpg')
+      return get(clazz, 'course.cover.src', '/cover-default.jpg')
     },
 
     getCourse: clazz => {
       return clazz ? clazz.course : {}
     },
-    async refresh (query) {
+    async refresh(query) {
       this.loading = true
       this.fetchMarks(this.student.id)
       if (this.student.majors.length) {
@@ -77,5 +72,4 @@ export default {
 }
 </script>
 
-<style>
-</style>
+<style></style>
