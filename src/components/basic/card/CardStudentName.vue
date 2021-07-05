@@ -1,5 +1,9 @@
 <template>
-  <div class="d-flex flex-row flex-nowrap align-center py-2" :key="student.id" @click="$emit('change', student)">
+  <div
+    v-if="student && student.id"
+    class="d-flex flex-row flex-nowrap align-center py-2"
+    @click="$emit('change', student)"
+  >
     <div v-if="!$vuetify.breakpoint.mobile" class="image-wrapper mr-2">
       <img :src="avatar" alt="" />
     </div>
@@ -16,7 +20,7 @@
   </div>
 </template>
 <script>
-import _ from 'lodash'
+import { get } from 'lodash'
 
 export default {
   props: {
@@ -32,7 +36,7 @@ export default {
   },
   computed: {
     avatar() {
-      return _.get(this.student, 'avatar.url', '/default-avatar.png')
+      return get(this.student, 'avatar.url', '/default-avatar.png')
     }
   },
   methods: {}

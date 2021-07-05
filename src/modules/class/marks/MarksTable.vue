@@ -8,7 +8,7 @@
         <v-icon small class="mr-2" @click.stop="add(item)">edit</v-icon>
       </template>
       <template v-slot:item.total="{ item }">
-        <b class="subtitle-1 font-weight-bold">{{ item.total}}</b>
+        <b class="subtitle-1 font-weight-bold">{{ item.total }}</b>
       </template>
     </v-data-table>
     <v-skeleton-loader
@@ -25,14 +25,14 @@
 import { mapGetters, mapState } from 'vuex'
 import UserItem from '@/modules/user/UserItem'
 import MarkEditDialog from '@/modules/class/marks/MarkEditDialog'
-import _ from 'lodash'
+import { get } from 'lodash'
 export default {
   components: { UserItem, MarkEditDialog },
   props: {
     classData: Object
   },
-  created () {},
-  data () {
+  created() {},
+  data() {
     return {
       dialog: false,
       markDialog: false,
@@ -42,13 +42,13 @@ export default {
   computed: {
     ...mapGetters('classDetail', ['students']),
     ...mapState('classDetail', ['marks']),
-    data () {
+    data() {
       return this.students.map(s => {
-        const mark = _.get(this.marks, `${s.id}`, {})
+        const mark = get(this.marks, `${s.id}`, {})
         return {
           mark,
           student: s,
-          ..._.get(mark, 'data', []).reduce(
+          ...get(mark, 'data', []).reduce(
             (acc, cur) => ({
               ...acc,
               [cur.code + '']: cur.value
@@ -59,10 +59,10 @@ export default {
         }
       })
     },
-    markTemplate () {
-      return _.get(this.classData, 'course.mark', [])
+    markTemplate() {
+      return get(this.classData, 'course.mark', [])
     },
-    headers () {
+    headers() {
       return [
         {
           text: 'Học Sinh',
@@ -75,11 +75,7 @@ export default {
           sortable: false,
           value: 'actions'
         },
-        ..._.get(
-          this.classData,
-          'course.mark',
-          _.get(this.classData, 'metadata.mark', [])
-        ).map(m => ({
+        ...get(this.classData, 'course.mark', get(this.classData, 'metadata.mark', [])).map(m => ({
           text: m.title,
           value: m.code + ''
         })),
@@ -92,13 +88,13 @@ export default {
     }
   },
   methods: {
-    add (item) {
+    add(item) {
       this.selected = item
       this.dialog = !this.dialog
     }
   },
   filters: {
-    total (mark) {
+    total(mark) {
       return Math.round((mark.total / mark.div) * 100) / 100
     }
   }

@@ -37,7 +37,7 @@ import studentDashboard from './dashboard/studentDashboard'
 import student from './user/student'
 import studentImporter from './importer/studentImporter.js'
 import attendance from './student/attendance'
-import _ from 'lodash'
+import { setWith } from 'lodash'
 /**
  * DEPARTMENT
  */
@@ -79,6 +79,7 @@ import StudentPostHistory from './contactBook/StudentPostHistory'
 import AttendanceDetail from './student/AttendanceDetail'
 import Generation from '@/store/generation/Generation.js'
 import AcademicLevel from './academicLevel/AcademicLevel'
+import Diligence from './student/Diligence'
 
 Vue.use(Vuex)
 
@@ -143,7 +144,8 @@ export default createStore(Vuex.Store, {
     StudentPostHistory,
     AttendanceDetail,
     Generation,
-    AcademicLevel
+    AcademicLevel,
+    Diligence
   },
   mixins: {
     mutations: {
@@ -156,7 +158,7 @@ export default createStore(Vuex.Store, {
         Object.entries(changed).forEach(([firstChildName, diff]) => {
           const firstChildValue = { ...state[firstChildName] }
           Object.entries(diff).forEach(([path, diffValue]) => {
-            _.setWith(firstChildValue, path, diffValue)
+            setWith(firstChildValue, path, diffValue)
           })
           state[firstChildName] = firstChildValue
         })

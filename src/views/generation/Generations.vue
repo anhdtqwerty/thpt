@@ -44,7 +44,6 @@ import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import GenerationListActions from '@/modules/generation/GenerationListActions'
 import NewGenerationDialog from '@/modules/generation/NewGenerationDialog'
 import GenerationUpdateDialog from '@/modules/generation/GenerationUpdateDialog'
-
 import moment from 'moment'
 import { get } from 'lodash'
 import utils from '@/plugins/utils'

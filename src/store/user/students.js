@@ -1,7 +1,7 @@
 import api from '../../plugins/api'
 import alert from '../../plugins/alert'
 import loading from '../../plugins/loading'
-import _ from 'lodash'
+import { rangeRight, isEmpty } from 'lodash'
 import utils from '@/plugins/utils'
 
 export default {
@@ -48,7 +48,7 @@ export default {
           const pageText = `${pageStart}-${pageStop} trên ${totalItems}`
           commit('setPageText', pageText)
         } else {
-          var pages = _.rangeRight(1, page)
+          var pages = rangeRight(1, page)
           for (let index = 0; index < pages; index++) {
             const selectedPage = pages[index]
             if (totalItems > (selectedPage - 1) * itemsPerPage) {
@@ -62,7 +62,7 @@ export default {
       loading.active = false
     },
     async fetchGenerations({ commit, state }) {
-      if (_.isEmpty(state.generations)) {
+      if (isEmpty(state.generations)) {
         const generations = await api.Generation.fetch()
         commit('changeState', { generations })
       }

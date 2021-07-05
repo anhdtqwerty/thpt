@@ -6,7 +6,7 @@
           headline="Chuyên cần"
           :link="[
             { text: 'Học sinh', href: '../students' },
-            { text: 'Chuyên cần', href: '../diligence' },
+            { text: 'Chuyên cần', href: '../diligence' }
           ]"
         />
       </div>
@@ -41,53 +41,53 @@ const originHeaders = [
     value: 'student.name',
     align: 'left',
     sortable: true,
-    show: true,
+    show: true
   },
   {
     text: 'Lớp',
     value: 'class.title',
     align: 'center',
     sortable: false,
-    show: true,
+    show: true
   },
   {
     text: 'Có phép',
     value: '',
     align: 'center',
     sortable: false,
-    show: true,
+    show: true
   },
   {
     text: 'Không phép',
     value: '',
     align: 'center',
     sortable: false,
-    show: true,
+    show: true
   },
   {
     text: 'Hàng động',
     value: 'action',
     align: 'center',
     sortable: false,
-    show: true,
-  },
+    show: true
+  }
 ]
 export default {
   components: {
     DiligenceFilter,
-    Breadcrumbs,
+    Breadcrumbs
   },
   props: {
-    role: String,
+    role: String
   },
   data() {
     return {
-      headers: originHeaders,
+      headers: originHeaders
     }
   },
   computed: {
     ...mapGetters('attendance', ['attendances']),
-    ...mapState('app', ['department']),
+    ...mapState('app', ['department'])
   },
   created() {
     this.refresh({})
@@ -109,8 +109,8 @@ export default {
       this.editStudent = data.student
       this.editInClass = data.inClass
       this.editOutClass = data.outClass
-    },
-  },
+    }
+  }
 }
 </script>
 <style scoped>

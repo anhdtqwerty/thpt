@@ -60,6 +60,10 @@ export default {
           }
         }
       }
+    },
+    async fetchAttendances({ commit }, query) {
+      const attendances = await Attendance.fetch(query)
+      commit('changeState', { attendances })
     }
   },
   mutations: {},

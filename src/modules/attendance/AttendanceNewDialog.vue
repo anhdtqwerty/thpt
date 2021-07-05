@@ -59,9 +59,9 @@
                 :rules="[$rules.required]"
               />
             </v-col>
-            <v-col cols="6">
+            <!-- <v-col cols="6">
               <v-checkbox class="my-0" label="Đi học muộn" v-model="late"></v-checkbox>
-            </v-col>
+            </v-col> -->
           </v-row>
         </v-form>
       </v-card-text>
@@ -136,15 +136,18 @@ export default {
         try {
           this.$loading.active = true
           await this.checkinAttendance({
-            student: this.student.id,
-            class: this.student.currentClass.id,
+            student: this.student,
+            // class: this.student.currentClass.,
             time: this.time,
-            status: this.late ? 'late' : 'onTime'
+            // status: this.late ? 'late' : 'onTime'
+            status: 'attendance'
           })
           this.$alert.addSuccess()
+          this.$emit('attendanceAdded')
           this.reset()
           this.dialog = false
         } catch (error) {
+          console.error(error)
           this.$alert.addError()
         } finally {
           this.$loading.active = false

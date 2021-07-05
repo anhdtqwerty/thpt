@@ -11,6 +11,8 @@
       <v-divider />
       <v-card-text>
         <v-form ref="form" class="py-4">
+          <p>Ngày {{ getCurrentDate }}</p>
+
           <v-row>
             <v-col cols="6">
               <CardStudentName :student="item.student" />
@@ -26,7 +28,7 @@
               </div>
               <div>
                 <p class="text-caption my-0">Lớp</p>
-                <span>{{ item.class && item.class.title }}</span>
+                <span>{{ item.student | _get('currentClass.title') }}</span>
               </div>
             </v-col>
           </v-row>
@@ -42,6 +44,7 @@
                   dense
                   :rules="[$rules.required]"
                   :input="checkInTime"
+                  :defaultTime="null"
                 />
               </div>
             </v-col>
@@ -58,9 +61,9 @@
                 />
               </div>
             </v-col>
-            <v-col cols="4">
+            <!-- <v-col cols="4">
               <v-checkbox class="my-0" label="Đi học muộn" v-model="late"></v-checkbox>
-            </v-col>
+            </v-col> -->
           </v-row>
         </v-form>
       </v-card-text>
@@ -75,10 +78,9 @@
 </template>
 
 <script>
-import { mapActions, mapState, mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 import CardStudentName from '@/components/basic/card/CardStudentName'
 import TimeSelector from '@/components/basic/TimeSelector'
-import { get } from 'lodash'
 import moment from 'moment'
 
 export default {
@@ -97,16 +99,20 @@ export default {
   },
   props: {
     state: Boolean,
-    item: Object
+    item: Object,
+    checkinIndex: Number
   },
   created() {
-    if (this.item) {
+    if (this.item.attendance) {
       this.late = this.item.status === 'late'
-      this.checkIn = this.item.checkin[0]
-      this.checkOut = this.item.checkin[1] || ''
+      this.checkIn = this.item.attendance.checkin[this.checkinIndex] || ''
+      this.checkOut = this.item.attendance.checkin[this.checkinIndex + 1] || ''
     }
   },
   computed: {
+    getCurrentDate() {
+      return moment().format('DD/MM/YYYY')
+    },
     checkInTime() {
       return this.checkIn ? moment(this.checkIn).format('HH:mm') : null
     },
@@ -115,7 +121,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('attendance', ['updateAttendance']),
+    ...mapActions('attendance', ['updateAttendance', 'createAttendance']),
     checkInChange(data) {
       this.checkIn = moment(data, 'hh:mm').toISOString()
     },
@@ -124,16 +130,34 @@ export default {
     },
     async save() {
       if (!this.$refs.form.validate()) return
+
       try {
         this.$loading.active = true
-        await this.updateAttendance({
-          id: this.item.id,
-          status: this.late ? 'late' : 'onTime',
-          checkin: [this.checkIn, this.checkOut],
-          time: this.checkOut ? this.checkOut : this.checkIn
-        })
+        if (!this.item.attendance) {
+          await this.createAttendance({
+            status: this.late ? 'late' : 'onTime',
+            checkin: [this.checkIn, this.checkOut],
+            time: this.checkOut ? this.checkOut : this.checkIn,
+            student: this.item.student.id,
+            class: this.item.student.currentClass.id
+          })
+        } else {
+          const checkin = [...this.item.attendance.checkin]
+          if (this.checkIn) checkin[this.checkinIndex] = this.checkIn
+          if (this.checkOut) checkin[this.checkinIndex + 1] = this.checkOut
+
+          await this.updateAttendance({
+            id: this.item.attendance.id,
+            status: this.late ? 'late' : 'onTime',
+            checkin,
+            time: this.checkOut ? this.checkOut : this.checkIn
+          })
+        }
+
         this.$alert.updateSuccess()
+        this.$emit('attendanceUpdated')
       } catch (error) {
+        console.error(error)
         this.$alert.updateError()
       } finally {
         this.$loading.active = false

@@ -27,7 +27,7 @@
 import { mapActions, mapState } from 'vuex'
 import ChangeClassDialog from '@/modules/student/ChangeClassDialog.vue'
 import ChangeStatusDialog from '@/modules/student/ChangeStatusDialog'
-import _ from 'lodash'
+import { isEmpty } from 'lodash'
 
 export default {
   components: {
@@ -56,7 +56,7 @@ export default {
       return name
     },
     multipleAction() {
-      return !_.isEmpty(this.selected)
+      return !isEmpty(this.selected)
     }
   },
   methods: {

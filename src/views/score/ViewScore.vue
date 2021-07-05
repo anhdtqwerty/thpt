@@ -164,7 +164,8 @@
 
 <script>
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
-import _ from 'lodash'
+import DropMenu from '@/modules/student/menu/Menu.vue'
+import { get, groupBy } from 'lodash'
 import AutocompleteClass from '@/components/basic/input/AutocompleteClass'
 import AutocompleteSubject from '@/components/basic/input/AutocompleteSubject'
 import AutocompleteGrade from '@/components/basic/input/AutocompleteGrade'
@@ -186,22 +187,22 @@ const CONSTANTS = {
   MULTIPLIER_2: 2
 }
 const transformSemestersToHeader = item => ({
-  text: _.get(item, 'title'),
-  id: _.get(item, 'id'),
-  type: _.get(item, 'type'),
+  text: get(item, 'title'),
+  id: get(item, 'id'),
+  type: get(item, 'type'),
   show: true
 })
 
 const transformMarksToTableRecord = item => ({
-  studentId: _.get(item, 'student.id'),
-  fullName: _.get(item, 'student.name'),
+  studentId: get(item, 'student.id'),
+  fullName: get(item, 'student.name'),
   mark: {
-    id: _.get(item, 'id'),
-    semesterId: _.get(item, 'semester.id'),
-    semesterType: _.get(item, 'semester.type'),
-    factorId: _.get(item, 'factor.id'),
-    multiply: _.get(item, 'factor.multiply', 1),
-    value: _.get(item, 'value')
+    id: get(item, 'id'),
+    semesterId: get(item, 'semester.id'),
+    semesterType: get(item, 'semester.type'),
+    factorId: get(item, 'factor.id'),
+    multiply: get(item, 'factor.multiply', 1),
+    value: get(item, 'value')
   }
 })
 
@@ -237,12 +238,10 @@ const computedAvgMarkForEachStudent = ({ marks, ...info }) => {
     marks: [...marks, yearMarkObj]
   }
 }
-
 const formatMarks = marks => marks.map(transformMarksToTableRecord)
-const groupMarkByStudentId = marks => _.groupBy(marks, 'studentId')
+const groupMarkByStudentId = marks => groupBy(marks, 'studentId')
 const reduceMarkByStudent = marksByStudentObj => mapPropObj(marksByStudentObj)(accumulateMark)
 const computeAvgMark = marksByStudentObj => mapPropObj(marksByStudentObj)(computedAvgMarkForEachStudent)
-
 const handleMarkFlow = pipe(formatMarks, groupMarkByStudentId, reduceMarkByStudent, computeAvgMark)
 
 export default {
@@ -306,8 +305,8 @@ export default {
   computed: {
     ...mapState('mark', ['marks']),
     titleTable() {
-      const subjectTitle = _.get(this.filterInputs, 'subjectObj.title')
-      const classTitle = _.get(this.filterInputs, 'classObj.title')
+      const subjectTitle = get(this.filterInputs, 'subjectObj.title')
+      const classTitle = get(this.filterInputs, 'classObj.title')
       return `Bảng điểm ${[subjectTitle, classTitle].filter(Boolean).join(' - ')}`
     }
   },
@@ -315,10 +314,10 @@ export default {
     ...mapActions('mark', ['fetchMarks', 'updateMarks']),
     getEvaluateMark(obj) {
       if (!obj) return CONSTANTS.MARK_FAIL
-      return _.get(obj, 'value') ? CONSTANTS.MARK_PASS : CONSTANTS.MARK_FAIL
+      return get(obj, 'value') ? CONSTANTS.MARK_PASS : CONSTANTS.MARK_FAIL
     },
     getMark(obj) {
-      return _.get(obj, 'value', 0)
+      return get(obj, 'value', 0)
     },
     filterMarkByFactorAndSemeter: semesterType => factorId => marks => {
       return marks.filter(item => item.factorId === factorId && item.semesterType === semesterType)

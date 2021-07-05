@@ -37,7 +37,6 @@ import { mapActions, mapState } from 'vuex'
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import NewGradeDialog from '@/modules/grade/NewGradeDialog.vue'
 import GradeListActions from '@/modules/grade/GradeListActions.vue'
-
 import utils from '@/plugins/utils'
 
 export default {

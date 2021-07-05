@@ -46,7 +46,6 @@
 import CardStudentName from '@/components/basic/card/CardStudentName.vue'
 import StudentListActions from '@/modules/student/StudentListActions'
 import { mapState, mapActions } from 'vuex'
-import moment from 'moment'
 
 const originHeaders = [
   {

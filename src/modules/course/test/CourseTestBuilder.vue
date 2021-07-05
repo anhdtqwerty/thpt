@@ -27,12 +27,7 @@
           </v-btn>
         </v-toolbar>
         <v-card-text v-if="confirm.currentItem" class="pa-5">
-          <v-text-field
-            v-model="confirm.currentItem.title"
-            :rules="titleRules"
-            label="Tiêu đề"
-            required
-          ></v-text-field>
+          <v-text-field v-model="confirm.currentItem.title" :rules="titleRules" label="Tiêu đề" required></v-text-field>
           <v-text-field
             v-model="confirm.currentItem.multiplier"
             :rules="multiplierRules"
@@ -50,9 +45,7 @@
         </v-card-text>
         <v-card-actions class="pa-5">
           <v-spacer />
-          <v-btn color="primary" text @click="confirm.isOpen = false"
-            >Hủy</v-btn
-          >
+          <v-btn color="primary" text @click="confirm.isOpen = false">Hủy</v-btn>
           <v-btn color="primary" @click="confirm.callback">Lưu</v-btn>
         </v-card-actions>
       </v-card>
@@ -61,7 +54,7 @@
 </template>
 
 <script>
-import _ from 'lodash'
+import { get, cloneDeep } from 'lodash'
 export default {
   data() {
     return {
@@ -124,17 +117,12 @@ export default {
           code: 4
         }
       ],
-      titleRules: [
-        v => !!v || 'Tiêu đề bắt buộc',
-        v => v.length <= 15 || 'Tiêu đề phải nhỏ hơn 15 ký tự'
-      ],
+      titleRules: [v => !!v || 'Tiêu đề bắt buộc', v => v.length <= 15 || 'Tiêu đề phải nhỏ hơn 15 ký tự'],
       multiplierRules: [
         v => !!v || 'Hệ số điểm bắt buộc',
         v => parseInt(v) > 0 || 'Hệ số phải là số tự nhiên lớn hơn 0'
       ],
-      minimumRules: [
-        v => parseInt(v) < 10 || 'Hệ số phải là số tự nhiên nhỏ hơn 10'
-      ]
+      minimumRules: [v => parseInt(v) < 10 || 'Hệ số phải là số tự nhiên nhỏ hơn 10']
     }
   },
   props: {
@@ -149,7 +137,7 @@ export default {
       }))
     },
     reset() {
-      this.configs = _.get(this.course, 'mark', [])
+      this.configs = get(this.course, 'mark', [])
       if (!this.configs.length) {
         this.configs = this.defaultconfig
       }
@@ -167,7 +155,7 @@ export default {
     },
     onClickEditIcon(item) {
       this.confirm.isOpen = true
-      this.confirm.currentItem = _.cloneDeep(item)
+      this.confirm.currentItem = cloneDeep(item)
       this.confirm.callback = () => {
         Object.assign(item, this.confirm.currentItem)
         this.confirm.currentItem = null

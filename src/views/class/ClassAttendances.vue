@@ -11,18 +11,13 @@
         {
           text: classData.title,
           id: classData.id,
-          href: `../../class/${classData.id}`,
+          href: `../../class/${classData.id}`
         },
-        { text: 'Điểm Danh' },
+        { text: 'Điểm Danh' }
       ]"
     />
     <v-card>
-      <v-skeleton-loader
-        v-if="!slots"
-        class="mx-auto"
-        max-width="300"
-        type="table-heading"
-      ></v-skeleton-loader>
+      <v-skeleton-loader v-if="!slots" class="mx-auto" max-width="300" type="table-heading"></v-skeleton-loader>
       <v-data-table
         v-else
         class="attendances"
@@ -60,35 +55,21 @@
                       {{ item.text }}
                     </p>
                   </template>
-                  <span>{{
-                    isValid(item)
-                      ? 'Bấm Vào để Điểm Danh'
-                      : 'Đã Quá hạn điểm danh'
-                  }}</span>
+                  <span>{{ isValid(item) ? 'Bấm Vào để Điểm Danh' : 'Đã Quá hạn điểm danh' }}</span>
                 </v-tooltip>
               </th>
             </tr>
             <tr v-for="item in items" :key="item.code">
               <td style="width: 200px !important">
-                <user-item :data="item.user" :to="'../users/' + item.user.id">{{
-                  item.user.status
-                }}</user-item>
+                <user-item :data="item.user" :to="'../users/' + item.user.id">{{ item.user.status }}</user-item>
               </td>
               <td v-for="data in item.slots" :key="data.mergedId">
-                <v-btn
-                  v-if="requesting(`teacher_attendance_${data.mergedId}`)"
-                  loading
-                  small
-                  icon
-                ></v-btn>
+                <v-btn v-if="requesting(`teacher_attendance_${data.mergedId}`)" loading small icon></v-btn>
                 <v-tooltip top v-else>
                   <template v-slot:activator="{ on }">
-                    <v-icon
-                      :disabled="data.minutes > 24"
-                      v-on="on"
-                      :color="getColor(data)"
-                      >{{ data | getIcon(data) }}</v-icon
-                    >
+                    <v-icon :disabled="data.minutes > 24" v-on="on" :color="getColor(data)">{{
+                      data | getIcon(data)
+                    }}</v-icon>
                   </template>
                   <span>{{ data | getTooltips(data) }}</span>
                 </v-tooltip>
@@ -104,7 +85,7 @@
 <script>
 import moment from 'moment'
 import { mapActions, mapState, mapGetters } from 'vuex'
-import _ from 'lodash'
+import { get } from 'lodash'
 import UserItem from '@/modules/user/UserItem'
 import ClassAttendanceDialog from '@/modules/class/attendance/ClassAttendanceDialog'
 import Breadcrumbs from '@/components/layout/Breadcrumbs.vue'
@@ -128,47 +109,34 @@ export default {
   computed: {
     ...mapState('app', ['department']),
     ...mapGetters('rest', ['requesting']),
-    ...mapGetters('classDetail', [
-      'classData',
-      'slots',
-      'classList',
-      'attendances'
-    ]),
+    ...mapGetters('classDetail', ['classData', 'slots', 'classList', 'attendances']),
     ...mapState('auth', ['user', 'role']),
     headers() {
       return [
         { text: 'Học sinh', value: 'user', align: 'left', sortable: false },
-        ...this.slots.map((slot) => {
+        ...this.slots.map(slot => {
           return {
             text: moment(slot.startTime).format('DD/MM'),
             value: slot.code,
             align: 'left',
             sortable: false,
-            minutes: moment
-              .duration(moment(slot.startTime).diff(moment()))
-              .asHours(),
+            minutes: moment.duration(moment(slot.startTime).diff(moment())).asHours(),
             slot
           }
         })
       ]
     },
     items() {
-      const students = _.get(this.classData, `students`, [])
-      return students.map((student) => ({
+      const students = get(this.classData, `students`, [])
+      return students.map(student => ({
         user: student,
-        slots: this.slots.map((slot) => {
-          const attendance = _.get(
-            this.attendances,
-            `${slot.id + student.id}`,
-            {}
-          )
+        slots: this.slots.map(slot => {
+          const attendance = get(this.attendances, `${slot.id + student.id}`, {})
           return {
             ...attendance,
             ...slot,
             mergedId: `${student.id}_${slot.id}`,
-            minutes: moment
-              .duration(moment(slot.startTime).diff(moment()))
-              .asMinutes(),
+            minutes: moment.duration(moment(slot.startTime).diff(moment())).asMinutes(),
             status: attendance.status,
             dataType: 'student-attendance'
           }
@@ -177,12 +145,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('classDetail', [
-      'fetchClass',
-      'updateClass',
-      'createAttendance',
-      'initClass'
-    ]),
+    ...mapActions('classDetail', ['fetchClass', 'updateClass', 'createAttendance', 'initClass']),
     getColor(slot) {
       if (slot.isFuture) return 'gray'
       if (slot.status === 'attendance') return 'green'
@@ -199,12 +162,10 @@ export default {
           slotType: data.type,
           student: student.id,
           date: data.startTime,
-          duration: moment
-            .duration(moment(data.endTime).diff(data.startTime))
-            .asHours(),
+          duration: moment.duration(moment(data.endTime).diff(data.startTime)).asHours(),
           userId: student.id,
           class: this.classData.id,
-          course: _.get(this.classData, 'course.id'),
+          course: get(this.classData, 'course.id'),
           department: this.department.id,
           status: data.status === 'attendance' ? 'absent' : 'attendance',
           type: 'student-attendance'
