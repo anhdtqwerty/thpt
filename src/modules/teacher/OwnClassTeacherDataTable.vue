@@ -103,12 +103,13 @@ export default {
   },
   computed: {
     ...mapState('ownClassTeacher', ['ownClassTeacherData']),
+    ...mapState('app', ['department']),
     ...mapGetters('app', ['commonQuery'])
   },
   methods: {
     ...mapActions('ownClassTeacher', ['searchOwnClassTeacher']),
     refresh(query) {
-      this.searchOwnClassTeacher({ ...query, ...this.commonQuery })
+      this.searchOwnClassTeacher({ ...query, department: this.department.id, ...this.commonQuery })
     }
   },
   created() {

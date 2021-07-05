@@ -14,7 +14,7 @@
             dense
             v-model="title"
             class="required mt-4"
-            :rules="[$rules.required]"
+            :rules="[$rules.required, titleRule]"
             label="Tên ban"
           />
           <RadioAcademicLevel :defaultLevel="academicLevel" @change="academicLevel = $event" />
@@ -31,9 +31,9 @@
   </v-dialog>
 </template>
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import RadioAcademicLevel from '@/modules/academicLevel/RadioAcademicLevel.vue'
-
+import { textHelpers } from '@/helpers/TextHelper.js'
 export default {
   components: {
     RadioAcademicLevel
@@ -47,7 +47,12 @@ export default {
       dialog: false,
       loading: false,
       title: '',
-      academicLevel: {}
+      academicLevel: {},
+      titleRule: v => {
+        const title = textHelpers.removeSpaces(v)
+        const s = this.subjectGroups.find(s => s.title === title && s.academicLevel.id === this.academicLevel.id)
+        return !s || 'Bộ môn này đã tồn tại'
+      }
     }
   },
   created() {
@@ -56,7 +61,9 @@ export default {
       this.academicLevel = this.subjectGroup.academicLevel
     }
   },
-  computed: {},
+  computed: {
+    ...mapState('SubjectGroup', ['subjectGroups'])
+  },
   methods: {
     ...mapActions('SubjectGroup', ['updateSubjectGroup']),
     async save() {
@@ -69,6 +76,7 @@ export default {
           academicLevel: this.academicLevel.id
         })
         this.$alert.updateSuccess()
+        this.reset()
         this.dialog = false
       } catch (error) {
         this.$alert.updateError()
@@ -76,14 +84,23 @@ export default {
         this.loading = false
       }
     },
+    reset() {
+      this.title = ''
+      this.$refs.form.resetValidation()
+    },
+    resetValidation() {
+      this.$refs.form && this.$refs.form.resetValidation()
+    },
     cancel() {
       this.dialog = false
+      this.reset()
     }
   },
   watch: {
     state(state) {
       this.dialog = true
-    }
+    },
+    academicLevel: 'resetValidation'
   }
 }
 </script>

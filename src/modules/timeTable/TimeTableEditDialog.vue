@@ -1,54 +1,66 @@
 <template>
-  <v-dialog v-model="dialog" width="360px">
+  <v-dialog v-model="dialog" width="450px">
     <v-card>
       <v-card-title class="headline primary lighten-1 white--text">
-        Cài đặt
+        {{ this.slotData && (this.slotData.id ? 'SỬA THỜI KHOÁ BIỂU' : 'THÊM THỜI KHOÁ BIỂU') }}
       </v-card-title>
       <v-card-text class="pa-4">
-        <v-autocomplete
-          class="mt-4"
-          :items="subjects"
-          v-model="subject"
-          item-text="title"
-          item-value="id"
-          label="Môn"
-          outlined
-          return-object
-          dense
-          single-line
-          clearable
-        />
-        <v-autocomplete
-          :items="teachers"
-          v-model="teacher"
-          item-text="name"
-          item-value="id"
-          return-object
-          label="Giáo viên"
-          outlined
-          dense
-          single-line
-          clearable
-        />
+        <v-form ref="form">
+          <AutocompleteTeachingSubject
+            dense
+            class="required"
+            :rules="[$rules.required]"
+            :filter="teachingSubjectFilter"
+            @change="subjectChanged"
+            outlined
+            v-model="subjectClone"
+            label="Môn học"
+          />
+          <AutocompleteTeachingTeacher
+            dense
+            class="required"
+            :rules="[$rules.required, rules.teacherRule]"
+            :filter="teachingTeacherFilter"
+            outlined
+            v-model="teacher"
+            :displaySubjectGroup="true"
+            label="Giáo viên"
+          />
+        </v-form>
       </v-card-text>
-      <v-card-actions class="pa-4">
-        <v-spacer></v-spacer>
-        <v-btn color="primary" small @click="save">
-          Lưu
-        </v-btn>
+      <v-divider></v-divider>
+      <v-card-actions class="d-flex justify-space-between pa-4">
+        <v-btn depressed outlined @click="cancel">Huỷ</v-btn>
+        <v-btn depressed color="primary" small @click="save">Lưu</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapActions, mapState, mapGetters } from 'vuex'
+import AutocompleteTeachingSubject from '@/components/basic/input/AutocompleteTeachingSubject'
+import AutocompleteTeachingTeacher from '@/components/basic/input/AutocompleteTeachingTeacher'
 import { get } from 'lodash'
+
 export default {
+  components: {
+    AutocompleteTeachingSubject,
+    AutocompleteTeachingTeacher
+  },
   data() {
     return {
-      subject: {},
-      teacher: {},
-      dialog: false
+      dialog: false,
+      subject: '',
+      teacher: '',
+      subjectClone: '',
+      rules: {
+        teacherRule: v => {
+          const classSlot = Object.values(this.slots).find(
+            s => s.teacher.id === v && s.index === this.slotData.index && s.day === this.slotData.day
+          )
+          return !classSlot || 'Giáo viên bị xếp trùng tiết'
+        }
+      }
     }
   },
   props: {
@@ -56,52 +68,65 @@ export default {
     state: Boolean,
     classData: Object
   },
-  computed: {
-    ...mapGetters('search', ['teachers', 'subjects'])
-  },
   created() {
+    this.fetchSlots()
     if (!this.slotData) return
     this.subject = this.slotData.subject
     this.teacher = this.slotData.teacher
   },
+  computed: {
+    ...mapState('timeTable', ['teachings', 'classSlots', 'slots']),
+    ...mapGetters('app', ['commonQuery']),
+    teachingSubjectFilter() {
+      return { class: get(this.classData, 'id') }
+    },
+    teachingTeacherFilter() {
+      return { class: get(this.classData, 'id'), subject: this.subject }
+    }
+  },
   methods: {
-    ...mapActions('classDetail', ['createSlot', 'updateSlot']),
-    async save() {
-      this.loading = true
-      if (!this.slotData.id) {
-        await this.createSlot({
-          ...this.slotData,
-          class: get(this, 'classData.id'),
-          subject: get(this, 'subject.id'),
-          teacher: get(this, 'teacher.id')
-        })
-      } else {
-        console.log({
-          subject: get(this, 'subject.id'),
-          teacher: get(this, 'teacher.id')
-        })
-        await this.updateSlot({
-          id: this.slotData.id,
-          subject: get(this, 'subject.id'),
-          teacher: get(this, 'teacher.id')
-        })
+    ...mapActions('timeTable', ['createSlot', 'updateSlot', 'fetchTeachings', 'fetchSlots']),
+    subjectChanged(subject) {
+      if (subject && this.teacher) {
+        const teaching = this.teachings.find(t => t.subject.id === subject && t.teacher.id === this.teacher)
+        if (!teaching) {
+          this.teacher = ''
+        }
       }
-      // await this.updateClass({ id: this.classData.id, schedule: this.slots })
-      this.$alert.success('Cập nhật thành công')
-      this.loading = false
-      this.dialog = false
+      this.subject = subject
+    },
+    async save() {
+      if (!this.$refs.form.validate()) return
+      try {
+        this.$loading.active = true
+
+        if (!this.slotData.id) {
+          await this.createSlot({
+            ...this.slotData,
+            ...this.commonQuery,
+            class: get(this, 'classData.id'),
+            subject: this.subject,
+            teacher: this.teacher
+          })
+          this.$alert.success('Tạo đầu điểm mới thành công')
+        } else {
+          await this.updateSlot({
+            id: this.slotData.id,
+            subject: this.subject,
+            teacher: this.teacher
+          })
+          this.$alert.success('Cập nhật thành công')
+        }
+      } catch (e) {
+        this.$alert.error(e.message)
+      } finally {
+        this.$loading.active = false
+        this.dialog = false
+      }
     },
     cancel() {
-      this.snack = true
-      this.snackColor = 'error'
-      this.snackText = 'Canceled'
-    },
-    open() {
-      this.snack = true
-      this.snackColor = 'info'
-      this.snackText = 'Dialog opened'
-    },
-    close() {}
+      this.dialog = false
+    }
   },
   filters: {
     getTeacher(slotData) {
@@ -112,10 +137,13 @@ export default {
     }
   },
   watch: {
-    state() {
+    async state() {
+      await this.fetchTeachings({ ...this.commonQuery })
+      await this.fetchSlots({ ...this.commonQuery })
+      this.$refs.form && this.$refs.form.resetValidation()
       this.dialog = true
-      this.subject = get(this.slotData, 'subject')
-      this.teacher = get(this.slotData, 'teacher')
+      this.subject = this.subjectClone = get(this.slotData, 'subject.id', '')
+      this.teacher = get(this.slotData, 'teacher.id', '')
     }
   }
 }

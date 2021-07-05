@@ -45,7 +45,7 @@
 import TeacherListActions from '@/modules/teacher/TeacherListActions'
 import CardTeacherName from '@/components/basic/card/CardTeacherName.vue'
 import { map } from 'lodash'
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState, mapGetters } from 'vuex'
 const originHeaders = [
   {
     text: 'Giáo viên',
@@ -125,6 +125,7 @@ export default {
   computed: {
     ...mapState('teachers', ['teachers', 'totalItems', 'pageText']),
     ...mapState('app', ['department']),
+    ...mapGetters('app', ['commonQuery']),
     footerTable() {
       let footer = {
         'items-per-page-text': 'Giáo viên mỗi trang',
@@ -144,7 +145,7 @@ export default {
     async refresh(query) {
       try {
         this.$loading.active = true
-        const res = await this.fetchTeachings()
+        const res = await this.fetchTeachings({ ...this.commonQuery })
         this.teachings = map(res, 'teacher.id')
         await this.searchTeachers({ ...query, department: this.department.id })
       } finally {
