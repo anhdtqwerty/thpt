@@ -19,7 +19,9 @@
         <li class="undone"><p>Đóng năm học</p></li>
       </ul>
 
-      <v-card v-if="!openGeneration" outlined class="d-flex flex-column justify-center my-8 mx-16 pa-4">
+      <h2>Năm học 2021 - 2022 đã được kích hoạt</h2>
+
+      <v-card v-if="!openGeneration" outlined class="d-flex flex-column justify-center my-8 mx-16 pa-4" disabled>
         <p class="text--secondary">
           Đây là thao tác cần thực hiện để khai báo thông tin cho năm học mới, cấu hình các mốc thời gian quan trọng
           trong năm, cũng như sắp xếp lại lớp học, học sinh trước khi vào năm học mới.
