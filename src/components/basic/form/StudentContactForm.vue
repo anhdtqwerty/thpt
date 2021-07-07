@@ -39,7 +39,7 @@
   </v-form>
 </template>
 <script>
-import { provinceList } from '@/json/provinceObject.js'
+const provinceList = require('@/json/provinceObject.json')
 export default {
   props: {
     student: {
