@@ -12,41 +12,25 @@
     :search="search"
     class="mt-3"
   >
-    <template v-slot:item.status="{ item }">
-      <v-chip :color="getColor(item.status)" dark>{{
-        item.status | status
-      }}</v-chip>
+    <template v-slot:[`item.status`]="{ item }">
+      <v-chip :color="getColor(item.status)" dark>{{ item.status | status }}</v-chip>
     </template>
-    <template v-slot:item.class.code="{ item }">
-      <router-link
-        style="text-decoration: none"
-        :to="'/class/' + item.class.id"
-        >{{ item.class.code }}</router-link
-      >
+    <template v-slot:[`item.class.code`]="{ item }">
+      <router-link style="text-decoration: none" :to="'/class/' + item.class.id">{{ item.class.code }}</router-link>
     </template>
-    <template v-slot:item.teachers="{ item }">
-      <user-item
-        :teacher="item.teachers[0]"
-        :to="'teacher/' + item.id"
-      ></user-item>
+    <template v-slot:[`item.teachers`]="{ item }">
+      <user-item :teacher="item.teachers[0]" :to="'teacher/' + item.id"></user-item>
     </template>
-    <template v-slot:item.room="{ item }">
+    <template v-slot:[`item.room`]="{ item }">
       <span>{{ item.room | getRoom }}</span>
     </template>
-    <template v-slot:item.monters="{ item }">
-      <user-item
-        :teacher="item.mentors[0]"
-        :to="'teacher/' + item.id"
-      ></user-item>
+    <template v-slot:[`item.monters`]="{ item }">
+      <user-item :teacher="item.mentors[0]" :to="'teacher/' + item.id"></user-item>
     </template>
-    <template v-slot:item.startTime="{ item }">{{
-      $moment(item.startTime).format('HH:mm')
-    }}</template>
-    <template v-slot:item.startTimeDate="{ item }">{{
-      item.startTimeDate
-    }}</template>
-    <template v-slot:item.type="{ item }">{{ item.type | type }}</template>
-    <template v-slot:item.attendances="{ item }">
+    <template v-slot:[`item.startTime`]="{ item }">{{ $moment(item.startTime).format('HH:mm') }}</template>
+    <template v-slot:[`item.startTimeDate`]="{ item }">{{ item.startTimeDate }}</template>
+    <template v-slot:[`item.type`]="{ item }">{{ item.type | type }}</template>
+    <template v-slot:[`item.attendances`]="{ item }">
       <v-tooltip top>
         <template v-slot:activator="{ on }">
           <v-btn icon @click="onCheckAttendance(item)">
@@ -56,7 +40,7 @@
         <span>{{ 'Bấm Vào để Điểm Danh' }}</span>
       </v-tooltip>
     </template>
-    <template v-slot:item.actions="{ item }">
+    <template v-slot:[`item.actions`]="{ item }">
       <slot-list-actions :selected="item" @edit="onEdit" />
     </template>
   </v-data-table>
@@ -77,7 +61,7 @@ export default {
     add: Boolean,
     headers: Array
   },
-  data () {
+  data() {
     return {
       page: 1,
       search: ''
@@ -88,16 +72,16 @@ export default {
     ...mapState('constant', ['slotStatus', 'slotTypes'])
   },
   methods: {
-    async pagination (page) {
+    async pagination(page) {
       this.$emit('pagination', page)
     },
-    onEdit (selected) {
+    onEdit(selected) {
       this.$emit('edit', selected)
     },
-    onCheckAttendance (item) {
+    onCheckAttendance(item) {
       this.$emit('onCheckAttendance', item)
     },
-    getColor (status) {
+    getColor(status) {
       if (status === 'opened') return 'orange'
       if (status === 'running') return 'green'
       if (status === 'rejected') return 'red'
@@ -107,7 +91,7 @@ export default {
     }
   },
   filters: {
-    status (status) {
+    status(status) {
       if (status === 'opened') {
         return 'Chờ điểm danh'
       } else if (status === 'running') {
@@ -122,14 +106,14 @@ export default {
         return 'Chờ điểm danh'
       }
     },
-    type (type) {
+    type(type) {
       if (type === 'class-slot') {
         return 'Lớp Học'
       } else {
         return 'Dạy Bù'
       }
     },
-    getRoom (room) {
+    getRoom(room) {
       if (room) {
         return room.title
       }

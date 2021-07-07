@@ -122,7 +122,7 @@
             </div>
           </div>
           <v-data-table :headers="originHeaders" :items="items" :loading="loading">
-            <template v-if="filterInputs.subjectObj.markType === 'evaluate'" v-slot:item.mark="{ item }">
+            <template v-if="filterInputs.subjectObj.markType === 'evaluate'" v-slot:[`item.mark`]="{ item }">
               <v-select
                 class="mark-input"
                 v-for="mark in item.marks"
@@ -138,7 +138,7 @@
                 dense
               ></v-select>
             </template>
-            <template v-else v-slot:item.mark="{ item }">
+            <template v-else v-slot:[`item.mark`]="{ item }">
               <v-text-field
                 class="mark-input"
                 v-for="mark in item.marks"

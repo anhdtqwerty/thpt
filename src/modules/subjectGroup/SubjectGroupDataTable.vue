@@ -8,6 +8,10 @@
         'items-per-page-all-text': 'Tất cả'
       }"
     >
+      <template v-slot:[`footer.page-text`]="items">
+        {{ items.pageStart }} - {{ items.pageStop }} trên tổng
+        {{ items.itemsLength }}
+      </template>
       <template v-slot:[`item.academicLevel`]="{ item }">
         <span>{{ item.academicLevel.type | getAcademicLevel }}</span>
       </template>

@@ -1,17 +1,17 @@
 <template>
   <div ref="form" class="pa-2">
     <v-data-table :headers="headers" :items="configs">
-      <template v-slot:item.action="{ item }">
+      <template v-slot:[`item.action`]="{ item }">
         <v-btn small icon @click="onClickEditIcon(item)">
           <v-icon small>edit</v-icon>
         </v-btn>
       </template>
-      <template v-slot:body.append>
+      <template v-slot:[`body.append`]>
         <tr style="border: none">
           <td colspan="100%">
             <v-btn small text @click="add">
               <v-icon class="mr-2">add</v-icon>
-              <span>Thêm cấu hình điẻm</span>
+              <span>Thêm cấu hình điểm</span>
             </v-btn>
           </td>
         </tr>

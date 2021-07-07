@@ -10,14 +10,7 @@
         append-icon="file"
         style="max-width:300px"
       ></v-file-input>
-      <v-btn
-        depressed
-        color="primary"
-        @click="upload"
-        :disabled="isLoading || loading"
-        dark
-        >Lưu lại</v-btn
-      >
+      <v-btn depressed color="primary" @click="upload" :disabled="isLoading || loading" dark>Lưu lại</v-btn>
     </v-card-title>
     <v-data-table
       class="mb-2 flex-center-between"
@@ -26,7 +19,7 @@
       :items="students"
       :search="search"
     >
-      <template v-slot:item.grade="{ item }">
+      <template v-slot:[`item.grade`]="{ item }">
         <router-link v-if="item.grade" :to="'/grade/' + item.grade.id">
           <v-tooltip top>
             <template v-slot:activator="{ on }">
@@ -36,14 +29,11 @@
           </v-tooltip>
         </router-link>
       </template>
-      <template v-slot:item.classes="{ item }">
+      <template v-slot:[`item.classes`]="{ item }">
         <span>{{ item.classes | getClasses }}</span>
       </template>
-      <template v-slot:item.generation="{ item }">
-        <router-link
-          v-if="item.generation"
-          :to="'/generation/' + item.generation"
-        >
+      <template v-slot:[`item.generation`]="{ item }">
+        <router-link v-if="item.generation" :to="'/generation/' + item.generation">
           <v-tooltip top>
             <template v-slot:activator="{ on }">
               <span v-on="on">{{ item.generation }}</span>
@@ -52,14 +42,10 @@
           </v-tooltip>
         </router-link>
       </template>
-      <template v-slot:item.uploadStatus="{ item }">
-        <v-chip small dark :color="getColor(item.uploadStatus)">{{
-          item.uploadStatus | getStatus
-        }}</v-chip>
+      <template v-slot:[`item.uploadStatus`]="{ item }">
+        <v-chip small dark :color="getColor(item.uploadStatus)">{{ item.uploadStatus | getStatus }}</v-chip>
       </template>
-      <template v-slot:item.dob="{ item }">{{
-        item.dob | familiarizeDate
-      }}</template>
+      <template v-slot:[`item.dob`]="{ item }">{{ item.dob | familiarizeDate }}</template>
     </v-data-table>
   </v-card>
 </template>
@@ -104,13 +90,7 @@ export default {
   },
   computed: {
     ...mapGetters('app', ['department']),
-    ...mapGetters('studentImporter', [
-      'students',
-      'loading',
-      'grade',
-      'classes',
-      'generations'
-    ]),
+    ...mapGetters('studentImporter', ['students', 'loading', 'grade', 'classes', 'generations']),
     ...mapGetters('app', ['roleIdByName', 'roles']),
     isProcessing() {
       return this.loading || this.isLoading
@@ -146,9 +126,7 @@ export default {
         self.setStudents(
           students.map((student, index) => {
             const code = parseInt(student.code)
-            const indexName = utils.generateUserName(
-              utils.clearUnicode(student.name)
-            )
+            const indexName = utils.generateUserName(utils.clearUnicode(student.name))
             const studentClass = self.classes[student.classes]
             return {
               ...self.$utils.filterObject(student),

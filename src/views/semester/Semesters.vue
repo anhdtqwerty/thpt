@@ -19,7 +19,17 @@
     </div>
 
     <v-card class="px-md-6 mx-md-4 elevation-1">
-      <v-data-table :loading="loading" :headers="headers" :items="semesters" item-key="id">
+      <v-data-table
+        :loading="loading"
+        :headers="headers"
+        :items="semesters"
+        item-key="id"
+        :footer-props="{ 'items-per-page-text': 'Số học kỳ một trang', 'items-per-page-all-text': 'Tất cả' }"
+      >
+        <template v-slot:[`footer.page-text`]="items">
+          {{ items.pageStart }} - {{ items.pageStop }} trên tổng
+          {{ items.itemsLength }}
+        </template>
         <div slot="top" class="py-md-6">
           <div v-if="$vuetify.breakpoint.mdAndUp">
             <semester-filter @onFilterChanged="refresh"></semester-filter>

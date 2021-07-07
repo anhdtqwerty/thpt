@@ -8,6 +8,10 @@
     loading-text="Đang Tải"
     :footer-props="{ 'items-per-page-text': 'Học sinh mỗi trang', 'items-per-page-options': [5, 10, 15] }"
   >
+    <template v-slot:[`footer.page-text`]="items">
+      {{ items.pageStart }} - {{ items.pageStop }} trên tổng
+      {{ items.itemsLength }}
+    </template>
     <!-- <template v-if="!hideFooter" v-slot:top="{ pagination, options, updateOptions }">
       <v-data-footer
         :pagination="pagination"

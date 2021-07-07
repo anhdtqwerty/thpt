@@ -7,7 +7,12 @@
     :items="teachings"
     loading-text="Đang Tải"
     sort-by="name"
+    :footer-props="{ 'items-per-page-text': 'Hiển thị mỗi trang', 'items-per-page-all-text': 'Tất cả' }"
   >
+    <template v-slot:[`footer.page-text`]="items">
+      {{ items.pageStart }} - {{ items.pageStop }} trên tổng
+      {{ items.itemsLength }}
+    </template>
     <template v-slot:[`item.class.title`]="{ item }">
       <router-link style="text-decoration: none" :to="'/class/' + (item.class && item.class.id)">
         <span v-if="item.class">{{ item.class && item.class.title }}</span>

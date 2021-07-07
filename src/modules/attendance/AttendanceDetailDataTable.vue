@@ -19,7 +19,10 @@
           :page-text="pageText"
         />
       </template>
-
+      <template v-slot:[`footer.page-text`]="items">
+        {{ items.pageStart }} - {{ items.pageStop }} trên tổng
+        {{ items.itemsLength }}
+      </template>
       <template v-slot:[`item.time`]="{ item }">
         <div v-if="item">
           <div class="pt-2" style="height: 36px" v-for="index in evenNumbers(item)" :key="index">

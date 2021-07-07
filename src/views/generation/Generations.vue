@@ -20,7 +20,16 @@
       </div>
     </div>
     <v-card class="px-md-6 mx-md-4 elevation-1">
-      <v-data-table item-key="id" :headers="headers" :items="generations">
+      <v-data-table
+        item-key="id"
+        :headers="headers"
+        :items="generations"
+        :footer-props="{ 'items-per-page-text': 'Số khóa một trang', 'items-per-page-all-text': 'Tất cả' }"
+      >
+        <template v-slot:[`footer.page-text`]="items">
+          {{ items.pageStart }} - {{ items.pageStop }} trên tổng
+          {{ items.itemsLength }}
+        </template>
         <div slot="top" class="py-md-3"></div>
         <template v-slot:[`item.actions`]="{ item }">
           <generation-list-actions :selected="item" @onEdit="onEditGeneration" />

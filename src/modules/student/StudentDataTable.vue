@@ -124,7 +124,7 @@ export default {
 
     footerTable() {
       let footer = {
-        'items-per-page-text': 'Học sinh mỗi trang',
+        'items-per-page-text': 'Số học sinh mỗi trang',
         'items-per-page-all-text': 'Tất cả',
         'items-per-page': 10,
         'page-text': this.pageText

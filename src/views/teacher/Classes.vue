@@ -4,62 +4,51 @@
       <class-filter @onFilterChanged="refresh"></class-filter>
     </v-flex>
     <v-flex xs12 sm9 md9>
-      <v-data-table
-        item-key="id"
-        v-model="selected"
-        :headers="headers"
-        :items="classes"
-        :search="search"
-        show-select
-      >
-        <template v-slot:item.status="{ item }">
+      <v-data-table item-key="id" v-model="selected" :headers="headers" :items="classes" :search="search" show-select>
+        <template v-slot:[`item.status`]="{ item }">
           <v-chip small :color="getColor(item.status)" dark>{{ item.status | classStatus }}</v-chip>
         </template>
-        <template v-slot:item.code="{ item }">
+        <template v-slot:[`item.code`]="{ item }">
           <v-tooltip top>
             <template v-slot:activator="{ on }">
               <div v-on="on">
-                <router-link style="text-decoration: none;" :to="'/class/' + item.id ">{{item.code}}</router-link>
+                <router-link style="text-decoration: none;" :to="'/class/' + item.id">{{ item.code }}</router-link>
               </div>
             </template>
             <span>Xem Lớp</span>
           </v-tooltip>
         </template>
-        <template v-slot:item.course="{ item }">
+        <template v-slot:[`item.course`]="{ item }">
           <v-tooltip top>
             <template v-slot:activator="{ on }">
               <div v-on="on">
-                <router-link
-                  v-on="on"
-                  style="text-decoration: none;"
-                  :to=" '/course/' + getCourse(item.course).id"
-                >{{getCourse(item.course).title}}</router-link>
+                <router-link v-on="on" style="text-decoration: none;" :to="'/course/' + getCourse(item.course).id">{{
+                  getCourse(item.course).title
+                }}</router-link>
               </div>
             </template>
             <span>Xem Khóa Học</span>
           </v-tooltip>
         </template>
-        <template v-slot:item.major="{ item }">
+        <template v-slot:[`item.major`]="{ item }">
           <v-tooltip top>
             <template v-slot:activator="{ on }">
               <div v-on="on">
-                <router-link
-                  v-if="item.major"
-                  style="text-decoration: none;"
-                  :to="getMajor(item.major).id"
-                >{{getMajor(item.major).title}}</router-link>
+                <router-link v-if="item.major" style="text-decoration: none;" :to="getMajor(item.major).id">{{
+                  getMajor(item.major).title
+                }}</router-link>
               </div>
             </template>
             <span>Xem Chuyên Ngành</span>
           </v-tooltip>
         </template>
-        <template v-slot:item.students="{ item }">
-          <p style="margin:0">{{ item.students| studentCounter }}</p>
+        <template v-slot:[`item.students`]="{ item }">
+          <p style="margin:0">{{ item.students | studentCounter }}</p>
         </template>
-        <template v-slot:item.teachers="{ item }">
+        <template v-slot:[`item.teachers`]="{ item }">
           <p style="margin:0">{{ item | getTeacherNames }}</p>
         </template>
-        <template v-slot:item.actions="{ item }">
+        <template v-slot:[`item.actions`]="{ item }">
           <v-icon @click="onClassSelected(item)" class="ma-2" dense>mdi-pencil</v-icon>
         </template>
       </v-data-table>
@@ -78,7 +67,7 @@ export default {
   props: {
     role: String
   },
-  data () {
+  data() {
     return {
       headers: [
         { text: 'Mã Lớp', value: 'code', align: 'left', sortable: false },
@@ -107,7 +96,7 @@ export default {
       editClassId: ''
     }
   },
-  async created () {
+  async created() {
     this.refresh()
   },
   computed: {
@@ -117,21 +106,16 @@ export default {
     ...mapGetters('class', ['classes'])
   },
   methods: {
-    ...mapActions('class', [
-      'fetchClasses',
-      'countClasses',
-      'setClass',
-      'setClasses'
-    ]),
-    updateDraw (draw) {
+    ...mapActions('class', ['fetchClasses', 'countClasses', 'setClass', 'setClasses']),
+    updateDraw(draw) {
       this.draw = draw
     },
-    onClassSelected (classData) {
+    onClassSelected(classData) {
       this.setClass(classData)
       this.editClassId = classData.id
       this.draw = true
     },
-    getColor (status) {
+    getColor(status) {
       if (status === 'opened') return 'green'
       if (status === 'running') return 'primary'
       else if (status === 'pending' || status === 'rejected') return 'red'
@@ -144,7 +128,7 @@ export default {
     getCourse: course => {
       return course || {}
     },
-    async refresh (query) {
+    async refresh(query) {
       this.setClasses([])
       await this.countClasses()
       this.fetchClasses({

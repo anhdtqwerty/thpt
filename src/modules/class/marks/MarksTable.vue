@@ -1,13 +1,13 @@
 <template>
   <div>
     <v-data-table disableSort v-if="classData" :headers="headers" :items="data">
-      <template v-slot:item.student="{ item }">
+      <template v-slot:[`item.student`]="{ item }">
         <user-item :data="item.student" :to="'student/' + item.student.id"></user-item>
       </template>
-      <template v-slot:item.actions="{ item }">
+      <template v-slot:[`item.actions`]="{ item }">
         <v-icon small class="mr-2" @click.stop="add(item)">edit</v-icon>
       </template>
-      <template v-slot:item.total="{ item }">
+      <template v-slot:[`item.total`]="{ item }">
         <b class="subtitle-1 font-weight-bold">{{ item.total }}</b>
       </template>
     </v-data-table>

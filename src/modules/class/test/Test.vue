@@ -17,24 +17,17 @@
         <v-layout slot="top">
           <v-flex xs12 sm8 md8 class="px-6"></v-flex>
           <v-flex xs12 sm4 md4>
-            <v-text-field
-              v-model="search"
-              append-icon="search"
-              label="Tìm kiếm nhanh"
-              clearable
-              dense
-              outlined
-            />
+            <v-text-field v-model="search" append-icon="search" label="Tìm kiếm nhanh" clearable dense outlined />
           </v-flex>
         </v-layout>
-        <template v-slot:item.name="{ item }">
+        <template v-slot:[`item.name`]="{ item }">
           <user-item :data="item" :to="'student/' + item.id"></user-item>
         </template>
-        <template v-slot:item.actio>
-          <v-icon @click="dialog=!dialog" class="ma-2" dense>mdi-eye</v-icon>
+        <template v-slot:[`item.actio`]>
+          <v-icon @click="dialog = !dialog" class="ma-2" dense>mdi-eye</v-icon>
         </template>
-        <template v-slot:item.createdAt></template>
-        <template v-slot:item.createdAt="{ item }">{{item.createdAt | familiarizeDate}}</template>
+        <template v-slot:[`item.createdAt`]></template>
+        <template v-slot:item.createdAt="{ item }">{{ item.createdAt | familiarizeDate }}</template>
       </v-data-table>
     </v-flex>
 
@@ -60,10 +53,10 @@ export default {
     role: String,
     classData: Object
   },
-  created () {
+  created() {
     this.students = this.classData.students
   },
-  data () {
+  data() {
     return {
       students: [],
       selected: [],
@@ -80,7 +73,7 @@ export default {
     }
   },
   computed: {
-    tests () {
+    tests() {
       return this.students
         .map(student => [
           {
@@ -109,7 +102,7 @@ export default {
     }
   },
   methods: {
-    viewTest () {}
+    viewTest() {}
   },
   filters: {
     familiarizeDate: time => {
@@ -128,5 +121,4 @@ export default {
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

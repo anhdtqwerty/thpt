@@ -22,17 +22,27 @@
     <SubjectNewDialog :state="createSubject" />
 
     <v-card class="px-md-6 mx-md-4 elevation-1">
-      <v-data-table :headers="headers" :items="subjects" @click:row="onSelected" ref="subjectDataTable">
+      <v-data-table
+        :headers="headers"
+        :items="subjects"
+        @click:row="onSelected"
+        ref="subjectDataTable"
+        :footer-props="{ 'items-per-page-text': 'Số môn một trang', 'items-per-page-all-text': 'Tất cả' }"
+      >
+        <template v-slot:[`footer.page-text`]="items">
+          {{ items.pageStart }} - {{ items.pageStop }} trên tổng
+          {{ items.itemsLength }}
+        </template>
         <div slot="top" class="py-md-6">
           <SubjectFilter @onFilterChanged="refresh" />
         </div>
-        <template v-slot:item.grade="{ item }">
+        <template v-slot:[`item.grade`]="{ item }">
           {{ item.grade | getGrade }}
         </template>
-        <template v-slot:item.markType="{ item }">
+        <template v-slot:[`item.markType`]="{ item }">
           {{ item.markType | getMarkType }}
         </template>
-        <template v-slot:item.type="{ item }">
+        <template v-slot:[`item.type`]="{ item }">
           {{ item.type | getSubjectType }}
         </template>
       </v-data-table>

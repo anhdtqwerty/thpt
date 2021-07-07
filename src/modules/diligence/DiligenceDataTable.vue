@@ -10,6 +10,10 @@
     :items-per-page="10"
     v-bind="this.$attrs"
   >
+    <template v-slot:[`footer.page-text`]="items">
+      {{ items.pageStart }} - {{ items.pageStop }} trên
+      {{ items.itemsLength }}
+    </template>
     <template v-slot:[`item.student`]="{ item }">
       <CardStudentName :student="item.student" link />
     </template>

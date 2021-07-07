@@ -2,16 +2,16 @@
   <div>
     <student-mark-dialog :mark="selected" :state="dialog"></student-mark-dialog>
     <v-data-table :headers="headers" :items="coursesList" :items-per-page="20" @click:row="onSelected" dense>
-      <template v-slot:item.status="{ item }">
+      <template v-slot:[`item.status`]="{ item }">
         <b :style="'color: ' + getColor(item)" dark>{{ getStatus(item) }}</b>
       </template>
-      <template v-slot:item.course="{ item }">
+      <template v-slot:[`item.course`]="{ item }">
         <router-link :to="'/course/' + item.id" dark>{{ item.title }}</router-link>
       </template>
-      <template v-slot:item.classCode="{ item }">
+      <template v-slot:[`item.classCode`]="{ item }">
         <router-link v-if="item.class" :to="'/class/' + item.class.id">{{ getClass(item) }}</router-link>
       </template>
-      <template v-slot:item.mark="{ item }">
+      <template v-slot:[`item.mark`]="{ item }">
         <div>{{ getMark(item.mark) }}</div>
       </template>
     </v-data-table>

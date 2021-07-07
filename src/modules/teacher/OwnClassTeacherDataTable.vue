@@ -7,7 +7,12 @@
     :items="ownClassTeacherData"
     loading-text="Đang Tải"
     sort-by="name"
+    :footer-props="{ 'items-per-page-text': 'Giáo viên mỗi trang', 'items-per-page-all-text': 'Tất cả' }"
   >
+    <template v-slot:[`footer.page-text`]="items">
+      {{ items.pageStart }} - {{ items.pageStop }} trên tổng
+      {{ items.itemsLength }}
+    </template>
     <template v-slot:[`item.title`]="{ item }">
       <router-link style="text-decoration: none" :to="'/class/' + item.id">
         {{ item.title }}
