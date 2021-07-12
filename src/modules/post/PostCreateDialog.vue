@@ -23,33 +23,44 @@
             </v-row>
             <v-divider class="my-4" />
             <v-row>
-              <v-col cols="12" sm="3">
+              <v-col cols="12" sm="3" class="pt-7">
                 <h3>Dạng tin nhắn</h3>
               </v-col>
               <v-col cols="12" sm="9">
                 <v-radio-group v-model="postType" class="ma-0" hide-details>
-                  <div class="d-flex flex-wrap">
-                    <v-radio class="mr-4 col" v-for="p in postTypes" :key="p.type" :label="p.title" :value="p.value" />
-                  </div>
+                  <v-row class="d-flex flex-wrap" no-gutters>
+                    <v-col
+                      cols="12"
+                      sm="12"
+                      md="6"
+                      v-for="p in postTypes"
+                      :key="p.type"
+                      class="d-flex align-center py-2"
+                    >
+                      <v-radio class="mr-6" :value="p.value" :label="p.title" />
+                    </v-col>
+                  </v-row>
                 </v-radio-group>
               </v-col>
             </v-row>
             <v-divider class="my-4" />
             <v-row>
-              <v-col cols="12" sm="3">
+              <v-col cols="12" sm="3" class="pt-4">
                 <h3>Gửi qua</h3>
               </v-col>
               <v-col cols="12" sm="9">
                 <v-radio-group v-model="senderMethod" class="ma-0" hide-details>
-                  <div class="d-flex flex-wrap">
-                    <v-radio
-                      class="mr-4 col-col"
-                      v-for="m in senderMethods"
-                      :key="m.type"
-                      :label="m.title"
-                      :value="m.type"
-                    />
-                  </div>
+                  <v-row class="d-flex align-center py-0" no-gutters>
+                    <v-col class="d-flex">
+                      <v-radio
+                        class="mr-4 mb-3"
+                        v-for="m in senderMethods"
+                        :key="m.type"
+                        :label="m.title"
+                        :value="m.type"
+                      />
+                    </v-col>
+                  </v-row>
                 </v-radio-group>
               </v-col>
             </v-row>
@@ -191,14 +202,4 @@ export default {
 }
 </script>
 
-<style scoped>
-.col {
-  width: 115px;
-  height: 50px;
-  padding-left: 0px;
-}
-.col-col {
-  width: 115px;
-  height: 50px;
-}
-</style>
+<style scoped></style>
