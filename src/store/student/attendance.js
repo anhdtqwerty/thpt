@@ -80,6 +80,7 @@ export default {
       if (query) {
         if (query.class) studentParams.currentClass = query.class.id
         if (query.grade) studentParams.grade = query.grade
+        if (query.student) studentParams.id = query.student
       }
       const students = await Student.fetch(studentParams)
 
