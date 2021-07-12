@@ -92,6 +92,7 @@ export default {
       selected: [],
       loading: false,
       tableOptions: {}
+      // currentPage: 0
     }
   },
   components: {
@@ -120,7 +121,16 @@ export default {
   },
   methods: {
     ...mapActions('violation', ['searchViolations', 'requestPageSettings']),
-
+    // async onRemoveViolation() {
+    //   this.loading = true
+    //   await this.requestPageSettings({ itemsPerPage: this.itemsPerPage, page: this.page })
+    //   this.loading = false
+    // },
+    // async oncreateViolation() {
+    //   this.loading = true
+    //   await this.requestPageSettings({ itemsPerPage: this.itemsPerPage, page: this.page })
+    //   this.loading = false
+    // },
     getColor(s) {
       if (s === 'violation') return 'orange'
       else return '#46BE8A'
@@ -135,6 +145,7 @@ export default {
         const itemPerPageChanged = newOptions.itemsPerPage !== oldOptions.itemsPerPage
         const pageChanged = newOptions.page !== oldOptions.page
         if (pageChanged || itemPerPageChanged) {
+          this.currentPage = newOptions.page
           this.requestPageSettings({
             page: newOptions.page,
             itemsPerPage: newOptions.itemsPerPage

@@ -120,7 +120,7 @@ export default {
     }
   },
   async created() {
-    await this.refresh({ _sort: 'contactBook.createdAt:desc' })
+    await this.refresh({ _sort: 'contactBook.createdAt:DESC' })
   },
   computed: {
     ...mapState('app', ['department']),

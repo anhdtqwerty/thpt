@@ -19,7 +19,6 @@
 <script>
 import { mapActions, mapState } from 'vuex'
 import ViolationUpdateDialog from '@/modules/violation/ViolationUpdateDialog.vue'
-
 export default {
   components: {
     ViolationUpdateDialog
@@ -34,10 +33,10 @@ export default {
     }
   },
   computed: {
-    ...mapState('violation', ['violations'])
+    ...mapState('violation', ['violations', 'page'])
   },
   methods: {
-    ...mapActions('violation', ['removeViolation', 'updateDivision']),
+    ...mapActions('violation', ['removeViolation', 'updateDivision', 'requestPageSettings']),
     onRemove() {
       this.$dialog.confirm({
         title: 'Xóa',
@@ -46,6 +45,7 @@ export default {
         cancelText: 'Không',
         done: async () => {
           await this.removeViolation(this.selected.id)
+          await this.requestPageSettings({ itemsPerPage: this.itemsPerPage, page: this.page })
         }
       })
     },

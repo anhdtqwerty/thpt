@@ -100,7 +100,7 @@ export default {
         student: get(this.student, 'id'),
         date_gte: this.dateData_gte,
         date_lte: this.dateData_lte,
-        _sort: 'createdAt:desc'
+        _sort: 'createdAt:DESC'
       })
     },
     reset() {

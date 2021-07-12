@@ -238,18 +238,16 @@ const computedAvgMarkForEachStudent = ({ marks, ...info }) => {
     marks: [...marks, yearMarkObj]
   }
 }
-
 const formatMarks = marks => marks.map(transformMarksToTableRecord)
 const groupMarkByStudentId = marks => groupBy(marks, 'studentId')
 const reduceMarkByStudent = marksByStudentObj => mapPropObj(marksByStudentObj)(accumulateMark)
 const computeAvgMark = marksByStudentObj => mapPropObj(marksByStudentObj)(computedAvgMarkForEachStudent)
-
 const handleMarkFlow = pipe(formatMarks, groupMarkByStudentId, reduceMarkByStudent, computeAvgMark)
 
 export default {
   components: {
     Breadcrumbs,
-    DropMenu,
+
     AutocompleteClass,
     AutocompleteSubject,
     AutocompleteGrade

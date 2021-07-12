@@ -79,7 +79,7 @@ export default {
       this.draw = draw
     },
     refresh() {
-      this.fetchSubjectGroups({ _sort: 'createdAt:desc' })
+      this.fetchSubjectGroups({ _sort: 'createdAt:DESC' })
     },
     onDivisionSelected(division) {
       this.setDivision(division)

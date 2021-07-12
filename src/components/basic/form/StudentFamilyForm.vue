@@ -77,8 +77,7 @@ export default {
     momCompany: '',
     rules: {
       required: value => !!value || 'Required.',
-      min: v => v.length >= 6 || 'Min 8 characters',
-      email: v => /.+@.+/.test(v) || 'E-mail must be valid'
+      min: v => v.length >= 6 || 'Min 8 characters'
     }
   }),
   created() {

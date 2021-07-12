@@ -42,14 +42,12 @@ import { mapState, mapGetters } from 'vuex'
 import StudentListActions from '@/modules/class/student/StudentListActions'
 import UserItem from '@/components/basic/card/CardStudentName.vue'
 import StudentMarkDialog from '@/modules/student/mark/StudentMarkDialog.vue'
-import DropMenu from '@/modules/class/student/Menu.vue'
 
 export default {
   components: {
     UserItem,
     StudentListActions,
-    StudentMarkDialog,
-    DropMenu
+    StudentMarkDialog
   },
   props: {
     role: String

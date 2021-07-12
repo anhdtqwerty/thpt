@@ -48,7 +48,7 @@ export default {
         _limit: -1,
         department: this.department.id,
         status: 'running',
-        _sort: 'grade.gradeNumber:ASC'
+        _sort: 'grade.gradeNumber:ASC, title:ASC'
       })
       if (this.changeClass && this.currentClass) {
         this.classes = this.classes.filter(c => get(c.grade, 'id') === this.currentClass.grade)

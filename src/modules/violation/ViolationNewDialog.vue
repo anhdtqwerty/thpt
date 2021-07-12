@@ -37,15 +37,17 @@ export default {
   },
   computed: {
     ...mapState('app', ['roles', 'department']),
-    ...mapState('auth', ['user'])
+    ...mapState('auth', ['user']),
+    ...mapState('violation', ['page'])
   },
   methods: {
-    ...mapActions('violation', ['createViolation']),
+    ...mapActions('violation', ['createViolation', 'requestPageSettings']),
     async save() {
       if (!this.$refs.form.validate()) return
       this.loading = true
       const data = this.$refs.form.getData()
       await this.createViolation({ ...data, class: data.classData })
+      await this.requestPageSettings({ itemsPerPage: this.itemsPerPage, page: this.page })
       this.$alert.success('Tạo mới thành công')
       this.$refs.form.resetDefault()
       this.loading = false

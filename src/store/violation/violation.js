@@ -10,7 +10,8 @@ export default {
     pageText: '',
     itemsPerPage: 10,
     searchParams: {},
-    totalItems: 0
+    totalItems: 0,
+    page: 1
   },
   actions: {
     async searchViolations({ commit, state, dispatch }, query) {
@@ -19,7 +20,6 @@ export default {
         ...query,
         _sort: 'createdAt:DESC'
       }
-
       commit('changeState', { searchParams })
       dispatch('requestPageSettings', {})
     },
@@ -38,15 +38,14 @@ export default {
           Violation.count(searchParams),
           Violation.search(searchParams)
         ])
-
         if (totalItems > (page - 1) * itemsPerPage || page === 1) {
           commit('changeState', {
             violations,
             totalItems,
             itemsPerPage,
-            searchParams
+            searchParams,
+            page
           })
-
           const pageStart = (page - 1) * itemsPerPage + 1
           let pageStop = page * itemsPerPage
           pageStop = pageStop > totalItems ? totalItems : pageStop
@@ -63,7 +62,6 @@ export default {
           }
         }
       }
-
       loading.active = false
     },
     async fetchViolation({ commit }, options) {

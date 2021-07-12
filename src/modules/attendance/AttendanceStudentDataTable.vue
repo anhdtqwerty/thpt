@@ -137,7 +137,6 @@ export default {
       // await this.searchAttendances({ ...query })
       await this.fetchStudentAttendances(query)
     },
-
     formatTime(time, str) {
       return moment(time).format(str)
     },
