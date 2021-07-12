@@ -381,7 +381,7 @@ export default {
         value: 'mark'
       },
       {
-        title: 'Khen thưởng kỷ luật',
+        title: 'KTKL',
         value: 'violation'
       },
       {
